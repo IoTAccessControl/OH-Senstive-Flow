@@ -5,7 +5,7 @@ from pathlib import Path
 from openai import OpenAI
 from memory.memory import ReadDataFlowMemory, WriteDataFlowMemory, ReadFuncImplMemory, WriteFuncImplMemory
 from tools.analyzer import GetFuncImpl
-from utils.utils import WriteResult
+from utils.write_result import WriteResult
 from agent.agent import Agent
 
 

@@ -1,0 +1,1 @@
+python src/utils/generate_html.py result/Wechat_HarmonyOS.json data/memory_func_impl.txt result/Wechat_HarmonyOS.html
