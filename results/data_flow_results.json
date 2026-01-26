@@ -1,0 +1,143 @@
+[
+  {
+    "flow_id": 1,
+    "api_type": "device_info",
+    "target_var": "deviceInfo结果",
+    "start": {
+      "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+      "line": 50
+    },
+    "end": {
+      "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+      "line": 51
+    },
+    "steps": [
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 50,
+        "code": "this.marketName = deviceInfo.marketName",
+        "desc": "起点：将deviceInfo的marketName属性赋值给this.marketName，这是设备信息的获取点"
+      },
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 51,
+        "code": "hilog.info('HardwareIndexPage', `marketName: ${this.marketName}`)",
+        "desc": "终点：将this.marketName的值通过hilog.info进行日志输出，这构成了从deviceInfo.marketName到日志输出的数据流"
+      }
+    ]
+  },
+  {
+    "flow_id": 2,
+    "api_type": "device_info",
+    "target_var": "deviceInfo结果",
+    "start": {
+      "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+      "line": 51
+    },
+    "end": {
+      "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+      "line": 52
+    },
+    "steps": [
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 50,
+        "code": "let deviceInfo = deviceInfoUtils.getDeviceInfo();",
+        "desc": "获取设备信息对象，这是数据流的起始点"
+      },
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 51,
+        "code": "this.osFullName = deviceInfo.osFullName",
+        "desc": "将设备信息中的操作系统全名赋值给当前页面实例的osFullName属性，这是数据流的关键转移点"
+      },
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 52,
+        "code": "hilog.info('HardwareIndexPage', `OS Full Name: ${this.osFullName}`);",
+        "desc": "将osFullName属性的值通过hilog.info记录到日志中，这是数据流的终点，设备信息被记录在日志里"
+      }
+    ]
+  },
+  {
+    "flow_id": 3,
+    "api_type": "device_info",
+    "target_var": "deviceInfo结果",
+    "start": {
+      "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+      "line": 52
+    },
+    "end": {
+      "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+      "line": 53
+    },
+    "steps": [
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 52,
+        "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+        "desc": "起点：将deviceInfo对象的sdkApiVersion属性赋值给this.sdkApiVersion，这是设备信息的获取"
+      },
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 53,
+        "code": "hilog.info('HardwareIndexPage', `Device SDK API Version: ${this.sdkApiVersion}`)",
+        "desc": "终点：将之前获取的sdkApiVersion值通过hilog.info进行日志记录，设备信息被输出到日志中"
+      }
+    ]
+  },
+  {
+    "flow_id": 4,
+    "api_type": "device_info",
+    "target_var": "deviceInfo结果",
+    "start": {
+      "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+      "line": 53
+    },
+    "end": {
+      "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+      "line": 54
+    },
+    "steps": [
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 53,
+        "code": "this.deviceType = deviceInfo.deviceType",
+        "desc": "起点：将deviceInfo的deviceType属性赋值给this.deviceType，开始数据流"
+      },
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 54,
+        "code": "hilog.info('deviceType: ' + this.deviceType)",
+        "desc": "终点：将this.deviceType的值通过hilog.info输出，完成数据流"
+      }
+    ]
+  },
+  {
+    "flow_id": 5,
+    "api_type": "network_info",
+    "target_var": "网络连接结果",
+    "start": {
+      "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+      "line": 62
+    },
+    "end": {
+      "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+      "line": 64
+    },
+    "steps": [
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 62,
+        "code": "const hasDefaultNet = connection.hasDefaultNetSync()",
+        "desc": "起点：获取默认网络连接状态，调用connection API获取网络信息"
+      },
+      {
+        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "line": 64,
+        "code": "if ",
+        "desc": "终点：使用网络连接状态进行条件判断"
+      }
+    ]
+  }
+]

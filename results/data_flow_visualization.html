@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>隐私数据流可视化</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+body {
+  margin: 0;
+  display: flex;
+  font-family: monospace;
+}
+#network {
+  width: 60%;
+  height: 100vh;
+  border-right: 1px solid #ccc;
+}
+#detail {
+  width: 40%;
+  padding: 12px;
+  overflow: auto;
+  background: #f9f9f9;
+}
+pre {
+  background: #f0f0f0;
+  padding: 10px;
+  white-space: pre-wrap;
+  font-size: 12px;
+}
+.node-info {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.flow-header {
+  background: #4CAF50;
+  color: white;
+  padding: 5px 10px;
+  margin: 5px 0;
+}
+</style>
+</head>
+<body>
+
+<div id="network"></div>
+<div id="detail">
+  <h2>节点详情</h2>
+  <div id="info">点击左侧节点查看源码</div>
+</div>
+
+<script>
+const nodes = new vis.DataSet([{"id": 0, "label": "this.marketName = deviceInfo.m...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 50, "desc": "起点：将deviceInfo的marketName属性赋值给this.marketName，这是设备信息的获取点", "context": "   47:   // 获取设备硬件各项信息\n   48:   getDeviceInfo() {\n   49:     // 利用@ohos.deviceInfo获取设备信息\n👉 50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType", "flow_id": 1}, {"id": 1, "label": "hilog.info('HardwareIndexPage'...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 51, "desc": "终点：将this.marketName的值通过hilog.info进行日志输出，这构成了从deviceInfo.marketName到日志输出的数据流", "context": "   48:   getDeviceInfo() {\n   49:     // 利用@ohos.deviceInfo获取设备信息\n   50:     this.marketName = deviceInfo.marketName\n👉 51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒", "flow_id": 1}, {"id": 2, "label": "let deviceInfo = deviceInfoUti...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 50, "desc": "获取设备信息对象，这是数据流的起始点", "context": "   47:   // 获取设备硬件各项信息\n   48:   getDeviceInfo() {\n   49:     // 利用@ohos.deviceInfo获取设备信息\n👉 50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType", "flow_id": 2}, {"id": 3, "label": "this.osFullName = deviceInfo.o...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 51, "desc": "将设备信息中的操作系统全名赋值给当前页面实例的osFullName属性，这是数据流的关键转移点", "context": "   48:   getDeviceInfo() {\n   49:     // 利用@ohos.deviceInfo获取设备信息\n   50:     this.marketName = deviceInfo.marketName\n👉 51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒", "flow_id": 2}, {"id": 4, "label": "hilog.info('HardwareIndexPage'...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 52, "desc": "将osFullName属性的值通过hilog.info记录到日志中，这是数据流的终点，设备信息被记录在日志里", "context": "   49:     // 利用@ohos.deviceInfo获取设备信息\n   50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n👉 52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒\n   55:     this.uptime = process.uptime()", "flow_id": 2}, {"id": 5, "label": "this.sdkApiVersion = `${device...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 52, "desc": "起点：将deviceInfo对象的sdkApiVersion属性赋值给this.sdkApiVersion，这是设备信息的获取", "context": "   49:     // 利用@ohos.deviceInfo获取设备信息\n   50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n👉 52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒\n   55:     this.uptime = process.uptime()", "flow_id": 3}, {"id": 6, "label": "hilog.info('HardwareIndexPage'...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 53, "desc": "终点：将之前获取的sdkApiVersion值通过hilog.info进行日志记录，设备信息被输出到日志中", "context": "   50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n👉 53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒\n   55:     this.uptime = process.uptime()\n   56:     //   获取屏幕数据", "flow_id": 3}, {"id": 7, "label": "this.deviceType = deviceInfo.d...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 53, "desc": "起点：将deviceInfo的deviceType属性赋值给this.deviceType，开始数据流", "context": "   50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n👉 53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒\n   55:     this.uptime = process.uptime()\n   56:     //   获取屏幕数据", "flow_id": 4}, {"id": 8, "label": "hilog.info('deviceType: ' + th...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 54, "desc": "终点：将this.deviceType的值通过hilog.info输出，完成数据流", "context": "   51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType\n👉 54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒\n   55:     this.uptime = process.uptime()\n   56:     //   获取屏幕数据\n   57:     this.getScreenInfo()", "flow_id": 4}, {"id": 9, "label": "const hasDefaultNet = connecti...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 62, "desc": "起点：获取默认网络连接状态，调用connection API获取网络信息", "context": "   59:     this.getSenorIdArr()\n   60:     //   获取网络状态\n   61:     // 首先判断是否存在默认连接的网络\n👉 62:     const hasDefaultNet = connection.hasDefaultNetSync()\n   63:     // 没有网络\n   64:     if (!hasDefaultNet) {\n   65:       // this.netWorkType = &#x27;无网络&#x27;", "flow_id": 5}, {"id": 10, "label": "if ", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 64, "desc": "终点：使用网络连接状态进行条件判断", "context": "   61:     // 首先判断是否存在默认连接的网络\n   62:     const hasDefaultNet = connection.hasDefaultNetSync()\n   63:     // 没有网络\n👉 64:     if (!hasDefaultNet) {\n   65:       // this.netWorkType = &#x27;无网络&#x27;\n   66:       return\n   67:     } else {", "flow_id": 5}]);
+const edges = new vis.DataSet([{"from": 0, "to": 1, "arrows": "to"}, {"from": 2, "to": 3, "arrows": "to"}, {"from": 3, "to": 4, "arrows": "to"}, {"from": 5, "to": 6, "arrows": "to"}, {"from": 7, "to": 8, "arrows": "to"}, {"from": 9, "to": 10, "arrows": "to"}]);
+
+const options = {
+  interaction: { hover: true },
+  physics: { enabled: true },
+  nodes: {
+    shape: "box",
+    font: { size: 12 }
+  },
+  edges: {
+    arrows: {
+      to: { enabled: true, scaleFactor: 1 }
+    },
+    smooth: {
+      type: "cubicBezier"
+    }
+  }
+};
+
+const network = new vis.Network(
+  document.getElementById("network"),
+  { nodes, edges },
+  options
+);
+
+network.on("click", function (params) {
+  if (!params.nodes.length) return;
+  const node = nodes.get(params.nodes[0]);
+
+  document.getElementById("info").innerHTML = `
+    <div class="node-info">
+      <p><b>数据流编号：</b>${node.flow_id || 1}</p>
+      <p><b>文件：</b>${node.file}</p>
+      <p><b>行号：</b>${node.line}</p>
+      <p><b>描述：</b>${node.desc}</p>
+    </div>
+    <h3>代码上下文（中心行号：${node.line}）</h3>
+    <pre>${node.context}</pre>
+  `;
+});
+</script>
+
+</body>
+</html>
