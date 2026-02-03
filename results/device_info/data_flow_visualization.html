@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>隐私数据流可视化 - device_info</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  display: flex;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+#network {
+  width: 60%;
+  height: 100vh;
+  border-right: 1px solid #ccc;
+}
+#detail {
+  width: 40%;
+  padding: 16px;
+  overflow: auto;
+  background: #f9f9f9;
+}
+pre {
+  background: #f0f0f0;
+  padding: 12px;
+  white-space: pre-wrap;
+  font-size: 12px;
+  border-radius: 4px;
+}
+.node-info {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+.flow-header {
+  background: #4CAF50;
+  color: white;
+  padding: 8px 12px;
+  margin: 8px 0;
+  border-radius: 4px;
+}
+.back-link {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #2196F3;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+.back-link:hover {
+  background: #1976D2;
+}
+.module-tag {
+  display: inline-block;
+  background: #E8F5E9;
+  color: #2E7D32;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+.node-link {
+  color: #2196F3;
+  text-decoration: underline;
+  cursor: pointer;
+  margin: 0 1px;
+}
+.node-link:hover {
+  color: #1976D2;
+}
+</style>
+</head>
+<body>
+
+<div id="network"></div>
+<div id="detail">
+  <a href="../index.html" class="back-link">← 返回模块列表</a>
+  <h2>节点详情 <span class="module-tag">device_info</span></h2>
+  <div id="info">点击左侧节点查看源码</div>
+</div>
+
+<script>
+const nodes = new vis.DataSet([{"id": 0, "label": "this.marketName = deviceInfo.m...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 50, "desc": "起点：将deviceInfo的marketName属性赋值给this.marketName，这是设备信息的获取", "context": "   47:   // 获取设备硬件各项信息\n   48:   getDeviceInfo() {\n   49:     // 利用@ohos.deviceInfo获取设备信息\n👉 50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType", "flow_id": 1}, {"id": 1, "label": "hilog.info('HardwareInfo', 'Ma...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 51, "desc": "终点：将this.marketName的值通过hilog.info输出日志，这里使用了之前获取的设备信息marketName", "context": "   48:   getDeviceInfo() {\n   49:     // 利用@ohos.deviceInfo获取设备信息\n   50:     this.marketName = deviceInfo.marketName\n👉 51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒", "flow_id": 1}, {"id": 2, "label": "this.osFullName = deviceInfo.o...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 51, "desc": "起点：将deviceInfo的osFullName属性赋值给this.osFullName，获取操作系统全名信息", "context": "   48:   getDeviceInfo() {\n   49:     // 利用@ohos.deviceInfo获取设备信息\n   50:     this.marketName = deviceInfo.marketName\n👉 51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒", "flow_id": 2}, {"id": 3, "label": "hilog.info('HARDWARE_TAG', 'OS...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 52, "desc": "终点：使用hilog记录OS Full Name日志，将this.osFullName作为参数传入，实现了设备信息的记录输出", "context": "   49:     // 利用@ohos.deviceInfo获取设备信息\n   50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n👉 52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒\n   55:     this.uptime = process.uptime()", "flow_id": 2}, {"id": 4, "label": "this.sdkApiVersion = `${device...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 52, "desc": "起点：将deviceInfo.sdkApiVersion赋值给this.sdkApiVersion，这是设备信息的获取", "context": "   49:     // 利用@ohos.deviceInfo获取设备信息\n   50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n👉 52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒\n   55:     this.uptime = process.uptime()", "flow_id": 3}, {"id": 5, "label": "hilog.info('HardwareTest', `sd...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 53, "desc": "终点：将this.sdkApiVersion通过hilog.info输出日志，完成设备信息的数据流动", "context": "   50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n👉 53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒\n   55:     this.uptime = process.uptime()\n   56:     //   获取屏幕数据", "flow_id": 3}, {"id": 6, "label": "this.deviceType = deviceInfo.d...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 53, "desc": "起点：将deviceInfo的deviceType属性赋值给this.deviceType，开始数据流", "context": "   50:     this.marketName = deviceInfo.marketName\n   51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n👉 53:     this.deviceType = deviceInfo.deviceType\n   54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒\n   55:     this.uptime = process.uptime()\n   56:     //   获取屏幕数据", "flow_id": 4}, {"id": 7, "label": "hilog.info('HARDWARE_TAG', 'De...", "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets", "line": 54, "desc": "终点：将this.deviceType的值通过hilog.info记录日志，完成数据流", "context": "   51:     this.osFullName = deviceInfo.osFullName\n   52:     this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`\n   53:     this.deviceType = deviceInfo.deviceType\n👉 54:     //利用@kit.ArkTs获取系统运行时间，返回值是毫秒\n   55:     this.uptime = process.uptime()\n   56:     //   获取屏幕数据\n   57:     this.getScreenInfo()", "flow_id": 4}]);
+const edges = new vis.DataSet([{"from": 0, "to": 1, "arrows": "to"}, {"from": 2, "to": 3, "arrows": "to"}, {"from": 4, "to": 5, "arrows": "to"}, {"from": 6, "to": 7, "arrows": "to"}]);
+
+const options = {
+  interaction: { hover: true },
+  physics: { enabled: true },
+  nodes: {
+    shape: "box",
+    font: { size: 12 }
+  },
+  edges: {
+    arrows: {
+      to: { enabled: true, scaleFactor: 1 }
+    },
+    smooth: {
+      type: "cubicBezier"
+    }
+  }
+};
+
+const network = new vis.Network(
+  document.getElementById("network"),
+  { nodes, edges },
+  options
+);
+
+// 根据flow_id和step找到节点ID
+function findNodeIdByFlowAndStep(flowId, stepIndex) {
+  const allNodes = nodes.get();
+  for (let i = 0; i < allNodes.length; i++) {
+    const node = allNodes[i];
+    if (node.flow_id == flowId) {
+      // 计算这个flow的起始节点ID
+      let currentFlowId = 1;
+      let offset = 0;
+      for (let f = 0; f < flowId - 1; f++) {
+        // 找到flow_id为f+1的节点数量
+        const flowNodes = nodes.get().filter(n => n.flow_id == (f + 1));
+        offset += flowNodes.length;
+      }
+      return offset + stepIndex;
+    }
+  }
+  return null;
+}
+
+// 高亮并显示指定节点
+function highlightNode(flowId, stepIndex) {
+  const nodeId = findNodeIdByFlowAndStep(flowId, stepIndex);
+  if (nodeId !== null) {
+    network.selectNodes([nodeId]);
+    network.focus(nodeId, { scale: 1.2, animation: true });
+    const node = nodes.get(nodeId);
+    document.getElementById("info").innerHTML = `
+      <div class="node-info">
+        <p><b>数据流编号：</b>${node.flow_id || 1}</p>
+        <p><b>文件：</b>${node.file}</p>
+        <p><b>行号：</b>${node.line}</p>
+        <p><b>描述：</b>${node.desc}</p>
+      </div>
+      <h3>代码上下文（中心行号：${node.line}）</h3>
+      <pre>${node.context}</pre>
+    `;
+  }
+}
+
+// 从URL参数获取flow和step并高亮
+const urlParams = new URLSearchParams(window.location.search);
+const flowParam = urlParams.get('flow');
+const stepParam = urlParams.get('step');
+
+if (flowParam !== null && stepParam !== null) {
+  highlightNode(parseInt(flowParam), parseInt(stepParam));
+}
+
+network.on("click", function (params) {
+  if (!params.nodes.length) return;
+  const node = nodes.get(params.nodes[0]);
+
+  document.getElementById("info").innerHTML = `
+    <div class="node-info">
+      <p><b>数据流编号：</b>${node.flow_id || 1}</p>
+      <p><b>文件：</b>${node.file}</p>
+      <p><b>行号：</b>${node.line}</p>
+      <p><b>描述：</b>${node.desc}</p>
+    </div>
+    <h3>代码上下文（中心行号：${node.line}）</h3>
+    <pre>${node.context}</pre>
+  `;
+});
+</script>
+
+</body>
+</html>

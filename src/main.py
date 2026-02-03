@@ -180,12 +180,26 @@ def main():
         json.dump(summary, f, ensure_ascii=False, indent=2)
     print(f"模块摘要已生成: {summary_file}")
 
+    # 为每个模块生成数据流可视化HTML
+    print("\n" + "=" * 60)
+    print("生成模块数据流可视化页面")
+    print("=" * 60)
+
+    for module_name in summary.get("modules_found", []):
+        module_data_flow_file = Path(result_path) / module_name / "data_flow_results.json"
+        if module_data_flow_file.exists():
+            with open(module_data_flow_file, 'r', encoding='utf-8') as f:
+                module_flows = json.load(f)
+            module_html_output = Path(result_path) / module_name / "data_flow_visualization.html"
+            html_generator.generate(module_flows, str(module_html_output), module_name)
+            print(f"  -> {module_name} 可视化页面已生成")
+
     # ========== Step 4: generate_privacy_report.py ==========
     print("\n" + "=" * 60)
     print("Step 4: 生成隐私报告")
     print("=" * 60)
 
-    report_agent = ReportAgent(model=model)
+    report_agent = ReportAgent()
     reports = []
 
     for module_dir in Path(result_path).iterdir():
@@ -197,6 +211,14 @@ def main():
 
     merged_report_path = report_agent.merge_reports(Path(result_path), reports)
     print(f"\n完整报告已生成: {merged_report_path}")
+
+    # ========== Step 5: 生成索引页面 ==========
+    print("\n" + "=" * 60)
+    print("Step 5: 生成模块索引页面")
+    print("=" * 60)
+
+    modules = [{"name": name} for name in summary.get("modules_found", [])]
+    html_generator.generate_index_page(result_path, modules)
 
     print("\n" + "=" * 60)
     print("分析完成!")

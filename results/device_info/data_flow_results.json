@@ -16,13 +16,13 @@
         "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
         "line": 50,
         "code": "this.marketName = deviceInfo.marketName",
-        "desc": "起点：将deviceInfo的marketName属性赋值给this.marketName，这是设备信息的获取点"
+        "desc": "起点：将deviceInfo的marketName属性赋值给this.marketName，这是设备信息的获取"
       },
       {
         "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
         "line": 51,
-        "code": "hilog.info('HardwareIndexPage', `marketName: ${this.marketName}`)",
-        "desc": "终点：将this.marketName的值通过hilog.info进行日志输出，这构成了从deviceInfo.marketName到日志输出的数据流"
+        "code": "hilog.info('HardwareInfo', 'Market Name: ' + this.marketName)",
+        "desc": "终点：将this.marketName的值通过hilog.info输出日志，这里使用了之前获取的设备信息marketName"
       }
     ]
   },
@@ -41,21 +41,15 @@
     "steps": [
       {
         "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
-        "line": 50,
-        "code": "let deviceInfo = deviceInfoUtils.getDeviceInfo();",
-        "desc": "获取设备信息对象，这是数据流的起始点"
-      },
-      {
-        "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
         "line": 51,
         "code": "this.osFullName = deviceInfo.osFullName",
-        "desc": "将设备信息中的操作系统全名赋值给当前页面实例的osFullName属性，这是数据流的关键转移点"
+        "desc": "起点：将deviceInfo的osFullName属性赋值给this.osFullName，获取操作系统全名信息"
       },
       {
         "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
         "line": 52,
-        "code": "hilog.info('HardwareIndexPage', `OS Full Name: ${this.osFullName}`);",
-        "desc": "将osFullName属性的值通过hilog.info记录到日志中，这是数据流的终点，设备信息被记录在日志里"
+        "code": "hilog.info('HARDWARE_TAG', 'OS Full Name: %{public}s', this.osFullName)",
+        "desc": "终点：使用hilog记录OS Full Name日志，将this.osFullName作为参数传入，实现了设备信息的记录输出"
       }
     ]
   },
@@ -76,13 +70,13 @@
         "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
         "line": 52,
         "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
-        "desc": "起点：将deviceInfo对象的sdkApiVersion属性赋值给this.sdkApiVersion，这是设备信息的获取"
+        "desc": "起点：将deviceInfo.sdkApiVersion赋值给this.sdkApiVersion，这是设备信息的获取"
       },
       {
         "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
         "line": 53,
-        "code": "hilog.info('HardwareIndexPage', `Device SDK API Version: ${this.sdkApiVersion}`)",
-        "desc": "终点：将之前获取的sdkApiVersion值通过hilog.info进行日志记录，设备信息被输出到日志中"
+        "code": "hilog.info('HardwareTest', `sdkApiVersion: ${this.sdkApiVersion}`)",
+        "desc": "终点：将this.sdkApiVersion通过hilog.info输出日志，完成设备信息的数据流动"
       }
     ]
   },
@@ -108,8 +102,8 @@
       {
         "file": "data/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
         "line": 54,
-        "code": "hilog.info('deviceType: ' + this.deviceType)",
-        "desc": "终点：将this.deviceType的值通过hilog.info输出，完成数据流"
+        "code": "hilog.info('HARDWARE_TAG', 'Device type: ' + this.deviceType)",
+        "desc": "终点：将this.deviceType的值通过hilog.info记录日志，完成数据流"
       }
     ]
   }
