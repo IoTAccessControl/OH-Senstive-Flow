@@ -1,7 +1,7 @@
-## cx-oh：OpenHarmony ArkTS API 分析与可视化
+# 隐私声明报告生成工具
 
-本项目提供：
-- 一个**极简蓝白风格**前端页面：输入路径 + 一键分析
+本项目用于从 OpenHarmony ArkTS 源码中提取隐私相关调用链，并生成可读的隐私声明报告。它提供：
+- 一个前端页面：输入路径 + 一键分析
 - 一个后端分析服务：扫描 SDK 源码与 App 源码，输出
   - **sink API**：App 调用到的 OpenHarmony SDK API
   - **source API**：App 的入口函数/生命周期函数（如 `build()`、`aboutToAppear()` 等）
@@ -18,7 +18,7 @@
   - `input/sdk/default/openharmony/ets/`：OpenHarmony SDK（ets）
   - `input/csv/`：补充 CSV（含 override）
 - `output/`：运行时输出（自动生成，不需要手动创建）
-- `doc/implementation.md`：实现细节说明
+- `doc/`：实现细节说明（见文末“文档”）
 
 ## 安装
 需要 Node.js（建议 18+；本仓库开发环境为 Node 24）。
@@ -79,9 +79,16 @@ output/<appName>/<YYYYMMDD-HHmmss>/
   privacy_report.txt
   modules/
     index.json
-    <moduleId>/dataflows.json
-    <moduleId>/ui_tree.json
-    <moduleId>/privacy_facts.json
+    <moduleId>/
+      dataflows.json
+      ui_tree.json
+      privacy_facts.json
+    _unassigned/            # 可选：当存在未归类的数据流时生成
+      dataflows.json
+      privacy_facts.json
+output/_runs/
+  latest.json
+  <runId>.json
 ```
 
 ## 描述补全（保证每条 sink 都有描述）

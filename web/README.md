@@ -1,73 +1,44 @@
-# React + TypeScript + Vite
+# web（前端）
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+本目录是「隐私声明报告生成工具」的前端工程，基于 React + Vite + TypeScript，负责：
+- 配置分析输入（App/SDK/CSV 路径与 LLM 参数）
+- 触发后端分析（`POST /api/analyze`）
+- 可视化 sinks/sources/callgraph/dataflows
+- 展示隐私声明报告，并支持点击关键要素跳转到数据流节点定位
 
-Currently, two official plugins are available:
+## 启动
+推荐在仓库根目录启动（会同时启动 `server/` + `web/`）：
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+也可以只启动前端：
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm -w web run dev
 ```
+
+Vite 默认端口为 5173（若端口被占用会自动选择其它端口）。
+
+## API 代理（开发模式）
+`web/vite.config.ts` 已配置代理：`/api/*` -> `http://localhost:3001`。
+
+## 主要页面与路由
+- `/`：首页（配置与启动分析；选择历史 `runId`）
+  - 相关 API：`GET /api/runs`、`GET /api/fs/roots`、`GET /api/fs/dirs`、`POST /api/analyze`
+- `/sinks`：sink API 表格
+  - 相关 API：`GET /api/results/sinks`
+- `/sources`：source API 表格
+  - 相关 API：`GET /api/results/sources`
+- `/callgraph`：调用图可视化
+  - 相关 API：`GET /api/results/callgraph`
+- `/dataflows`：数据流可视化（按功能模块筛选）
+  - 相关 API：`GET /api/results/modules`、`GET /api/results/modules/:moduleId/dataflows`
+- `/privacy-report`：隐私声明报告（token 可点击跳转）
+  - 相关 API：`GET /api/results/privacy_report`
+
+## 代码结构（简要）
+- `web/src/pages/`：页面实现（`Home`/`Sinks`/`Sources`/`CallGraph`/`Dataflows`/`PrivacyReport`）
+- `web/src/api.ts`：后端 API 调用封装与类型
+- `web/src/components/`：可复用组件（图渲染、链接到编辑器等）

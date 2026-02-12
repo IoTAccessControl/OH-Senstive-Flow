@@ -10,16 +10,28 @@
 - **sink API**：App 源码中调用到的 OpenHarmony SDK API
 - **source API**：App 源码中的入口函数/生命周期函数（如 `build()`、`aboutToAppear()` 等）
 
-并提供一个蓝白极简前端页面，用于一键分析和查看结果表格。
+这些结果会作为后续 CallGraph/DataFlow、UI 界面树/功能模块，以及隐私声明报告生成的基础证据。
+
+本仓库同时提供一个前端页面，用于一键分析并查看结果。
 
 ## 架构
 - `server/`：Node + Express，负责执行分析与输出落盘
 - `web/`：React + Vite + TypeScript，负责输入路径、触发分析、可视化结果
 
 接口：
-- `POST /api/analyze`：执行分析并写入 `output/`
-- `GET /api/results/sinks`：读取并返回 `sinks.json`
-- `GET /api/results/sources`：读取并返回 `sources.json`
+- `POST /api/analyze`：执行分析并写入 `output/`（返回 `runId` 与 `outputDir`）
+- `GET /api/runs`：列出历史运行记录（来自 `output/_runs/`）
+- `GET /api/fs/roots`：返回仓库根目录与默认输入根目录（用于前端目录选择器）
+- `GET /api/fs/dirs?base=app|sdk|csv&path=<rel>`：列出输入根目录下的子目录
+- `GET /api/results/*`：读取并返回指定结果（支持 `runId`；不传则读取 `latest`）
+  - `GET /api/results/sinks`：`sinks.json`
+  - `GET /api/results/sources`：`sources.json`
+  - `GET /api/results/callgraph`：`callgraph.json`
+  - `GET /api/results/dataflows`：`dataflows.json`
+  - `GET /api/results/ui_tree`：`ui_tree.json`
+  - `GET /api/results/modules`：`modules/index.json`
+  - `GET /api/results/modules/:moduleId/dataflows`：`modules/<moduleId>/dataflows.json`
+  - `GET /api/results/privacy_report`：`privacy_report.json`
 
 ## 输出目录与文件
 结果固定保存到仓库根目录的 `output/` 下，按 appName 与时间戳分目录：
@@ -33,6 +45,18 @@ output/<appName>/<YYYYMMDD-HHmmss>/
   sources.csv
   callgraph.json
   dataflows.json
+  ui_tree.json
+  privacy_report.json
+  privacy_report.txt
+  modules/
+    index.json
+    <moduleId>/
+      ui_tree.json
+      dataflows.json
+      privacy_facts.json
+    _unassigned/            # 可选：当存在未归类的数据流时生成
+      dataflows.json
+      privacy_facts.json
 output/_runs/
   latest.json
   <runId>.json

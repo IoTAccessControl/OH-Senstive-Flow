@@ -19,16 +19,15 @@
 
 ---
 
-## 前端新增输入项（首页）
-新增 4 个输入：
-- **最大提取数据流条数**（默认 `5`）
-- **数据流分析的 LLM 提供商名称**（默认 `Qwen`）
-- **数据流分析的 LLM 提供商 api-key**（默认空）
-- **数据流分析的模型名称**（默认 `qwen3-coder-plus`）
+## 首页输入项（CallGraph/DataFlow 相关）
+首页与 CallGraph/DataFlow 相关的输入项为：
+- **最大提取数据流条数**（默认 `5`，对应 `maxDataflowPaths`）
+- **数据流分析的 LLM 配置**（对应 `llmProvider/llmApiKey/llmModel`）
+  - `llmApiKey` 为空时：仍会生成 `callgraph.json`；`dataflows.json` 会以 `meta.skipped=true` 占位
 
-并新增两个跳转按钮：
-- 跳转到 **调用图可视化**
-- 跳转到 **数据流可视化**
+首页还包含 UI 界面树与隐私声明报告的 LLM 配置（用于 `ui_tree.json`、模块化结果、隐私报告等），详见：
+- `doc/ui_tree_modules.md`
+- `doc/privacy_report.md`
 
 ---
 
@@ -44,6 +43,7 @@ output/<appName>/<YYYYMMDD-HHmmss>/
   sources.csv
   callgraph.json
   dataflows.json
+  # 还会生成 ui_tree.json / modules/ / privacy_report.* 等，见对应文档
 ```
 
 ---
@@ -66,6 +66,7 @@ output/<appName>/<YYYYMMDD-HHmmss>/
 - `id`（稳定唯一）
 - `type`：`source | function | sinkCall`
 - `name?`：函数名或 sink API key（可能是多个，以逗号分隔）
+- `description?`：中间函数节点的描述（若提供 `llmApiKey` 则会尽量补全，用于提升可读性；失败不会阻断分析）
 
 ### 边（edges）
 - `calls`：函数调用边 `function -> function`
@@ -100,7 +101,8 @@ output/<appName>/<YYYYMMDD-HHmmss>/
 
 ### LLM Provider
 默认支持：
-- `Qwen`：DashScope OpenAI-compatible endpoint（会在常见 endpoint 间自动 fallback）
+- `Qwen` / `DashScope`：DashScope OpenAI-compatible endpoint（会在 CN/US endpoint 间自动 fallback）
+- `Qwen-US` / `DashScope-US`：优先使用 US endpoint
 - `OpenAI`
 
 可通过环境变量覆盖 baseURL：
@@ -134,6 +136,7 @@ LLM 提示词中强调对以下信息进行补充与总结：
 
 ### DataFlow 页面
 路由：`/dataflows`
-- 读取 `/api/results/dataflows`
+- 默认先读取模块索引 `/api/results/modules`，再按模块读取 `/api/results/modules/:moduleId/dataflows`
+- 兼容读取 `/api/results/dataflows`（无模块信息时的回退路径）
 - 左侧：SVG 图
 - 右侧：选中节点详情（文件路径、行号、该行与附近代码、LLM 描述）

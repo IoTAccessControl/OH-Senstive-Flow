@@ -9,14 +9,14 @@
 
 ---
 
-## 1. 前端新增输入项（首页）
+## 1. 首页输入项（UI 界面树描述）
 在首页新增 3 个输入（用于“描述 UI 元素/页面”的 LLM）：
 - 描述UI的 LLM 提供商名称（默认 `Qwen`）
 - 描述UI的 LLM 提供商 api-key（默认空）
 - 描述UI的模型名称（默认 `qwen3-32b`）
 
 说明：
-- 这组 UI-LMM 配置 **与 DataFlow 的 LLM 配置独立**，互不影响。
+- 这组 UI-LLM 配置 **与 DataFlow 的 LLM 配置独立**，互不影响。
 - 当前实现：`uiLlmApiKey` 为空时，`POST /api/analyze` **直接失败**（因为 UI 描述要求必须由 LLM 生成）。
 
 ---
@@ -82,4 +82,3 @@
 3) 若找不到匹配模块，则归入 `_unassigned`
 
 前端 `/dataflows` 页面会先加载 `modules/index.json`，然后按模块加载对应 `modules/<moduleId>/dataflows.json`。
-

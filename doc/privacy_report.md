@@ -10,7 +10,7 @@
 
 ---
 
-## 1. 首页新增输入项
+## 1. 首页输入项
 
 文件：`web/src/pages/Home.tsx`
 
@@ -26,7 +26,7 @@
 
 ## 2. Step2：模块级隐私要素抽取（落盘文件）
 
-后端入口：`server/src/analyzer/runAnalysis.ts`  
+后端入口：`server/src/analyzer/runAnalysis.ts`（调用 `privacyReport/generatePrivacyReportArtifacts.ts`）  
 实现目录：`server/src/analyzer/privacyReport/`
 
 ### 2.1 输入证据
@@ -45,7 +45,11 @@
 
 `output/<appName>/<timestamp>/modules/<moduleId>/privacy_facts.json`
 
-其中 `dataItems[].refs` 与 `permissionPractices[].refs` 会尽量引用 **模块 dataflows 中真实存在的** `{flowId,nodeId}`，用于前端跳转定位。
+其中：
+- `facts.dataPractices[].dataItems[].refs`
+- `facts.permissionPractices[].refs`
+
+会尽量引用 **模块 dataflows 中真实存在的** `{flowId,nodeId}`，用于前端跳转定位。
 
 如果缺少 api-key 或模块数据流为空，则生成 `skipped=true` 的占位文件，并记录原因。
 
@@ -105,4 +109,3 @@
 - `web/src/api.ts`：`AnalyzeParams` 增加 `privacyReportLlmProvider/privacyReportLlmApiKey/privacyReportLlmModel`；新增 `fetchPrivacyReport()`
 - `server/src/index.ts`：新增 `GET /api/results/privacy_report`
 - `server/src/analyzer/types.ts`：`AnalyzeRequest` 增加隐私报告 LLM 字段
-
