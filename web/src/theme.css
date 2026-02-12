@@ -1,0 +1,512 @@
+:root {
+  --bg: #ffffff;
+  --fg: #0f172a;
+  --muted: #475569;
+  --border: #e2e8f0;
+  --blue: #2563eb;
+  --blue-700: #1d4ed8;
+  --blue-50: #eff6ff;
+  --error: #b91c1c;
+
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--fg);
+  background-color: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+.title {
+  margin: 0 0 16px;
+  font-size: 24px;
+  letter-spacing: 0.2px;
+}
+
+.subtitle {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.form {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--bg);
+}
+
+.field {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.pathRow {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.pathRow .input {
+  flex: 1;
+  width: auto;
+}
+
+.pathRow .button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.35);
+}
+
+.modal {
+  width: min(720px, 100%);
+  max-height: min(80vh, 680px);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.modalTitle {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.modalBody {
+  padding: 12px 14px;
+  overflow: auto;
+}
+
+.pickerBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pickerPath {
+  flex: 1;
+  font-size: 13px;
+  color: var(--muted);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dirList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.dirItem {
+  text-align: left;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.dirItem:hover {
+  border-color: #cbd5e1;
+  background: var(--blue-50);
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.llmGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.llmGrid .field {
+  margin-bottom: 0;
+}
+
+.llmGrid .label {
+  min-height: 3em;
+}
+
+@media (max-width: 720px) {
+  .pathRow {
+    flex-direction: column;
+  }
+
+  .llmGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .llmGrid .label {
+    min-height: 0;
+  }
+
+  .dirList {
+    grid-template-columns: 1fr;
+  }
+}
+
+.label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.label[title] {
+  cursor: help;
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 0 12px;
+  outline: none;
+  background: #fff;
+}
+
+.input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.button {
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 0 14px;
+  background: #fff;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.button:hover {
+  border-color: #cbd5e1;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.button.primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.button.primary:hover {
+  background: var(--blue-700);
+  border-color: var(--blue-700);
+}
+
+.status {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.status.error {
+  color: var(--error);
+}
+
+.tableWrap {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: auto;
+  background: #fff;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 880px;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--blue-50);
+  color: var(--fg);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 10px;
+  text-align: left;
+  font-size: 13px;
+}
+
+.table tbody td {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 10px;
+  font-size: 13px;
+  vertical-align: top;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.filePathText {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+.filePathLink {
+  color: var(--blue);
+  text-decoration: underline;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  word-break: break-word;
+}
+
+.filePathLink:hover {
+  color: var(--blue-700);
+}
+
+.graphWrap {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: auto;
+  background: #fff;
+  position: relative;
+}
+
+.graphShell {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.graphToolbarRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.graphToolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.graphToolButton {
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  padding: 0 10px;
+  background: #fff;
+  color: var(--fg);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.graphToolButton:hover {
+  border-color: #cbd5e1;
+}
+
+.graphToolButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.graphHint {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 0 4px;
+  user-select: none;
+}
+
+.graphNodePopover {
+  position: absolute;
+  z-index: 20;
+  width: min(460px, calc(100% - 24px));
+  max-height: min(360px, calc(100% - 24px));
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  padding: 10px 12px;
+}
+
+.graphNodePopoverHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.graphNodePopoverTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--fg);
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.graphNodePopoverClose {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1;
+  font-size: 16px;
+}
+
+.graphNodePopoverClose:hover {
+  color: var(--fg);
+  border-color: #cbd5e1;
+}
+
+.graphNodePopoverSubtitle {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.graphNodePopoverDetail {
+  font-size: 12px;
+  color: var(--fg);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 520px;
+  gap: 14px;
+  align-items: start;
+}
+
+@media (max-width: 920px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.kv .k {
+  color: var(--muted);
+}
+
+.kv .v {
+  color: var(--fg);
+  word-break: break-word;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  white-space: pre-wrap;
+}
+
+.code {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #f8fafc;
+  overflow: auto;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre;
+}
+
+.report {
+  margin-top: 12px;
+}
+
+.reportTitle {
+  margin: 18px 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.reportParagraph {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--fg);
+}
+
+.tokenLink {
+  color: var(--blue);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tokenLink:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.25);
+  border-radius: 4px;
+}
