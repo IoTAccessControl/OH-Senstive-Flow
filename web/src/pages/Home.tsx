@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import {
   fetchFsDirs,
   fetchFsRoots,
   fetchRuns,
-  startAnalyze,
+  openAnalyzeJobEvents,
+  startAnalyzeJob,
+  type AnalyzeJobSnapshot,
   type AnalyzeResponse,
   type FsBase,
   type FsDirEntry,
@@ -15,7 +17,7 @@ import { useAnalysisSnapshot } from '../analysisContext';
 
 type StatusState =
   | { state: 'idle' }
-  | { state: 'running' }
+  | { state: 'running'; jobId: string; stage: string; percent: number }
   | { state: 'done'; result: AnalyzeResponse }
   | { state: 'error'; message: string };
 
@@ -180,10 +182,22 @@ export function HomePage() {
 
   const canJump = Boolean(selectedRunId);
   const runId = selectedRunId || undefined;
+  const analyzeEventsRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
     writeSelectedRunIdToSessionStorage(selectedRunId);
   }, [selectedRunId]);
+
+  useEffect(() => {
+    return () => {
+      try {
+        analyzeEventsRef.current?.close();
+      } catch {
+        // ignore
+      }
+      analyzeEventsRef.current = null;
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -268,7 +282,11 @@ export function HomePage() {
   }, [dirPicker.open]);
 
   const statusText = useMemo(() => {
-    if (status.state === 'running') return '状态：分析中…';
+    if (status.state === 'running') {
+      const percent = Number.isFinite(status.percent) ? Math.max(0, Math.min(100, Math.floor(status.percent))) : 0;
+      const stage = status.stage?.trim() || '分析中…';
+      return `状态：分析中…（${stage} ${percent}%）`;
+    }
     if (status.state === 'error') return `状态：失败（${status.message}）`;
     if (fsRoots.state === 'error') return `状态：路径根目录加载失败（${fsRoots.message}）`;
     if (snapshot?.result && selectedRunId && selectedRunId !== snapshot.result.runId) {
@@ -308,9 +326,8 @@ export function HomePage() {
 
   async function onAnalyze() {
     try {
-      setStatus({ state: 'running' });
       const safeMax = Number.isFinite(maxDataflowPaths) ? Math.max(1, Math.floor(maxDataflowPaths)) : 5;
-      const result = await startAnalyze({
+      const params = {
         appPath,
         sdkPath,
         csvDir,
@@ -324,34 +341,109 @@ export function HomePage() {
         privacyReportLlmProvider: privacyReportLlmProvider.trim() || 'Qwen',
         privacyReportLlmApiKey,
         privacyReportLlmModel: privacyReportLlmModel.trim() || 'qwen3-32b',
-      });
-      setSnapshot({
-        appPath,
-        sdkPath,
-        csvDir,
-        maxDataflowPaths: safeMax,
-        llmProvider: llmProvider.trim() || 'Qwen',
-        llmModel: llmModel.trim() || 'qwen3-coder-plus',
-        uiLlmProvider: uiLlmProvider.trim() || 'Qwen',
-        uiLlmModel: uiLlmModel.trim() || 'qwen3-32b',
-        privacyReportLlmProvider: privacyReportLlmProvider.trim() || 'Qwen',
-        privacyReportLlmModel: privacyReportLlmModel.trim() || 'qwen3-32b',
-        result,
-      });
-      setSelectedRunId(result.runId);
-      setStatus({ state: 'idle' });
+      };
 
       try {
-        const list = await fetchRuns();
-        setRuns({ state: 'ready', runs: list });
+        analyzeEventsRef.current?.close();
       } catch {
-        // ignore refresh failures
+        // ignore
       }
+      analyzeEventsRef.current = null;
+
+      setStatus({ state: 'running', jobId: '', stage: '提交分析任务…', percent: 0 });
+      const { jobId } = await startAnalyzeJob(params);
+      setStatus({ state: 'running', jobId, stage: '等待服务端进度…', percent: 0 });
+
+      const onJobSnapshot = (s: AnalyzeJobSnapshot) => {
+        if (!s || s.jobId !== jobId) return;
+
+        if (s.status === 'running') {
+          setStatus({
+            state: 'running',
+            jobId,
+            stage: typeof s.stage === 'string' && s.stage.trim() ? s.stage : '分析中…',
+            percent: Number.isFinite(s.percent) ? Math.max(0, Math.min(100, Math.floor(s.percent))) : 0,
+          });
+          return;
+        }
+
+        if (s.status === 'error') {
+          setStatus({ state: 'error', message: typeof s.error === 'string' && s.error.trim() ? s.error : '分析失败' });
+          try {
+            analyzeEventsRef.current?.close();
+          } catch {
+            // ignore
+          }
+          analyzeEventsRef.current = null;
+          return;
+        }
+
+        if (s.status === 'done') {
+          const result = s.result;
+          if (!result) {
+            setStatus({ state: 'error', message: '分析完成但未返回结果' });
+            try {
+              analyzeEventsRef.current?.close();
+            } catch {
+              // ignore
+            }
+            analyzeEventsRef.current = null;
+            return;
+          }
+
+          setSnapshot({
+            appPath,
+            sdkPath,
+            csvDir,
+            maxDataflowPaths: safeMax,
+            llmProvider: llmProvider.trim() || 'Qwen',
+            llmModel: llmModel.trim() || 'qwen3-coder-plus',
+            uiLlmProvider: uiLlmProvider.trim() || 'Qwen',
+            uiLlmModel: uiLlmModel.trim() || 'qwen3-32b',
+            privacyReportLlmProvider: privacyReportLlmProvider.trim() || 'Qwen',
+            privacyReportLlmModel: privacyReportLlmModel.trim() || 'qwen3-32b',
+            result,
+          });
+          setSelectedRunId(result.runId);
+          setStatus({ state: 'idle' });
+
+          try {
+            analyzeEventsRef.current?.close();
+          } catch {
+            // ignore
+          }
+          analyzeEventsRef.current = null;
+
+          void (async () => {
+            try {
+              const list = await fetchRuns();
+              setRuns({ state: 'ready', runs: list });
+            } catch {
+              // ignore refresh failures
+            }
+          })();
+        }
+      };
+
+      const onJobFatalError = (message: string) => {
+        setStatus({ state: 'error', message });
+        analyzeEventsRef.current = null;
+      };
+
+      analyzeEventsRef.current = openAnalyzeJobEvents(jobId, onJobSnapshot, onJobFatalError);
     } catch (e) {
       const message = e instanceof Error ? e.message : String(e);
       setStatus({ state: 'error', message });
     }
   }
+
+  const runningProgress =
+    status.state === 'running'
+      ? {
+          stage: status.stage?.trim() || '分析中…',
+          percent: Number.isFinite(status.percent) ? Math.max(0, Math.min(100, Math.floor(status.percent))) : 0,
+        }
+      : null;
 
   return (
     <div className="page">
@@ -566,6 +658,27 @@ export function HomePage() {
             数据流可视化
           </button>
         </div>
+
+        {runningProgress && (
+          <div className="progressWrap">
+            <div className="progressMeta">
+              <div className="progressStage" title={runningProgress.stage}>
+                {runningProgress.stage}
+              </div>
+              <div className="progressPercent">{runningProgress.percent}%</div>
+            </div>
+            <div
+              className="progressTrack"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={runningProgress.percent}
+              aria-valuetext={`${runningProgress.stage} ${runningProgress.percent}%`}
+            >
+              <div className="progressFill" style={{ width: `${runningProgress.percent}%` }} />
+            </div>
+          </div>
+        )}
 
         <div className="status" aria-live="polite">
           {statusText}

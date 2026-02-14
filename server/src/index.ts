@@ -7,11 +7,13 @@ import { fileURLToPath } from 'node:url';
 import { runAnalysis } from './analyzer/runAnalysis.js';
 import { readJsonFile } from './analyzer/io.js';
 import { listRunRegistry, resolveRunIdToOutputDir } from './analyzer/runRegistry.js';
+import { AnalyzeJobManager } from './analyzeJobManager.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+const analyzeJobs = new AnalyzeJobManager();
 
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
@@ -129,6 +131,120 @@ app.post('/api/analyze', async (req, res) => {
     const message = error instanceof Error ? error.message : String(error);
     res.status(400).json({ ok: false, error: message });
   }
+});
+
+app.post('/api/analyze/jobs', (req, res) => {
+  try {
+    if (analyzeJobs.hasRunningJob()) {
+      res.status(409).json({ ok: false, error: '已有分析任务运行中，请稍后再试' });
+      return;
+    }
+
+    const snapshot = analyzeJobs.createJob();
+    const repoRoot = path.resolve(__dirname, '..', '..');
+
+    const body = req.body && typeof req.body === 'object' ? (req.body as Record<string, unknown>) : {};
+
+    void (async () => {
+      try {
+        const result = await runAnalysis(
+          {
+            appPath: body.appPath as any,
+            sdkPath: body.sdkPath as any,
+            csvDir: body.csvDir as any,
+            maxDataflowPaths: body.maxDataflowPaths as any,
+            llmProvider: body.llmProvider as any,
+            llmApiKey: body.llmApiKey as any,
+            llmModel: body.llmModel as any,
+            uiLlmProvider: body.uiLlmProvider as any,
+            uiLlmApiKey: body.uiLlmApiKey as any,
+            uiLlmModel: body.uiLlmModel as any,
+            privacyReportLlmProvider: body.privacyReportLlmProvider as any,
+            privacyReportLlmApiKey: body.privacyReportLlmApiKey as any,
+            privacyReportLlmModel: body.privacyReportLlmModel as any,
+            repoRoot,
+          },
+          {
+            onProgress: (p) => {
+              analyzeJobs.updateJob(snapshot.jobId, { stage: p.stage, percent: p.percent, status: 'running' });
+            },
+          },
+        );
+        analyzeJobs.completeJob(snapshot.jobId, result);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        analyzeJobs.failJob(snapshot.jobId, message);
+      }
+    })();
+
+    res.json({ ok: true, jobId: snapshot.jobId });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(400).json({ ok: false, error: message });
+  }
+});
+
+app.get('/api/analyze/jobs/:jobId', (req, res) => {
+  try {
+    const jobId = typeof req.params.jobId === 'string' ? req.params.jobId : '';
+    if (!jobId) throw new Error('jobId 不能为空');
+    const job = analyzeJobs.getJob(jobId);
+    if (!job) {
+      res.status(404).json({ ok: false, error: `未知 jobId=${jobId}` });
+      return;
+    }
+    res.json({ ok: true, job });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(400).json({ ok: false, error: message });
+  }
+});
+
+app.get('/api/analyze/jobs/:jobId/events', (req, res) => {
+  const jobId = typeof req.params.jobId === 'string' ? req.params.jobId : '';
+  if (!jobId) {
+    res.status(400).json({ ok: false, error: 'jobId 不能为空' });
+    return;
+  }
+
+  if (!analyzeJobs.getJob(jobId)) {
+    res.status(404).json({ ok: false, error: `未知 jobId=${jobId}` });
+    return;
+  }
+
+  res.status(200);
+  res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-cache, no-transform');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
+  const unsubscribe = analyzeJobs.addSubscriber(jobId, res);
+  const latest = analyzeJobs.getJob(jobId);
+  if (!unsubscribe || !latest) {
+    res.end();
+    return;
+  }
+
+  res.write(`data: ${JSON.stringify(latest)}\n\n`);
+  if (latest.status !== 'running') {
+    unsubscribe();
+    res.end();
+    return;
+  }
+
+  const ping = setInterval(() => {
+    try {
+      res.write(': ping\n\n');
+    } catch {
+      // ignore
+    }
+  }, 15_000);
+  ping.unref();
+
+  req.on('close', () => {
+    clearInterval(ping);
+    unsubscribe?.();
+  });
 });
 
 app.get('/api/results/sinks', async (req, res) => {

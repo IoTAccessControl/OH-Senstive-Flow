@@ -4,6 +4,17 @@ export type AnalyzeResponse = {
   counts: { filesScanned: number; sinks: number; sources: number };
 };
 
+export type AnalyzeJobStatus = 'running' | 'done' | 'error';
+
+export type AnalyzeJobSnapshot = {
+  jobId: string;
+  status: AnalyzeJobStatus;
+  stage: string;
+  percent: number;
+  result?: AnalyzeResponse;
+  error?: string;
+};
+
 export type AnalyzeParams = {
   appPath: string;
   sdkPath: string;
@@ -97,6 +108,83 @@ export async function startAnalyze(params: AnalyzeParams): Promise<AnalyzeRespon
     throw new Error(text || `HTTP ${res.status}`);
   }
   return (await res.json()) as AnalyzeResponse;
+}
+
+export async function startAnalyzeJob(params: AnalyzeParams): Promise<{ jobId: string }> {
+  const res = await fetch('/api/analyze/jobs', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+  });
+
+  const raw = await res.text();
+  if (!res.ok) {
+    let message = '';
+    try {
+      const maybe = JSON.parse(raw) as unknown;
+      if (maybe && typeof maybe === 'object' && 'error' in maybe) {
+        const errorField = (maybe as { error?: unknown }).error;
+        if (typeof errorField === 'string') message = errorField;
+      }
+    } catch {
+      // ignore parse failures
+    }
+    throw new Error(message || raw || `HTTP ${res.status}`);
+  }
+
+  let data: unknown;
+  try {
+    data = raw ? (JSON.parse(raw) as unknown) : null;
+  } catch {
+    throw new Error('analyze/jobs 返回格式错误');
+  }
+  if (!data || typeof data !== 'object') throw new Error('analyze/jobs 返回格式错误');
+  if (!('ok' in data) || (data as { ok?: unknown }).ok !== true) {
+    const message = (data as { error?: unknown }).error;
+    throw new Error(typeof message === 'string' ? message : 'analyze/jobs 请求失败');
+  }
+
+  const cast = data as { jobId?: unknown };
+  const jobId = typeof cast.jobId === 'string' ? cast.jobId : '';
+  if (!jobId) throw new Error('analyze/jobs 返回 jobId 为空');
+  return { jobId };
+}
+
+export function openAnalyzeJobEvents(
+  jobId: string,
+  onSnapshot: (s: AnalyzeJobSnapshot) => void,
+  onFatalError: (message: string) => void,
+): EventSource {
+  const es = new EventSource(`/api/analyze/jobs/${encodeURIComponent(jobId)}/events`);
+  let closed = false;
+
+  const fatal = (message: string) => {
+    if (closed) return;
+    closed = true;
+    try {
+      es.close();
+    } catch {
+      // ignore
+    }
+    onFatalError(message);
+  };
+
+  es.onmessage = (evt) => {
+    try {
+      const parsed = JSON.parse(evt.data) as unknown;
+      if (!parsed || typeof parsed !== 'object') return;
+      onSnapshot(parsed as AnalyzeJobSnapshot);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      fatal(`进度数据解析失败：${message}`);
+    }
+  };
+
+  es.onerror = () => {
+    fatal('进度连接失败或中断');
+  };
+
+  return es;
 }
 
 export async function fetchRuns(): Promise<RunRegistryEntry[]> {

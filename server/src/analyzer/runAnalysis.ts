@@ -20,6 +20,30 @@ import { buildUiTree } from './uiTree/buildUiTree.js';
 import { groupDataflowsByPageFeature } from './pages/buildPageFeatureGroups.js';
 import { generatePrivacyReportArtifacts } from './privacyReport/generatePrivacyReportArtifacts.js';
 
+type AnalyzeProgress = { stage: string; percent: number };
+
+export type RunAnalysisOptions = {
+  onProgress?: (p: AnalyzeProgress) => void;
+};
+
+const ANALYZE_STAGES = [
+  '校验输入路径',
+  '准备输出目录',
+  '构建 SDK 索引',
+  '扫描 App ArkTS 文件',
+  '加载 CSV 补充描述',
+  '分析 sinks',
+  '分析 sources',
+  '构建调用图',
+  '生成数据流（LLM）',
+  '生成 UI 树（LLM）',
+  '页面/功能点聚合',
+  '写入结果文件',
+  '生成隐私声明报告（LLM）',
+  '写入 runId 注册表',
+  '完成',
+] as const;
+
 function toAbs(repoRoot: string, maybeRelativePath: string): string {
   return path.isAbsolute(maybeRelativePath) ? maybeRelativePath : path.resolve(repoRoot, maybeRelativePath);
 }
@@ -39,7 +63,15 @@ async function assertReadableDir(dirPath: string, label: string): Promise<void> 
   }
 }
 
-export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse> {
+export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptions = {}): Promise<AnalyzeResponse> {
+  const report = (stageIndex: number) => {
+    const clampedIndex = Math.max(0, Math.min(ANALYZE_STAGES.length - 1, Math.floor(stageIndex)));
+    const stage = ANALYZE_STAGES[clampedIndex] ?? '分析中';
+    const denom = Math.max(1, ANALYZE_STAGES.length - 1);
+    const percent = Math.round((clampedIndex / denom) * 100);
+    options.onProgress?.({ stage, percent });
+  };
+
   const repoRoot = req.repoRoot;
   const appPath = ensureTrailingSlash(req.appPath ?? DEFAULT_APP_PATH);
   const sdkPath = ensureTrailingSlash(req.sdkPath ?? DEFAULT_SDK_PATH);
@@ -58,6 +90,8 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
   const privacyReportLlmModel =
     typeof req.privacyReportLlmModel === 'string' && req.privacyReportLlmModel.trim() ? req.privacyReportLlmModel.trim() : 'qwen3-32b';
   const privacyReportLlmApiKey = typeof req.privacyReportLlmApiKey === 'string' ? req.privacyReportLlmApiKey : '';
+
+  report(0);
   if (!uiLlmApiKey.trim()) {
     throw new Error('UI LLM api-key 不能为空（用于界面树描述生成）');
   }
@@ -70,6 +104,8 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
   await assertReadableDir(sdkAbs, 'OpenHarmony SDK源码路径');
   await assertReadableDir(csvAbs, 'SDK API补充信息csv路径');
 
+  report(1);
+
   const appName = inferAppName(appAbs);
   const timestamp = formatTimestampForDir(new Date());
   const runId = `${appName}_${timestamp}`;
@@ -77,11 +113,18 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
   const outputDirAbs = path.join(repoRoot, outputDirRel);
   await ensureDir(outputDirAbs);
 
+  report(2);
+
   const sdkIndex = await buildSdkModuleIndex(sdkAbs);
+  report(3);
   const appFiles = await scanAppArkTsFiles(appAbs);
+
+  report(4);
 
   const csvDescriptions = await loadCsvApiDescriptions(csvAbs);
   const overrideDescriptions = await loadOverrideDescriptions(csvAbs);
+
+  report(5);
 
   const sinks = await analyzeSinks({
     repoRoot,
@@ -91,7 +134,11 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
     overrideDescriptions,
   });
 
+  report(6);
+
   const sources = await analyzeSources(repoRoot, appFiles);
+
+  report(7);
 
   const callGraph = await buildCallGraph({
     repoRoot,
@@ -102,6 +149,9 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
     llm: { provider: llmProvider, apiKey: llmApiKey, model: llmModel },
   });
   const paths = extractPaths({ callGraph, maxPaths: maxDataflowPaths });
+
+  report(8);
+
   const dataflows = await (async () => {
     try {
       return await buildDataflows({
@@ -131,6 +181,8 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
     }
   })();
 
+  report(9);
+
   const uiTree = await buildUiTree({
     repoRoot,
     runId,
@@ -141,7 +193,11 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
     maxNodesPerLlmBatch: 15,
   });
 
+  report(10);
+
   const groupedPages = await groupDataflowsByPageFeature({ runId, repoRoot, uiTree, sources, dataflows });
+
+  report(11);
 
   await writeJsonFile(path.join(outputDirAbs, 'meta.json'), {
     runId,
@@ -209,6 +265,8 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
     }
   }
 
+  report(12);
+
   await generatePrivacyReportArtifacts({
     repoRoot,
     runId,
@@ -217,7 +275,11 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
     llm: { provider: privacyReportLlmProvider, apiKey: privacyReportLlmApiKey, model: privacyReportLlmModel },
   });
 
+  report(13);
+
   await writeRunRegistry(repoRoot, { runId, outputDir: outputDirRel });
+
+  report(14);
 
   return {
     runId,
