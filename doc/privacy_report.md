@@ -1,9 +1,9 @@
 # 隐私声明报告（Privacy Report）实现说明
 
-本仓库在原有的 **sink/source/callgraph/dataflows + UI Tree + Modules** 分析结果基础上，新增了：
+本仓库在原有的 **sink/source/callgraph/dataflows + UI Tree + Page/Feature 分层** 分析结果基础上，新增了：
 
-1. **模块级隐私要素抽取（Step2）**：对每个功能模块的数据流进行结构化抽取，并把结果落盘到模块目录；
-2. **最终隐私声明报告生成（Step3）**：基于 Step2 的多个模块抽取结果，使用 LLM 生成最终自然语言隐私声明报告（严格两章，段落组织，无列表）；
+1. **功能点（Feature）级隐私要素抽取（Step2）**：对每个页面功能点的数据流进行结构化抽取，并把结果落盘到 Feature 目录；
+2. **最终隐私声明报告生成（Step3）**：基于 Step2 的多个功能点抽取结果，使用 LLM 生成最终自然语言隐私声明报告（严格两章，段落组织，无列表）；
 3. **前端跳转定位**：在隐私声明报告页面点击关键文字要素（数据项/权限名称）可跳转到数据流可视化并定位到具体节点。
 
 > 安全：所有 api-key 都只在请求过程中使用，不会写入 `output/` 目录、也不会写入前端的 sessionStorage。
@@ -24,34 +24,34 @@
 
 ---
 
-## 2. Step2：模块级隐私要素抽取（落盘文件）
+## 2. Step2：功能点（Feature）级隐私要素抽取（落盘文件）
 
 后端入口：`server/src/analyzer/runAnalysis.ts`（调用 `privacyReport/generatePrivacyReportArtifacts.ts`）  
 实现目录：`server/src/analyzer/privacyReport/`
 
 ### 2.1 输入证据
 
-对每个模块（含 `_unassigned`，当其 dataflows 文件存在时）读取：
+对每个 Feature（含 `_unassigned` 页面下的 Feature）读取：
 
-- `output/<appName>/<timestamp>/modules/<moduleId>/dataflows.json`
-- `output/<appName>/<timestamp>/modules/<moduleId>/ui_tree.json`（若存在）
-- `output/<appName>/<timestamp>/modules/index.json` 中该模块的 `entry/sources/files` 等元信息
+- `output/<appName>/<timestamp>/pages/<pageId>/features/<featureId>/dataflows.json`
+- `output/<appName>/<timestamp>/pages/<pageId>/ui_tree.json`（若存在，用于定位“隐私功能在哪个界面开关”）
+- `output/<appName>/<timestamp>/pages/index.json` 与 `pages/<pageId>/features/index.json` 中的页面/功能点元信息
 
 并构造精简 prompt（会对 flows/nodes 做截断，避免 prompt 过大）。
 
-### 2.2 输出结构（每模块一个文件）
+### 2.2 输出结构（每 Feature 一个文件）
 
 写入：
 
-`output/<appName>/<timestamp>/modules/<moduleId>/privacy_facts.json`
+`output/<appName>/<timestamp>/pages/<pageId>/features/<featureId>/privacy_facts.json`
 
 其中：
 - `facts.dataPractices[].dataItems[].refs`
 - `facts.permissionPractices[].refs`
 
-会尽量引用 **模块 dataflows 中真实存在的** `{flowId,nodeId}`，用于前端跳转定位。
+会尽量引用 **该 Feature dataflows 中真实存在的** `{flowId,nodeId}`，用于前端跳转定位。
 
-如果缺少 api-key 或模块数据流为空，则生成 `skipped=true` 的占位文件，并记录原因。
+如果缺少 api-key 或 Feature 数据流为空，则生成 `skipped=true` 的占位文件，并记录原因。
 
 ---
 
@@ -66,13 +66,13 @@
 
 ```
 1 我们如何收集和使用您的个人信息
-（多个模块段落）
+（多个功能点段落）
 
 2 设备权限调用
-（多个模块段落）
+（多个功能点段落）
 ```
 
-> 服务端固定写章节标题，LLM 只负责为每个模块生成“段落 tokens”，从而避免产生额外章节。
+> 服务端固定写章节标题，LLM 只负责为每个功能点生成“段落 tokens”，从而避免产生额外章节。
 
 ---
 
@@ -94,11 +94,11 @@
 
 点击 token 会跳转到：
 
-`/dataflows?runId=<runId>&moduleId=<moduleId>&flowId=<flowId>&nodeId=<nodeId>`
+`/dataflows?runId=<runId>&featureId=<featureId>&flowId=<flowId>&nodeId=<nodeId>`
 
 数据流页面（`web/src/pages/Dataflows.tsx`）会读取这些 query 参数并自动选中：
 
-- 对应模块
+- 对应页面功能（Feature；必要时会从索引中反查所属 Page）
 - 对应路径（flowId）
 - 对应节点（nodeId，高亮并自动滚动到可见区域）
 
@@ -108,4 +108,5 @@
 
 - `web/src/api.ts`：`AnalyzeParams` 增加 `privacyReportLlmProvider/privacyReportLlmApiKey/privacyReportLlmModel`；新增 `fetchPrivacyReport()`
 - `server/src/index.ts`：新增 `GET /api/results/privacy_report`
+- `server/src/index.ts`：新增 `GET /api/results/pages`、`GET /api/results/pages/:pageId/features`、`GET /api/results/pages/:pageId/features/:featureId/dataflows`
 - `server/src/analyzer/types.ts`：`AnalyzeRequest` 增加隐私报告 LLM 字段

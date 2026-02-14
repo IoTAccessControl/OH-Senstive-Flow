@@ -43,26 +43,26 @@ export type PrivacyPermissionPractice = {
   refs: DataflowNodeRef[];
 };
 
-export type ModulePrivacyFactsContent = {
+export type FeaturePrivacyFactsContent = {
   dataPractices: PrivacyDataPractice[];
   permissionPractices: PrivacyPermissionPractice[];
 };
 
-export type ModulePrivacyFactsFile = {
+export type FeaturePrivacyFactsFile = {
   meta: {
     runId: string;
-    moduleId: string;
+    featureId: string;
     generatedAt: string;
     llm?: { provider: string; model: string };
     skipped?: boolean;
     skipReason?: string;
     warnings?: string[];
   };
-  facts: ModulePrivacyFactsContent;
+  facts: FeaturePrivacyFactsContent;
 };
 
 export type PrivacyReportJumpTo = {
-  moduleId: string;
+  featureId: string;
   flowId: string;
   nodeId: string;
 };
@@ -73,7 +73,7 @@ export type PrivacyReportToken = {
 };
 
 export type PrivacyReportSection = {
-  moduleId: string;
+  featureId: string;
   tokens: PrivacyReportToken[];
 };
 
@@ -84,11 +84,10 @@ export type PrivacyReportFile = {
     llm?: { provider: string; model: string };
     skipped?: boolean;
     skipReason?: string;
-    counts: { modules: number };
+    counts: { features: number };
   };
   sections: {
     collectionAndUse: PrivacyReportSection[];
     permissions: PrivacyReportSection[];
   };
 };
-

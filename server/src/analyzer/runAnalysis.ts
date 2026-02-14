@@ -17,7 +17,7 @@ import { buildCallGraph } from './callGraph/buildCallGraph.js';
 import { extractPaths } from './callGraph/extractPaths.js';
 import { buildDataflows } from './dataflow/buildDataflows.js';
 import { buildUiTree } from './uiTree/buildUiTree.js';
-import { buildModulesFromUiTree, groupDataflowsByModule } from './modules/buildModules.js';
+import { groupDataflowsByPageFeature } from './pages/buildPageFeatureGroups.js';
 import { generatePrivacyReportArtifacts } from './privacyReport/generatePrivacyReportArtifacts.js';
 
 function toAbs(repoRoot: string, maybeRelativePath: string): string {
@@ -141,8 +141,7 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
     maxNodesPerLlmBatch: 15,
   });
 
-  const builtModules = buildModulesFromUiTree({ uiTree, sources, maxDepth: 6 });
-  const grouped = groupDataflowsByModule({ runId, dataflows, sources, modules: builtModules });
+  const groupedPages = await groupDataflowsByPageFeature({ runId, repoRoot, uiTree, sources, dataflows });
 
   await writeJsonFile(path.join(outputDirAbs, 'meta.json'), {
     runId,
@@ -170,9 +169,9 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
       dataflowSkipped: Boolean(dataflows.meta.skipped),
       uiTreeNodes: uiTree.meta.counts.nodes,
       uiTreeEdges: uiTree.meta.counts.edges,
-      uiModules: grouped.index.meta.counts.modules,
-      moduleAssignedFlows: grouped.index.meta.counts.assignedFlows,
-      moduleUnassignedFlows: grouped.index.meta.counts.unassignedFlows,
+      pageCount: groupedPages.pagesIndex.meta.counts.pages,
+      pageFeatureCount: groupedPages.pagesIndex.meta.counts.features,
+      pageFeatureUnassignedFlows: groupedPages.pagesIndex.meta.counts.unassignedFlows,
     },
   });
 
@@ -190,44 +189,24 @@ export async function runAnalysis(req: AnalyzeRequest): Promise<AnalyzeResponse>
   await writeJsonFile(path.join(outputDirAbs, 'dataflows.json'), dataflows);
   await writeJsonFile(path.join(outputDirAbs, 'ui_tree.json'), uiTree);
 
-  const modulesRootAbs = path.join(outputDirAbs, 'modules');
-  await ensureDir(modulesRootAbs);
-  await writeJsonFile(path.join(modulesRootAbs, 'index.json'), grouped.index);
+  const pagesRootAbs = path.join(outputDirAbs, 'pages');
+  await ensureDir(pagesRootAbs);
+  await writeJsonFile(path.join(pagesRootAbs, 'index.json'), groupedPages.pagesIndex);
 
-  for (const m of builtModules) {
-    const dirAbs = path.join(modulesRootAbs, m.moduleId);
-    await ensureDir(dirAbs);
+  for (const p of groupedPages.pages) {
+    const pageDirAbs = path.join(pagesRootAbs, p.page.pageId);
+    await ensureDir(pageDirAbs);
+    if (p.uiTree) await writeJsonFile(path.join(pageDirAbs, 'ui_tree.json'), p.uiTree);
 
-    const sliceNodeIds = m.nodeIds;
-    const sliceNodes: Record<string, unknown> = {};
-    for (const id of sliceNodeIds) {
-      const n = uiTree.nodes[id];
-      if (n) sliceNodes[id] = n;
+    const featuresRootAbs = path.join(pageDirAbs, 'features');
+    await ensureDir(featuresRootAbs);
+    await writeJsonFile(path.join(featuresRootAbs, 'index.json'), p.featuresIndex);
+
+    for (const f of p.features) {
+      const featureDirAbs = path.join(featuresRootAbs, f.feature.featureId);
+      await ensureDir(featureDirAbs);
+      await writeJsonFile(path.join(featureDirAbs, 'dataflows.json'), f.dataflows);
     }
-    const sliceEdges = uiTree.edges.filter((e) => sliceNodeIds.has(e.from) && sliceNodeIds.has(e.to));
-    const slicePages = Object.values(sliceNodes).filter((n: any) => n?.category === 'Page').length;
-    const sliceElements = Object.values(sliceNodes).filter((n: any) => n?.category !== 'Page').length;
-    await writeJsonFile(path.join(dirAbs, 'ui_tree.json'), {
-      meta: {
-        runId,
-        generatedAt: new Date().toISOString(),
-        llm: uiTree.meta.llm,
-        module: { moduleId: m.moduleId },
-        counts: { nodes: Object.keys(sliceNodes).length, edges: sliceEdges.length, pages: slicePages, elements: sliceElements },
-      },
-      roots: [m.rootId],
-      nodes: sliceNodes,
-      edges: sliceEdges,
-    });
-
-    const df = grouped.moduleDataflows.get(m.moduleId);
-    await writeJsonFile(path.join(dirAbs, 'dataflows.json'), df ?? { meta: dataflows.meta, flows: [] });
-  }
-
-  if (grouped.unassignedDataflows) {
-    const dirAbs = path.join(modulesRootAbs, '_unassigned');
-    await ensureDir(dirAbs);
-    await writeJsonFile(path.join(dirAbs, 'dataflows.json'), grouped.unassignedDataflows);
   }
 
   await generatePrivacyReportArtifacts({

@@ -163,6 +163,34 @@ function categoryForComponentName(componentName: string): UiTreeNodeCategory | n
   return null;
 }
 
+const IGNORED_COMPONENT_NAMES = new Set<string>([
+  // Layout / containers (too noisy for feature-level UI tree).
+  'Column',
+  'Row',
+  'Stack',
+  'Flex',
+  'Grid',
+  'GridRow',
+  'GridCol',
+  'List',
+  'ListItem',
+  'ListItemGroup',
+  'Scroll',
+  'Swiper',
+  'Navigation',
+  'Tabs',
+  'TabContent',
+  'Badge',
+  'Divider',
+  'Blank',
+]);
+
+function shouldCaptureUnknownComponentAsNode(componentName: string): boolean {
+  if (!componentName) return false;
+  if (IGNORED_COMPONENT_NAMES.has(componentName)) return false;
+  return true;
+}
+
 function isLikelyCommentLine(line: string): boolean {
   const t = line.trim();
   if (!t) return true;
@@ -212,7 +240,7 @@ async function describeNodesWithLlm(options: {
 
   const system = [
     '你是一个前端界面理解助手，擅长从 ArkTS/ArkUI 源码切片理解 UI 元素的作用。',
-    '你必须为每个输入节点生成一句中文描述（面向用户/产品的功能描述）。',
+    '你必须为每个输入节点生成一个“面向用户的中文短标题”（用于页面/功能分类展示）。',
     '输出必须是严格 JSON（不要 markdown，不要额外文字）。',
   ].join('\n');
 
@@ -221,8 +249,12 @@ async function describeNodesWithLlm(options: {
     '',
     '硬性要求：',
     '1) 每个输入 id 都必须出现在输出中，且只输出这些 id。',
-    '2) 每条 description 建议不超过 60 字，清晰说明用途。',
-    '3) 若信息不足，请基于 category + code 做保守描述。',
+    '2) description 是“短标题”，不是长句解释：',
+    '   - Page：建议 2–8 个汉字（例如：首页、聊天页面、发现、我的、设置）。',
+    '   - Button/Input/Display/Component：建议 2–20 个汉字（例如：扫一扫、录音、发送、搜索、手机号登录）。',
+    '3) 禁止直接照抄 structName / 文件名 / 组件名（例如 HomePage、ChatPage、Button、TextInput 等）；如需参考，请翻译成中文。',
+    '4) 优先使用代码中的用户可见文案（例如 Text("扫一扫")、Button("发送") 等）来命名。',
+    '5) 若信息不足，请输出保守且短的标题（例如：某页面、某功能、按钮）。',
     '',
     '输出 JSON 结构：',
     '{ "descriptions": [ { "id": "...", "description": "..." } ] }',
@@ -387,7 +419,9 @@ export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeRe
     lines: string[];
   }): string {
     const code = getLineText(args.lines, args.line);
-    const id = stableId('ui', [args.fileRel, String(args.line), args.category, args.componentName, code]);
+    // NOTE: category is intentionally excluded from the stableId so that we can "upgrade" a node
+    // (e.g., Component -> Button) without creating a duplicate id.
+    const id = stableId('ui', [args.fileRel, String(args.line), args.componentName, code]);
     if (!nodes[id]) {
       nodes[id] = {
         id,
@@ -464,7 +498,9 @@ export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeRe
       if (!hit) continue;
       componentStarts.push({ line: ln, componentName: hit.componentName });
 
-      const category = categoryForComponentName(hit.componentName);
+      const category =
+        categoryForComponentName(hit.componentName) ??
+        (shouldCaptureUnknownComponentAsNode(hit.componentName) ? ('Component' satisfies UiTreeNodeCategory) : null);
       if (!category) continue;
       const elId = ensureElementNode({
         fileRel: page.fileRel,

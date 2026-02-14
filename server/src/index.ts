@@ -221,7 +221,7 @@ app.get('/api/results/ui_tree', async (req, res) => {
   }
 });
 
-app.get('/api/results/modules', async (req, res) => {
+app.get('/api/results/pages', async (req, res) => {
   try {
     const outputDirParam = typeof req.query.outputDir === 'string' ? req.query.outputDir : undefined;
     const runIdParam = typeof req.query.runId === 'string' ? req.query.runId : undefined;
@@ -230,7 +230,7 @@ app.get('/api/results/modules', async (req, res) => {
     const outputDir =
       outputDirParam ? path.resolve(repoRoot, outputDirParam) : await resolveRunIdToOutputDir(repoRoot, runIdParam);
 
-    const filePath = path.join(outputDir, 'modules', 'index.json');
+    const filePath = path.join(outputDir, 'pages', 'index.json');
     const data = await readJsonFile(filePath);
     res.json(data);
   } catch (error) {
@@ -239,19 +239,42 @@ app.get('/api/results/modules', async (req, res) => {
   }
 });
 
-app.get('/api/results/modules/:moduleId/dataflows', async (req, res) => {
+app.get('/api/results/pages/:pageId/features', async (req, res) => {
   try {
     const outputDirParam = typeof req.query.outputDir === 'string' ? req.query.outputDir : undefined;
     const runIdParam = typeof req.query.runId === 'string' ? req.query.runId : undefined;
     const repoRoot = path.resolve(__dirname, '..', '..');
 
-    const moduleId = String(req.params.moduleId ?? '');
-    if (!/^[A-Za-z0-9_-]+$/u.test(moduleId)) throw new Error(`非法 moduleId=${moduleId}`);
+    const pageId = String(req.params.pageId ?? '');
+    if (!/^[A-Za-z0-9_-]+$/u.test(pageId)) throw new Error(`非法 pageId=${pageId}`);
 
     const outputDir =
       outputDirParam ? path.resolve(repoRoot, outputDirParam) : await resolveRunIdToOutputDir(repoRoot, runIdParam);
 
-    const filePath = path.join(outputDir, 'modules', moduleId, 'dataflows.json');
+    const filePath = path.join(outputDir, 'pages', pageId, 'features', 'index.json');
+    const data = await readJsonFile(filePath);
+    res.json(data);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(404).json({ ok: false, error: message });
+  }
+});
+
+app.get('/api/results/pages/:pageId/features/:featureId/dataflows', async (req, res) => {
+  try {
+    const outputDirParam = typeof req.query.outputDir === 'string' ? req.query.outputDir : undefined;
+    const runIdParam = typeof req.query.runId === 'string' ? req.query.runId : undefined;
+    const repoRoot = path.resolve(__dirname, '..', '..');
+
+    const pageId = String(req.params.pageId ?? '');
+    const featureId = String(req.params.featureId ?? '');
+    if (!/^[A-Za-z0-9_-]+$/u.test(pageId)) throw new Error(`非法 pageId=${pageId}`);
+    if (!/^[A-Za-z0-9_-]+$/u.test(featureId)) throw new Error(`非法 featureId=${featureId}`);
+
+    const outputDir =
+      outputDirParam ? path.resolve(repoRoot, outputDirParam) : await resolveRunIdToOutputDir(repoRoot, runIdParam);
+
+    const filePath = path.join(outputDir, 'pages', pageId, 'features', featureId, 'dataflows.json');
     const data = await readJsonFile(filePath);
     res.json(data);
   } catch (error) {

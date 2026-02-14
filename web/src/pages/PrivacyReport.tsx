@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { fetchPrivacyReport } from '../api';
 
-type JumpTo = { moduleId: string; flowId: string; nodeId: string };
+type JumpTo = { featureId: string; flowId: string; nodeId: string };
 
 type ReportToken = {
   text: string;
@@ -11,7 +11,7 @@ type ReportToken = {
 };
 
 type ReportSection = {
-  moduleId: string;
+  featureId: string;
   tokens: ReportToken[];
 };
 
@@ -39,12 +39,12 @@ function isToken(v: unknown): v is ReportToken {
   const j = v.jumpTo;
   if (j === undefined) return true;
   if (!isRecord(j)) return false;
-  return typeof j.moduleId === 'string' && typeof j.flowId === 'string' && typeof j.nodeId === 'string';
+  return typeof j.featureId === 'string' && typeof j.flowId === 'string' && typeof j.nodeId === 'string';
 }
 
 function isSection(v: unknown): v is ReportSection {
   if (!isRecord(v)) return false;
-  if (typeof v.moduleId !== 'string') return false;
+  if (typeof v.featureId !== 'string') return false;
   if (!Array.isArray(v.tokens)) return false;
   return v.tokens.every(isToken);
 }
@@ -68,7 +68,7 @@ function asReport(raw: unknown): PrivacyReport {
 function buildDataflowsUrl(args: { runId?: string; jumpTo: JumpTo }): string {
   const qs = new URLSearchParams();
   if (args.runId) qs.set('runId', args.runId);
-  qs.set('moduleId', args.jumpTo.moduleId);
+  qs.set('featureId', args.jumpTo.featureId);
   qs.set('flowId', args.jumpTo.flowId);
   qs.set('nodeId', args.jumpTo.nodeId);
   return `/dataflows?${qs.toString()}`;
@@ -129,16 +129,16 @@ export function PrivacyReportPage() {
           <div className="report">
             <div className="reportTitle">1 我们如何收集和使用您的个人信息</div>
             {state.report.sections.collectionAndUse.map((p) => (
-              <p key={`cu:${p.moduleId}`} className="reportParagraph">
+              <p key={`cu:${p.featureId}`} className="reportParagraph">
                 {p.tokens.length === 0 ? (
-                  <span>{p.moduleId}：暂无内容</span>
+                  <span>{p.featureId}：暂无内容</span>
                 ) : (
                   p.tokens.map((t, idx) => {
-                    if (!t.jumpTo) return <span key={`${p.moduleId}:${idx}`}>{t.text}</span>;
+                    if (!t.jumpTo) return <span key={`${p.featureId}:${idx}`}>{t.text}</span>;
                     const url = buildDataflowsUrl({ runId, jumpTo: t.jumpTo });
                     return (
                       <span
-                        key={`${p.moduleId}:${idx}`}
+                        key={`${p.featureId}:${idx}`}
                         className="tokenLink"
                         role="link"
                         tabIndex={0}
@@ -158,16 +158,16 @@ export function PrivacyReportPage() {
 
             <div className="reportTitle">2 设备权限调用</div>
             {state.report.sections.permissions.map((p) => (
-              <p key={`perm:${p.moduleId}`} className="reportParagraph">
+              <p key={`perm:${p.featureId}`} className="reportParagraph">
                 {p.tokens.length === 0 ? (
-                  <span>{p.moduleId}：暂无内容</span>
+                  <span>{p.featureId}：暂无内容</span>
                 ) : (
                   p.tokens.map((t, idx) => {
-                    if (!t.jumpTo) return <span key={`${p.moduleId}:${idx}`}>{t.text}</span>;
+                    if (!t.jumpTo) return <span key={`${p.featureId}:${idx}`}>{t.text}</span>;
                     const url = buildDataflowsUrl({ runId, jumpTo: t.jumpTo });
                     return (
                       <span
-                        key={`${p.moduleId}:${idx}`}
+                        key={`${p.featureId}:${idx}`}
                         className="tokenLink"
                         role="link"
                         tabIndex={0}

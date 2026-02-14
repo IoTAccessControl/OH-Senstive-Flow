@@ -75,17 +75,17 @@ output/<appName>/<YYYYMMDD-HHmmss>/
   callgraph.json
   dataflows.json
   ui_tree.json
+  pages/
+    index.json
+    <pageId>/
+      ui_tree.json
+      features/
+        index.json
+        <featureId>/
+          dataflows.json
+          privacy_facts.json
   privacy_report.json
   privacy_report.txt
-  modules/
-    index.json
-    <moduleId>/
-      dataflows.json
-      ui_tree.json
-      privacy_facts.json
-    _unassigned/            # 可选：当存在未归类的数据流时生成
-      dataflows.json
-      privacy_facts.json
 output/_runs/
   latest.json
   <runId>.json
@@ -100,7 +100,7 @@ output/_runs/
 
 ## 文档
 实现细节见：
-- `doc/implementation.md`（sink/source 分析）
+- `doc/sink_source.md`（sink/source 分析）
 - `doc/callgraph_dataflow.md`（CallGraph/DataFlow + 可视化）
-- `doc/ui_tree_modules.md`（UI 界面树 + 功能模块 + 模块化 DataFlow）
-- `doc/privacy_report.md`（模块隐私要素抽取 + 隐私声明报告 + 前端点击跳转）
+- `doc/ui_tree_pages_features.md`（UI 界面树 + Page/Feature 分层 + 分层 DataFlow）
+- `doc/privacy_report.md`（Feature 隐私要素抽取 + 隐私声明报告 + 前端点击跳转）

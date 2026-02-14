@@ -3,7 +3,7 @@ import { LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/o
 import type { DataflowsResult } from '../dataflow/types.js';
 
 import type {
-  ModulePrivacyFactsContent,
+  FeaturePrivacyFactsContent,
   PrivacyReportFile,
   PrivacyReportSection,
   PrivacyReportToken,
@@ -56,7 +56,7 @@ function buildFlowNodeIndex(dataflows: DataflowsResult): Map<string, Set<string>
   return map;
 }
 
-function summarizeModuleFacts(moduleId: string, appName: string, facts: ModulePrivacyFactsContent): Record<string, unknown> {
+function summarizeFeatureFacts(featureId: string, appName: string, facts: FeaturePrivacyFactsContent): Record<string, unknown> {
   const dataPractices = Array.isArray(facts.dataPractices) ? facts.dataPractices : [];
   const permPractices = Array.isArray(facts.permissionPractices) ? facts.permissionPractices : [];
 
@@ -111,7 +111,7 @@ function summarizeModuleFacts(moduleId: string, appName: string, facts: ModulePr
   }));
 
   return {
-    moduleId,
+    featureId,
     appName,
     businessScenarios,
     dataSources,
@@ -129,18 +129,18 @@ function summarizeModuleFacts(moduleId: string, appName: string, facts: ModulePr
 
 function buildPrompt(args: {
   appName: string;
-  modules: Array<{ moduleId: string; facts: ModulePrivacyFactsContent }>;
+  features: Array<{ featureId: string; facts: FeaturePrivacyFactsContent }>;
 }): { system: string; user: string } {
   const system = [
     '你是隐私合规文案撰写助手。',
-    '你将基于结构化证据，为每个功能模块生成隐私声明中的段落。',
+    '你将基于结构化证据，为每个页面功能点（Feature）生成隐私声明中的段落。',
     '输出必须是严格 JSON（不要 markdown，不要额外文字）。',
   ].join('\n');
 
-  const moduleSummaries = args.modules.map((m) => summarizeModuleFacts(m.moduleId, args.appName, m.facts));
+  const featureSummaries = args.features.map((f) => summarizeFeatureFacts(f.featureId, args.appName, f.facts));
 
   const user = [
-    '请为下面每个功能模块分别生成两段文字（每段是一个自然段，不要列表、不换行）：',
+    '请为下面每个页面功能点（Feature）分别生成两段文字（每段是一个自然段，不要列表、不换行）：',
     'A) 用于章节「我们如何收集和使用您的个人信息」的段落（必须包含要素：应用名称、业务场景、数据来源、数据项、处理方式、存储方式、数据接收方、数据处理目的、隐私功能在哪个界面开关）。',
     'B) 用于章节「设备权限调用」的段落（必须包含要素：权限名称、业务场景、权限使用目的、拒绝授权的影响）。',
     '',
@@ -148,28 +148,28 @@ function buildPrompt(args: {
     '{',
     '  "collectionAndUse": [',
     '    {',
-    '      "moduleId": string,',
-    '      "tokens": [ { "text": string, "jumpTo"?: { "moduleId": string, "flowId": string, "nodeId": string } } ]',
+    '      "featureId": string,',
+    '      "tokens": [ { "text": string, "jumpTo"?: { "featureId": string, "flowId": string, "nodeId": string } } ]',
     '    }',
     '  ],',
     '  "permissions": [',
     '    {',
-    '      "moduleId": string,',
-    '      "tokens": [ { "text": string, "jumpTo"?: { "moduleId": string, "flowId": string, "nodeId": string } } ]',
+    '      "featureId": string,',
+    '      "tokens": [ { "text": string, "jumpTo"?: { "featureId": string, "flowId": string, "nodeId": string } } ]',
     '    }',
     '  ]',
     '}',
     '',
     '硬性要求：',
-    '1) 禁止输出无序列表或有序列表（不要出现 "-", "*", "1." 这种列表标记），每个模块输出必须是一个连续段落。',
+    '1) 禁止输出无序列表或有序列表（不要出现 "-", "*", "1." 这种列表标记），每个功能点输出必须是一个连续段落。',
     '2) 不要生成章节标题，不要生成额外章节。',
     '3) 当你在段落中提到某个“数据项 name”（来自 dataItems[].name），必须把该数据项单独作为一个 token（text 仅包含该 name），并在该 token 上设置 jumpTo，jumpTo 必须使用该 name 对应 refs 中的一个 {flowId,nodeId}。',
     '4) 当你在段落中提到某个“权限名称 permissionName”，必须把该权限名称单独作为一个 token，并设置 jumpTo（同样来自 refs）。',
-    '5) 如果某模块没有可用 refs（例如 name=未识别 或 refs 为空），则不要设置 jumpTo，只写普通 text。',
+    '5) 如果某功能点没有可用 refs（例如 name=未识别 或 refs 为空），则不要设置 jumpTo，只写普通 text。',
     '6) 每个 token.text 禁止包含换行符。',
     '',
-    '模块证据（JSON，已去重/截断）：',
-    JSON.stringify(moduleSummaries),
+    '功能点证据（JSON，已去重/截断）：',
+    JSON.stringify(featureSummaries),
   ].join('\n');
 
   return { system, user };
@@ -215,13 +215,13 @@ function normalizeTokenText(text: unknown): string {
 
 function validateSections(
   raw: unknown,
-  moduleIds: Set<string>,
+  featureIds: Set<string>,
   flowIndexes: Map<string, Map<string, Set<string>>>,
 ): { collectionAndUse: PrivacyReportSection[]; permissions: PrivacyReportSection[]; warnings: string[] } {
   const warnings: string[] = [];
   if (!isRecord(raw)) throw new Error('LLM JSON 不是对象');
 
-  function validateTokens(moduleId: string, tokensRaw: unknown): PrivacyReportToken[] {
+  function validateTokens(featureId: string, tokensRaw: unknown): PrivacyReportToken[] {
     if (!Array.isArray(tokensRaw)) return [];
     const out: PrivacyReportToken[] = [];
     for (const t of tokensRaw) {
@@ -237,21 +237,21 @@ function validateSections(
         out.push({ text });
         continue;
       }
-      const jtModuleId = cleanText((jumpToRaw as any).moduleId) || moduleId;
+      const jtFeatureId = cleanText((jumpToRaw as any).featureId) || featureId;
       const flowId = cleanText((jumpToRaw as any).flowId);
       const nodeId = cleanText((jumpToRaw as any).nodeId);
       if (!flowId || !nodeId) {
         out.push({ text });
         continue;
       }
-      const idx = flowIndexes.get(jtModuleId);
+      const idx = flowIndexes.get(jtFeatureId);
       const set = idx?.get(flowId);
       if (!idx || !set || !set.has(nodeId)) {
-        warnings.push(`报告 token 的 jumpTo 无效：${jtModuleId}/${flowId}/${nodeId}（已移除跳转）`);
+        warnings.push(`报告 token 的 jumpTo 无效：${jtFeatureId}/${flowId}/${nodeId}（已移除跳转）`);
         out.push({ text });
         continue;
       }
-      out.push({ text, jumpTo: { moduleId: jtModuleId, flowId, nodeId } });
+      out.push({ text, jumpTo: { featureId: jtFeatureId, flowId, nodeId } });
     }
     return out;
   }
@@ -261,13 +261,13 @@ function validateSections(
     const out: PrivacyReportSection[] = [];
     for (const s of rawArr) {
       if (!isRecord(s)) continue;
-      const moduleId = cleanText(s.moduleId);
-      if (!moduleId || !moduleIds.has(moduleId)) continue;
-      const tokens = validateTokens(moduleId, s.tokens);
+      const featureId = cleanText((s as any).featureId);
+      if (!featureId || !featureIds.has(featureId)) continue;
+      const tokens = validateTokens(featureId, (s as any).tokens);
       if (tokens.length === 0) {
-        out.push({ moduleId, tokens: [{ text: `${moduleId}：未生成${kind}段落` }] });
+        out.push({ featureId, tokens: [{ text: `${featureId}：未生成${kind}段落` }] });
       } else {
-        out.push({ moduleId, tokens });
+        out.push({ featureId, tokens });
       }
     }
     return out;
@@ -282,14 +282,14 @@ export async function buildPrivacyReport(args: {
   runId: string;
   appName: string;
   llm: LlmConfig;
-  modules: Array<{ moduleId: string; facts: ModulePrivacyFactsContent; dataflows: DataflowsResult }>;
+  features: Array<{ featureId: string; facts: FeaturePrivacyFactsContent; dataflows: DataflowsResult }>;
 }): Promise<{ report: PrivacyReportFile; text: string; warnings: string[] }> {
   const generatedAt = new Date().toISOString();
-  const moduleIds = new Set(args.modules.map((m) => m.moduleId));
+  const featureIds = new Set(args.features.map((f) => f.featureId));
   const flowIndexes = new Map<string, Map<string, Set<string>>>();
-  for (const m of args.modules) {
-    const perFlow = buildFlowNodeIndex(m.dataflows);
-    flowIndexes.set(m.moduleId, perFlow);
+  for (const f of args.features) {
+    const perFlow = buildFlowNodeIndex(f.dataflows);
+    flowIndexes.set(f.featureId, perFlow);
   }
 
   const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
@@ -301,16 +301,16 @@ export async function buildPrivacyReport(args: {
         llm: { provider: args.llm.provider, model: args.llm.model },
         skipped: true,
         skipReason: '隐私声明报告 LLM api-key 为空，跳过生成',
-        counts: { modules: args.modules.length },
+        counts: { features: args.features.length },
       },
       sections: {
-        collectionAndUse: args.modules.map((m) => ({
-          moduleId: m.moduleId,
-          tokens: [{ text: `在【${m.moduleId}】模块中：隐私声明报告未生成（原因：LLM api-key 为空）。` }],
+        collectionAndUse: args.features.map((f) => ({
+          featureId: f.featureId,
+          tokens: [{ text: `在【${f.featureId}】功能点中：隐私声明报告未生成（原因：LLM api-key 为空）。` }],
         })),
-        permissions: args.modules.map((m) => ({
-          moduleId: m.moduleId,
-          tokens: [{ text: `在【${m.moduleId}】模块中：隐私声明报告未生成（原因：LLM api-key 为空）。` }],
+        permissions: args.features.map((f) => ({
+          featureId: f.featureId,
+          tokens: [{ text: `在【${f.featureId}】功能点中：隐私声明报告未生成（原因：LLM api-key 为空）。` }],
         })),
       },
     };
@@ -320,18 +320,18 @@ export async function buildPrivacyReport(args: {
 
   const prompt = buildPrompt({
     appName: args.appName,
-    modules: args.modules.map((m) => ({ moduleId: m.moduleId, facts: m.facts })),
+    features: args.features.map((f) => ({ featureId: f.featureId, facts: f.facts })),
   });
 
   const raw = await chatJsonWithRetries({ llm: { ...args.llm, apiKey }, system: prompt.system, user: prompt.user });
-  const validated = validateSections(raw, moduleIds, flowIndexes);
+  const validated = validateSections(raw, featureIds, flowIndexes);
 
   const report: PrivacyReportFile = {
     meta: {
       runId: args.runId,
       generatedAt,
       llm: { provider: args.llm.provider, model: args.llm.model },
-      counts: { modules: args.modules.length },
+      counts: { features: args.features.length },
     },
     sections: {
       collectionAndUse: validated.collectionAndUse,

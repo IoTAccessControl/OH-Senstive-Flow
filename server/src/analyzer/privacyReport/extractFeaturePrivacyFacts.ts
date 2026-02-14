@@ -1,12 +1,12 @@
 import { resolveLlmBaseUrls } from '../../llm/provider.js';
 import { LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/openaiCompatible.js';
 import type { DataflowsResult } from '../dataflow/types.js';
-import type { UiModulesIndex } from '../modules/types.js';
+import type { SourceRef } from '../shared/sourceRefs.js';
 import type { UiTreeResult } from '../uiTree/types.js';
 
 import type {
   DataflowNodeRef,
-  ModulePrivacyFactsContent,
+  FeaturePrivacyFactsContent,
   PrivacyDataItem,
   PrivacyDataPractice,
   PrivacyPermissionPractice,
@@ -16,6 +16,15 @@ import type {
 } from './types.js';
 
 type LlmConfig = { provider: string; apiKey: string; model: string };
+
+export type PrivacyFactsFeatureContext = {
+  featureId: string;
+  title: string;
+  kind: 'ui' | 'source';
+  anchor: { filePath: string; line: number; uiNodeId?: string; functionName?: string };
+  page: { pageId: string; entry: { filePath: string; structName?: string; line?: number; description?: string } };
+  sources: SourceRef[];
+};
 
 function safeJsonParse(text: string): unknown {
   try {
@@ -107,7 +116,7 @@ function filterValidUiRefs(raw: unknown, uiNodeIndex: Set<string>): UiNodeRef[] 
 }
 
 function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>, uiNodeIndex: Set<string>): {
-  content: ModulePrivacyFactsContent;
+  content: FeaturePrivacyFactsContent;
   warnings: string[];
 } {
   const warnings: string[] = [];
@@ -192,20 +201,23 @@ function limitArray<T>(arr: T[], max: number): { items: T[]; truncated: boolean 
 
 function buildPrompt(args: {
   appName: string;
-  module: UiModulesIndex['modules'][number] | null;
+  feature: PrivacyFactsFeatureContext | null;
   dataflows: DataflowsResult;
   uiTree: UiTreeResult | null;
 }): { system: string; user: string } {
   const system = [
     '你是一个静态分析与隐私合规分析助手。',
-    '你将收到一个功能模块的 UI 信息、source 入口信息、以及该模块下的数据流节点。',
+    '你将收到一个页面功能点（Feature）的 UI 信息、source 入口信息、以及该功能点下的数据流节点。',
     '请严格基于证据抽取隐私声明所需的结构化要素。',
     '输出必须是严格 JSON（不要 markdown，不要额外文字）。',
   ].join('\n');
 
-  const moduleId = args.module?.moduleId ?? 'unknown';
-  const entry = args.module?.entry ?? {};
-  const sources = Array.isArray(args.module?.sources) ? args.module!.sources : [];
+  const featureId = args.feature?.featureId ?? 'unknown';
+  const featureTitle = args.feature?.title ?? '';
+  const featureKind = args.feature?.kind ?? 'source';
+  const featureAnchor = args.feature?.anchor ?? {};
+  const page = args.feature?.page ?? null;
+  const sources = Array.isArray(args.feature?.sources) ? args.feature!.sources : [];
 
   const flows = Array.isArray(args.dataflows.flows) ? args.dataflows.flows : [];
   const flowSummaries = flows.map((f) => ({
@@ -242,18 +254,23 @@ function buildPrompt(args: {
 
   const user = [
     `应用名称(appName)：${args.appName}`,
-    `功能模块(moduleId)：${moduleId}`,
+    `页面功能点(featureId)：${featureId}`,
+    `功能点标题(title)：${featureTitle || '未识别'}`,
+    `功能点类型(kind)：${featureKind}`,
     '',
-    '模块入口(entry)：',
-    JSON.stringify(entry),
+    '所属页面(page)：',
+    JSON.stringify(page ?? {}),
+    '',
+    '功能点锚点(anchor)：',
+    JSON.stringify(featureAnchor ?? {}),
     '',
     'source 入口与业务说明（可用于推断业务场景，必须基于证据）：',
     JSON.stringify(sources),
     '',
-    '模块 UI 节点（用于定位“隐私功能在哪个界面开关”；如无法确定请输出“未识别”）：',
+    '页面 UI 节点（用于定位“隐私功能在哪个界面开关”；如无法确定请输出“未识别”）：',
     JSON.stringify({ truncated: uiTruncated, nodes: limitedUiNodes }),
     '',
-    '模块数据流（每个 flowId 下的 nodes[] 都包含 nodeId；你在输出 refs 时必须使用这些 nodeId）：',
+    '功能点数据流（每个 flowId 下的 nodes[] 都包含 nodeId；你在输出 refs 时必须使用这些 nodeId）：',
     JSON.stringify({ truncated: flowsTruncated, flows: limitedFlowsWithLimitedNodes }),
     '',
     '请输出 JSON，结构如下（字段名必须一致）：',
@@ -325,26 +342,26 @@ async function chatJsonWithRetries(args: {
   throw lastError instanceof Error ? lastError : new Error(String(lastError));
 }
 
-export async function extractModulePrivacyFacts(args: {
+export async function extractFeaturePrivacyFacts(args: {
   runId: string;
   appName: string;
-  module: UiModulesIndex['modules'][number] | null;
+  feature: PrivacyFactsFeatureContext | null;
   dataflows: DataflowsResult;
   uiTree: UiTreeResult | null;
   llm: LlmConfig;
-}): Promise<{ content: ModulePrivacyFactsContent; warnings: string[] }> {
+}): Promise<{ content: FeaturePrivacyFactsContent; warnings: string[] }> {
   const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
   if (!apiKey) {
     return {
       content: { dataPractices: [], permissionPractices: [] },
-      warnings: ['LLM api-key 为空，跳过模块隐私要素抽取'],
+      warnings: ['LLM api-key 为空，跳过功能点隐私要素抽取'],
     };
   }
 
   if (!Array.isArray(args.dataflows.flows) || args.dataflows.flows.length === 0) {
     return {
       content: { dataPractices: [], permissionPractices: [] },
-      warnings: ['模块数据流为空，跳过模块隐私要素抽取'],
+      warnings: ['功能点数据流为空，跳过隐私要素抽取'],
     };
   }
 
@@ -353,7 +370,7 @@ export async function extractModulePrivacyFacts(args: {
 
   const prompt = buildPrompt({
     appName: args.appName,
-    module: args.module,
+    feature: args.feature,
     dataflows: args.dataflows,
     uiTree: args.uiTree,
   });
@@ -361,4 +378,3 @@ export async function extractModulePrivacyFacts(args: {
   const raw = await chatJsonWithRetries({ llm: { ...args.llm, apiKey }, system: prompt.system, user: prompt.user });
   return validateContent(raw, flowNodeIndex, uiNodeIndex);
 }
-

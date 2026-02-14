@@ -33,8 +33,8 @@ Vite 默认端口为 5173（若端口被占用会自动选择其它端口）。
   - 相关 API：`GET /api/results/sources`
 - `/callgraph`：调用图可视化
   - 相关 API：`GET /api/results/callgraph`
-- `/dataflows`：数据流可视化（按功能模块筛选）
-  - 相关 API：`GET /api/results/modules`、`GET /api/results/modules/:moduleId/dataflows`
+- `/dataflows`：数据流可视化（按「页面 -> 功能点」筛选，或平铺列表）
+  - 相关 API：`GET /api/results/dataflows`、`GET /api/results/pages`、`GET /api/results/pages/:pageId/features`、`GET /api/results/pages/:pageId/features/:featureId/dataflows`
 - `/privacy-report`：隐私声明报告（token 可点击跳转）
   - 相关 API：`GET /api/results/privacy_report`
 

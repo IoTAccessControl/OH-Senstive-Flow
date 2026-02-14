@@ -98,6 +98,41 @@ export function scanFunctionBlocks(fileText: string, sourceFile: ts.SourceFile):
       continue;
     }
 
+    // foo = async (...) => { ... } / foo = (...) => { ... }
+    // (Used frequently in ArkTS/ArkUI event handlers: onPress = async (e) => { ... })
+    if (t.kind === ts.SyntaxKind.Identifier && tokens[i + 1]?.kind === ts.SyntaxKind.EqualsToken) {
+      const nameTok = t;
+      let j = i + 2;
+      if (tokens[j]?.kind === ts.SyntaxKind.AsyncKeyword) j += 1;
+      if (tokens[j]?.kind !== ts.SyntaxKind.OpenParenToken) continue;
+
+      const closeParenIndex = findMatchingParen(tokens, j);
+      if (closeParenIndex === null) continue;
+      const arrowIndex = closeParenIndex + 1;
+      if (tokens[arrowIndex]?.kind !== ts.SyntaxKind.EqualsGreaterThanToken) continue;
+      const openBraceIndex = arrowIndex + 1;
+      if (tokens[openBraceIndex]?.kind !== ts.SyntaxKind.OpenBraceToken) continue;
+
+      const closeBraceIndex = findMatchingBrace(tokens, openBraceIndex);
+      if (closeBraceIndex === null) continue;
+
+      const startLine = sourceFile.getLineAndCharacterOfPosition(nameTok.pos).line + 1;
+      const endLine = sourceFile.getLineAndCharacterOfPosition(tokens[closeBraceIndex]!.pos).line + 1;
+
+      blocks.push({
+        name: nameTok.text,
+        signaturePos: nameTok.pos,
+        startLine,
+        endLine,
+        bodyStartPos: tokens[openBraceIndex]!.pos,
+        bodyEndPos: tokens[closeBraceIndex]!.pos,
+      });
+
+      // Jump forward a bit to avoid duplicate detections on the same signature.
+      i = openBraceIndex;
+      continue;
+    }
+
     // async foo(...) { ... } / public foo(...) { ... } / foo(...) { ... }
     if (!tokenStartsModifierSequence(tokens, i) && !tokenIsStandaloneNameCandidate(tokens, i)) continue;
 
@@ -135,4 +170,3 @@ export function scanFunctionBlocks(fileText: string, sourceFile: ts.SourceFile):
 
   return blocks;
 }
-

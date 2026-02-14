@@ -25,8 +25,8 @@
 - **数据流分析的 LLM 配置**（对应 `llmProvider/llmApiKey/llmModel`）
   - `llmApiKey` 为空时：仍会生成 `callgraph.json`；`dataflows.json` 会以 `meta.skipped=true` 占位
 
-首页还包含 UI 界面树与隐私声明报告的 LLM 配置（用于 `ui_tree.json`、模块化结果、隐私报告等），详见：
-- `doc/ui_tree_modules.md`
+首页还包含 UI 界面树与隐私声明报告的 LLM 配置（用于 `ui_tree.json`、Page/Feature 分层结果、隐私报告等），详见：
+- `doc/ui_tree_pages_features.md`
 - `doc/privacy_report.md`
 
 ---
@@ -43,7 +43,7 @@ output/<appName>/<YYYYMMDD-HHmmss>/
   sources.csv
   callgraph.json
   dataflows.json
-  # 还会生成 ui_tree.json / modules/ / privacy_report.* 等，见对应文档
+  # 还会生成 ui_tree.json / privacy_report.* 等，见对应文档
 ```
 
 ---
@@ -136,7 +136,7 @@ LLM 提示词中强调对以下信息进行补充与总结：
 
 ### DataFlow 页面
 路由：`/dataflows`
-- 默认先读取模块索引 `/api/results/modules`，再按模块读取 `/api/results/modules/:moduleId/dataflows`
-- 兼容读取 `/api/results/dataflows`（无模块信息时的回退路径）
+- 优先读取 Page 索引 `/api/results/pages`，再读取 `/api/results/pages/:pageId/features`，最后按功能点读取 `/api/results/pages/:pageId/features/:featureId/dataflows`
+- 兼容读取 `/api/results/dataflows`（无分组信息时的回退路径）
 - 左侧：SVG 图
 - 右侧：选中节点详情（文件路径、行号、该行与附近代码、LLM 描述）

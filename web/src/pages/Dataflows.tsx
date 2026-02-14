@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { fetchDataflows, fetchModuleDataflows, fetchModules } from '../api';
+import {
+  fetchDataflows,
+  fetchPageFeatureDataflows,
+  fetchPageFeatures,
+  fetchPages,
+} from '../api';
 import { FilePathWithEditorLink } from '../components/EditorLink';
 import { GraphView, type GraphEdge, type GraphNode } from '../components/GraphView';
 import { useRepoRoot } from '../hooks/useRepoRoot';
@@ -30,14 +35,26 @@ type DataflowsResult = {
   flows: Dataflow[];
 };
 
-type ModuleInfo = {
-  moduleId: string;
-  entry?: { filePath?: string; structName?: string };
+type PageInfo = {
+  pageId: string;
+  entry?: { filePath?: string; structName?: string; line?: number; description?: string };
 };
 
-type ModulesIndex = {
+type PagesIndex = {
   meta?: { counts?: { unassignedFlows?: number } };
-  modules: ModuleInfo[];
+  pages: PageInfo[];
+};
+
+type FeatureInfo = {
+  featureId: string;
+  title: string;
+  kind: 'ui' | 'source';
+};
+
+type PageFeaturesIndex = {
+  meta?: { counts?: { flows?: number } };
+  page?: { pageId?: string; entry?: { filePath?: string; structName?: string; line?: number } };
+  features: FeatureInfo[];
 };
 
 type LoadState =
@@ -49,18 +66,35 @@ function isRecord(v: unknown): v is Record<string, unknown> {
   return Boolean(v) && typeof v === 'object';
 }
 
-function isModuleInfo(v: unknown): v is ModuleInfo {
+function isPageInfo(v: unknown): v is PageInfo {
   if (!isRecord(v)) return false;
-  if (typeof v.moduleId !== 'string') return false;
+  if (typeof v.pageId !== 'string') return false;
   return true;
 }
 
-function asModulesIndex(raw: unknown): ModulesIndex {
-  if (!isRecord(raw)) return { modules: [] };
-  const modulesRaw = raw.modules;
-  const modules = Array.isArray(modulesRaw) ? modulesRaw.filter(isModuleInfo) : [];
+function asPagesIndex(raw: unknown): PagesIndex {
+  if (!isRecord(raw)) return { pages: [] };
+  const pagesRaw = raw.pages;
+  const pages = Array.isArray(pagesRaw) ? pagesRaw.filter(isPageInfo) : [];
   const meta = isRecord(raw.meta) ? raw.meta : undefined;
-  return { meta: meta as ModulesIndex['meta'], modules };
+  return { meta: meta as PagesIndex['meta'], pages };
+}
+
+function isFeatureInfo(v: unknown): v is FeatureInfo {
+  if (!isRecord(v)) return false;
+  if (typeof v.featureId !== 'string') return false;
+  if (typeof v.title !== 'string') return false;
+  if (v.kind !== 'ui' && v.kind !== 'source') return false;
+  return true;
+}
+
+function asPageFeaturesIndex(raw: unknown): PageFeaturesIndex {
+  if (!isRecord(raw)) return { features: [] };
+  const featuresRaw = raw.features;
+  const features = Array.isArray(featuresRaw) ? featuresRaw.filter(isFeatureInfo) : [];
+  const meta = isRecord(raw.meta) ? raw.meta : undefined;
+  const page = isRecord(raw.page) ? (raw.page as PageFeaturesIndex['page']) : undefined;
+  return { meta: meta as PageFeaturesIndex['meta'], page, features };
 }
 
 function isDataflowNode(v: unknown): v is DataflowNode {
@@ -115,16 +149,24 @@ export function DataflowsPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const runId = searchParams.get('runId') || undefined;
-  const moduleIdFromUrl = searchParams.get('moduleId') || undefined;
+  const pageIdFromUrl = searchParams.get('pageId') || undefined;
+  const featureIdFromUrl = searchParams.get('featureId') || undefined;
   const flowIdFromUrl = searchParams.get('flowId') || undefined;
   const nodeIdFromUrl = searchParams.get('nodeId') || undefined;
+  const featureIdHint = featureIdFromUrl;
 
   const repoRootState = useRepoRoot();
   const repoRoot = repoRootState.state === 'ready' ? repoRootState.repoRoot : undefined;
   const wslDistroName = repoRootState.state === 'ready' ? repoRootState.wslDistroName : undefined;
 
-  const [modulesIndex, setModulesIndex] = useState<ModulesIndex | null>(null);
-  const [selectedModuleId, setSelectedModuleId] = useState<string | undefined>(undefined);
+  const [mode, setMode] = useState<'pageFeature' | 'flat'>('flat');
+  const [indexHint, setIndexHint] = useState<string | undefined>(undefined);
+
+  const [pagesIndex, setPagesIndex] = useState<PagesIndex | null>(null);
+  const [selectedPageId, setSelectedPageId] = useState<string | undefined>(undefined);
+  const [pageFeaturesIndex, setPageFeaturesIndex] = useState<PageFeaturesIndex | null>(null);
+  const [selectedFeatureId, setSelectedFeatureId] = useState<string | undefined>(undefined);
+
   const [state, setState] = useState<LoadState>({ state: 'loading' });
   const [selectedFlowId, setSelectedFlowId] = useState<string | undefined>(undefined);
   const [selectedNodeId, setSelectedNodeId] = useState<string | undefined>(undefined);
@@ -132,46 +174,143 @@ export function DataflowsPage() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      setMode('flat');
+      setIndexHint(undefined);
+      setPagesIndex(null);
+      setSelectedPageId(undefined);
+      setPageFeaturesIndex(null);
+      setSelectedFeatureId(undefined);
+      setSelectedFlowId(undefined);
+      setSelectedNodeId(undefined);
+
       try {
-        const raw = await fetchModules({ runId });
-        const idx = asModulesIndex(raw);
+        const raw = await fetchPages({ runId });
+        const idx = asPagesIndex(raw);
         if (cancelled) return;
-        setModulesIndex(idx);
-        const unassignedFlows = idx.meta?.counts?.unassignedFlows ?? 0;
-        const desired =
-          moduleIdFromUrl === '_unassigned'
-            ? unassignedFlows > 0
-              ? '_unassigned'
-              : undefined
-            : moduleIdFromUrl && idx.modules.some((m) => m.moduleId === moduleIdFromUrl)
-              ? moduleIdFromUrl
-              : undefined;
-        if (idx.modules.length > 0) setSelectedModuleId((prev) => desired ?? prev ?? idx.modules[0]!.moduleId);
-        if (desired) {
-          setSelectedFlowId(undefined);
-          setSelectedNodeId(undefined);
-        }
+        setMode('pageFeature');
+        setPagesIndex(idx);
+        return;
       } catch {
-        if (!cancelled) setModulesIndex(null);
+        // fall through to flat view
+      }
+
+      if (!cancelled) {
+        setMode('flat');
+        setIndexHint('提示：该 run 未生成 Page→Feature 分层索引，已回退到全量 DataFlow。');
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, [runId, moduleIdFromUrl]);
+  }, [runId]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (mode !== 'pageFeature') return;
+      const pages = pagesIndex?.pages ?? [];
+      if (pages.length === 0) {
+        if (!cancelled) setSelectedPageId(undefined);
+        return;
+      }
+
+      const pageIds = new Set(pages.map((p) => p.pageId));
+      if (pageIdFromUrl && pageIds.has(pageIdFromUrl)) {
+        if (!cancelled) setSelectedPageId(pageIdFromUrl);
+        return;
+      }
+
+      if (featureIdHint) {
+        for (const p of pages) {
+          if (cancelled) return;
+          try {
+            const raw = await fetchPageFeatures({ pageId: p.pageId, runId });
+            const idx = asPageFeaturesIndex(raw);
+            if (idx.features.some((f) => f.featureId === featureIdHint)) {
+              if (!cancelled) setSelectedPageId(p.pageId);
+              return;
+            }
+          } catch {
+            // ignore and continue
+          }
+        }
+      }
+
+      if (!cancelled) setSelectedPageId((prev) => (prev && pageIds.has(prev) ? prev : pages[0]!.pageId));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [mode, pagesIndex, runId, pageIdFromUrl, featureIdHint]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (mode !== 'pageFeature') return;
+      if (!selectedPageId) {
+        if (!cancelled) {
+          setPageFeaturesIndex(null);
+          setSelectedFeatureId(undefined);
+        }
+        return;
+      }
+
+      try {
+        const raw = await fetchPageFeatures({ pageId: selectedPageId, runId });
+        const idx = asPageFeaturesIndex(raw);
+        if (cancelled) return;
+        setPageFeaturesIndex(idx);
+
+        const desired =
+          featureIdHint && idx.features.some((f) => f.featureId === featureIdHint) ? featureIdHint : undefined;
+
+        setSelectedFeatureId((prev) => {
+          if (desired) return desired;
+          if (prev && idx.features.some((f) => f.featureId === prev)) return prev;
+          return idx.features[0]?.featureId;
+        });
+
+        if (desired) {
+          setSelectedFlowId(undefined);
+          setSelectedNodeId(undefined);
+        }
+      } catch {
+        if (!cancelled) {
+          setPageFeaturesIndex(null);
+          setSelectedFeatureId(undefined);
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [mode, runId, selectedPageId, featureIdHint]);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         setState({ state: 'loading' });
-        const raw =
-          selectedModuleId
-            ? await fetchModuleDataflows({ moduleId: selectedModuleId, runId })
-            : await fetchDataflows({ runId });
+
+        let raw: unknown;
+        if (mode === 'pageFeature') {
+          if (!selectedPageId || !selectedFeatureId) {
+            if (!cancelled) {
+              setState({ state: 'ready', data: { flows: [] } });
+              setSelectedFlowId(undefined);
+              setSelectedNodeId(undefined);
+            }
+            return;
+          }
+          raw = await fetchPageFeatureDataflows({ pageId: selectedPageId, featureId: selectedFeatureId, runId });
+        } else {
+          raw = await fetchDataflows({ runId });
+        }
+
         const data = asDataflows(raw);
         if (cancelled) return;
         setState({ state: 'ready', data });
+
         if (data.flows.length > 0) {
           const desiredFlow =
             flowIdFromUrl && data.flows.some((f) => f.flowId === flowIdFromUrl) ? flowIdFromUrl : undefined;
@@ -182,8 +321,7 @@ export function DataflowsPage() {
             setSelectedNodeId((prevNodeId) => {
               const desiredNode =
                 nodeIdFromUrl && flow.nodes.some((n) => n.id === nodeIdFromUrl) ? nodeIdFromUrl : undefined;
-              const prevNodeOk =
-                prevNodeId && flow.nodes.some((n) => n.id === prevNodeId) ? prevNodeId : undefined;
+              const prevNodeOk = prevNodeId && flow.nodes.some((n) => n.id === prevNodeId) ? prevNodeId : undefined;
               return desiredNode ?? prevNodeOk ?? flow.nodes[0]?.id;
             });
 
@@ -201,7 +339,7 @@ export function DataflowsPage() {
     return () => {
       cancelled = true;
     };
-  }, [runId, selectedModuleId, flowIdFromUrl, nodeIdFromUrl]);
+  }, [runId, mode, selectedPageId, selectedFeatureId, flowIdFromUrl, nodeIdFromUrl]);
 
   const current = useMemo(() => {
     if (state.state !== 'ready') return null;
@@ -221,7 +359,21 @@ export function DataflowsPage() {
   }, [state, selectedFlowId, selectedNodeId]);
 
   const skipReason = state.state === 'ready' && state.data.meta?.skipped ? state.data.meta.skipReason : undefined;
-  const unassignedFlows = modulesIndex?.meta?.counts?.unassignedFlows ?? 0;
+  const currentGroupLabel = useMemo(() => {
+    if (mode !== 'pageFeature') return '';
+    if (!pagesIndex || !selectedPageId || !pageFeaturesIndex || !selectedFeatureId) return '';
+
+    const page = pagesIndex.pages.find((p) => p.pageId === selectedPageId);
+    const feature = pageFeaturesIndex.features.find((f) => f.featureId === selectedFeatureId);
+    if (!page || !feature) return '';
+
+    const pageTitle = page.pageId === '_unassigned' ? '未归类' : page.entry?.description?.trim() || page.entry?.structName || page.pageId;
+    const pageCode = page.entry?.structName || page.pageId;
+    const pageLabel = pageTitle && pageCode && pageTitle !== pageCode ? `${pageTitle}（${pageCode}）` : pageTitle || pageCode || '';
+    const featureLabel = feature.title?.trim() || feature.featureId;
+    if (!pageLabel || !featureLabel) return '';
+    return `当前分类：${pageLabel} -> ${featureLabel}`;
+  }, [mode, pagesIndex, selectedPageId, pageFeaturesIndex, selectedFeatureId]);
 
   return (
     <div className="page">
@@ -242,34 +394,59 @@ export function DataflowsPage() {
 
       {state.state === 'ready' && (
         <>
-          {modulesIndex && modulesIndex.modules.length > 0 && (
+          {indexHint && <div className="status">{indexHint}</div>}
+
+          {mode === 'pageFeature' && pagesIndex && pagesIndex.pages.length > 0 && (
             <label className="field">
-              <div className="label">选择功能模块</div>
+              <div className="label">选择页面</div>
               <select
                 className="input"
-                value={selectedModuleId ?? ''}
+                value={selectedPageId ?? ''}
                 onChange={(e) => {
-                  setSelectedModuleId(e.target.value);
+                  setSelectedPageId(e.target.value);
+                  setSelectedFeatureId(undefined);
                   setSelectedFlowId(undefined);
                   setSelectedNodeId(undefined);
                 }}
               >
-                {modulesIndex.modules.map((m) => {
-                  const name = m.entry?.structName ? `${m.entry.structName}（${m.moduleId}）` : m.moduleId;
+                {pagesIndex.pages.map((p) => {
+                  const title = p.pageId === '_unassigned' ? '未归类' : p.entry?.description?.trim() || p.entry?.structName || p.pageId;
+                  const codeName = p.entry?.structName || p.pageId;
+                  const name = title && codeName && title !== codeName ? `${title}（${codeName}）` : title || codeName;
                   return (
-                    <option key={m.moduleId} value={m.moduleId}>
+                    <option key={p.pageId} value={p.pageId}>
                       {name}
                     </option>
                   );
                 })}
-                {unassignedFlows > 0 && (
-                  <option key="_unassigned" value="_unassigned">
-                    未归类（_unassigned）
-                  </option>
-                )}
               </select>
             </label>
           )}
+
+          {mode === 'pageFeature' && pageFeaturesIndex && pageFeaturesIndex.features.length > 0 && (
+            <label className="field">
+              <div className="label">选择页面功能</div>
+              <select
+                className="input"
+                value={selectedFeatureId ?? ''}
+                onChange={(e) => {
+                  setSelectedFeatureId(e.target.value);
+                  setSelectedFlowId(undefined);
+                  setSelectedNodeId(undefined);
+                }}
+              >
+                {pageFeaturesIndex.features.map((f) => {
+                  return (
+                    <option key={f.featureId} value={f.featureId}>
+                      {f.title}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
+          )}
+
+          {currentGroupLabel && <div className="status">{currentGroupLabel}</div>}
 
           {skipReason && <div className="status">提示：{skipReason}</div>}
 

@@ -146,25 +146,42 @@ export async function fetchDataflows(params: { runId?: string; outputDir?: strin
   return (await res.json()) as unknown;
 }
 
-export async function fetchModules(params: { runId?: string; outputDir?: string }): Promise<unknown> {
+export async function fetchPages(params: { runId?: string; outputDir?: string }): Promise<unknown> {
   const qs = new URLSearchParams();
   if (params.runId) qs.set('runId', params.runId);
   if (params.outputDir) qs.set('outputDir', params.outputDir);
-  const url = `/api/results/modules${qs.toString() ? `?${qs.toString()}` : ''}`;
+  const url = `/api/results/pages${qs.toString() ? `?${qs.toString()}` : ''}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(await res.text());
   return (await res.json()) as unknown;
 }
 
-export async function fetchModuleDataflows(params: {
-  moduleId: string;
+export async function fetchPageFeatures(params: {
+  pageId: string;
   runId?: string;
   outputDir?: string;
 }): Promise<unknown> {
   const qs = new URLSearchParams();
   if (params.runId) qs.set('runId', params.runId);
   if (params.outputDir) qs.set('outputDir', params.outputDir);
-  const url = `/api/results/modules/${encodeURIComponent(params.moduleId)}/dataflows${qs.toString() ? `?${qs.toString()}` : ''}`;
+  const url = `/api/results/pages/${encodeURIComponent(params.pageId)}/features${qs.toString() ? `?${qs.toString()}` : ''}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(await res.text());
+  return (await res.json()) as unknown;
+}
+
+export async function fetchPageFeatureDataflows(params: {
+  pageId: string;
+  featureId: string;
+  runId?: string;
+  outputDir?: string;
+}): Promise<unknown> {
+  const qs = new URLSearchParams();
+  if (params.runId) qs.set('runId', params.runId);
+  if (params.outputDir) qs.set('outputDir', params.outputDir);
+  const url = `/api/results/pages/${encodeURIComponent(params.pageId)}/features/${encodeURIComponent(params.featureId)}/dataflows${
+    qs.toString() ? `?${qs.toString()}` : ''
+  }`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(await res.text());
   return (await res.json()) as unknown;
