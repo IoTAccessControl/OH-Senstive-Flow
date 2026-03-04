@@ -258,24 +258,148 @@ describe('ui tree + page/feature grouping', () => {
 
     const grouped = await groupDataflowsByPageFeature({ runId: 'test', repoRoot, uiTree, sources, dataflows, maxUiDistanceLines: 30 });
 
-    const indexPage = grouped.pages.find((p) => p.page.pageId !== '_unassigned');
+    expect(grouped.pagesIndex.meta.counts.unassignedFlows).toBe(0);
+
+    const indexPage = grouped.pages[0];
     expect(indexPage).toBeTruthy();
     expect(indexPage?.uiTree).toBeTruthy();
-    expect(indexPage?.featuresIndex.features.length).toBe(2);
+    expect(indexPage?.featuresIndex.meta.counts.flows).toBe(4);
+    expect(indexPage?.featuresIndex.features.length).toBe(3);
 
     const uiFeature = indexPage?.featuresIndex.features.find((f) => f.kind === 'ui');
-    const srcFeature = indexPage?.featuresIndex.features.find((f) => f.kind === 'source');
+    const srcFeatures = (indexPage?.featuresIndex.features ?? []).filter((f) => f.kind === 'source');
     expect(uiFeature).toBeTruthy();
-    expect(srcFeature).toBeTruthy();
+    expect(srcFeatures.length).toBe(2);
 
 	    const uiDf = indexPage?.features.find((x) => x.feature.featureId === uiFeature?.featureId)?.dataflows;
-	    const srcDf = indexPage?.features.find((x) => x.feature.featureId === srcFeature?.featureId)?.dataflows;
 	    expect(uiDf?.flows.length).toBe(2);
-	    expect(srcDf?.flows.length).toBe(1);
+	    const srcFlowCount = (indexPage?.features ?? [])
+	      .filter((f) => f.feature.kind === 'source')
+	      .reduce((acc, f) => acc + f.feature.counts.flows, 0);
+	    expect(srcFlowCount).toBe(2);
 
-    const unassignedPage = grouped.pages.find((p) => p.page.pageId === '_unassigned');
-    expect(unassignedPage).toBeTruthy();
-    expect(unassignedPage?.uiTree).toBeNull();
-    expect(unassignedPage?.features.reduce((acc, f) => acc + f.feature.counts.flows, 0)).toBe(1);
+    expect(grouped.pages.some((p) => p.page.pageId === '_unassigned')).toBe(false);
+  });
+
+  it('merges UI features by title within a page', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-merge-'));
+    const pageFileRel = 'app/entry/src/main/ets/pages/Index.ets';
+    const pageFileAbs = path.join(repoRoot, pageFileRel);
+    await fs.mkdir(path.dirname(pageFileAbs), { recursive: true });
+
+    await fs.writeFile(
+      pageFileAbs,
+      [
+        '@Entry',
+        '@Component',
+        'struct Index {',
+        '  build() {',
+        '    Column() {',
+        "      Button('搜索').onClick(() => { this.onSearch1(); })",
+        "      Button('搜索').onClick(() => { this.onSearch2(); })",
+        '    }',
+        '  }',
+        '  onSearch1() { doSearch(); }',
+        '  onSearch2() { doSearch(); }',
+        '}',
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+
+    const uiTree = {
+      meta: {
+        runId: 'test',
+        generatedAt: new Date().toISOString(),
+        counts: { nodes: 3, edges: 2, pages: 1, elements: 2 },
+      },
+      roots: ['page-root'],
+      nodes: {
+        'page-root': {
+          id: 'page-root',
+          category: 'Page',
+          description: '首页',
+          name: 'Index',
+          filePath: pageFileRel,
+          line: 1,
+          code: 'struct Index {',
+          context: { startLine: 1, lines: ['struct Index {'] },
+        },
+        'ui-a': {
+          id: 'ui-a',
+          category: 'Button',
+          description: '搜索',
+          name: 'Button',
+          filePath: pageFileRel,
+          line: 6,
+          code: "Button('搜索')",
+          context: { startLine: 6, lines: ["Button('搜索')"] },
+        },
+        'ui-b': {
+          id: 'ui-b',
+          category: 'Button',
+          description: '搜索',
+          name: 'Button',
+          filePath: pageFileRel,
+          line: 7,
+          code: "Button('搜索')",
+          context: { startLine: 7, lines: ["Button('搜索')"] },
+        },
+      },
+      edges: [
+        { from: 'page-root', to: 'ui-a', kind: 'contains' },
+        { from: 'page-root', to: 'ui-b', kind: 'contains' },
+      ],
+    } as any;
+
+    const sources = [
+      {
+        App源码文件路径: pageFileRel,
+        行号: 4,
+        函数名称: 'build',
+        描述: 'build entry',
+      },
+    ];
+
+    const dataflows = {
+      meta: {
+        runId: 'test',
+        generatedAt: new Date().toISOString(),
+        llm: { provider: 'Qwen', model: 'qwen3-coder-plus' },
+        counts: { flows: 2, nodes: 4, edges: 2 },
+      },
+      flows: [
+        {
+          flowId: 'flow:a',
+          pathId: 'p1',
+          nodes: [
+            { id: 's1', filePath: pageFileRel, line: 4, code: 'build() {', description: 'source', context: { startLine: 4, lines: ['build() {'] } },
+            { id: 'a1', filePath: pageFileRel, line: 6, code: "Button('搜索')", description: 'ui', context: { startLine: 6, lines: ["Button('搜索')"] } },
+          ],
+          edges: [{ from: 's1', to: 'a1' }],
+        },
+        {
+          flowId: 'flow:b',
+          pathId: 'p2',
+          nodes: [
+            { id: 's2', filePath: pageFileRel, line: 4, code: 'build() {', description: 'source', context: { startLine: 4, lines: ['build() {'] } },
+            { id: 'b1', filePath: pageFileRel, line: 7, code: "Button('搜索')", description: 'ui', context: { startLine: 7, lines: ["Button('搜索')"] } },
+          ],
+          edges: [{ from: 's2', to: 'b1' }],
+        },
+      ],
+    } as any;
+
+    const grouped = await groupDataflowsByPageFeature({ runId: 'test', repoRoot, uiTree, sources, dataflows, maxUiDistanceLines: 50 });
+    expect(grouped.pagesIndex.meta.counts.unassignedFlows).toBe(0);
+    expect(grouped.pages.length).toBe(1);
+
+    const page = grouped.pages[0]!;
+    const uiFeatures = page.featuresIndex.features.filter((f) => f.kind === 'ui');
+    expect(uiFeatures.length).toBe(1);
+    expect(uiFeatures[0]!.title).toBe('搜索');
+
+    const uiDf = page.features.find((x) => x.feature.featureId === uiFeatures[0]!.featureId)?.dataflows;
+    expect(uiDf?.flows.length).toBe(2);
   });
 });

@@ -13,6 +13,7 @@ import type { FeatureInfo, PageFeaturesIndex, PageInfo, PagesIndex } from './typ
 type BuiltPage = {
   pageId: string;
   rootId: string;
+  isRoot: boolean;
   entry: {
     filePath: string;
     structName?: string;
@@ -126,10 +127,14 @@ function nearestLineAtOrBefore(sortedLines: number[], x: number): number | null 
   return sortedLines[idx] ?? null;
 }
 
-function buildUiFeatureId(pageId: string, uiNode: UiTreeNode): string {
-  const short = String(uiNode.id ?? '').includes(':') ? String(uiNode.id).split(':')[1] : sha1(String(uiNode.id ?? '')).slice(0, 12);
-  const base = sanitizeId(`${uiNode.name ?? uiNode.category}_${uiNode.line ?? 0}`) || 'ui';
-  return sanitizeId(`ui_${pageId}_${base}_${short}`) || `ui_${short}`;
+function normalizeFeatureTitle(title: string): string {
+  return title.replaceAll(/\s+/gu, '').trim();
+}
+
+function buildUiFeatureIdByTitle(pageId: string, title: string): string {
+  const normalized = normalizeFeatureTitle(title) || '功能';
+  const suffix = sha1(`${pageId}:${normalized}`).slice(0, 10);
+  return `ui_${pageId}_${suffix}`;
 }
 
 function buildSourceFeatureId(pageId: string, source: SourceRecord): string {
@@ -222,26 +227,46 @@ export async function groupDataflowsByPageFeature(args: {
   const usedPageIds = new Set<string>();
   const builtPages: BuiltPage[] = [];
 
-  for (const rootId of args.uiTree.roots ?? []) {
-    const rootNode = args.uiTree.nodes[rootId];
-    if (!rootNode || rootNode.category !== 'Page') continue;
-    const filePath = rootNode.filePath ?? '';
-    const structName = rootNode.name;
+  const rootIdSet = new Set<string>(args.uiTree.roots ?? []);
+  const pageNodes = Object.values(args.uiTree.nodes ?? {}).filter((n) => n?.category === 'Page');
+
+  for (const pageNode of pageNodes) {
+    const filePath = pageNode.filePath ?? '';
+    const structName = pageNode.name;
     const pageId = buildPageId({ structName, filePath, used: usedPageIds });
     builtPages.push({
       pageId,
-      rootId,
+      rootId: pageNode.id,
+      isRoot: rootIdSet.has(pageNode.id),
       entry: {
         filePath,
         structName,
-        line: rootNode.line,
-        description: rootNode.description,
+        line: pageNode.line,
+        description: pageNode.description,
       },
       uiNodes: [],
       uiNodeByLine: new Map(),
       uiLinesSorted: [],
-      pageRangeStartLine: Number(rootNode.line ?? 1) || 1,
+      pageRangeStartLine: Number(pageNode.line ?? 1) || 1,
       pageRangeEndLine: Number.POSITIVE_INFINITY,
+      buildRangeStartLine: 0,
+      buildRangeEndLine: 0,
+    });
+  }
+
+  // Force-attach mode: if UI tree contains no pages, create one synthetic page so flows still get grouped.
+  if (builtPages.length === 0) {
+    const pageId = buildPageId({ structName: 'inferred', filePath: 'inferred', used: usedPageIds });
+    builtPages.push({
+      pageId,
+      rootId: '',
+      isRoot: true,
+      entry: { filePath: '', structName: 'inferred', line: 0, description: '推断页面' },
+      uiNodes: [],
+      uiNodeByLine: new Map(),
+      uiLinesSorted: [],
+      pageRangeStartLine: 0,
+      pageRangeEndLine: 0,
       buildRangeStartLine: 0,
       buildRangeEndLine: 0,
     });
@@ -363,7 +388,6 @@ export async function groupDataflowsByPageFeature(args: {
 
   const sourcesByFileLine = groupSourcesByFileLine(args.sources);
   const featuresByPage = new Map<string, Map<string, BuiltFeature>>();
-  const unassignedFlows: Dataflow[] = [];
 
   function escapeRegExp(text: string): string {
     return text.replaceAll(/[.*+?^${}()|[\]\\]/gu, '\\$&');
@@ -518,29 +542,74 @@ export async function groupDataflowsByPageFeature(args: {
     return null;
   }
 
-  for (const flow of args.dataflows.flows ?? []) {
-    const source = pickSourceForFlow(flow, sourcesByFileLine);
+  function scorePageCandidate(page: BuiltPage, evidenceLine: number, base: number): number {
+    const line = Number.isFinite(evidenceLine) ? Math.max(1, Math.floor(evidenceLine)) : 1;
+    const entryLine = Number(page.entry.line ?? 0) || 0;
+    const dist = entryLine > 0 ? Math.min(300, Math.abs(line - entryLine)) : 200;
+
+    let score = base + dist;
+    if (page.isRoot) score -= 5;
+
+    const buildStart = Number(page.buildRangeStartLine ?? 0) || 0;
+    const buildEnd = Number(page.buildRangeEndLine ?? 0) || 0;
+    if (buildStart > 0 && buildEnd >= buildStart && line >= buildStart && line <= buildEnd) score -= 20;
+    else if (line >= page.pageRangeStartLine && line <= page.pageRangeEndLine) score -= 10;
+
+    return score;
+  }
+
+  function pickDefaultPage(): BuiltPage {
+    const roots = builtPages.filter((p) => p.isRoot).sort((a, b) => a.pageId.localeCompare(b.pageId));
+    if (roots[0]) return roots[0];
+    return builtPages.slice().sort((a, b) => a.pageId.localeCompare(b.pageId))[0]!;
+  }
+
+  function pickPageForFlow(flow: Dataflow, source: SourceRecord | null): BuiltPage {
+    const candidates: Array<{ page: BuiltPage; score: number }> = [];
+
+    // Evidence E1: source (strong).
     const srcFile = source?.['App源码文件路径'] ?? '';
     const srcLine = Number(source?.['行号'] ?? 0) || 0;
-    const page = srcFile ? choosePageForSource(pagesByFile.get(srcFile) ?? [], srcLine) : null;
-
-    if (!page) {
-      unassignedFlows.push(flow);
-      continue;
+    if (srcFile) {
+      const pages = pagesByFile.get(srcFile) ?? [];
+      for (const p of pages) candidates.push({ page: p, score: scorePageCandidate(p, srcLine || Number(p.entry.line ?? 1) || 1, 0) });
     }
+
+    // Evidence E2: any flow node file/line (weak, but better than global fallback).
+    for (const n of flow.nodes ?? []) {
+      const fp = n.filePath;
+      const ln = Number(n.line ?? 0) || 0;
+      if (!fp || ln <= 0) continue;
+      const pages = pagesByFile.get(fp) ?? [];
+      for (const p of pages) candidates.push({ page: p, score: scorePageCandidate(p, ln, 50) });
+    }
+
+    if (candidates.length === 0) return pickDefaultPage();
+    candidates.sort((a, b) => a.score - b.score || a.page.pageId.localeCompare(b.page.pageId));
+    return candidates[0]!.page;
+  }
+
+  for (const flow of args.dataflows.flows ?? []) {
+    const source = pickSourceForFlow(flow, sourcesByFileLine);
+    const page = pickPageForFlow(flow, source);
 
     const uiHit = await pickUiHitForFlow({ flow, page });
 
     let featureId = '';
     let title = '';
     let kind: FeatureInfo['kind'] = 'source';
-    let anchor: FeatureInfo['anchor'] = { filePath: page.entry.filePath || srcFile, line: srcLine || 1 };
+    let anchor: FeatureInfo['anchor'] = { filePath: page.entry.filePath || (source?.['App源码文件路径'] ?? ''), line: Number(source?.['行号'] ?? 1) || 1 };
 
     if (uiHit) {
       kind = 'ui';
-      featureId = buildUiFeatureId(page.pageId, uiHit);
-      title = uiHit.description?.trim() ? uiHit.description.trim() : `${uiHit.category}:${uiHit.name ?? ''}`.trim();
-      anchor = { filePath: uiHit.filePath ?? page.entry.filePath, line: Number(uiHit.line ?? 1) || 1, uiNodeId: uiHit.id };
+      const rawTitle = uiHit.description?.trim() ? uiHit.description.trim() : `${uiHit.name ?? uiHit.category}`.trim();
+      title = normalizeFeatureTitle(rawTitle) || rawTitle || '功能';
+      featureId = buildUiFeatureIdByTitle(page.pageId, title);
+      anchor = {
+        filePath: uiHit.filePath ?? page.entry.filePath,
+        line: Number(uiHit.line ?? 1) || 1,
+        uiNodeId: uiHit.id,
+      };
     } else if (source) {
       kind = 'source';
       featureId = buildSourceFeatureId(page.pageId, source);
@@ -554,15 +623,27 @@ export async function groupDataflowsByPageFeature(args: {
       };
     } else {
       featureId = buildUnknownFeatureId(page.pageId, flow);
-      title = '未识别功能';
       const first = flow.nodes?.[0];
-      anchor = { filePath: first?.filePath ?? page.entry.filePath, line: Number(first?.line ?? 1) || 1 };
+      const filePath = first?.filePath ?? page.entry.filePath;
+      const line = Number(first?.line ?? 1) || 1;
+      let functionName = '';
+      if (filePath && line > 0) {
+        const blocks = await getFunctionBlocks(filePath);
+        const blk = pickContainingBlock(blocks, line);
+        functionName = blk?.name?.trim() ?? '';
+      }
+      title = functionName ? `处理逻辑：${functionName}` : '处理逻辑';
+      anchor = { filePath, line, functionName: functionName || undefined };
     }
 
     const pageFeatures = featuresByPage.get(page.pageId) ?? new Map<string, BuiltFeature>();
     const existing = pageFeatures.get(featureId);
     if (existing) {
       existing.flows.push(flow);
+      // If UI features are merged by title, keep the earliest anchor line for better traceability.
+      if (kind === 'ui' && existing.feature.kind === 'ui' && anchor.line < existing.feature.anchor.line) {
+        existing.feature.anchor = anchor;
+      }
     } else {
       pageFeatures.set(featureId, {
         feature: { featureId, title, kind, anchor },
@@ -572,49 +653,7 @@ export async function groupDataflowsByPageFeature(args: {
     featuresByPage.set(page.pageId, pageFeatures);
   }
 
-  // Create _unassigned pseudo-page if needed.
-  let unassignedPage: BuiltPage | null = null;
-  if (unassignedFlows.length > 0) {
-    const page: BuiltPage = {
-      pageId: '_unassigned',
-      rootId: '',
-      entry: { filePath: '', structName: '_unassigned', line: 0, description: '未归类页面（未能匹配到任何 @Entry 页面）' },
-      uiNodes: [],
-      uiNodeByLine: new Map<number, UiTreeNode[]>(),
-      uiLinesSorted: [],
-      pageRangeStartLine: 0,
-      pageRangeEndLine: 0,
-      buildRangeStartLine: 0,
-      buildRangeEndLine: 0,
-    };
-    unassignedPage = page;
-    const pageFeatures = new Map<string, BuiltFeature>();
-    for (const flow of unassignedFlows) {
-      const source = pickSourceForFlow(flow, sourcesByFileLine);
-      const featureId = source ? buildSourceFeatureId('_unassigned', source) : buildUnknownFeatureId('_unassigned', flow);
-      const desc = source ? String(source['描述'] ?? '').trim() : '';
-      const fn = source ? String(source['函数名称'] ?? '').trim() : '';
-      const title = source ? (desc ? (fn ? `${desc}（${fn}）` : desc) : fn ? `入口：${fn}` : '入口/生命周期函数') : '未识别功能';
-      const anchor = source
-        ? ({
-            filePath: source['App源码文件路径'] ?? '',
-            line: Number(source['行号'] ?? 1) || 1,
-            functionName: fn || undefined,
-          } satisfies FeatureInfo['anchor'])
-        : ({
-            filePath: flow.nodes?.[0]?.filePath ?? '',
-            line: Number(flow.nodes?.[0]?.line ?? 1) || 1,
-          } satisfies FeatureInfo['anchor']);
-
-      const existing = pageFeatures.get(featureId);
-      if (existing) existing.flows.push(flow);
-      else pageFeatures.set(featureId, { feature: { featureId, title, kind: 'source', anchor }, flows: [flow] });
-    }
-    featuresByPage.set(page.pageId, pageFeatures);
-  }
-
   const allPages: BuiltPage[] = builtPages.slice();
-  if (unassignedPage) allPages.push(unassignedPage);
 
   const pagesOut: GroupedPageFeatures['pages'] = [];
   let totalFeatures = 0;
@@ -677,7 +716,7 @@ export async function groupDataflowsByPageFeature(args: {
       features: features.map((f) => f.feature),
     };
 
-    const uiTreeSlice = page.pageId === '_unassigned' || !page.rootId ? null : sliceUiTreeForPage({ page, uiTree: args.uiTree });
+    const uiTreeSlice = !page.rootId ? null : sliceUiTreeForPage({ page, uiTree: args.uiTree });
 
     pagesOut.push({
       page: pageInfo,
@@ -695,7 +734,7 @@ export async function groupDataflowsByPageFeature(args: {
         pages: pagesOut.length,
         features: totalFeatures,
         flows: totalFlows,
-        unassignedFlows: unassignedFlows.length,
+        unassignedFlows: 0,
       },
     },
     pages: pagesOut.map((p) => p.page),

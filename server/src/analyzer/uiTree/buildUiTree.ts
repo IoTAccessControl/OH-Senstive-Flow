@@ -11,6 +11,13 @@ import { scanTokens, type Token } from '../tokenScanner.js';
 import { scanFunctionBlocks, type FunctionBlock } from '../callGraph/functionBlocks.js';
 
 import type { UiTreeEdge, UiTreeNavTarget, UiTreeNode, UiTreeNodeCategory, UiTreeResult } from './types.js';
+import {
+  buildUiNodeTitleHints,
+  isGoodHumanTitle,
+  loadArkuiStringTable,
+  normalizeUiTitle,
+  type UiNodeTitleHints,
+} from './titleHeuristics.js';
 
 type BuildUiTreeOptions = {
   repoRoot: string;
@@ -222,22 +229,21 @@ function extractRouterNav(args: { lines: string[]; atLine: number }): { kind: Ui
 }
 
 function fallbackDescription(node: Pick<UiTreeNode, 'category' | 'name' | 'navTarget' | 'code'>): string {
-  if (node.category === 'Page') return `页面：${node.name ?? '未命名页面'}`;
-  if (node.category === 'Input') return `输入框：${node.name ?? '输入'}（用于输入内容）`;
-  if (node.category === 'Display') return `显示元素：${node.name ?? '展示'}（用于展示信息）`;
-  if (node.navTarget?.url) return `可点击元素（跳转到 ${node.navTarget.url}）`;
-  if (node.category === 'Button') return `可点击元素：${node.name ?? '按钮'}`;
+  if (node.category === 'Page') return '页面';
+  if (node.category === 'Input') return '输入';
+  if (node.category === 'Display') return '显示内容';
+  if (node.navTarget?.url) return '进入页面';
+  if (node.category === 'Button') return '点击操作';
   const codeHint = node.code ? `（${node.code.slice(0, 30)}）` : '';
-  return `UI 元素：${node.name ?? node.category}${codeHint}`;
+  return `${node.name ?? node.category}${codeHint}`;
 }
 
 async function describeNodesWithLlm(options: {
   llm: BuildUiTreeOptions['llm'];
   nodes: UiTreeNode[];
   baseUrls: string[];
+  hintsById: Map<string, UiNodeTitleHints>;
 }): Promise<Map<string, string>> {
-  const expectedIds = options.nodes.map((n) => n.id);
-
   const system = [
     '你是一个前端界面理解助手，擅长从 ArkTS/ArkUI 源码切片理解 UI 元素的作用。',
     '你必须为每个输入节点生成一个“面向用户的中文短标题”（用于页面/功能分类展示）。',
@@ -254,7 +260,8 @@ async function describeNodesWithLlm(options: {
     '   - Button/Input/Display/Component：建议 2–20 个汉字（例如：扫一扫、录音、发送、搜索、手机号登录）。',
     '3) 禁止直接照抄 structName / 文件名 / 组件名（例如 HomePage、ChatPage、Button、TextInput 等）；如需参考，请翻译成中文。',
     '4) 优先使用代码中的用户可见文案（例如 Text("扫一扫")、Button("发送") 等）来命名。',
-    '5) 若信息不足，请输出保守且短的标题（例如：某页面、某功能、按钮）。',
+    '5) 每个节点都提供了 suggested/hints：若 suggested 已合理，请直接采用或轻微润色。',
+    '6) 若信息仍不足，请输出保守且短的标题（例如：某页面、某功能、按钮）。',
     '',
     '输出 JSON 结构：',
     '{ "descriptions": [ { "id": "...", "description": "..." } ] }',
@@ -270,6 +277,7 @@ async function describeNodesWithLlm(options: {
         code: n.code,
         navTarget: n.navTarget,
         context: n.context,
+        hints: options.hintsById.get(n.id) ?? {},
       })),
     ),
   ].join('\n');
@@ -317,10 +325,6 @@ async function describeNodesWithLlm(options: {
     map.set(id, desc);
   }
 
-  for (const id of expectedIds) {
-    if (!map.has(id)) throw new Error(`LLM 输出缺少节点描述 id=${id}`);
-  }
-
   return map;
 }
 
@@ -333,25 +337,11 @@ function chunk<T>(items: T[], size: number): T[][] {
 
 export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeResult> {
   const apiKey = typeof options.llm.apiKey === 'string' ? options.llm.apiKey.trim() : '';
-  if (!apiKey && !options.describeNodes) {
-    return {
-      meta: {
-        runId: options.runId,
-        generatedAt: new Date().toISOString(),
-        skipped: true,
-        skipReason: 'UI LLM api-key 为空，无法生成界面树描述',
-        llm: { provider: options.llm.provider, model: options.llm.model },
-        counts: { nodes: 0, edges: 0, pages: 0, elements: 0 },
-      },
-      roots: [],
-      nodes: {},
-      edges: [],
-    };
-  }
 
   const radius = options.contextRadiusLines ?? 5;
   const batchSize = options.maxNodesPerLlmBatch ?? 15;
-  const baseUrls = options.describeNodes ? [] : resolveLlmBaseUrls(options.llm.provider);
+  const baseUrls = options.describeNodes || !apiKey ? [] : resolveLlmBaseUrls(options.llm.provider);
+  const strings = await loadArkuiStringTable(options.appRootAbs);
 
   const scanRootAbs = path.join(options.appRootAbs, DEFAULT_APP_SCAN_SUBDIR);
   const routeToFileRel = new Map<string, string>();
@@ -490,6 +480,12 @@ export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeRe
     const buildStart = Math.max(1, buildBlock.startLine);
     const buildEnd = Math.min(lines.length, buildBlock.endLine);
 
+    function looksInteractive(startLine: number): boolean {
+      const end = Math.min(buildEnd, startLine + 12);
+      const slice = lines.slice(startLine - 1, end).join('\n');
+      return /\.(onClick|onTouch|onLongPress|onGesture|onAction)\s*\(/u.test(slice);
+    }
+
     const componentStarts: Array<{ line: number; componentName: string }> = [];
     for (let ln = buildStart; ln <= buildEnd; ln += 1) {
       const lineText = lines[ln - 1] ?? '';
@@ -498,10 +494,11 @@ export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeRe
       if (!hit) continue;
       componentStarts.push({ line: ln, componentName: hit.componentName });
 
-      const category =
+      let category: UiTreeNodeCategory | null =
         categoryForComponentName(hit.componentName) ??
         (shouldCaptureUnknownComponentAsNode(hit.componentName) ? ('Component' satisfies UiTreeNodeCategory) : null);
       if (!category) continue;
+      if (category !== 'Input' && category !== 'Button' && looksInteractive(ln)) category = 'Button';
       const elId = ensureElementNode({
         fileRel: page.fileRel,
         line: ln,
@@ -585,12 +582,22 @@ export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeRe
   const allNodes = allNodeIds.map((id) => nodes[id]!);
 
   for (const batch of chunk(allNodes, batchSize)) {
-    const descMap = options.describeNodes
-      ? await options.describeNodes(batch)
-      : await describeNodesWithLlm({ llm: { ...options.llm, apiKey }, nodes: batch, baseUrls });
+    const hintsById = new Map<string, UiNodeTitleHints>();
+    for (const n of batch) hintsById.set(n.id, buildUiNodeTitleHints({ node: n, strings }));
+
+    let descMap = new Map<string, string>();
+    try {
+      if (options.describeNodes) descMap = await options.describeNodes(batch);
+      else if (apiKey && baseUrls.length > 0) descMap = await describeNodesWithLlm({ llm: { ...options.llm, apiKey }, nodes: batch, baseUrls, hintsById });
+    } catch {
+      descMap = new Map();
+    }
     for (const n of batch) {
-      const desc = descMap.get(n.id);
-      nodes[n.id]!.description = desc && desc.trim() ? desc.trim() : fallbackDescription(n);
+      const suggested = hintsById.get(n.id)?.suggested ?? '';
+      const raw = (descMap.get(n.id) ?? '').trim();
+      const picked = raw && isGoodHumanTitle({ category: n.category, title: raw }) ? raw : suggested;
+      const normalized = normalizeUiTitle({ category: n.category, title: picked || fallbackDescription(n) });
+      nodes[n.id]!.description = normalized || fallbackDescription(n);
     }
   }
 

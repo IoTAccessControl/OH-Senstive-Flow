@@ -36,7 +36,7 @@ const ANALYZE_STAGES = [
   '分析 sources',
   '构建调用图',
   '生成数据流（LLM）',
-  '生成 UI 树（LLM）',
+  '生成 UI 树（启发式/LLM）',
   '页面/功能点聚合',
   '写入结果文件',
   '生成隐私声明报告（LLM）',
@@ -92,9 +92,6 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
   const privacyReportLlmApiKey = typeof req.privacyReportLlmApiKey === 'string' ? req.privacyReportLlmApiKey : '';
 
   report(0);
-  if (!uiLlmApiKey.trim()) {
-    throw new Error('UI LLM api-key 不能为空（用于界面树描述生成）');
-  }
 
   const appAbs = toAbs(repoRoot, appPath);
   const sdkAbs = toAbs(repoRoot, sdkPath);
