@@ -2,21 +2,32 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { readJsonFile, writeJsonFile } from '../io.js';
+import { loadCsvApiPermissions } from '../csvSupplement.js';
 import type { Dataflow, DataflowsResult } from '../dataflow/types.js';
 import type { PageFeaturesIndex, PagesIndex, PageEntryInfo } from '../pages/types.js';
-import type { SourceRecord } from '../types.js';
+import type { SinkRecord, SourceRecord } from '../types.js';
 import type { UiTreeResult } from '../uiTree/types.js';
 
 import { sourceRecordToRef, type SourceRef } from '../shared/sourceRefs.js';
 
 import { extractFeaturePrivacyFacts } from './extractFeaturePrivacyFacts.js';
 import { buildPrivacyReport, renderPrivacyReportText } from './buildPrivacyReport.js';
-import type { FeaturePrivacyFactsFile, FeaturePrivacyFactsContent, PrivacyReportFile } from './types.js';
+import type { DataflowNodeRef, FeaturePrivacyFactsFile, FeaturePrivacyFactsContent, PrivacyPermissionPractice, PrivacyReportFile } from './types.js';
 
 type LlmConfig = { provider: string; apiKey: string; model: string };
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return Boolean(v) && typeof v === 'object' && !Array.isArray(v);
+}
+
+function cleanText(v: unknown): string {
+  if (typeof v !== 'string') return '';
+  return v.replaceAll(/\s+/gu, ' ').trim();
+}
+
+function isUnknownText(v: unknown): boolean {
+  const t = cleanText(v);
+  return !t || t === '未识别';
 }
 
 function asPagesIndex(raw: unknown): PagesIndex {
@@ -38,12 +49,21 @@ function asSourceRecords(raw: unknown): SourceRecord[] {
   return Array.isArray(raw) ? (raw as SourceRecord[]) : [];
 }
 
+function asSinkRecords(raw: unknown): SinkRecord[] {
+  return Array.isArray(raw) ? (raw as SinkRecord[]) : [];
+}
+
 async function tryReadJson<T>(filePath: string): Promise<T | null> {
   try {
     return (await readJsonFile(filePath)) as T;
   } catch {
     return null;
   }
+}
+
+function toAbs(repoRoot: string, maybeRelativePath: string): string {
+  const p = typeof maybeRelativePath === 'string' ? maybeRelativePath : '';
+  return path.isAbsolute(p) ? p : path.resolve(repoRoot, p);
 }
 
 function featureFactsFile(args: {
@@ -137,6 +157,160 @@ function toFeatureDir(outputDirAbs: string, pageId: string, featureId: string): 
   return path.join(outputDirAbs, 'pages', pageId, 'features', featureId);
 }
 
+function groupSinksByCallsite(sinks: SinkRecord[]): Map<string, SinkRecord[]> {
+  const map = new Map<string, SinkRecord[]>();
+  for (const s of sinks) {
+    const filePath = String((s as any)['App源码文件路径'] ?? '');
+    const line = Number((s as any)['调用行号'] ?? 0) || 0;
+    if (!filePath || line <= 0) continue;
+    const key = `${filePath}:${line}`;
+    const list = map.get(key) ?? [];
+    list.push(s);
+    map.set(key, list);
+  }
+  return map;
+}
+
+function normalizePermissionName(v: unknown): string {
+  const t = cleanText(v);
+  if (!t) return '';
+  return t.replaceAll(/（[^）]*）/gu, '').trim();
+}
+
+function uniqRefs(refs: DataflowNodeRef[]): DataflowNodeRef[] {
+  const out: DataflowNodeRef[] = [];
+  const seen = new Set<string>();
+  for (const r of refs) {
+    const flowId = cleanText(r.flowId);
+    const nodeId = cleanText(r.nodeId);
+    if (!flowId || !nodeId) continue;
+    const key = `${flowId}/${nodeId}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ flowId, nodeId });
+  }
+  return out;
+}
+
+function inferBusinessScenarioFromSinkDescription(desc: string): string {
+  const t = cleanText(desc);
+  if (!t) return '';
+  const parts = t.split(';').map((x) => cleanText(x));
+  const first = parts[0] ?? '';
+  if (!first) return '';
+  if (first.startsWith('权限:')) return '';
+  if (first.startsWith('数据:')) return '';
+  // E.g. "本地录音 / 本地录音" or similar.
+  return first.length > 60 ? `${first.slice(0, 60)}…` : first;
+}
+
+function derivePermissionPracticesFromCsv(args: {
+  featureId: string;
+  featureTitle: string;
+  dataflows: DataflowsResult;
+  sinksByCallsite: Map<string, SinkRecord[]>;
+  csvPermissions: Map<string, string[]>;
+}): PrivacyPermissionPractice[] {
+  const byName = new Map<
+    string,
+    { permissionName: string; refs: DataflowNodeRef[]; scenarios: Set<string>; apiKeys: Set<string> }
+  >();
+
+  for (const f of args.dataflows.flows ?? []) {
+    const flowId = String(f.flowId ?? '');
+    if (!flowId) continue;
+    for (const n of f.nodes ?? []) {
+      const filePath = cleanText(n.filePath);
+      const line = Number(n.line ?? 0) || 0;
+      const nodeId = cleanText(n.id);
+      if (!filePath || line <= 0 || !nodeId) continue;
+
+      const sinkRecords = args.sinksByCallsite.get(`${filePath}:${line}`) ?? [];
+      if (sinkRecords.length === 0) continue;
+
+      for (const s of sinkRecords) {
+        const apiKey = cleanText((s as any).__apiKey);
+        if (!apiKey) continue;
+        const perms = args.csvPermissions.get(apiKey) ?? [];
+        if (perms.length === 0) continue;
+
+        const desc = cleanText((s as any)['API功能描述']);
+        const scenario = inferBusinessScenarioFromSinkDescription(desc);
+
+        for (const permNameRaw of perms) {
+          const permissionName = normalizePermissionName(permNameRaw);
+          if (!permissionName) continue;
+          const cur =
+            byName.get(permissionName) ?? ({ permissionName, refs: [], scenarios: new Set<string>(), apiKeys: new Set<string>() } as const);
+          cur.refs.push({ flowId, nodeId });
+          if (scenario) cur.scenarios.add(scenario);
+          cur.apiKeys.add(apiKey);
+          byName.set(permissionName, cur as any);
+        }
+      }
+    }
+  }
+
+  const out: PrivacyPermissionPractice[] = [];
+  for (const item of byName.values()) {
+    const refs = uniqRefs(item.refs);
+    if (refs.length === 0) continue;
+
+    const scenario = Array.from(item.scenarios)[0] ?? '';
+    const businessScenario = scenario || args.featureTitle || args.featureId;
+    out.push({
+      permissionName: item.permissionName,
+      businessScenario,
+      permissionPurpose: '使用相关系统能力（由 SDK API 权限映射确定）',
+      denyImpact: '拒绝授权可能导致对应功能无法正常使用。',
+      refs,
+    });
+  }
+
+  return out.sort((a, b) => a.permissionName.localeCompare(b.permissionName));
+}
+
+function mergePermissionPractices(base: PrivacyPermissionPractice[], extra: PrivacyPermissionPractice[]): PrivacyPermissionPractice[] {
+  const byName = new Map<string, PrivacyPermissionPractice>();
+
+  for (const p of base ?? []) {
+    const name = normalizePermissionName(p.permissionName);
+    if (!name) continue;
+    byName.set(name, {
+      permissionName: name,
+      businessScenario: cleanText(p.businessScenario) || '未识别',
+      permissionPurpose: cleanText(p.permissionPurpose) || '未识别',
+      denyImpact: cleanText(p.denyImpact) || '未识别',
+      refs: uniqRefs(Array.isArray(p.refs) ? p.refs : []),
+    });
+  }
+
+  for (const p of extra ?? []) {
+    const name = normalizePermissionName(p.permissionName);
+    if (!name) continue;
+    const existing = byName.get(name);
+    const refs = uniqRefs(Array.isArray(p.refs) ? p.refs : []);
+    if (!existing) {
+      byName.set(name, {
+        permissionName: name,
+        businessScenario: cleanText(p.businessScenario) || '未识别',
+        permissionPurpose: cleanText(p.permissionPurpose) || '未识别',
+        denyImpact: cleanText(p.denyImpact) || '未识别',
+        refs,
+      });
+      continue;
+    }
+
+    existing.refs = uniqRefs([...(existing.refs ?? []), ...refs]);
+    if (isUnknownText(existing.businessScenario) && !isUnknownText(p.businessScenario)) existing.businessScenario = cleanText(p.businessScenario);
+    if (isUnknownText(existing.permissionPurpose) && !isUnknownText(p.permissionPurpose)) existing.permissionPurpose = cleanText(p.permissionPurpose);
+    if (isUnknownText(existing.denyImpact) && !isUnknownText(p.denyImpact)) existing.denyImpact = cleanText(p.denyImpact);
+    byName.set(name, existing);
+  }
+
+  return Array.from(byName.values()).sort((a, b) => a.permissionName.localeCompare(b.permissionName));
+}
+
 export async function generatePrivacyReportArtifacts(args: {
   repoRoot: string;
   runId: string;
@@ -148,6 +322,15 @@ export async function generatePrivacyReportArtifacts(args: {
   const reportTextPath = path.join(args.outputDirAbs, 'privacy_report.txt');
 
   try {
+    const metaRaw = await tryReadJson<any>(path.join(args.outputDirAbs, 'meta.json'));
+    const csvDirFromMeta = cleanText(metaRaw?.input?.csvDir);
+    const csvDirAbs = csvDirFromMeta ? toAbs(args.repoRoot, csvDirFromMeta) : path.join(args.repoRoot, 'input', 'csv');
+    const csvPermissions = await loadCsvApiPermissions(csvDirAbs);
+
+    const sinksRaw = await tryReadJson<unknown>(path.join(args.outputDirAbs, 'sinks.json'));
+    const sinks = asSinkRecords(sinksRaw);
+    const sinksByCallsite = groupSinksByCallsite(sinks);
+
     const pagesIndexPath = path.join(args.outputDirAbs, 'pages', 'index.json');
     const pagesIndexRaw = await readJsonFile(pagesIndexPath);
     const pagesIndex = asPagesIndex(pagesIndexRaw);
@@ -229,6 +412,15 @@ export async function generatePrivacyReportArtifacts(args: {
           skipReason = `功能点隐私要素抽取失败：${e instanceof Error ? e.message : String(e)}`;
         }
       }
+
+      const deterministicPerms = derivePermissionPracticesFromCsv({
+        featureId,
+        featureTitle: feature.title,
+        dataflows,
+        sinksByCallsite,
+        csvPermissions,
+      });
+      facts.permissionPractices = mergePermissionPractices(facts.permissionPractices, deterministicPerms);
 
       const outFile = featureFactsFile({
         runId: args.runId,

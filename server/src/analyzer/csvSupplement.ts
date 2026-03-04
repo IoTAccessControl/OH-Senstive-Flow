@@ -9,12 +9,31 @@ function stripBom(s: string): string {
   return s.charCodeAt(0) === 0xfeff ? s.slice(1) : s;
 }
 
+function uniq(arr: string[]): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const a of arr) {
+    if (!a) continue;
+    if (seen.has(a)) continue;
+    seen.add(a);
+    out.push(a);
+  }
+  return out;
+}
+
 function normalizeCsvApiKey(raw: string): string {
   let s = raw.trim();
   const paren = s.indexOf('(');
   if (paren !== -1) s = s.slice(0, paren);
   s = s.replaceAll('#', '.');
   return s.trim();
+}
+
+function extractPermissionNames(raw: string): string[] {
+  const text = raw.trim();
+  if (!text) return [];
+  const matches = text.match(/ohos\.permission\.[A-Za-z0-9_]+/gu) ?? [];
+  return uniq(matches.map((m) => m.trim()).filter(Boolean));
 }
 
 function buildDescriptionFromRow(row: CsvApiRow): string | undefined {
@@ -77,4 +96,60 @@ export async function loadCsvApiDescriptions(csvDir: string): Promise<Map<string
   }
 
   return map;
+}
+
+export async function loadCsvApiPermissions(csvDir: string): Promise<Map<string, string[]>> {
+  const map = new Map<string, Set<string>>();
+
+  const csvFiles = await walkFiles(csvDir, {
+    extensions: ['.csv'],
+    ignoreDirNames: ['node_modules', '.git', 'output', 'dist', 'build'],
+  });
+
+  for (const filePath of csvFiles) {
+    let text: string;
+    try {
+      text = await fs.readFile(filePath, 'utf8');
+    } catch {
+      continue;
+    }
+    text = stripBom(text);
+
+    let records: CsvApiRow[];
+    try {
+      records = parse(text, {
+        columns: true,
+        relax_column_count: true,
+        skip_empty_lines: true,
+        trim: true,
+      }) as CsvApiRow[];
+    } catch {
+      continue;
+    }
+
+    const hasRelatedApiColumn = records.length > 0 && Object.prototype.hasOwnProperty.call(records[0], '相关API');
+    if (!hasRelatedApiColumn) continue;
+
+    for (const row of records) {
+      const apiRaw = row['相关API']?.trim();
+      if (!apiRaw) continue;
+      const apiKey = normalizeCsvApiKey(apiRaw);
+      if (!apiKey.startsWith('@ohos.') && !apiKey.startsWith('@kit.')) continue;
+
+      const permRaw = row['相关权限']?.trim() ?? '';
+      const permissions = extractPermissionNames(permRaw);
+      if (permissions.length === 0) continue;
+
+      const set = map.get(apiKey) ?? new Set<string>();
+      for (const p of permissions) set.add(p);
+      map.set(apiKey, set);
+    }
+  }
+
+  const out = new Map<string, string[]>();
+  for (const [apiKey, perms] of map) {
+    const arr = Array.from(perms).sort((a, b) => a.localeCompare(b));
+    if (arr.length > 0) out.set(apiKey, arr);
+  }
+  return out;
 }

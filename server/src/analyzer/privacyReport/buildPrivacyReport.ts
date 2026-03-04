@@ -4,6 +4,7 @@ import type { DataflowsResult } from '../dataflow/types.js';
 
 import type {
   FeaturePrivacyFactsContent,
+  PrivacyPermissionPractice,
   PrivacyReportFile,
   PrivacyReportSection,
   PrivacyReportToken,
@@ -34,6 +35,18 @@ function cleanText(v: unknown): string {
   return v.replaceAll(/\r?\n/gu, ' ').replaceAll(/\s+/gu, ' ').trim();
 }
 
+function isUnknownText(v: unknown): boolean {
+  const t = cleanText(v);
+  return !t || t === '未识别';
+}
+
+function normalizePermissionName(v: unknown): string {
+  const t = cleanText(v);
+  if (!t) return '';
+  // Remove optional hints like "（可选）" to keep tokens stable.
+  return t.replaceAll(/（[^）]*）/gu, '').trim();
+}
+
 function uniq(arr: string[]): string[] {
   const out: string[] = [];
   const seen = new Set<string>();
@@ -54,6 +67,125 @@ function buildFlowNodeIndex(dataflows: DataflowsResult): Map<string, Set<string>
     map.set(String(f.flowId ?? ''), set);
   }
   return map;
+}
+
+function asPermissionPractices(facts: FeaturePrivacyFactsContent): PrivacyPermissionPractice[] {
+  return Array.isArray(facts.permissionPractices) ? (facts.permissionPractices as PrivacyPermissionPractice[]) : [];
+}
+
+function pickValidRef(
+  refs: Array<{ flowId: string; nodeId: string }> | undefined,
+  perFlowIndex: Map<string, Set<string>> | undefined,
+): { flowId: string; nodeId: string } | null {
+  if (!perFlowIndex) return null;
+  if (!Array.isArray(refs)) return null;
+  for (const r of refs) {
+    const flowId = cleanText((r as any).flowId);
+    const nodeId = cleanText((r as any).nodeId);
+    if (!flowId || !nodeId) continue;
+    const set = perFlowIndex.get(flowId);
+    if (!set || !set.has(nodeId)) continue;
+    return { flowId, nodeId };
+  }
+  return null;
+}
+
+function deterministicPermissionSentenceTokens(args: {
+  appName: string;
+  featureId: string;
+  practice: PrivacyPermissionPractice;
+  perFlowIndex: Map<string, Set<string>> | undefined;
+}): PrivacyReportToken[] {
+  const permissionName = normalizePermissionName(args.practice.permissionName);
+  if (!permissionName) return [];
+
+  const scenarioRaw = cleanText(args.practice.businessScenario);
+  const scenario = scenarioRaw && scenarioRaw !== '未识别' ? scenarioRaw : `【${args.featureId}】功能点`;
+  const purposeRaw = cleanText(args.practice.permissionPurpose);
+  const purpose = purposeRaw && purposeRaw !== '未识别' ? purposeRaw : '提供对应系统能力';
+  const denyRaw = cleanText(args.practice.denyImpact);
+  const denyImpact = denyRaw && denyRaw !== '未识别' ? denyRaw : '导致对应功能无法正常使用';
+
+  const picked = pickValidRef(args.practice.refs as any, args.perFlowIndex);
+  const jumpTo = picked ? { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId } : undefined;
+
+  return [
+    { text: `在${args.appName}应用中，${scenario}场景下我们将申请` },
+    jumpTo ? { text: permissionName, jumpTo } : { text: permissionName },
+    { text: `权限，用于${purpose}；若您拒绝授权，可能${denyImpact}。` },
+  ];
+}
+
+function ensurePermissionsSectionTokens(args: {
+  appName: string;
+  featureId: string;
+  facts: FeaturePrivacyFactsContent;
+  perFlowIndex: Map<string, Set<string>> | undefined;
+  existingTokens: PrivacyReportToken[];
+}): PrivacyReportToken[] {
+  const practices = asPermissionPractices(args.facts)
+    .map((p) => ({
+      ...p,
+      permissionName: normalizePermissionName(p.permissionName),
+      businessScenario: cleanText(p.businessScenario) || '未识别',
+      permissionPurpose: cleanText(p.permissionPurpose) || '未识别',
+      denyImpact: cleanText(p.denyImpact) || '未识别',
+      refs: Array.isArray(p.refs) ? p.refs : [],
+    }))
+    .filter((p) => Boolean(p.permissionName));
+
+  if (practices.length === 0) return args.existingTokens;
+
+  const out: PrivacyReportToken[] = args.existingTokens.slice();
+  const byName = new Map<string, { practice: PrivacyPermissionPractice; jumpTo?: { featureId: string; flowId: string; nodeId: string } }>();
+  for (const p of practices) {
+    const picked = pickValidRef(p.refs as any, args.perFlowIndex);
+    const jumpTo = picked ? { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId } : undefined;
+    byName.set(p.permissionName, { practice: p, jumpTo });
+  }
+
+  const existingNameToIdx = new Map<string, number[]>();
+  for (let i = 0; i < out.length; i += 1) {
+    const text = normalizePermissionName(out[i]?.text);
+    if (!text) continue;
+    if (!byName.has(text)) continue;
+    const list = existingNameToIdx.get(text) ?? [];
+    list.push(i);
+    existingNameToIdx.set(text, list);
+  }
+
+  // If LLM emitted a permission token without jumpTo, upgrade it when we have a valid ref.
+  for (const [name, idxs] of existingNameToIdx) {
+    const desired = byName.get(name);
+    if (!desired?.jumpTo) continue;
+    for (const idx of idxs) {
+      if (!out[idx]) continue;
+      if (out[idx]!.jumpTo) continue;
+      out[idx] = { ...out[idx]!, jumpTo: desired.jumpTo };
+    }
+  }
+
+  // Append missing permissions (deterministic sentences).
+  const missing = Array.from(byName.keys()).filter((name) => !existingNameToIdx.has(name));
+  if (missing.length === 0) return out;
+
+  // If the paragraph is a placeholder, prefer replacing it with deterministic content.
+  const isPlaceholder =
+    out.length === 1 && typeof out[0]?.text === 'string' && (out[0]!.text.includes('未生成') || out[0]!.text.includes('未生成（原因'));
+  const base = isPlaceholder ? [] : out;
+  const merged = base.slice();
+  for (const name of missing) {
+    const item = byName.get(name);
+    if (!item) continue;
+    const tokens = deterministicPermissionSentenceTokens({
+      appName: args.appName,
+      featureId: args.featureId,
+      practice: item.practice,
+      perFlowIndex: args.perFlowIndex,
+    });
+    for (const t of tokens) merged.push(t);
+  }
+  return merged.length > 0 ? merged : out;
 }
 
 function summarizeFeatureFacts(featureId: string, appName: string, facts: FeaturePrivacyFactsContent): Record<string, unknown> {
@@ -99,7 +231,7 @@ function summarizeFeatureFacts(featureId: string, appName: string, facts: Featur
   )[0];
 
   const permissions = permPractices.map((p) => ({
-    permissionName: cleanText(p.permissionName) || '未识别',
+    permissionName: normalizePermissionName(p.permissionName) || '未识别',
     businessScenario: cleanText(p.businessScenario) || '未识别',
     permissionPurpose: cleanText(p.permissionPurpose) || '未识别',
     denyImpact: cleanText(p.denyImpact) || '未识别',
@@ -294,6 +426,20 @@ export async function buildPrivacyReport(args: {
 
   const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
   if (!apiKey) {
+    const permissionsSections: PrivacyReportSection[] = args.features.map((f) => {
+      const tokens: PrivacyReportToken[] =
+        asPermissionPractices(f.facts).length > 0
+          ? ensurePermissionsSectionTokens({
+              appName: args.appName,
+              featureId: f.featureId,
+              facts: f.facts,
+              perFlowIndex: flowIndexes.get(f.featureId),
+              existingTokens: [{ text: `${f.featureId}：未生成权限调用段落` }],
+            })
+          : [{ text: `在${args.appName}应用的【${f.featureId}】功能点中，当前未涉及任何设备权限调用。` }];
+      return { featureId: f.featureId, tokens };
+    });
+
     const report: PrivacyReportFile = {
       meta: {
         runId: args.runId,
@@ -308,39 +454,96 @@ export async function buildPrivacyReport(args: {
           featureId: f.featureId,
           tokens: [{ text: `在【${f.featureId}】功能点中：隐私声明报告未生成（原因：LLM api-key 为空）。` }],
         })),
-        permissions: args.features.map((f) => ({
-          featureId: f.featureId,
-          tokens: [{ text: `在【${f.featureId}】功能点中：隐私声明报告未生成（原因：LLM api-key 为空）。` }],
-        })),
+        permissions: permissionsSections,
       },
     };
     const text = renderPrivacyReportText(report);
     return { report, text, warnings: [] };
   }
 
-  const prompt = buildPrompt({
-    appName: args.appName,
-    features: args.features.map((f) => ({ featureId: f.featureId, facts: f.facts })),
-  });
+  try {
+    const prompt = buildPrompt({
+      appName: args.appName,
+      features: args.features.map((f) => ({ featureId: f.featureId, facts: f.facts })),
+    });
 
-  const raw = await chatJsonWithRetries({ llm: { ...args.llm, apiKey }, system: prompt.system, user: prompt.user });
-  const validated = validateSections(raw, featureIds, flowIndexes);
+    const raw = await chatJsonWithRetries({ llm: { ...args.llm, apiKey }, system: prompt.system, user: prompt.user });
+    const validated = validateSections(raw, featureIds, flowIndexes);
 
-  const report: PrivacyReportFile = {
-    meta: {
-      runId: args.runId,
-      generatedAt,
-      llm: { provider: args.llm.provider, model: args.llm.model },
-      counts: { features: args.features.length },
-    },
-    sections: {
-      collectionAndUse: validated.collectionAndUse,
-      permissions: validated.permissions,
-    },
-  };
+    const collectionById = new Map(validated.collectionAndUse.map((s) => [s.featureId, s] as const));
+    const permissionsById = new Map(validated.permissions.map((s) => [s.featureId, s] as const));
 
-  const text = renderPrivacyReportText(report);
-  return { report, text, warnings: validated.warnings };
+    const collectionAndUse: PrivacyReportSection[] = args.features.map((f) => {
+      const section = collectionById.get(f.featureId);
+      return section ?? { featureId: f.featureId, tokens: [{ text: `${f.featureId}：未生成个人信息收集使用段落` }] };
+    });
+
+    const permissions: PrivacyReportSection[] = args.features.map((f) => {
+      const existing = permissionsById.get(f.featureId);
+      const tokens = ensurePermissionsSectionTokens({
+        appName: args.appName,
+        featureId: f.featureId,
+        facts: f.facts,
+        perFlowIndex: flowIndexes.get(f.featureId),
+        existingTokens: existing?.tokens ?? [{ text: `${f.featureId}：未生成权限调用段落` }],
+      });
+      return { featureId: f.featureId, tokens };
+    });
+
+    const report: PrivacyReportFile = {
+      meta: {
+        runId: args.runId,
+        generatedAt,
+        llm: { provider: args.llm.provider, model: args.llm.model },
+        counts: { features: args.features.length },
+      },
+      sections: {
+        collectionAndUse,
+        permissions,
+      },
+    };
+
+    const text = renderPrivacyReportText(report);
+    return { report, text, warnings: validated.warnings };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const warnings = [`隐私声明报告生成失败（已回退到确定性输出）：${message}`];
+
+    const permissions: PrivacyReportSection[] = args.features.map((f) => {
+      const tokens: PrivacyReportToken[] =
+        asPermissionPractices(f.facts).length > 0
+          ? ensurePermissionsSectionTokens({
+              appName: args.appName,
+              featureId: f.featureId,
+              facts: f.facts,
+              perFlowIndex: flowIndexes.get(f.featureId),
+              existingTokens: [{ text: `${f.featureId}：未生成权限调用段落` }],
+            })
+          : [{ text: `在${args.appName}应用的【${f.featureId}】功能点中，当前未涉及任何设备权限调用。` }];
+      return { featureId: f.featureId, tokens };
+    });
+
+    const report: PrivacyReportFile = {
+      meta: {
+        runId: args.runId,
+        generatedAt,
+        llm: { provider: args.llm.provider, model: args.llm.model },
+        skipped: true,
+        skipReason: `隐私声明报告生成失败：${message}`,
+        counts: { features: args.features.length },
+      },
+      sections: {
+        collectionAndUse: args.features.map((f) => ({
+          featureId: f.featureId,
+          tokens: [{ text: `在【${f.featureId}】功能点中：隐私声明报告未生成（原因：${message}）。` }],
+        })),
+        permissions,
+      },
+    };
+
+    const text = renderPrivacyReportText(report);
+    return { report, text, warnings };
+  }
 }
 
 function sectionParagraph(tokens: PrivacyReportToken[]): string {
