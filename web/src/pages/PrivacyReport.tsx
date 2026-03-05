@@ -128,60 +128,52 @@ export function PrivacyReportPage() {
 
           <div className="report">
             <div className="reportTitle">1 我们如何收集和使用您的个人信息</div>
-            {state.report.sections.collectionAndUse.map((p) => (
+            {state.report.sections.collectionAndUse.filter((p) => p.tokens.length > 0).map((p) => (
               <p key={`cu:${p.featureId}`} className="reportParagraph">
-                {p.tokens.length === 0 ? (
-                  <span>{p.featureId}：暂无内容</span>
-                ) : (
-                  p.tokens.map((t, idx) => {
-                    if (!t.jumpTo) return <span key={`${p.featureId}:${idx}`}>{t.text}</span>;
-                    const url = buildDataflowsUrl({ runId, jumpTo: t.jumpTo });
-                    return (
-                      <span
-                        key={`${p.featureId}:${idx}`}
-                        className="tokenLink"
-                        role="link"
-                        tabIndex={0}
-                        title="跳转到对应数据流节点"
-                        onClick={() => navigate(url)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') navigate(url);
-                        }}
-                      >
-                        {t.text}
-                      </span>
-                    );
-                  })
-                )}
+                {p.tokens.map((t, idx) => {
+                  if (!t.jumpTo) return <span key={`${p.featureId}:${idx}`}>{t.text}</span>;
+                  const url = buildDataflowsUrl({ runId, jumpTo: t.jumpTo });
+                  return (
+                    <span
+                      key={`${p.featureId}:${idx}`}
+                      className="tokenLink"
+                      role="link"
+                      tabIndex={0}
+                      title="跳转到对应数据流节点"
+                      onClick={() => navigate(url)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') navigate(url);
+                      }}
+                    >
+                      {t.text}
+                    </span>
+                  );
+                })}
               </p>
             ))}
 
             <div className="reportTitle">2 设备权限调用</div>
-            {state.report.sections.permissions.map((p) => (
+            {state.report.sections.permissions.filter((p) => p.tokens.length > 0).map((p) => (
               <p key={`perm:${p.featureId}`} className="reportParagraph">
-                {p.tokens.length === 0 ? (
-                  <span>{p.featureId}：暂无内容</span>
-                ) : (
-                  p.tokens.map((t, idx) => {
-                    if (!t.jumpTo) return <span key={`${p.featureId}:${idx}`}>{t.text}</span>;
-                    const url = buildDataflowsUrl({ runId, jumpTo: t.jumpTo });
-                    return (
-                      <span
-                        key={`${p.featureId}:${idx}`}
-                        className="tokenLink"
-                        role="link"
-                        tabIndex={0}
-                        title="跳转到对应数据流节点"
-                        onClick={() => navigate(url)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') navigate(url);
-                        }}
-                      >
-                        {t.text}
-                      </span>
-                    );
-                  })
-                )}
+                {p.tokens.map((t, idx) => {
+                  if (!t.jumpTo) return <span key={`${p.featureId}:${idx}`}>{t.text}</span>;
+                  const url = buildDataflowsUrl({ runId, jumpTo: t.jumpTo });
+                  return (
+                    <span
+                      key={`${p.featureId}:${idx}`}
+                      className="tokenLink"
+                      role="link"
+                      tabIndex={0}
+                      title="跳转到对应数据流节点"
+                      onClick={() => navigate(url)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') navigate(url);
+                      }}
+                    >
+                      {t.text}
+                    </span>
+                  );
+                })}
               </p>
             ))}
           </div>

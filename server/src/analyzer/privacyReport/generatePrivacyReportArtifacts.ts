@@ -211,10 +211,14 @@ function derivePermissionPracticesFromCsv(args: {
   sinksByCallsite: Map<string, SinkRecord[]>;
   csvPermissions: Map<string, string[]>;
 }): PrivacyPermissionPractice[] {
-  const byName = new Map<
-    string,
-    { permissionName: string; refs: DataflowNodeRef[]; scenarios: Set<string>; apiKeys: Set<string> }
-  >();
+  type DerivedPermissionPractice = {
+    permissionName: string;
+    refs: DataflowNodeRef[];
+    scenarios: Set<string>;
+    apiKeys: Set<string>;
+  };
+
+  const byName = new Map<string, DerivedPermissionPractice>();
 
   for (const f of args.dataflows.flows ?? []) {
     const flowId = String(f.flowId ?? '');
@@ -240,12 +244,16 @@ function derivePermissionPracticesFromCsv(args: {
         for (const permNameRaw of perms) {
           const permissionName = normalizePermissionName(permNameRaw);
           if (!permissionName) continue;
-          const cur =
-            byName.get(permissionName) ?? ({ permissionName, refs: [], scenarios: new Set<string>(), apiKeys: new Set<string>() } as const);
+          const cur = byName.get(permissionName) ?? {
+            permissionName,
+            refs: [],
+            scenarios: new Set<string>(),
+            apiKeys: new Set<string>(),
+          };
           cur.refs.push({ flowId, nodeId });
           if (scenario) cur.scenarios.add(scenario);
           cur.apiKeys.add(apiKey);
-          byName.set(permissionName, cur as any);
+          byName.set(permissionName, cur);
         }
       }
     }

@@ -11,6 +11,7 @@ describe('privacy facts - deterministic permissions from CSV', () => {
     const outputDirAbs = path.join(repoRoot, 'output', 'App', 'run1');
     const csvDirAbs = path.join(repoRoot, 'input', 'csv');
     await fs.mkdir(path.join(outputDirAbs, 'pages', 'P1', 'features', 'ui_P1_feature'), { recursive: true });
+    await fs.mkdir(path.join(outputDirAbs, 'pages', 'P1', 'features', 'ui_P1_feature2'), { recursive: true });
     await fs.mkdir(csvDirAbs, { recursive: true });
 
     await fs.writeFile(
@@ -63,12 +64,12 @@ describe('privacy facts - deterministic permissions from CSV', () => {
       path.join(outputDirAbs, 'pages', 'index.json'),
       JSON.stringify(
         {
-          meta: { runId: 'App_run1', generatedAt: new Date().toISOString(), counts: { pages: 1, features: 1, flows: 1, unassignedFlows: 0 } },
+          meta: { runId: 'App_run1', generatedAt: new Date().toISOString(), counts: { pages: 1, features: 2, flows: 2, unassignedFlows: 0 } },
           pages: [
             {
               pageId: 'P1',
               entry: { filePath: 'app/main.ets', structName: 'Index', line: 1, description: '测试页' },
-              counts: { features: 1, flows: 1 },
+              counts: { features: 2, flows: 2 },
             },
           ],
         },
@@ -82,7 +83,7 @@ describe('privacy facts - deterministic permissions from CSV', () => {
       path.join(outputDirAbs, 'pages', 'P1', 'features', 'index.json'),
       JSON.stringify(
         {
-          meta: { runId: 'App_run1', generatedAt: new Date().toISOString(), pageId: 'P1', counts: { features: 1, flows: 1 } },
+          meta: { runId: 'App_run1', generatedAt: new Date().toISOString(), pageId: 'P1', counts: { features: 2, flows: 2 } },
           page: { pageId: 'P1', entry: { filePath: 'app/main.ets', structName: 'Index', line: 1, description: '测试页' } },
           features: [
             {
@@ -90,6 +91,13 @@ describe('privacy facts - deterministic permissions from CSV', () => {
               title: '跳转页面',
               kind: 'ui',
               anchor: { filePath: 'app/main.ets', line: 10, uiNodeId: 'ui:1' },
+              counts: { flows: 1, nodes: 1, edges: 0 },
+            },
+            {
+              featureId: 'ui_P1_feature2',
+              title: '无权限功能',
+              kind: 'ui',
+              anchor: { filePath: 'app/main.ets', line: 20, uiNodeId: 'ui:2' },
               counts: { flows: 1, nodes: 1, edges: 0 },
             },
           ],
@@ -136,6 +144,42 @@ describe('privacy facts - deterministic permissions from CSV', () => {
       'utf8',
     );
 
+    await fs.writeFile(
+      path.join(outputDirAbs, 'pages', 'P1', 'features', 'ui_P1_feature2', 'dataflows.json'),
+      JSON.stringify(
+        {
+          meta: {
+            runId: 'App_run1',
+            generatedAt: new Date().toISOString(),
+            counts: { flows: 1, nodes: 1, edges: 0 },
+            page: { pageId: 'P1', entry: { filePath: 'app/main.ets', structName: 'Index', line: 1, description: '测试页' } },
+            feature: { featureId: 'ui_P1_feature2', kind: 'ui', title: '无权限功能' },
+          },
+          flows: [
+            {
+              flowId: 'flow:p2',
+              pathId: 'p2',
+              nodes: [
+                {
+                  id: 'p2:n1',
+                  filePath: 'app/main.ets',
+                  line: 20,
+                  code: "console.log('hi');",
+                  description: '无权限调用',
+                  context: { startLine: 19, lines: ['// dummy'] },
+                },
+              ],
+              edges: [],
+              summary: {},
+            },
+          ],
+        },
+        null,
+        2,
+      ),
+      'utf8',
+    );
+
     await generatePrivacyReportArtifacts({
       repoRoot,
       runId: 'App_run1',
@@ -158,6 +202,14 @@ describe('privacy facts - deterministic permissions from CSV', () => {
     const internetToken = tokens.find((t: any) => t.text === 'ohos.permission.INTERNET');
     expect(internetToken).toBeTruthy();
     expect(internetToken.jumpTo).toEqual({ featureId: 'ui_P1_feature', flowId: 'flow:p1', nodeId: 'p1:n1' });
+
+    const permissionSection2 = (report?.sections?.permissions ?? []).find((s: any) => s.featureId === 'ui_P1_feature2');
+    expect(permissionSection2?.tokens ?? []).toEqual([]);
+
+    const allTokens = [
+      ...((report?.sections?.collectionAndUse ?? []) as any[]).flatMap((s) => s.tokens ?? []),
+      ...((report?.sections?.permissions ?? []) as any[]).flatMap((s) => s.tokens ?? []),
+    ];
+    expect(allTokens.some((t: any) => typeof t.text === 'string' && t.text.includes('App'))).toBe(false);
   });
 });
-

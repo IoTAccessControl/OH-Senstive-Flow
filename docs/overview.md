@@ -228,7 +228,7 @@ LLM 的使用方式：
 
 将本次 run 的所有核心产物写入 `output/<AppName>/<timestamp>/`（见下一节“输出产物”）。
 
-### 阶段 14：生成隐私声明报告（LLM）
+### 阶段 14：生成隐私声明报告（隐私要素抽取 + 确定性报告拼装）
 
 实现入口：`server/src/analyzer/privacyReport/generatePrivacyReportArtifacts.ts`
 
@@ -237,13 +237,15 @@ LLM 的使用方式：
 1. 针对每个 feature 生成 `privacy_facts.json`
    - 基于 LLM 从 dataflows/ui/source 证据中抽取隐私要素（dataPractices / permissionPractices）
    - 同时会把 CSV 中「SDK API → 相关权限」的映射结果**确定性注入**到 `permissionPractices[].permissionName`（并绑定到对应数据流节点 refs，便于报告跳转）
-2. 汇总所有 feature，生成 `privacy_report.json` 与 `privacy_report.txt`（LLM + 确定性补全）
-   - 如果 LLM 输出遗漏了某些 permission token（或缺少 jumpTo），会用 `privacy_facts.json` 中的 permissionPractices 做补全，确保权限名称可点击跳转到证据节点
+2. 汇总所有 feature，生成 `privacy_report.json` 与 `privacy_report.txt`（**确定性拼装**）
+   - 报告正文**不包含应用名称**（避免在文案中直接点名 App）
+   - 仅输出“有证据支撑”的描述：每个句子至少包含一个可跳转 token（dataItem / permission），避免输出“未申请权限 / 未识别 / 不涉及 / 未发现开关”等“无证据句子”
+   - 权限段落的 permission token 一定来自 `privacy_facts.json`（包含 CSV 注入的权限），并携带 jumpTo（若无有效 ref 则不会输出该句）
 
 容错：
 
-- 若 `privacyReportLlmApiKey` 为空，会跳过 LLM 文案生成；但仍可基于 dataflows+sinks+CSV 生成权限段落中的可跳转 token（不依赖 LLM）
-- 若 feature 没有 dataflows，也会跳过该 feature 的要素抽取
+- 若 `privacyReportLlmApiKey` 为空，会跳过 feature 级隐私要素抽取（因此 collectionAndUse 段落可能为空）；但仍可基于 dataflows+sinks+CSV 生成权限段落中的可跳转 token（不依赖 LLM 文案生成）
+- 若 feature 没有 dataflows，也会跳过该 feature 的要素抽取（数据项/权限 refs 不完整时，对应句子会被自然省略）
 
 ### 阶段 15：写入 runId 注册表
 
