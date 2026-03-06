@@ -16,7 +16,7 @@ type ReportSection = {
 };
 
 type PrivacyReport = {
-  meta?: { skipped?: boolean; skipReason?: string };
+  meta?: { skipped?: boolean; skipReason?: string; warnings?: string[] };
   sections: {
     collectionAndUse: ReportSection[];
     permissions: ReportSection[];
@@ -105,6 +105,12 @@ export function PrivacyReportPage() {
     return state.report.meta?.skipped ? state.report.meta?.skipReason : undefined;
   }, [state]);
 
+  const warnings = useMemo(() => {
+    if (state.state !== 'ready') return [];
+    const raw = state.report.meta?.warnings;
+    return Array.isArray(raw) ? raw.filter((x): x is string => typeof x === 'string' && x.trim().length > 0) : [];
+  }, [state]);
+
   return (
     <div className="page">
       <h1 className="title">隐私声明报告</h1>
@@ -125,6 +131,11 @@ export function PrivacyReportPage() {
       {state.state === 'ready' && (
         <>
           {skipReason && <div className="status">提示：{skipReason}</div>}
+          {warnings.map((warning, idx) => (
+            <div key={`warn:${idx}`} className="status">
+              提示：{warning}
+            </div>
+          ))}
 
           <div className="report">
             <div className="reportTitle">1 我们如何收集和使用您的个人信息</div>

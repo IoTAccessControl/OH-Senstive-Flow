@@ -29,6 +29,10 @@ export type Dataflow = {
   nodes: DataflowNode[];
   edges: DataflowEdge[];
   summary?: DataflowSummary;
+  meta?: {
+    fallback?: boolean;
+    warnings?: string[];
+  };
 };
 
 export type DataflowsResult = {
@@ -37,6 +41,7 @@ export type DataflowsResult = {
     generatedAt: string;
     skipped?: boolean;
     skipReason?: string;
+    warnings?: string[];
     llm?: {
       provider: string;
       model: string;
@@ -45,6 +50,8 @@ export type DataflowsResult = {
       flows: number;
       nodes: number;
       edges: number;
+      failedPaths?: number;
+      fallbackFlows?: number;
     };
   };
   flows: Dataflow[];

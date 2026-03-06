@@ -221,6 +221,8 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
       dataflows: dataflows.meta.counts.flows,
       dataflowNodes: dataflows.meta.counts.nodes,
       dataflowEdges: dataflows.meta.counts.edges,
+      dataflowFailedPaths: dataflows.meta.counts.failedPaths ?? 0,
+      dataflowFallbackFlows: dataflows.meta.counts.fallbackFlows ?? 0,
       dataflowSkipped: Boolean(dataflows.meta.skipped),
       uiTreeNodes: uiTree.meta.counts.nodes,
       uiTreeEdges: uiTree.meta.counts.edges,

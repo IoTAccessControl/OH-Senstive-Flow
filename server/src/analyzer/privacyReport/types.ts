@@ -84,6 +84,7 @@ export type PrivacyReportFile = {
     llm?: { provider: string; model: string };
     skipped?: boolean;
     skipReason?: string;
+    warnings?: string[];
     counts: { features: number };
   };
   sections: {

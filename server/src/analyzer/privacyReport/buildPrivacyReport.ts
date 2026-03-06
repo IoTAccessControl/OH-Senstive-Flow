@@ -127,8 +127,7 @@ function deterministicPermissionSentenceTokens(args: {
   if (!permissionName) return [];
 
   const picked = pickValidRef(args.practice.refs as any, args.perFlowIndex);
-  if (!picked) return [];
-  const jumpTo = { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId };
+  const jumpTo = picked ? { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId } : undefined;
 
   const scenario = clauseText(args.practice.businessScenario);
   const purpose = purposeClauseText(args.practice.permissionPurpose);
@@ -139,7 +138,7 @@ function deterministicPermissionSentenceTokens(args: {
 
   return [
     { text: prefix },
-    { text: permissionName, jumpTo },
+    jumpTo ? { text: permissionName, jumpTo } : { text: permissionName },
     { text: purposeSuffix },
     ...(denyImpact ? [{ text: `若您拒绝授权，${denyImpact}。` }] : []),
   ];
@@ -322,8 +321,11 @@ function deterministicCollectionAndUseTokens(args: {
       const name = clauseText((di as any)?.name);
       if (!name) continue;
       const picked = pickValidRef((di as any)?.refs as any, args.perFlowIndex);
-      if (!picked) continue;
-      entityTokens.push({ text: name, jumpTo: { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId } });
+      if (picked) {
+        entityTokens.push({ text: name, jumpTo: { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId } });
+      } else {
+        entityTokens.push({ text: name });
+      }
     }
     if (entityTokens.length === 0) continue;
 
@@ -522,6 +524,21 @@ export async function buildPrivacyReport(args: {
     }),
   }));
 
+  const warnings = uniq(
+    args.features.flatMap((f) => {
+      const out: string[] = [];
+      const collectionTokens = collectionAndUse.find((s) => s.featureId === f.featureId)?.tokens ?? [];
+      const permissionTokens = permissions.find((s) => s.featureId === f.featureId)?.tokens ?? [];
+      if (asDataPractices(f.facts).length > 0 && collectionTokens.every((t) => !t.jumpTo)) {
+        out.push(`功能点 ${f.featureId} 的个人信息段落缺少有效跳转引用，已降级为纯文本。`);
+      }
+      if (asPermissionPractices(f.facts).length > 0 && permissionTokens.every((t) => !t.jumpTo)) {
+        out.push(`功能点 ${f.featureId} 的权限段落缺少有效跳转引用，已降级为纯文本。`);
+      }
+      return out;
+    }),
+  );
+
   const report: PrivacyReportFile = {
     meta: {
       runId: args.runId,
@@ -529,6 +546,7 @@ export async function buildPrivacyReport(args: {
       llm: { provider: args.llm.provider, model: args.llm.model },
       skipped: !apiKey,
       skipReason: !apiKey ? '隐私声明报告文案 LLM api-key 为空：未使用 LLM 文案生成' : undefined,
+      warnings: warnings.length > 0 ? warnings : undefined,
       counts: { features: args.features.length },
     },
     sections: {
@@ -538,7 +556,7 @@ export async function buildPrivacyReport(args: {
   };
 
   const text = renderPrivacyReportText(report);
-  return { report, text, warnings: [] };
+  return { report, text, warnings };
 }
 
 function sectionParagraph(tokens: PrivacyReportToken[]): string {

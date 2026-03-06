@@ -799,6 +799,8 @@ export async function groupDataflowsByPageFeature(args: {
         ...bf.feature,
         counts,
       };
+      const fallbackFlows = bf.flows.filter((flow) => flow.meta?.fallback).length;
+      const flowWarnings = Array.from(new Set(bf.flows.flatMap((flow) => flow.meta?.warnings ?? [])));
       features.push({
         feature,
         dataflows: {
@@ -806,7 +808,12 @@ export async function groupDataflowsByPageFeature(args: {
             runId: args.runId,
             generatedAt,
             llm: args.dataflows.meta.llm,
-            counts,
+            warnings: flowWarnings.length > 0 ? flowWarnings : undefined,
+            counts: {
+              ...counts,
+              failedPaths: fallbackFlows,
+              fallbackFlows,
+            },
             page: { pageId: page.pageId, entry: page.entry },
             feature: { featureId: bf.feature.featureId, kind: bf.feature.kind, title: bf.feature.title },
           } as any,

@@ -268,6 +268,198 @@ function validateLlmResult(raw: unknown): LlmResult {
   return { nodes: cleanedNodes, edges: cleanedEdges.length > 0 ? cleanedEdges : undefined, summary };
 }
 
+function asErrorMessage(error: unknown): string {
+  const text = error instanceof Error ? error.message : String(error);
+  return text.replaceAll(/\s+/gu, ' ').trim();
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+function shouldRetryLlmError(error: unknown): boolean {
+  if (error instanceof LlmNetworkError) return true;
+  if (error instanceof LlmHttpError) return error.status === 429 || error.status >= 500;
+  const message = asErrorMessage(error);
+  return /(?:LLM 返回无法解析为 JSON|LLM 返回非 JSON|缺少 message\.content|LLM JSON 不是对象|LLM JSON 缺少 nodes\[\]|LLM JSON nodes 为空)/u.test(
+    message,
+  );
+}
+
+async function requestDataflowLlm(args: {
+  baseUrls: string[];
+  apiKey: string;
+  model: string;
+  system: string;
+  user: string;
+}): Promise<LlmResult> {
+  const retryDelaysMs = [300, 800];
+  const maxAttempts = retryDelaysMs.length + 1;
+  let lastError: unknown = null;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    for (let i = 0; i < args.baseUrls.length; i += 1) {
+      const baseUrl = args.baseUrls[i]!;
+      try {
+        const llmRes = await openAiCompatibleChat({
+          baseUrl,
+          apiKey: args.apiKey,
+          model: args.model,
+          messages: [
+            { role: 'system', content: args.system },
+            { role: 'user', content: args.user },
+          ],
+          temperature: 0.2,
+          jsonMode: true,
+        });
+        const parsed = safeJsonParse(llmRes.content);
+        const llmResult = validateLlmResult(parsed);
+        if (llmResult.nodes.length === 0) throw new Error('LLM JSON nodes 为空');
+        return llmResult;
+      } catch (error) {
+        lastError = error;
+        const hasMoreBaseUrls = i < args.baseUrls.length - 1;
+        const canTryAnotherBaseUrl =
+          hasMoreBaseUrls &&
+          (shouldRetryLlmError(error) ||
+            (error instanceof LlmHttpError && (error.status === 401 || error.status === 404)));
+        if (canTryAnotherBaseUrl) continue;
+
+        const retriable = shouldRetryLlmError(error);
+        if (!retriable || attempt >= maxAttempts - 1) {
+          throw error;
+        }
+        break;
+      }
+    }
+
+    if (!shouldRetryLlmError(lastError) || attempt >= retryDelaysMs.length) break;
+    await sleep(retryDelaysMs[attempt]!);
+  }
+
+  throw lastError instanceof Error ? lastError : new Error(String(lastError));
+}
+
+async function buildFlowFromLlmResult(args: {
+  repoRoot: string;
+  radius: number;
+  path: CallGraphPath;
+  anchors: CallGraphNode[];
+  llmResult: LlmResult;
+}): Promise<Dataflow> {
+  const nodes: Dataflow['nodes'] = [];
+  for (let i = 0; i < args.llmResult.nodes.length; i += 1) {
+    const n = args.llmResult.nodes[i]!;
+    const filePath = normalizeWorkspacePath(args.repoRoot, n.filePath);
+    const line = Math.max(1, Math.floor(n.line));
+    const lines = await readFileLines(args.repoRoot, filePath);
+    const code = lines ? getLineText(lines, line) : (n.code ?? '');
+    const context = lines ? buildContext(lines, line, args.radius) : { startLine: line, lines: [code] };
+
+    nodes.push({
+      id: `${args.path.pathId}:n${i + 1}`,
+      filePath,
+      line,
+      code,
+      description: n.description,
+      context,
+    });
+  }
+
+  const edges: Dataflow['edges'] = [];
+  if (args.llmResult.edges && args.llmResult.edges.length > 0) {
+    for (const e of args.llmResult.edges) {
+      const from = nodes[e.from]?.id;
+      const to = nodes[e.to]?.id;
+      if (!from || !to) continue;
+      edges.push({ from, to });
+    }
+  }
+  if (edges.length === 0) {
+    for (let i = 0; i < nodes.length - 1; i += 1) edges.push({ from: nodes[i]!.id, to: nodes[i + 1]!.id });
+  }
+
+  const existing = new Set(nodes.map((n) => nodeKey(n)));
+  for (const a of args.anchors) {
+    const key = nodeKey({ filePath: a.filePath, line: a.line });
+    if (existing.has(key)) continue;
+    const lines = await readFileLines(args.repoRoot, a.filePath);
+    const code = lines ? getLineText(lines, a.line) : a.code;
+    const context = lines ? buildContext(lines, a.line, args.radius) : { startLine: a.line, lines: [code] };
+    nodes.unshift({
+      id: `${args.path.pathId}:anchor:${a.filePath}:${a.line}`,
+      filePath: a.filePath,
+      line: a.line,
+      code,
+      description: '（占位）该锚点节点在 LLM 输出中缺失；请检查 LLM 输出或扩大提示上下文。',
+      context,
+    });
+    existing.add(key);
+  }
+
+  return {
+    flowId: `flow:${args.path.pathId}`,
+    pathId: args.path.pathId,
+    nodes,
+    edges,
+    summary: args.llmResult.summary,
+  };
+}
+
+function fallbackDescriptionForAnchor(anchor: CallGraphNode): string {
+  const suffix = '（LLM 失败，使用锚点回退）';
+  const detail = anchor.description?.trim();
+  if (detail) return `${detail}${suffix}`;
+  const label = anchor.name?.trim() || anchor.code?.trim() || `${anchor.filePath}:${anchor.line}`;
+  if (anchor.type === 'source') return `数据流起点：${label}${suffix}`;
+  if (anchor.type === 'sinkCall') return `潜在敏感调用：${label}${suffix}`;
+  return `中间调用节点：${label}${suffix}`;
+}
+
+async function buildFallbackFlow(args: {
+  repoRoot: string;
+  radius: number;
+  path: CallGraphPath;
+  anchors: CallGraphNode[];
+  warning: string;
+}): Promise<Dataflow> {
+  const nodes: Dataflow['nodes'] = [];
+  for (let i = 0; i < args.anchors.length; i += 1) {
+    const anchor = args.anchors[i]!;
+    const filePath = normalizeWorkspacePath(args.repoRoot, anchor.filePath);
+    const line = Math.max(1, Math.floor(anchor.line));
+    const lines = await readFileLines(args.repoRoot, filePath);
+    const code = lines ? getLineText(lines, line) : anchor.code;
+    const context = lines ? buildContext(lines, line, args.radius) : { startLine: line, lines: [code] };
+    nodes.push({
+      id: `${args.path.pathId}:n${i + 1}`,
+      filePath,
+      line,
+      code,
+      description: fallbackDescriptionForAnchor(anchor),
+      context,
+    });
+  }
+
+  const edges: Dataflow['edges'] = [];
+  for (let i = 0; i < nodes.length - 1; i += 1) {
+    edges.push({ from: nodes[i]!.id, to: nodes[i + 1]!.id });
+  }
+
+  return {
+    flowId: `flow:${args.path.pathId}`,
+    pathId: args.path.pathId,
+    nodes,
+    edges,
+    meta: {
+      fallback: true,
+      warnings: [args.warning],
+    },
+  };
+}
+
 export async function buildDataflows(options: BuildDataflowsOptions): Promise<DataflowsResult> {
   const radius = options.contextRadiusLines ?? 5;
   const apiKey = typeof options.llm.apiKey === 'string' ? options.llm.apiKey.trim() : '';
@@ -280,7 +472,7 @@ export async function buildDataflows(options: BuildDataflowsOptions): Promise<Da
         skipped: true,
         skipReason: 'LLM api-key 为空，跳过数据流分析（仍会生成调用图）',
         llm: { provider: options.llm.provider, model: options.llm.model },
-        counts: { flows: 0, nodes: 0, edges: 0 },
+        counts: { flows: 0, nodes: 0, edges: 0, failedPaths: 0, fallbackFlows: 0 },
       },
       flows: [],
     };
@@ -291,8 +483,11 @@ export async function buildDataflows(options: BuildDataflowsOptions): Promise<Da
   const sourceMap = groupSourceRecordsByKey(options.sources);
 
   const flows: Dataflow[] = [];
+  const warnings: string[] = [];
   let totalNodes = 0;
   let totalEdges = 0;
+  let failedPaths = 0;
+  let fallbackFlows = 0;
 
   for (const p of options.paths) {
     const anchors = buildPathAnchors(options.callGraph, p);
@@ -317,103 +512,40 @@ export async function buildDataflows(options: BuildDataflowsOptions): Promise<Da
     const codeSnippets = await buildCodeSnippetsForAnchors(options.repoRoot, anchors);
     const prompt = buildLlmPrompt({ anchors, sinkDetails, sourceDetails, codeSnippets });
 
-    let llmRes: { content: string; raw: unknown } | null = null;
-    let lastError: unknown = null;
-
-    for (const baseUrl of baseUrls) {
-      try {
-        llmRes = await openAiCompatibleChat({
-          baseUrl,
-          apiKey,
-          model: options.llm.model,
-          messages: [
-            { role: 'system', content: prompt.system },
-            { role: 'user', content: prompt.user },
-          ],
-          temperature: 0.2,
-          jsonMode: true,
-        });
-        break;
-      } catch (e) {
-        lastError = e;
-
-        const canRetry =
-          baseUrls.length > 1 &&
-          (e instanceof LlmNetworkError ||
-            (e instanceof LlmHttpError && (e.status === 401 || e.status === 404 || e.status >= 500)));
-        if (!canRetry) throw e;
-      }
-    }
-
-    if (!llmRes) {
-      throw lastError instanceof Error ? lastError : new Error(String(lastError));
-    }
-
-    const parsed = safeJsonParse(llmRes.content);
-    const llmResult = validateLlmResult(parsed);
-
-    const nodes: Dataflow['nodes'] = [];
-    for (let i = 0; i < llmResult.nodes.length; i += 1) {
-      const n = llmResult.nodes[i]!;
-      const filePath = normalizeWorkspacePath(options.repoRoot, n.filePath);
-      const line = Math.max(1, Math.floor(n.line));
-      const lines = await readFileLines(options.repoRoot, filePath);
-      const code = lines ? getLineText(lines, line) : (n.code ?? '');
-      const context = lines ? buildContext(lines, line, radius) : { startLine: line, lines: [code] };
-
-      nodes.push({
-        id: `${p.pathId}:n${i + 1}`,
-        filePath,
-        line,
-        code,
-        description: n.description,
-        context,
+    try {
+      const llmResult = await requestDataflowLlm({
+        baseUrls,
+        apiKey,
+        model: options.llm.model,
+        system: prompt.system,
+        user: prompt.user,
       });
-    }
-
-    const edges: Dataflow['edges'] = [];
-    if (llmResult.edges && llmResult.edges.length > 0) {
-      for (const e of llmResult.edges) {
-        const from = nodes[e.from]?.id;
-        const to = nodes[e.to]?.id;
-        if (!from || !to) continue;
-        edges.push({ from, to });
-      }
-    }
-    if (edges.length === 0) {
-      for (let i = 0; i < nodes.length - 1; i += 1) edges.push({ from: nodes[i]!.id, to: nodes[i + 1]!.id });
-    }
-
-    // Ensure all anchors exist at least once; add placeholder nodes if missing.
-    const existing = new Set(nodes.map((n) => nodeKey(n)));
-    for (const a of anchors) {
-      const key = nodeKey({ filePath: a.filePath, line: a.line });
-      if (existing.has(key)) continue;
-      const lines = await readFileLines(options.repoRoot, a.filePath);
-      const code = lines ? getLineText(lines, a.line) : a.code;
-      const context = lines ? buildContext(lines, a.line, radius) : { startLine: a.line, lines: [code] };
-      nodes.unshift({
-        id: `${p.pathId}:anchor:${a.filePath}:${a.line}`,
-        filePath: a.filePath,
-        line: a.line,
-        code,
-        description: '（占位）该锚点节点在 LLM 输出中缺失；请检查 LLM 输出或扩大提示上下文。',
-        context,
+      const flow = await buildFlowFromLlmResult({
+        repoRoot: options.repoRoot,
+        radius,
+        path: p,
+        anchors,
+        llmResult,
       });
-      existing.add(key);
+      flows.push(flow);
+      totalNodes += flow.nodes.length;
+      totalEdges += flow.edges.length;
+    } catch (error) {
+      const warning = `数据流 ${p.pathId} LLM 分析失败，已回退到锚点数据流：${asErrorMessage(error)}`;
+      warnings.push(warning);
+      const flow = await buildFallbackFlow({
+        repoRoot: options.repoRoot,
+        radius,
+        path: p,
+        anchors,
+        warning,
+      });
+      flows.push(flow);
+      totalNodes += flow.nodes.length;
+      totalEdges += flow.edges.length;
+      failedPaths += 1;
+      fallbackFlows += 1;
     }
-
-    const flow: Dataflow = {
-      flowId: `flow:${p.pathId}`,
-      pathId: p.pathId,
-      nodes,
-      edges,
-      summary: llmResult.summary,
-    };
-
-    flows.push(flow);
-    totalNodes += nodes.length;
-    totalEdges += edges.length;
   }
 
   return {
@@ -421,10 +553,13 @@ export async function buildDataflows(options: BuildDataflowsOptions): Promise<Da
       runId: options.runId,
       generatedAt: new Date().toISOString(),
       llm: { provider: options.llm.provider, model: options.llm.model },
+      warnings: warnings.length > 0 ? warnings : undefined,
       counts: {
         flows: flows.length,
         nodes: totalNodes,
         edges: totalEdges,
+        failedPaths,
+        fallbackFlows,
       },
     },
     flows,

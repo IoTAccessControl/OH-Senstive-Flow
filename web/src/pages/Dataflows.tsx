@@ -31,7 +31,7 @@ type Dataflow = {
 };
 
 type DataflowsResult = {
-  meta?: { skipped?: boolean; skipReason?: string; counts?: Record<string, unknown> };
+  meta?: { skipped?: boolean; skipReason?: string; warnings?: string[]; counts?: Record<string, unknown> };
   flows: Dataflow[];
 };
 
@@ -359,6 +359,10 @@ export function DataflowsPage() {
   }, [state, selectedFlowId, selectedNodeId]);
 
   const skipReason = state.state === 'ready' && state.data.meta?.skipped ? state.data.meta.skipReason : undefined;
+  const warnings =
+    state.state === 'ready' && Array.isArray(state.data.meta?.warnings)
+      ? state.data.meta.warnings.filter((x): x is string => typeof x === 'string' && x.trim().length > 0)
+      : [];
   const currentGroupLabel = useMemo(() => {
     if (mode !== 'pageFeature') return '';
     if (!pagesIndex || !selectedPageId || !pageFeaturesIndex || !selectedFeatureId) return '';
@@ -449,6 +453,11 @@ export function DataflowsPage() {
           {currentGroupLabel && <div className="status">{currentGroupLabel}</div>}
 
           {skipReason && <div className="status">提示：{skipReason}</div>}
+          {warnings.map((warning, idx) => (
+            <div key={`warn:${idx}`} className="status">
+              提示：{warning}
+            </div>
+          ))}
 
           {state.data.flows.length > 0 && (
             <label className="field">
