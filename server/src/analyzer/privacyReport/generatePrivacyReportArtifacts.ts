@@ -3,6 +3,7 @@ import path from 'node:path';
 
 import { readJsonFile, writeJsonFile } from '../io.js';
 import { loadCsvApiPermissions } from '../csvSupplement.js';
+import { collectPermissionsFromApp, normalizePermissionToken } from '../permissions.js';
 import type { Dataflow, DataflowsResult } from '../dataflow/types.js';
 import type { PageFeaturesIndex, PagesIndex, PageEntryInfo } from '../pages/types.js';
 import type { SinkRecord, SourceRecord } from '../types.js';
@@ -319,6 +320,38 @@ function mergePermissionPractices(base: PrivacyPermissionPractice[], extra: Priv
   return Array.from(byName.values()).sort((a, b) => a.permissionName.localeCompare(b.permissionName));
 }
 
+function filterPermissionPracticesByKnownPermissions(args: {
+  practices: PrivacyPermissionPractice[];
+  knownPermissions: Set<string>;
+}): { practices: PrivacyPermissionPractice[]; dropped: string[] } {
+  if (args.knownPermissions.size === 0) return { practices: args.practices ?? [], dropped: [] };
+  const kept: PrivacyPermissionPractice[] = [];
+  const dropped: string[] = [];
+  for (const practice of args.practices ?? []) {
+    const normalized = normalizePermissionToken(practice.permissionName);
+    if (!normalized) continue;
+    if (!args.knownPermissions.has(normalized)) {
+      dropped.push(normalized);
+      continue;
+    }
+    kept.push({ ...practice, permissionName: normalized });
+  }
+  return { practices: kept, dropped: Array.from(new Set(dropped)).sort((a, b) => a.localeCompare(b)) };
+}
+
+function buildAppDeclaredPermissionFacts(permissions: string[]): FeaturePrivacyFactsContent {
+  return {
+    dataPractices: [],
+    permissionPractices: permissions.map((permissionName) => ({
+      permissionName,
+      businessScenario: '应用源码或配置中声明/请求的权限',
+      permissionPurpose: '当前已在应用源码或配置中检测到该权限字符串，但尚未定位到具体功能点数据流。',
+      denyImpact: '当前未从已识别的数据流中定位到具体拒绝授权影响。',
+      refs: [],
+    })),
+  };
+}
+
 export async function generatePrivacyReportArtifacts(args: {
   repoRoot: string;
   runId: string;
@@ -366,6 +399,11 @@ export async function generatePrivacyReportArtifacts(args: {
 
     const featureIds = featureList.map((x) => x.feature.featureId);
     const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
+
+    const appPathFromMeta = cleanText(metaRaw?.input?.appPath);
+    const appDirAbs = appPathFromMeta ? toAbs(args.repoRoot, appPathFromMeta) : path.join(args.repoRoot, 'input', 'app', args.appName);
+    const knownAppPermissions = await collectPermissionsFromApp(appDirAbs).catch(() => new Set<string>());
+    const emittedPermissions = new Set<string>();
 
     const featuresForReport: Array<{ featureId: string; facts: FeaturePrivacyFactsContent; dataflows: DataflowsResult }> = [];
 
@@ -428,7 +466,19 @@ export async function generatePrivacyReportArtifacts(args: {
         sinksByCallsite,
         csvPermissions,
       });
-      facts.permissionPractices = mergePermissionPractices(facts.permissionPractices, deterministicPerms);
+      const mergedPermissionPractices = mergePermissionPractices(facts.permissionPractices, deterministicPerms);
+      const filtered = filterPermissionPracticesByKnownPermissions({
+        practices: mergedPermissionPractices,
+        knownPermissions: knownAppPermissions,
+      });
+      facts.permissionPractices = filtered.practices;
+      for (const permission of filtered.dropped) {
+        warnings.push(`权限 ${permission} 未在应用源码/配置中出现，已从识别结果中过滤。`);
+      }
+      for (const practice of facts.permissionPractices) {
+        const permissionName = normalizePermissionToken(practice.permissionName);
+        if (permissionName) emittedPermissions.add(permissionName);
+      }
 
       const outFile = featureFactsFile({
         runId: args.runId,
@@ -442,6 +492,38 @@ export async function generatePrivacyReportArtifacts(args: {
 
       await writeJsonFile(path.join(dirAbs, 'privacy_facts.json'), outFile);
       featuresForReport.push({ featureId, facts, dataflows });
+    }
+
+    const unmatchedPermissions = Array.from(knownAppPermissions)
+      .filter((permission) => !emittedPermissions.has(permission))
+      .sort((a, b) => a.localeCompare(b));
+
+    if (unmatchedPermissions.length > 0) {
+      const featureId = '__app_permissions';
+      const syntheticFacts = buildAppDeclaredPermissionFacts(unmatchedPermissions);
+      const syntheticWarnings = [
+        `以下权限来自应用源码/配置扫描，当前未定位到具体功能点数据流：${unmatchedPermissions.join(', ')}`,
+      ];
+      const syntheticDataflows: DataflowsResult = {
+        meta: {
+          runId: args.runId,
+          generatedAt: new Date().toISOString(),
+          warnings: syntheticWarnings,
+          counts: { flows: 0, nodes: 0, edges: 0 },
+        },
+        flows: [],
+      };
+      const syntheticDirAbs = path.join(args.outputDirAbs, 'app_permissions');
+      const outFile = featureFactsFile({
+        runId: args.runId,
+        featureId,
+        llm: args.llm,
+        warnings: syntheticWarnings,
+        facts: syntheticFacts,
+      });
+      await writeJsonFile(path.join(syntheticDirAbs, 'privacy_facts.json'), outFile);
+      featuresForReport.push({ featureId, facts: syntheticFacts, dataflows: syntheticDataflows });
+      featureIds.push(featureId);
     }
 
     try {

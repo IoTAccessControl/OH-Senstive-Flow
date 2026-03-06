@@ -41,9 +41,25 @@ function isUnknownText(v: unknown): boolean {
   return !t || t === '未识别';
 }
 
+function isOmissibleEvidenceText(v: unknown): boolean {
+  const t = cleanText(v);
+  if (!t) return true;
+  if (t === '未识别') return true;
+  return [
+    '未定位',
+    '未发现',
+    '不涉及',
+    '未申请',
+    '不存在',
+    '尚未定位到具体',
+    '当前未从已识别的数据流中定位到具体',
+    '当前已在应用源码或配置中检测到该权限字符串',
+  ].some((pattern) => t.includes(pattern));
+}
+
 function knownText(v: unknown): string {
   const t = cleanText(v);
-  return !t || t === '未识别' ? '' : t;
+  return isOmissibleEvidenceText(t) ? '' : t;
 }
 
 function trimPunctuationEdges(text: string): string {
@@ -127,19 +143,20 @@ function deterministicPermissionSentenceTokens(args: {
   if (!permissionName) return [];
 
   const picked = pickValidRef(args.practice.refs as any, args.perFlowIndex);
-  const jumpTo = picked ? { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId } : undefined;
+  if (!picked) return [];
+  const jumpTo = { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId };
 
   const scenario = clauseText(args.practice.businessScenario);
   const purpose = purposeClauseText(args.practice.permissionPurpose);
   const denyImpact = clauseText(args.practice.denyImpact);
 
   const prefix = scenario ? `在“${scenario}”场景中，我们会调用` : '我们会调用';
-  const purposeSuffix = purpose ? `权限，用于${purpose}。` : '权限。';
+  const suffix = purpose ? `权限，用于${purpose}。` : '权限。';
 
   return [
     { text: prefix },
-    jumpTo ? { text: permissionName, jumpTo } : { text: permissionName },
-    { text: purposeSuffix },
+    { text: permissionName, jumpTo },
+    { text: suffix },
     ...(denyImpact ? [{ text: `若您拒绝授权，${denyImpact}。` }] : []),
   ];
 }
@@ -161,60 +178,20 @@ function ensurePermissionsSectionTokens(args: {
     }))
     .filter((p) => Boolean(p.permissionName));
 
-  // Do not emit "no permission involved" style paragraphs: absence is not evidence.
   if (practices.length === 0) return [];
 
-  const out: PrivacyReportToken[] = args.existingTokens.slice();
-  const byName = new Map<string, { practice: PrivacyPermissionPractice; jumpTo?: { featureId: string; flowId: string; nodeId: string } }>();
-  for (const p of practices) {
-    const picked = pickValidRef(p.refs as any, args.perFlowIndex);
-    const jumpTo = picked ? { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId } : undefined;
-    byName.set(p.permissionName, { practice: p, jumpTo });
-  }
-
-  const existingNameToIdx = new Map<string, number[]>();
-  for (let i = 0; i < out.length; i += 1) {
-    const text = normalizePermissionName(out[i]?.text);
-    if (!text) continue;
-    if (!byName.has(text)) continue;
-    const list = existingNameToIdx.get(text) ?? [];
-    list.push(i);
-    existingNameToIdx.set(text, list);
-  }
-
-  // If LLM emitted a permission token without jumpTo, upgrade it when we have a valid ref.
-  for (const [name, idxs] of existingNameToIdx) {
-    const desired = byName.get(name);
-    if (!desired?.jumpTo) continue;
-    for (const idx of idxs) {
-      if (!out[idx]) continue;
-      if (out[idx]!.jumpTo) continue;
-      out[idx] = { ...out[idx]!, jumpTo: desired.jumpTo };
-    }
-  }
-
-  // Append missing permissions (deterministic sentences).
-  const missing = Array.from(byName.keys()).filter((name) => !existingNameToIdx.has(name));
-  if (missing.length === 0) return out;
-
-  // If the paragraph is a placeholder, prefer replacing it with deterministic content.
-  const isPlaceholder =
-    out.length === 1 && typeof out[0]?.text === 'string' && (out[0]!.text.includes('未生成') || out[0]!.text.includes('未生成（原因'));
-  const base = isPlaceholder ? [] : out;
-  const merged = base.slice();
-  for (const name of missing) {
-    const item = byName.get(name);
-    if (!item) continue;
+  const merged: PrivacyReportToken[] = [];
+  for (const practice of practices) {
     const tokens = deterministicPermissionSentenceTokens({
       featureId: args.featureId,
-      practice: item.practice,
+      practice,
       perFlowIndex: args.perFlowIndex,
     });
     if (tokens.length === 0) continue;
     if (merged.length > 0) merged.push({ text: '此外，' });
-    for (const t of tokens) merged.push(t);
+    for (const token of tokens) merged.push(token);
   }
-  return merged.length > 0 ? merged : out;
+  return merged;
 }
 
 function summarizeFeatureFacts(featureId: string, appName: string, facts: FeaturePrivacyFactsContent): Record<string, unknown> {
@@ -381,8 +358,9 @@ function buildPrompt(args: {
     '2) 不要生成章节标题，不要生成额外章节。',
     '3) 当你在段落中提到某个“数据项 name”（来自 dataItems[].name），必须把该数据项单独作为一个 token（text 仅包含该 name），并在该 token 上设置 jumpTo，jumpTo 必须使用该 name 对应 refs 中的一个 {flowId,nodeId}。',
     '4) 当你在段落中提到某个“权限名称 permissionName”，必须把该权限名称单独作为一个 token，并设置 jumpTo（同样来自 refs）。',
-    '5) 如果某功能点没有可用 refs（例如 name=未识别 或 refs 为空），则不要设置 jumpTo，只写普通 text。',
-    '6) 每个 token.text 禁止包含换行符。',
+    '5) 若某个权限没有可用 refs，则不要在权限段落中提到该权限。',
+    '6) 当你在段落中提到某个数据项但没有可用 refs 时，可以仅输出普通 text，不要补写“未识别/未定位”等措辞。',
+    '7) 每个 token.text 禁止包含换行符。',
     '',
     '功能点证据（JSON，已去重/截断）：',
     JSON.stringify(featureSummaries),
@@ -472,7 +450,7 @@ function validateSections(
     return out;
   }
 
-  function validateSectionArray(rawArr: unknown, kind: string): PrivacyReportSection[] {
+  function validateSectionArray(rawArr: unknown): PrivacyReportSection[] {
     if (!Array.isArray(rawArr)) return [];
     const out: PrivacyReportSection[] = [];
     for (const s of rawArr) {
@@ -480,17 +458,13 @@ function validateSections(
       const featureId = cleanText((s as any).featureId);
       if (!featureId || !featureIds.has(featureId)) continue;
       const tokens = validateTokens(featureId, (s as any).tokens);
-      if (tokens.length === 0) {
-        out.push({ featureId, tokens: [{ text: `${featureId}：未生成${kind}段落` }] });
-      } else {
-        out.push({ featureId, tokens });
-      }
+      out.push({ featureId, tokens });
     }
     return out;
   }
 
-  const collectionAndUse = validateSectionArray((raw as any).collectionAndUse, '个人信息收集使用');
-  const permissions = validateSectionArray((raw as any).permissions, '权限调用');
+  const collectionAndUse = validateSectionArray((raw as any).collectionAndUse);
+  const permissions = validateSectionArray((raw as any).permissions);
   return { collectionAndUse, permissions, warnings };
 }
 
@@ -529,11 +503,8 @@ export async function buildPrivacyReport(args: {
       const out: string[] = [];
       const collectionTokens = collectionAndUse.find((s) => s.featureId === f.featureId)?.tokens ?? [];
       const permissionTokens = permissions.find((s) => s.featureId === f.featureId)?.tokens ?? [];
-      if (asDataPractices(f.facts).length > 0 && collectionTokens.every((t) => !t.jumpTo)) {
+      if (asDataPractices(f.facts).length > 0 && collectionTokens.length > 0 && collectionTokens.every((t) => !t.jumpTo)) {
         out.push(`功能点 ${f.featureId} 的个人信息段落缺少有效跳转引用，已降级为纯文本。`);
-      }
-      if (asPermissionPractices(f.facts).length > 0 && permissionTokens.every((t) => !t.jumpTo)) {
-        out.push(`功能点 ${f.featureId} 的权限段落缺少有效跳转引用，已降级为纯文本。`);
       }
       return out;
     }),

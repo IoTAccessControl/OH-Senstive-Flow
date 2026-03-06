@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import { buildPrivacyReport } from '../src/analyzer/privacyReport/buildPrivacyReport.js';
 
-describe('privacy report fallback text', () => {
-  it('keeps collection and permission text when refs are missing', async () => {
+describe('privacy report evidence rules', () => {
+  it('keeps collection text but omits permission text when permission refs are missing', async () => {
     const result = await buildPrivacyReport({
       runId: 'run1',
       appName: 'App',
@@ -67,10 +67,10 @@ describe('privacy report fallback text', () => {
 
     expect(collectionSection?.tokens.some((t) => t.text.includes('头像图片'))).toBe(true);
     expect(collectionSection?.tokens.some((t) => t.jumpTo)).toBe(false);
-    expect(permissionSection?.tokens.some((t) => t.text === 'ohos.permission.READ_MEDIA')).toBe(true);
-    expect(permissionSection?.tokens.some((t) => t.jumpTo)).toBe(false);
+    expect(permissionSection?.tokens ?? []).toEqual([]);
     expect(result.text).toContain('头像图片');
-    expect(result.text).toContain('ohos.permission.READ_MEDIA');
-    expect(result.warnings.length).toBeGreaterThan(0);
+    expect(result.text).not.toContain('ohos.permission.READ_MEDIA');
+    expect(result.warnings.some((item) => item.includes('权限段落缺少有效跳转引用'))).toBe(false);
+    expect(result.warnings.some((item) => item.includes('个人信息段落缺少有效跳转引用'))).toBe(true);
   });
 });

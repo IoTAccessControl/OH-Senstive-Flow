@@ -1,58 +1,16 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
+import { collectPermissionsFromApp, extractPermissionNames, normalizePermissionToken } from '../analyzer/permissions.js';
 import { walkFiles } from '../analyzer/walk.js';
 
-export const OHOS_PERMISSION_REGEX = /ohos\.permission\.[A-Za-z0-9_]+/gu;
-
-function cleanText(v: unknown): string {
-  if (typeof v !== 'string') return '';
-  return v.replaceAll(/\r?\n/gu, ' ').replaceAll(/\s+/gu, ' ').trim();
-}
-
-export function normalizePermissionToken(v: unknown): string {
-  const t = cleanText(v);
-  if (!t) return '';
-  // Remove optional hints like "（可选）" to keep tokens stable.
-  return t.replaceAll(/（[^）]*）/gu, '').trim();
-}
-
-export function extractPermissionNames(text: string): string[] {
-  const out: string[] = [];
-  if (!text) return out;
-  for (const match of text.matchAll(OHOS_PERMISSION_REGEX)) out.push(match[0]);
-  return out;
-}
+export { collectPermissionsFromApp, extractPermissionNames, normalizePermissionToken } from '../analyzer/permissions.js';
 
 function addAll(target: Set<string>, items: string[]): void {
   for (const it of items) {
     const t = normalizePermissionToken(it);
     if (t) target.add(t);
   }
-}
-
-export async function collectPermissionsFromApp(appDirAbs: string): Promise<Set<string>> {
-  const permissions = new Set<string>();
-  const files = await walkFiles(appDirAbs, {
-    extensions: ['ets', 'ts', 'js', 'json', 'json5'],
-    ignoreDirNames: ['node_modules', '.git', 'build', 'dist', 'out'],
-  });
-
-  for (const filePath of files) {
-    const normalized = filePath.split(path.sep).join('/');
-    if (!normalized.includes('/src/main/')) continue;
-    if (normalized.includes('/src/ohosTest/')) continue;
-
-    let text = '';
-    try {
-      text = await fs.readFile(filePath, 'utf8');
-    } catch {
-      continue;
-    }
-    addAll(permissions, extractPermissionNames(text));
-  }
-
-  return permissions;
 }
 
 export async function loadGroundtruthFile(filePath: string): Promise<Set<string>> {
