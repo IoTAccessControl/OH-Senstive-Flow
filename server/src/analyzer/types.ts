@@ -21,7 +21,7 @@ export type AnalyzeRequest = {
   appPath?: string;
   sdkPath?: string;
   csvDir?: string;
-  maxDataflowPaths?: number;
+  maxDataflowPaths?: number | null;
   llmProvider?: string;
   llmApiKey?: string;
   llmModel?: string;

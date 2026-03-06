@@ -6,7 +6,7 @@ export type AnalysisSnapshot = {
   appPath: string;
   sdkPath: string;
   csvDir: string;
-  maxDataflowPaths: number;
+  maxDataflowPaths: number | null;
   llmProvider: string;
   llmModel: string;
   uiLlmProvider: string;

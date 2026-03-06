@@ -2,7 +2,7 @@ import type { CallGraph, CallGraphPath } from './types.js';
 
 type ExtractPathsOptions = {
   callGraph: CallGraph;
-  maxPaths: number;
+  maxPaths?: number | null;
   maxDepth?: number;
 };
 
@@ -55,7 +55,7 @@ function computeDistanceToAnySink(callGraph: CallGraph, sinkIds: string[]): Map<
 
 export function extractPaths(options: ExtractPathsOptions): CallGraphPath[] {
   const maxDepth = options.maxDepth ?? 60;
-  const maxPaths = Math.max(1, Math.floor(options.maxPaths));
+  const maxPaths = Number.isFinite(options.maxPaths) ? Math.max(1, Math.floor(options.maxPaths as number)) : Number.POSITIVE_INFINITY;
 
   const sources = options.callGraph.nodes.filter((n) => n.type === 'source').map((n) => n.id);
   const sinks = options.callGraph.nodes.filter((n) => n.type === 'sinkCall').map((n) => n.id);

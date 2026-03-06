@@ -76,19 +76,21 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
   const appPath = ensureTrailingSlash(req.appPath ?? DEFAULT_APP_PATH);
   const sdkPath = ensureTrailingSlash(req.sdkPath ?? DEFAULT_SDK_PATH);
   const csvDir = ensureTrailingSlash(req.csvDir ?? DEFAULT_CSV_DIR);
-  const maxDataflowPaths = Number.isFinite(req.maxDataflowPaths) ? Math.max(1, Math.floor(req.maxDataflowPaths ?? 5)) : 5;
+  const maxDataflowPaths = Number.isFinite(req.maxDataflowPaths)
+    ? Math.max(1, Math.floor(req.maxDataflowPaths as number))
+    : null;
   const llmProvider = typeof req.llmProvider === 'string' && req.llmProvider.trim() ? req.llmProvider.trim() : 'Qwen';
-  const llmModel = typeof req.llmModel === 'string' && req.llmModel.trim() ? req.llmModel.trim() : 'qwen3-coder-plus';
+  const llmModel = typeof req.llmModel === 'string' && req.llmModel.trim() ? req.llmModel.trim() : 'qwen3.5-397b-a17b';
   const llmApiKey = typeof req.llmApiKey === 'string' ? req.llmApiKey : '';
   const uiLlmProvider = typeof req.uiLlmProvider === 'string' && req.uiLlmProvider.trim() ? req.uiLlmProvider.trim() : 'Qwen';
-  const uiLlmModel = typeof req.uiLlmModel === 'string' && req.uiLlmModel.trim() ? req.uiLlmModel.trim() : 'qwen3-32b';
+  const uiLlmModel = typeof req.uiLlmModel === 'string' && req.uiLlmModel.trim() ? req.uiLlmModel.trim() : 'qwen3.5-27b';
   const uiLlmApiKey = typeof req.uiLlmApiKey === 'string' ? req.uiLlmApiKey : '';
   const privacyReportLlmProvider =
     typeof req.privacyReportLlmProvider === 'string' && req.privacyReportLlmProvider.trim()
       ? req.privacyReportLlmProvider.trim()
       : 'Qwen';
   const privacyReportLlmModel =
-    typeof req.privacyReportLlmModel === 'string' && req.privacyReportLlmModel.trim() ? req.privacyReportLlmModel.trim() : 'qwen3-32b';
+    typeof req.privacyReportLlmModel === 'string' && req.privacyReportLlmModel.trim() ? req.privacyReportLlmModel.trim() : 'qwen3.5-27b';
   const privacyReportLlmApiKey = typeof req.privacyReportLlmApiKey === 'string' ? req.privacyReportLlmApiKey : '';
 
   report(0);

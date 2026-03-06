@@ -19,7 +19,7 @@ export type AnalyzeParams = {
   appPath: string;
   sdkPath: string;
   csvDir: string;
-  maxDataflowPaths: number;
+  maxDataflowPaths: number | null;
   llmProvider: string;
   llmApiKey: string;
   llmModel: string;

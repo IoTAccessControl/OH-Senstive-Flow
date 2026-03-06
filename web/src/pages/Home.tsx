@@ -151,6 +151,15 @@ function stripDirPickerPrefix(fullPath: string, prefix: string): string {
   return rest.replace(/^\/+/u, '').replace(/\/+$/u, '');
 }
 
+function parseMaxDataflowPathsInput(value: string): number | null {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  const parsed = Number(trimmed);
+  if (!Number.isFinite(parsed)) throw new Error('数据流条数必须是正整数，留空表示不限制');
+  return Math.max(1, Math.floor(parsed));
+}
+
 export function HomePage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -160,16 +169,18 @@ export function HomePage() {
   const [appPath, setAppPath] = useState(snapshot?.appPath ?? 'input/app/Wechat_HarmonyOS/');
   const [sdkPath, setSdkPath] = useState(snapshot?.sdkPath ?? 'input/sdk/default/openharmony/ets/');
   const [csvDir, setCsvDir] = useState(snapshot?.csvDir ?? 'input/csv/');
-  const [maxDataflowPaths, setMaxDataflowPaths] = useState<number>(snapshot?.maxDataflowPaths ?? 5);
+  const [maxDataflowPaths, setMaxDataflowPaths] = useState<string>(
+    snapshot?.maxDataflowPaths == null ? '' : String(snapshot.maxDataflowPaths),
+  );
   const [llmProvider, setLlmProvider] = useState(snapshot?.llmProvider ?? 'Qwen');
   const [llmApiKey, setLlmApiKey] = useState('');
-  const [llmModel, setLlmModel] = useState(snapshot?.llmModel ?? 'qwen3-coder-plus');
+  const [llmModel, setLlmModel] = useState(snapshot?.llmModel ?? 'qwen3.5-397b-a17b');
   const [uiLlmProvider, setUiLlmProvider] = useState(snapshot?.uiLlmProvider ?? 'Qwen');
   const [uiLlmApiKey, setUiLlmApiKey] = useState('');
-  const [uiLlmModel, setUiLlmModel] = useState(snapshot?.uiLlmModel ?? 'qwen3-32b');
+  const [uiLlmModel, setUiLlmModel] = useState(snapshot?.uiLlmModel ?? 'qwen3.5-27b');
   const [privacyReportLlmProvider, setPrivacyReportLlmProvider] = useState(snapshot?.privacyReportLlmProvider ?? 'Qwen');
   const [privacyReportLlmApiKey, setPrivacyReportLlmApiKey] = useState('');
-  const [privacyReportLlmModel, setPrivacyReportLlmModel] = useState(snapshot?.privacyReportLlmModel ?? 'qwen3-32b');
+  const [privacyReportLlmModel, setPrivacyReportLlmModel] = useState(snapshot?.privacyReportLlmModel ?? 'qwen3.5-27b');
   const [status, setStatus] = useState<StatusState>({ state: 'idle' });
   const [dirPicker, setDirPicker] = useState<DirPickerState>({ open: false });
   const [dirPickerDirs, setDirPickerDirs] = useState<DirPickerDirsState>({ state: 'idle' });
@@ -326,7 +337,7 @@ export function HomePage() {
 
   async function onAnalyze() {
     try {
-      const safeMax = Number.isFinite(maxDataflowPaths) ? Math.max(1, Math.floor(maxDataflowPaths)) : 5;
+      const safeMax = parseMaxDataflowPathsInput(maxDataflowPaths);
       const params = {
         appPath,
         sdkPath,
@@ -334,13 +345,13 @@ export function HomePage() {
         maxDataflowPaths: safeMax,
         llmProvider: llmProvider.trim() || 'Qwen',
         llmApiKey,
-        llmModel: llmModel.trim() || 'qwen3-coder-plus',
+        llmModel: llmModel.trim() || 'qwen3.5-397b-a17b',
         uiLlmProvider: uiLlmProvider.trim() || 'Qwen',
         uiLlmApiKey,
-        uiLlmModel: uiLlmModel.trim() || 'qwen3-32b',
+        uiLlmModel: uiLlmModel.trim() || 'qwen3.5-27b',
         privacyReportLlmProvider: privacyReportLlmProvider.trim() || 'Qwen',
         privacyReportLlmApiKey,
-        privacyReportLlmModel: privacyReportLlmModel.trim() || 'qwen3-32b',
+        privacyReportLlmModel: privacyReportLlmModel.trim() || 'qwen3.5-27b',
       };
 
       try {
@@ -397,11 +408,11 @@ export function HomePage() {
             csvDir,
             maxDataflowPaths: safeMax,
             llmProvider: llmProvider.trim() || 'Qwen',
-            llmModel: llmModel.trim() || 'qwen3-coder-plus',
+            llmModel: llmModel.trim() || 'qwen3.5-397b-a17b',
             uiLlmProvider: uiLlmProvider.trim() || 'Qwen',
-            uiLlmModel: uiLlmModel.trim() || 'qwen3-32b',
+            uiLlmModel: uiLlmModel.trim() || 'qwen3.5-27b',
             privacyReportLlmProvider: privacyReportLlmProvider.trim() || 'Qwen',
-            privacyReportLlmModel: privacyReportLlmModel.trim() || 'qwen3-32b',
+            privacyReportLlmModel: privacyReportLlmModel.trim() || 'qwen3.5-27b',
             result,
           });
           setSelectedRunId(result.runId);
@@ -487,7 +498,7 @@ export function HomePage() {
         </label>
 
         <label className="field">
-          <div className="label" title="最大提取数据流条数（默认 5，最小 1）">
+          <div className="label" title="最大提取数据流条数（默认不限制，留空表示无限制）">
             数据流条数
           </div>
           <input
@@ -495,8 +506,9 @@ export function HomePage() {
             type="number"
             min={1}
             step={1}
-            value={String(maxDataflowPaths)}
-            onChange={(e) => setMaxDataflowPaths(Number(e.target.value))}
+            placeholder="留空表示不限制"
+            value={maxDataflowPaths}
+            onChange={(e) => setMaxDataflowPaths(e.target.value)}
           />
         </label>
 
@@ -521,7 +533,7 @@ export function HomePage() {
           </label>
 
           <label className="field">
-            <div className="label" title="数据流分析的模型名称（默认 qwen3-coder-plus）">
+            <div className="label" title="数据流分析的模型名称（默认 qwen3.5-397b-a17b）">
               数据流 LLM 模型
             </div>
             <input className="input" value={llmModel} onChange={(e) => setLlmModel(e.target.value)} />
@@ -547,7 +559,7 @@ export function HomePage() {
           </label>
 
           <label className="field">
-            <div className="label" title="描述 UI 的模型名称（默认 qwen3-32b）">
+            <div className="label" title="描述 UI 的模型名称（默认 qwen3.5-27b）">
               UI LLM 模型
             </div>
             <input className="input" value={uiLlmModel} onChange={(e) => setUiLlmModel(e.target.value)} />
@@ -577,7 +589,7 @@ export function HomePage() {
           </label>
 
           <label className="field">
-            <div className="label" title="生成隐私声明报告的模型名称（默认 qwen3-32b）">
+            <div className="label" title="生成隐私声明报告的模型名称（默认 qwen3.5-27b）">
               报告 LLM 模型
             </div>
             <input
