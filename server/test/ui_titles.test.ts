@@ -69,4 +69,48 @@ describe('ui tree titles (heuristics)', () => {
       expect(n.description).not.toMatch(/\b(Button|TextInput|TextArea|struct|ChatPage)\b/u);
     }
   });
+
+  it('uses natural Chinese titles for QR code pages', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-qrcode-'));
+    const appRootAbs = path.join(repoRoot, 'app');
+    const scanRootAbs = path.join(appRootAbs, 'entry', 'src', 'main', 'ets');
+    await fs.mkdir(path.join(scanRootAbs, 'pages', 'qrcode'), { recursive: true });
+
+    const qrFileAbs = path.join(scanRootAbs, 'pages', 'qrcode', 'MyQrCodePage.ets');
+    await fs.writeFile(
+      qrFileAbs,
+      [
+        '@Entry',
+        '@Component',
+        'struct MyQrCodePage {',
+        '  private value: string = "https://example.com"',
+        '  build() {',
+        '    Column() {',
+        '      QRCode(this.value)',
+        '      Text("扫一扫上面的二维码图案，加我为好友")',
+        '      Text("扫一扫")',
+        '      Text("保存图片")',
+        '    }',
+        '  }',
+        '}',
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+
+    const uiTree = await buildUiTree({
+      repoRoot,
+      runId: 'test',
+      appRootAbs,
+      appFiles: [qrFileAbs],
+      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3.5-27b' },
+      contextRadiusLines: 2,
+      maxNodesPerLlmBatch: 50,
+    });
+
+    const page = Object.values(uiTree.nodes).find((n) => n.category === 'Page' && (n.filePath ?? '').includes('MyQrCodePage.ets'));
+    expect(page).toBeTruthy();
+    expect(page?.description).toContain('二维码');
+    expect(page?.description).not.toContain('我扫一扫');
+  });
 });

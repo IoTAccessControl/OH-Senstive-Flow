@@ -270,6 +270,8 @@ describe('ui tree + page/feature grouping', () => {
     const srcFeatures = (indexPage?.featuresIndex.features ?? []).filter((f) => f.kind === 'source');
     expect(uiFeature).toBeTruthy();
     expect(srcFeatures.length).toBe(2);
+    expect(srcFeatures.some((f) => f.title.includes('展示与交互'))).toBe(true);
+    expect(srcFeatures.every((f) => !/build entry|入口函数|生命周期函数/u.test(f.title))).toBe(true);
 
 	    const uiDf = indexPage?.features.find((x) => x.feature.featureId === uiFeature?.featureId)?.dataflows;
 	    expect(uiDf?.flows.length).toBe(2);
@@ -402,4 +404,79 @@ describe('ui tree + page/feature grouping', () => {
     const uiDf = page.features.find((x) => x.feature.featureId === uiFeatures[0]!.featureId)?.dataflows;
     expect(uiDf?.flows.length).toBe(2);
   });
+
+  it('groups entryability lifecycle flows under app lifecycle instead of polluting page features', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-app-life-'));
+
+    const uiTree = {
+      meta: {
+        runId: 'test',
+        generatedAt: new Date().toISOString(),
+        counts: { nodes: 1, edges: 0, pages: 1, elements: 0 },
+      },
+      roots: ['page-root'],
+      nodes: {
+        'page-root': {
+          id: 'page-root',
+          category: 'Page',
+          description: '聊天页面',
+          name: 'ChatPage',
+          filePath: 'app/entry/src/main/ets/pages/chat/ChatPage.ets',
+          line: 1,
+          code: 'struct ChatPage {',
+          context: { startLine: 1, lines: ['struct ChatPage {'] },
+        },
+      },
+      edges: [],
+    } as any;
+
+    const sources = [
+      {
+        App源码文件路径: 'app/entry/src/main/ets/entryability/EntryAbility.ets',
+        行号: 37,
+        函数名称: 'onForeground',
+        描述: 'UIAbility 切换到前台时触发的生命周期函数',
+      },
+    ];
+
+    const dataflows = {
+      meta: {
+        runId: 'test',
+        generatedAt: new Date().toISOString(),
+        llm: { provider: 'Qwen', model: 'qwen3.5-397b-a17b' },
+        counts: { flows: 1, nodes: 2, edges: 1 },
+      },
+      flows: [
+        {
+          flowId: 'flow:app',
+          pathId: 'p1',
+          nodes: [
+            {
+              id: 'n1',
+              filePath: 'app/entry/src/main/ets/entryability/EntryAbility.ets',
+              line: 37,
+              code: 'onForeground() {',
+              description: 'source',
+              context: { startLine: 37, lines: ['onForeground() {'] },
+            },
+            {
+              id: 'n2',
+              filePath: 'app/entry/src/main/ets/entryability/EntryAbility.ets',
+              line: 39,
+              code: "hilog.info(..., 'Ability onForeground');",
+              description: 'sink',
+              context: { startLine: 39, lines: ["hilog.info(..., 'Ability onForeground');"] },
+            },
+          ],
+          edges: [{ from: 'n1', to: 'n2' }],
+        },
+      ],
+    } as any;
+
+    const grouped = await groupDataflowsByPageFeature({ runId: 'test', repoRoot, uiTree, sources, dataflows, maxUiDistanceLines: 30 });
+    const lifecyclePage = grouped.pages.find((p) => p.page.entry.description === '应用生命周期');
+    expect(lifecyclePage).toBeTruthy();
+    expect(lifecyclePage?.featuresIndex.features[0]?.title).toBe('应用切到前台时');
+  });
+
 });

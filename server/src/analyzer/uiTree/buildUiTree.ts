@@ -362,26 +362,32 @@ export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeRe
   const pageQueue: Array<{ fileRel: string; structName: string; structStartLine: number; isRoot: boolean }> = [];
   const queuedPageKeys = new Set<string>();
 
-  // Seed: @Entry pages.
+  // Seed: @Entry pages + structs under /pages/.
   for (const abs of options.appFiles) {
     const fileText = await fs.readFile(abs, 'utf8');
     const lines = fileText.split(/\r?\n/u);
-    if (!lines.some((l) => /^\s*@Entry\b/u.test(l))) continue;
-
     const sf = ts.createSourceFile(abs, fileText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
     const structs = scanStructBlocks(fileText, sf);
-    const entryStructs = findEntryStructs(lines, structs);
-    if (entryStructs.length === 0) continue;
-
     const fileRel = toWorkspaceRelativePath(options.repoRoot, abs);
     fileRelToAbs.set(fileRel, abs);
 
+    const entryStructs = lines.some((l) => /^\s*@Entry\b/u.test(l)) ? findEntryStructs(lines, structs) : [];
     for (const s of entryStructs) {
       const key = `${fileRel}#${s.name}`;
       if (queuedPageKeys.has(key)) continue;
       queuedPageKeys.add(key);
       pageQueue.push({ fileRel, structName: s.name, structStartLine: s.startLine, isRoot: true });
     }
+
+    const relToScan = toPosixPath(path.relative(scanRootAbs, abs));
+    const isPageFile = /(?:^|\/)pages\//u.test(relToScan);
+    const primary = isPageFile ? pickPrimaryStruct(structs) : null;
+    if (!primary) continue;
+
+    const key = `${fileRel}#${primary.name}`;
+    if (queuedPageKeys.has(key)) continue;
+    queuedPageKeys.add(key);
+    pageQueue.push({ fileRel, structName: primary.name, structStartLine: primary.startLine, isRoot: false });
   }
 
   async function ensurePageNode(args: { fileRel: string; structName: string; structStartLine: number; lines: string[] }): Promise<string> {

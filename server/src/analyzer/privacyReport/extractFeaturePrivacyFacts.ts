@@ -64,6 +64,66 @@ function cleanStringArray(v: unknown): string[] {
   return out;
 }
 
+function isFrameworkishScenario(text: string): boolean {
+  return /(ArkUI|UIAbility|WindowStage|生命周期函数|\bbuild\b|\bonDestroy\b|\bonForeground\b|\bonBackground\b|\bonWindowStage)/u.test(text);
+}
+
+function fallbackScenario(feature: PrivacyFactsFeatureContext | null): string {
+  const title = cleanText(feature?.title);
+  if (title && !isFrameworkishScenario(title)) return title;
+
+  const pageTitle = cleanText(feature?.page?.entry?.description);
+  const fn = cleanText(feature?.anchor?.functionName);
+
+  switch (fn) {
+    case 'build':
+      return pageTitle ? `${pageTitle}展示与交互` : '页面展示与交互';
+    case 'aboutToAppear':
+      return pageTitle ? `${pageTitle}进入时` : '页面进入时';
+    case 'aboutToDisappear':
+      return pageTitle ? `${pageTitle}离开前` : '页面离开前';
+    case 'onPageShow':
+      return pageTitle ? `${pageTitle}显示时` : '页面显示时';
+    case 'onPageHide':
+      return pageTitle ? `${pageTitle}隐藏时` : '页面隐藏时';
+    case 'onBackPress':
+      return pageTitle ? `${pageTitle}返回处理` : '返回处理';
+    case 'onCreate':
+      return '应用创建时';
+    case 'onDestroy':
+      return '应用退出时';
+    case 'onForeground':
+      return '应用切到前台时';
+    case 'onBackground':
+      return '应用切到后台时';
+    case 'onWindowStageCreate':
+      return '主窗口创建时';
+    case 'onWindowStageDestroy':
+      return '主窗口销毁时';
+    default:
+      return pageTitle || '相关功能处理过程中';
+  }
+}
+
+function normalizeBusinessScenario(raw: unknown, feature: PrivacyFactsFeatureContext | null): string {
+  const scenario = cleanText(raw);
+  if (scenario && !isFrameworkishScenario(scenario)) return scenario;
+  return fallbackScenario(feature);
+}
+
+function normalizeExtractedContent(content: FeaturePrivacyFactsContent, feature: PrivacyFactsFeatureContext | null): FeaturePrivacyFactsContent {
+  return {
+    dataPractices: (content.dataPractices ?? []).map((p) => ({
+      ...p,
+      businessScenario: normalizeBusinessScenario(p.businessScenario, feature),
+    })),
+    permissionPractices: (content.permissionPractices ?? []).map((p) => ({
+      ...p,
+      businessScenario: normalizeBusinessScenario(p.businessScenario, feature),
+    })),
+  };
+}
+
 function buildFlowNodeIndex(dataflows: DataflowsResult): Map<string, Set<string>> {
   const map = new Map<string, Set<string>>();
   for (const f of dataflows.flows ?? []) {
@@ -303,6 +363,7 @@ function buildPrompt(args: {
     '1) dataItems[].refs 与 permissionPractices[].refs 必须引用上面数据流中真实存在的 {flowId,nodeId}；如果无法找到证据，请将 name/permissionName 设为“未识别”，并使用空 refs 数组。',
     '2) 禁止凭空编造接收方/权限/数据项；允许对“处理方式/存储方式/处理目的/拒绝影响”等做弱推断，但必须与提供的证据一致。',
     '3) 输出必须是严格 JSON（不要多余文本）。',
+    '4) businessScenario 必须写成用户或应用可理解的业务场景，禁止直接输出“build”“onForeground”“onBackground”“onDestroy”“生命周期函数”“UIAbility”“WindowStage”等框架术语；若只能判断到框架阶段，请改写为“页面展示时”“应用切到前台时”“应用退出时”等自然表述。',
   ].join('\n');
 
   return { system, user };
@@ -376,5 +437,9 @@ export async function extractFeaturePrivacyFacts(args: {
   });
 
   const raw = await chatJsonWithRetries({ llm: { ...args.llm, apiKey }, system: prompt.system, user: prompt.user });
-  return validateContent(raw, flowNodeIndex, uiNodeIndex);
+  const validated = validateContent(raw, flowNodeIndex, uiNodeIndex);
+  return {
+    ...validated,
+    content: normalizeExtractedContent(validated.content, args.feature),
+  };
 }

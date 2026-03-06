@@ -35,9 +35,9 @@ const PAGE_SEGMENT_MAP: Record<string, string> = {
   moments: '朋友圈',
   timeline: '朋友圈',
 
-  mine: '我',
+  mine: '我的',
   me: '我',
-  my: '我',
+  my: '我的',
   profile: '我的',
 
   setting: '设置',
@@ -47,8 +47,8 @@ const PAGE_SEGMENT_MAP: Record<string, string> = {
   login: '登录',
   register: '注册',
 
-  qrcode: '扫一扫',
-  qr: '扫一扫',
+  qrcode: '二维码',
+  qr: '二维码',
   scan: '扫一扫',
 };
 

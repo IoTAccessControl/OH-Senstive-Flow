@@ -6,6 +6,7 @@ import ts from 'typescript';
 import { scanFunctionBlocks, type FunctionBlock } from '../callGraph/functionBlocks.js';
 import type { Dataflow, DataflowsResult } from '../dataflow/types.js';
 import type { SourceRecord } from '../types.js';
+import { inferPageTitle } from '../uiTree/titleHeuristics.js';
 import type { UiTreeNode, UiTreeResult } from '../uiTree/types.js';
 
 import type { FeatureInfo, PageFeaturesIndex, PageInfo, PagesIndex } from './types.js';
@@ -70,6 +71,98 @@ function buildPageId(args: { structName?: string; filePath: string; used: Set<st
   const full = `${base}_${suffix}`;
   args.used.add(full);
   return full;
+}
+
+function hasCjk(text: string): boolean {
+  return /[\u4e00-\u9fff]/u.test(text);
+}
+
+function normalizePathForMatch(filePath: string): string {
+  return filePath.replaceAll('\\', '/').toLowerCase();
+}
+
+function isPageFile(filePath: string): boolean {
+  return /(?:^|\/)pages\//u.test(normalizePathForMatch(filePath));
+}
+
+function isComponentFile(filePath: string): boolean {
+  return /(?:^|\/)component\//u.test(normalizePathForMatch(filePath));
+}
+
+function isEntryAbilityFile(filePath: string): boolean {
+  return /(?:^|\/)entryability\//u.test(normalizePathForMatch(filePath));
+}
+
+function normalizePageDescription(raw: string | undefined, filePath: string, structName?: string): string {
+  const desc = String(raw ?? '').trim();
+  if (desc && hasCjk(desc) && !/[A-Za-z]{3,}/u.test(desc)) return desc;
+  const inferred = inferPageTitle({ filePath, structName });
+  return inferred || desc || '页面';
+}
+
+function humanizeSourceFeatureTitle(args: { source: SourceRecord; page: BuiltPage }): string {
+  const fn = String(args.source['函数名称'] ?? '').trim();
+  const filePath = String(args.source['App源码文件路径'] ?? '').trim();
+  const pageLabel = normalizePageDescription(args.page.entry.description, args.page.entry.filePath, args.page.entry.structName);
+
+  if (isEntryAbilityFile(filePath)) {
+    switch (fn) {
+      case 'onCreate':
+        return '应用创建时';
+      case 'onDestroy':
+        return '应用退出时';
+      case 'onForeground':
+        return '应用切到前台时';
+      case 'onBackground':
+        return '应用切到后台时';
+      case 'onWindowStageCreate':
+        return '主窗口创建时';
+      case 'onWindowStageDestroy':
+        return '主窗口销毁时';
+      case 'onWindowStageActive':
+        return '主窗口激活时';
+      case 'onWindowStageInactive':
+        return '主窗口失焦时';
+      case 'onNewWant':
+        return '收到新请求时';
+      case 'onConfigurationUpdate':
+        return '系统配置更新时';
+      default:
+        return fn ? `应用生命周期：${fn}` : '应用生命周期';
+    }
+  }
+
+  if (isComponentFile(filePath)) {
+    switch (fn) {
+      case 'build':
+        return '组件展示与交互';
+      case 'aboutToAppear':
+        return '组件显示时';
+      case 'aboutToDisappear':
+        return '组件隐藏前';
+      case 'onBackPress':
+        return '组件返回处理';
+      default:
+        return fn ? `组件逻辑：${fn}` : '组件逻辑';
+    }
+  }
+
+  switch (fn) {
+    case 'build':
+      return `${pageLabel}展示与交互`;
+    case 'aboutToAppear':
+      return `${pageLabel}进入时`;
+    case 'aboutToDisappear':
+      return `${pageLabel}离开前`;
+    case 'onPageShow':
+      return `${pageLabel}显示时`;
+    case 'onPageHide':
+      return `${pageLabel}隐藏时`;
+    case 'onBackPress':
+      return `${pageLabel}返回处理`;
+    default:
+      return fn ? `${pageLabel}逻辑：${fn}` : `${pageLabel}逻辑`;
+  }
 }
 
 function groupSourcesByFileLine(sources: SourceRecord[]): Map<string, SourceRecord[]> {
@@ -242,7 +335,7 @@ export async function groupDataflowsByPageFeature(args: {
         filePath,
         structName,
         line: pageNode.line,
-        description: pageNode.description,
+        description: normalizePageDescription(pageNode.description, filePath, structName),
       },
       uiNodes: [],
       uiNodeByLine: new Map(),
@@ -270,6 +363,34 @@ export async function groupDataflowsByPageFeature(args: {
       buildRangeStartLine: 0,
       buildRangeEndLine: 0,
     });
+  }
+
+  const specialPages = new Map<string, BuiltPage>();
+  function ensureSpecialPage(kind: 'app' | 'component'): BuiltPage {
+    const existing = specialPages.get(kind);
+    if (existing) return existing;
+
+    const entry =
+      kind === 'app'
+        ? { filePath: '', structName: 'AppLifecycle', line: 0, description: '应用生命周期' }
+        : { filePath: '', structName: 'ComponentLogic', line: 0, description: '通用组件' };
+    const pageId = buildPageId({ structName: entry.structName, filePath: kind, used: usedPageIds });
+    const page: BuiltPage = {
+      pageId,
+      rootId: '',
+      isRoot: false,
+      entry,
+      uiNodes: [],
+      uiNodeByLine: new Map(),
+      uiLinesSorted: [],
+      pageRangeStartLine: 0,
+      pageRangeEndLine: 0,
+      buildRangeStartLine: 0,
+      buildRangeEndLine: 0,
+    };
+    builtPages.push(page);
+    specialPages.set(kind, page);
+    return page;
   }
 
   const pagesByFile = new Map<string, BuiltPage[]>();
@@ -584,7 +705,12 @@ export async function groupDataflowsByPageFeature(args: {
       for (const p of pages) candidates.push({ page: p, score: scorePageCandidate(p, ln, 50) });
     }
 
-    if (candidates.length === 0) return pickDefaultPage();
+    if (candidates.length === 0) {
+      const srcFileNorm = normalizePathForMatch(srcFile);
+      if (srcFileNorm && isEntryAbilityFile(srcFileNorm)) return ensureSpecialPage('app');
+      if (srcFileNorm && isComponentFile(srcFileNorm)) return ensureSpecialPage('component');
+      return pickDefaultPage();
+    }
     candidates.sort((a, b) => a.score - b.score || a.page.pageId.localeCompare(b.page.pageId));
     return candidates[0]!.page;
   }
@@ -613,9 +739,8 @@ export async function groupDataflowsByPageFeature(args: {
     } else if (source) {
       kind = 'source';
       featureId = buildSourceFeatureId(page.pageId, source);
-      const desc = String(source['描述'] ?? '').trim();
       const fn = String(source['函数名称'] ?? '').trim();
-      title = desc ? (fn ? `${desc}（${fn}）` : desc) : fn ? `入口：${fn}` : '入口/生命周期函数';
+      title = humanizeSourceFeatureTitle({ source, page });
       anchor = {
         filePath: source['App源码文件路径'] ?? page.entry.filePath,
         line: Number(source['行号'] ?? 1) || 1,
