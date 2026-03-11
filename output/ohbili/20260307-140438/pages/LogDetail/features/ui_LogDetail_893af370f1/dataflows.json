@@ -1,0 +1,432 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "generatedAt": "2026-03-07T06:21:31.406Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 13,
+      "edges": 11,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "LogDetail",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+        "structName": "LogDetail",
+        "line": 22,
+        "description": "LogDetail页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_LogDetail_893af370f1",
+      "kind": "ui",
+      "title": "日志详情"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p41",
+      "pathId": "p41",
+      "nodes": [
+        {
+          "id": "p41:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 26,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 开始执行，组件即将显示，触发数据加载流程。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "@Component",
+              "struct LogDetail {",
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)"
+            ]
+          }
+        },
+        {
+          "id": "p41:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 27,
+          "code": "let params = router.getParams() as LogDetailParams | undefined;",
+          "description": "调用 router.getParams() 获取路由参数，尝试解析包含日志文件路径的 LogDetailParams 对象。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "struct LogDetail {",
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p41:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 28,
+          "code": "if (params?.logFilePath) {",
+          "description": "条件判断：检查路由参数中是否存在有效的 logFilePath 字段。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p41:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 29,
+          "code": "this.logFilePath = params.logFilePath;",
+          "description": "数据赋值：将路由参数中的日志文件路径字符串赋值给组件成员变量 this.logFilePath。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p41:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 31,
+          "code": "this.logStr = fs.readTextSync(this.logFilePath)",
+          "description": "敏感操作：调用 fs.readTextSync 同步读取本地文件系统上的日志文件内容，此为隐私数据收集点。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '日志详情' })"
+            ]
+          }
+        },
+        {
+          "id": "p41:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 31,
+          "code": "this.logStr = fs.readTextSync(this.logFilePath)",
+          "description": "数据存储：将读取到的日志文本内容赋值给 @State 装饰的 logStr 变量，用于 UI 渲染，数据驻留内存。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '日志详情' })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p41:n1",
+          "to": "p41:n2"
+        },
+        {
+          "from": "p41:n2",
+          "to": "p41:n3"
+        },
+        {
+          "from": "p41:n3",
+          "to": "p41:n4"
+        },
+        {
+          "from": "p41:n4",
+          "to": "p41:n5"
+        },
+        {
+          "from": "p41:n5",
+          "to": "p41:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "本地日志文件内容",
+          "日志文件路径"
+        ],
+        "collectionFrequency": [
+          "事件触发（页面加载时）"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "本地明文读取（fs.readTextSync）",
+          "内存中临时存储（@State 变量）",
+          "未检测到加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.READ_MEDIA (隐含，访问文件需要)",
+          "ohos.permission.FILESYSTEM_ACCESS (隐含，访问应用沙箱外或特定路径需要)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p42",
+      "pathId": "p42",
+      "nodes": [
+        {
+          "id": "p42:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 26,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 开始执行，组件即将显示，触发数据加载流程。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "@Component",
+              "struct LogDetail {",
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)"
+            ]
+          }
+        },
+        {
+          "id": "p42:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 27,
+          "code": "let params = router.getParams() as LogDetailParams | undefined;",
+          "description": "调用 router.getParams() 获取上一页传递的路由参数，可能包含敏感的文件路径信息。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "struct LogDetail {",
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p42:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 28,
+          "code": "if (params?.logFilePath) {",
+          "description": "判断路由参数中是否存在 logFilePath 字段，进行空值检查。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p42:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 29,
+          "code": "this.logFilePath = params.logFilePath;",
+          "description": "将路由参数中的文件路径赋值给组件内部成员变量 this.logFilePath，确立数据源位置。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p42:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 31,
+          "code": "this.logStr = fs.readTextSync(this.logFilePath)",
+          "description": "调用 fs.readTextSync 同步读取本地文件内容，这是隐私数据的具体采集点，将磁盘上的日志文本加载到内存。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '日志详情' })"
+            ]
+          }
+        },
+        {
+          "id": "p42:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 31,
+          "code": "this.logStr = fs.readTextSync(this.logFilePath)",
+          "description": "将读取到的日志字符串赋值给 @State 装饰的 logStr 变量，触发 UI 状态更新机制。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '日志详情' })"
+            ]
+          }
+        },
+        {
+          "id": "p42:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 38,
+          "code": "Text(this.logStr).fontSize(14).width('100%').padding(8)",
+          "description": "在 build 函数中，将内存中的 logStr 数据绑定到 Text 组件进行渲染展示，完成数据从存储到界面的流动。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '日志详情' })",
+              "      Scroll() {",
+              "        Text(this.logStr).fontSize(14).width('100%').padding(8)",
+              "      }.layoutWeight(1)",
+              "      .align(Alignment.Top)",
+              "      .edgeEffect(EdgeEffect.Fade)",
+              "    }.width('100%').height('100%')",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p42:n1",
+          "to": "p42:n2"
+        },
+        {
+          "from": "p42:n2",
+          "to": "p42:n3"
+        },
+        {
+          "from": "p42:n3",
+          "to": "p42:n4"
+        },
+        {
+          "from": "p42:n4",
+          "to": "p42:n5"
+        },
+        {
+          "from": "p42:n5",
+          "to": "p42:n6"
+        },
+        {
+          "from": "p42:n6",
+          "to": "p42:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "本地日志文件内容",
+          "路由传递参数（文件路径）"
+        ],
+        "collectionFrequency": [
+          "事件触发（页面加载时一次性读取）"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "本地明文存储（从文件系统读取后直接赋值给 UI 状态变量，无加密处理）"
+        ],
+        "permissions": [
+          "ohos.permission.READ_MEDIA (若日志位于媒体目录)",
+          "ohos.permission.FILEIO_ACCESS (若访问特定沙箱外文件，通常沙箱内无需额外权限)"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "generatedAt": "2026-03-07T06:21:31.406Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_37_df41a1e6",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p56",
+      "pathId": "p56",
+      "nodes": [
+        {
+          "id": "p56:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 37,
+          "code": "onDestroy() {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，在 UIAbility 实例销毁时被系统调用。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "        } catch (error) {",
+              "            BLog.e(\"ImageKnife initialization error: \" + JSON.stringify(error));",
+              "        }",
+              "    }",
+              "",
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {"
+            ]
+          }
+        },
+        {
+          "id": "p56:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onDestroy' 格式化后输出到系统信息日志，此处无敏感隐私数据泄露风险。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "            BLog.e(\"ImageKnife initialization error: \" + JSON.stringify(error));",
+              "        }",
+              "    }",
+              "",
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p56:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "this.netConnUnregister();",
+          "description": "调用 this.netConnUnregister() 方法，执行网络连接的注销或清理逻辑，防止资源泄漏。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "        }",
+              "    }",
+              "",
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p56:n1",
+          "to": "p56:n2"
+        },
+        {
+          "from": "p56:n2",
+          "to": "p56:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "Ability 生命周期状态字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发（UIAbility 销毁时）"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅输出至系统日志（hilog），未持久化存储，未加密"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

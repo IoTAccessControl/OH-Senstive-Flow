@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "featureId": "ui_SearchResultPage_0b1c47d722",
+    "generatedAt": "2026-03-07T06:24:13.380Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户在搜索结果页加载时，应用获取搜索关键词并发起网络请求以展示搜索结果。",
+        "dataSources": [
+          "用户输入",
+          "页面路由参数"
+        ],
+        "dataItems": [
+          {
+            "name": "用户搜索关键词 (keyword)",
+            "refs": [
+              {
+                "flowId": "flow:p47",
+                "nodeId": "p47:n2"
+              },
+              {
+                "flowId": "flow:p47",
+                "nodeId": "p47:n3"
+              },
+              {
+                "flowId": "flow:p47",
+                "nodeId": "p47:n4"
+              },
+              {
+                "flowId": "flow:p47",
+                "nodeId": "p47:n5"
+              },
+              {
+                "flowId": "flow:p47",
+                "nodeId": "p47:n7"
+              }
+            ]
+          },
+          {
+            "name": "页面路由参数 (router params)",
+            "refs": [
+              {
+                "flowId": "flow:p47",
+                "nodeId": "p47:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "从路由参数中提取关键词，赋值给组件状态变量，写入系统日志，并通过 API 发送至远程服务器。",
+        "storageMethod": "临时存储于组件内存状态变量中，未观察到本地持久化存储或显式加密处理。",
+        "dataRecipients": [
+          {
+            "name": "远程服务器 (通过 ApiManager.requestSearch)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p47",
+                "nodeId": "p47:n7"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "执行用户搜索请求并返回相关结果列表。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "featureId": "ui_SearchPage_60e1053caa",
+    "generatedAt": "2026-03-07T06:24:06.568Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户进入搜索页面时，应用加载热门搜索榜单并展示默认搜索词；用户点击热搜关键词或完整榜单入口时，将相关数据传递至结果页进行后续处理。",
+        "dataSources": [
+          "路由参数 (Router Parameters)",
+          "云端 API 响应 (Cloud API Response)"
+        ],
+        "dataItems": [
+          {
+            "name": "默认搜索关键词",
+            "refs": [
+              {
+                "flowId": "flow:p44",
+                "nodeId": "p44:n2"
+              },
+              {
+                "flowId": "flow:p44",
+                "nodeId": "p44:n4"
+              },
+              {
+                "flowId": "flow:p45",
+                "nodeId": "p45:n1"
+              },
+              {
+                "flowId": "flow:p46",
+                "nodeId": "p46:n1"
+              }
+            ]
+          },
+          {
+            "name": "热搜榜单数据",
+            "refs": [
+              {
+                "flowId": "flow:p44",
+                "nodeId": "p44:n5"
+              },
+              {
+                "flowId": "flow:p44",
+                "nodeId": "p44:n6"
+              },
+              {
+                "flowId": "flow:p45",
+                "nodeId": "p45:n2"
+              },
+              {
+                "flowId": "flow:p45",
+                "nodeId": "p45:n3"
+              },
+              {
+                "flowId": "flow:p46",
+                "nodeId": "p46:n2"
+              },
+              {
+                "flowId": "flow:p46",
+                "nodeId": "p46:n3"
+              }
+            ]
+          },
+          {
+            "name": "用户选中的搜索关键词",
+            "refs": [
+              {
+                "flowId": "flow:p46",
+                "nodeId": "p46:n8"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中暂存并用于 UI 渲染及页面间参数传递",
+        "storageMethod": "内存存储 (@State 状态变量)，未加密",
+        "dataRecipients": [
+          {
+            "name": "搜索结果页 (SearchResult Page)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p46",
+                "nodeId": "p46:n8"
+              }
+            ]
+          },
+          {
+            "name": "完整榜单页 (TopSearch Page)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p45",
+                "nodeId": "p45:n9"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "展示热门搜索内容，响应用户搜索意图并提供跳转服务",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "用户进入搜索页面时，应用从云端获取热搜榜单数据。",
+        "permissionPurpose": "发起网络请求以获取热搜榜单列表",
+        "denyImpact": "无法加载和展示热门搜索榜单数据，仅能显示本地缓存或空状态",
+        "refs": [
+          {
+            "flowId": "flow:p45",
+            "nodeId": "p45:n2"
+          }
+        ]
+      }
+    ]
+  }
+}

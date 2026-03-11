@@ -1,0 +1,184 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "featureId": "ui_PlayerView_2c901c39d2",
+    "generatedAt": "2026-03-07T06:23:48.426Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.GET_DISPLAY_INFO 未在应用源码/配置中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.WRITE_LOG 未在应用源码/配置中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "视频播放页加载与播放控制",
+        "dataSources": [
+          "设备显示信息",
+          "用户输入的视频标识",
+          "网络请求响应"
+        ],
+        "dataItems": [
+          {
+            "name": "屏幕分辨率 (宽高)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n4"
+              }
+            ]
+          },
+          {
+            "name": "屏幕刘海/挖孔区域信息",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              }
+            ]
+          },
+          {
+            "name": "全屏显示比例计算值",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n8"
+              }
+            ]
+          },
+          {
+            "name": "视频标识符 (bvid)",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n1"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n5"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n6"
+              }
+            ]
+          },
+          {
+            "name": "分集标识符 (cid)",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n5"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n8"
+              }
+            ]
+          },
+          {
+            "name": "视频播放地址 (url)",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n7"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n12"
+              }
+            ]
+          },
+          {
+            "name": "播放器状态事件",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n12"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n12"
+              }
+            ]
+          },
+          {
+            "name": "播放进度时间戳",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n11"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n16"
+              }
+            ]
+          },
+          {
+            "name": "弹幕数据模型",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "本地内存计算与存储，部分数据发送至服务端获取资源",
+        "storageMethod": "本地内存临时存储 (组件实例变量)，未检测到加密或持久化文件存储",
+        "dataRecipients": [
+          {
+            "name": "视频内容服务器",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n6"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n7"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n11"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "适配不同屏幕尺寸以优化视频显示效果，获取并播放指定的视频内容，同步播放进度与弹幕",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "视频播放过程中请求资源",
+        "permissionPurpose": "向服务器发送视频标识 (bvid/cid) 以获取分集列表和真实播放地址，以及获取弹幕数据",
+        "denyImpact": "无法加载视频列表、无法获取视频播放源、无法显示弹幕，导致视频无法播放",
+        "refs": [
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n6"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n7"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n11"
+          }
+        ]
+      }
+    ]
+  }
+}

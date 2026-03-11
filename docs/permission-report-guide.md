@@ -41,6 +41,15 @@ node --import tsx server/src/cli/evalPermissions.ts \
   --details
 ```
 
+也可以使用 Python 评估脚本（与上述指标口径一致）：
+
+```bash
+python3 scripts/eval_permissions.py \
+  --app Wechat_HarmonyOS \
+  --run-id Wechat_HarmonyOS_20260306-212407 \
+  --details
+```
+
 **使用注意事项**
 
 - `appPath` 应指向应用根目录，而不是直接指向 `ets` 子目录。
@@ -57,6 +66,10 @@ node --import tsx server/src/cli/evalPermissions.ts \
 | SDK 数据集 | `input/sdk/default/openharmony/ets/` | OpenHarmony ETS SDK 源码 |
 | CSV 补充信息 | `input/csv/` | API 描述、权限映射、补充规则 |
 | 权限 groundtruth | `groundtruth/permission/` | 每个 App 一份权限标注文件 |
+
+groundtruth 的生成方法与脚本（包含“源码/配置扫描 + SDK API 权限推断”）详见：
+
+- `docs/permission-groundtruth-method.md`
 
 当前 App 数据集包括：
 

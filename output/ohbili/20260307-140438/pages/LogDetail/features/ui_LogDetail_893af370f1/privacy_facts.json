@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "featureId": "ui_LogDetail_893af370f1",
+    "generatedAt": "2026-03-07T06:23:23.587Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.FILESYSTEM_ACCESS 未在应用源码/配置中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户在查看日志详情页面时，应用加载并展示指定的本地日志文件内容。",
+        "dataSources": [
+          "本地文件系统"
+        ],
+        "dataItems": [
+          {
+            "name": "本地日志文件内容",
+            "refs": [
+              {
+                "flowId": "flow:p41",
+                "nodeId": "p41:n5"
+              },
+              {
+                "flowId": "flow:p42",
+                "nodeId": "p42:n5"
+              }
+            ]
+          },
+          {
+            "name": "日志文件路径",
+            "refs": [
+              {
+                "flowId": "flow:p41",
+                "nodeId": "p41:n4"
+              },
+              {
+                "flowId": "flow:p42",
+                "nodeId": "p42:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取本地文件内容并在内存中临时存储以进行界面渲染",
+        "storageMethod": "本地明文读取后暂存于内存变量中，未检测到加密处理",
+        "dataRecipients": [],
+        "processingPurpose": "向用户展示日志文件的详细文本内容以便排查问题或查看运行记录",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "用户在查看日志详情页面时，应用尝试读取可能位于媒体目录下的日志文件。",
+        "permissionPurpose": "访问并读取本地存储中的日志文件内容",
+        "denyImpact": "若拒绝该权限，应用可能无法读取位于受保护媒体目录下的日志文件，导致日志详情页面无法显示内容或显示为空。",
+        "refs": [
+          {
+            "flowId": "flow:p41",
+            "nodeId": "p41:n5"
+          }
+        ]
+      }
+    ]
+  }
+}

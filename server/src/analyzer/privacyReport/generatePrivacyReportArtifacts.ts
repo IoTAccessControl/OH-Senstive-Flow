@@ -236,7 +236,9 @@ function derivePermissionPracticesFromCsv(args: {
       for (const s of sinkRecords) {
         const apiKey = cleanText((s as any).__apiKey);
         if (!apiKey) continue;
-        const perms = args.csvPermissions.get(apiKey) ?? [];
+        const fromSink = Array.isArray((s as any).__permissions) ? (s as any).__permissions.map(String) : [];
+        const fromCsv = args.csvPermissions.get(apiKey) ?? [];
+        const perms = Array.from(new Set([...fromSink, ...fromCsv].map(cleanText))).filter(Boolean);
         if (perms.length === 0) continue;
 
         const desc = cleanText((s as any)['API功能描述']);
@@ -344,8 +346,8 @@ function buildAppDeclaredPermissionFacts(permissions: string[]): FeaturePrivacyF
     dataPractices: [],
     permissionPractices: permissions.map((permissionName) => ({
       permissionName,
-      businessScenario: '应用源码或配置中声明/请求的权限',
-      permissionPurpose: '当前已在应用源码或配置中检测到该权限字符串，但尚未定位到具体功能点数据流。',
+      businessScenario: '应用源码/配置声明或 SDK API 使用推断的权限',
+      permissionPurpose: '当前已在应用源码/配置扫描或 SDK API→权限映射中识别到该权限，但尚未定位到具体功能点数据流。',
       denyImpact: '当前未从已识别的数据流中定位到具体拒绝授权影响。',
       refs: [],
     })),
@@ -402,7 +404,18 @@ export async function generatePrivacyReportArtifacts(args: {
 
     const appPathFromMeta = cleanText(metaRaw?.input?.appPath);
     const appDirAbs = appPathFromMeta ? toAbs(args.repoRoot, appPathFromMeta) : path.join(args.repoRoot, 'input', 'app', args.appName);
-    const knownAppPermissions = await collectPermissionsFromApp(appDirAbs).catch(() => new Set<string>());
+    const declaredAppPermissions = await collectPermissionsFromApp(appDirAbs).catch(() => new Set<string>());
+    const inferredAppPermissions = new Set<string>();
+    for (const s of sinks) {
+      const sinkApiKey = cleanText((s as any).__apiKey);
+      const fromSink = Array.isArray((s as any).__permissions) ? (s as any).__permissions.map(String) : [];
+      const fromCsv = sinkApiKey ? (csvPermissions.get(sinkApiKey) ?? []) : [];
+      for (const raw of [...fromSink, ...fromCsv]) {
+        const normalized = normalizePermissionToken(raw);
+        if (normalized && normalized.startsWith('ohos.permission.')) inferredAppPermissions.add(normalized);
+      }
+    }
+    const knownAppPermissions = new Set<string>([...declaredAppPermissions, ...inferredAppPermissions]);
     const emittedPermissions = new Set<string>();
 
     const featuresForReport: Array<{ featureId: string; facts: FeaturePrivacyFactsContent; dataflows: DataflowsResult }> = [];
@@ -473,7 +486,7 @@ export async function generatePrivacyReportArtifacts(args: {
       });
       facts.permissionPractices = filtered.practices;
       for (const permission of filtered.dropped) {
-        warnings.push(`权限 ${permission} 未在应用源码/配置中出现，已从识别结果中过滤。`);
+        warnings.push(`权限 ${permission} 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。`);
       }
       for (const practice of facts.permissionPractices) {
         const permissionName = normalizePermissionToken(practice.permissionName);
@@ -502,7 +515,7 @@ export async function generatePrivacyReportArtifacts(args: {
       const featureId = '__app_permissions';
       const syntheticFacts = buildAppDeclaredPermissionFacts(unmatchedPermissions);
       const syntheticWarnings = [
-        `以下权限来自应用源码/配置扫描，当前未定位到具体功能点数据流：${unmatchedPermissions.join(', ')}`,
+        `以下权限来自应用源码/配置扫描或 SDK API 权限映射，当前未定位到具体功能点数据流：${unmatchedPermissions.join(', ')}`,
       ];
       const syntheticDataflows: DataflowsResult = {
         meta: {

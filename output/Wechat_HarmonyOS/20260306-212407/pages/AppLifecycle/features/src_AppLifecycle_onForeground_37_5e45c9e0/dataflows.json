@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260306-212407",
+    "generatedAt": "2026-03-06T13:32:12.797Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onForeground_37_5e45c9e0",
+      "kind": "source",
+      "title": "应用切到前台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p21",
+      "pathId": "p21",
+      "nodes": [
+        {
+          "id": "p21:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 37,
+          "code": "onForeground() {",
+          "description": "定义 onForeground 生命周期回调函数入口，当 UIAbility 切换到前台时被系统触发",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {"
+            ]
+          }
+        },
+        {
+          "id": "p21:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "// Ability has brought to foreground",
+          "description": "代码注释行，说明该函数用于处理应用进入前台的逻辑",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {",
+              "    // Ability has back to background"
+            ]
+          }
+        },
+        {
+          "id": "p21:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+          "description": "调用 hilog.info 接口记录信息级日志，将字符串 'Ability onForeground' 作为公共数据输出到系统日志缓冲区",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p21:n1",
+          "to": "p21:n2"
+        },
+        {
+          "from": "p21:n2",
+          "to": "p21:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件 (Foreground)",
+          "日志文本内容 ('Ability onForeground')"
+        ],
+        "collectionFrequency": [
+          "事件触发 (每次应用切换至前台时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志系统调用)"
+        ],
+        "storageAndEncryption": [
+          "依赖系统日志服务 (hilog) 的默认存储策略，源码未体现显式加密或持久化逻辑"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

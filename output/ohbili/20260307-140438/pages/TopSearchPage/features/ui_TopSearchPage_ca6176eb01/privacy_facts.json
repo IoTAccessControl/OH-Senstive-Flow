@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "featureId": "ui_TopSearchPage_ca6176eb01",
+    "generatedAt": "2026-03-07T06:24:21.746Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户进入搜索排行榜页面时，应用接收并展示热搜榜单数据；用户点击返回按钮退出当前页面；用户点击榜单项跳转至搜索结果页。",
+        "dataSources": [
+          "上一页传递的路由参数"
+        ],
+        "dataItems": [
+          {
+            "name": "页面路由参数 (TopSearchParams)",
+            "refs": [
+              {
+                "flowId": "flow:p52",
+                "nodeId": "p52:n2"
+              },
+              {
+                "flowId": "flow:p53",
+                "nodeId": "p53:n4"
+              },
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n1"
+              }
+            ]
+          },
+          {
+            "name": "排行榜数据 (rankings)",
+            "refs": [
+              {
+                "flowId": "flow:p52",
+                "nodeId": "p52:n4"
+              },
+              {
+                "flowId": "flow:p53",
+                "nodeId": "p53:n5"
+              },
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n2"
+              }
+            ]
+          },
+          {
+            "name": "搜索关键词 (keyword)",
+            "refs": [
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n9"
+              }
+            ]
+          },
+          {
+            "name": "列表项位置 (position)",
+            "refs": [
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "从路由参数中提取数据并在内存中暂存，用于渲染 UI 列表及响应点击事件进行页面跳转。",
+        "storageMethod": "临时内存存储（组件实例变量），无本地持久化存储，无加密处理。",
+        "dataRecipients": [
+          {
+            "name": "SearchResult 页面",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n9"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "展示热搜榜单内容，响应用户交互以返回上一页或进入搜索结果详情。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

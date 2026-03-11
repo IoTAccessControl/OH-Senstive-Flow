@@ -8,6 +8,7 @@ export type SinkRecord = {
 
   __apiKey?: string;
   __module?: string;
+  __permissions?: string[];
 };
 
 export type SourceRecord = {

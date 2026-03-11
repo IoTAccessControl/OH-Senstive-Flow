@@ -1,0 +1,5044 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "generatedAt": "2026-03-07T06:21:31.406Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 14,
+      "nodes": 170,
+      "edges": 156,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "PlayerView",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+        "structName": "PlayerView",
+        "line": 57,
+        "description": "视频播放页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_PlayerView_2c901c39d2",
+      "kind": "ui",
+      "title": "视频播放器"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 132,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，当视频播放器组件即将显示时触发，启动数据收集流程。",
+          "context": {
+            "startLine": 127,
+            "lines": [
+              "",
+              "  onDanmakuPnUpdated(propName: string): void {",
+              "    this.getDanmaku(false);",
+              "  }",
+              "",
+              "  aboutToAppear() {",
+              "    let dis = display.getDefaultDisplaySync();",
+              "    if (dis != null) {",
+              "      let height = dis.height;",
+              "      dis.getCutoutInfo().then((info) => {",
+              "        info.boundingRects.forEach(rect => {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 133,
+          "code": "let dis = display.getDefaultDisplaySync();",
+          "description": "调用 display.getDefaultDisplaySync() 获取默认显示屏的同步对象，作为获取屏幕物理属性的数据源。",
+          "context": {
+            "startLine": 128,
+            "lines": [
+              "  onDanmakuPnUpdated(propName: string): void {",
+              "    this.getDanmaku(false);",
+              "  }",
+              "",
+              "  aboutToAppear() {",
+              "    let dis = display.getDefaultDisplaySync();",
+              "    if (dis != null) {",
+              "      let height = dis.height;",
+              "      dis.getCutoutInfo().then((info) => {",
+              "        info.boundingRects.forEach(rect => {",
+              "          height -= rect.height;"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 134,
+          "code": "if (dis != null) {",
+          "description": "校验显示屏对象是否为空，确保后续数据读取的安全性。",
+          "context": {
+            "startLine": 129,
+            "lines": [
+              "    this.getDanmaku(false);",
+              "  }",
+              "",
+              "  aboutToAppear() {",
+              "    let dis = display.getDefaultDisplaySync();",
+              "    if (dis != null) {",
+              "      let height = dis.height;",
+              "      dis.getCutoutInfo().then((info) => {",
+              "        info.boundingRects.forEach(rect => {",
+              "          height -= rect.height;",
+              "        });"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 135,
+          "code": "let height = dis.height;",
+          "description": "从显示屏对象中读取屏幕高度 (height)，属于设备显示参数收集。",
+          "context": {
+            "startLine": 130,
+            "lines": [
+              "  }",
+              "",
+              "  aboutToAppear() {",
+              "    let dis = display.getDefaultDisplaySync();",
+              "    if (dis != null) {",
+              "      let height = dis.height;",
+              "      dis.getCutoutInfo().then((info) => {",
+              "        info.boundingRects.forEach(rect => {",
+              "          height -= rect.height;",
+              "        });",
+              "        this.fullScreenRatio = height / dis.width;"
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 136,
+          "code": "dis.getCutoutInfo().then((info) => {",
+          "description": "异步调用 getCutoutInfo() 获取屏幕刘海或挖孔区域的详细信息，涉及敏感的设备物理特征数据。",
+          "context": {
+            "startLine": 131,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "    let dis = display.getDefaultDisplaySync();",
+              "    if (dis != null) {",
+              "      let height = dis.height;",
+              "      dis.getCutoutInfo().then((info) => {",
+              "        info.boundingRects.forEach(rect => {",
+              "          height -= rect.height;",
+              "        });",
+              "        this.fullScreenRatio = height / dis.width;",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 137,
+          "code": "info.boundingRects.forEach(rect => {",
+          "description": "遍历获取到的刘海/挖孔矩形区域列表 (boundingRects)，准备进行尺寸扣除计算。",
+          "context": {
+            "startLine": 132,
+            "lines": [
+              "  aboutToAppear() {",
+              "    let dis = display.getDefaultDisplaySync();",
+              "    if (dis != null) {",
+              "      let height = dis.height;",
+              "      dis.getCutoutInfo().then((info) => {",
+              "        info.boundingRects.forEach(rect => {",
+              "          height -= rect.height;",
+              "        });",
+              "        this.fullScreenRatio = height / dis.width;",
+              "      })",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p1:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 138,
+          "code": "height -= rect.height;",
+          "description": "从初始高度中减去刘海区域的高度，计算实际可用显示高度。",
+          "context": {
+            "startLine": 133,
+            "lines": [
+              "    let dis = display.getDefaultDisplaySync();",
+              "    if (dis != null) {",
+              "      let height = dis.height;",
+              "      dis.getCutoutInfo().then((info) => {",
+              "        info.boundingRects.forEach(rect => {",
+              "          height -= rect.height;",
+              "        });",
+              "        this.fullScreenRatio = height / dis.width;",
+              "      })",
+              "    }",
+              "    this.player.setPlayId(this.bvid);"
+            ]
+          }
+        },
+        {
+          "id": "p1:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 140,
+          "code": "this.fullScreenRatio = height / dis.width;",
+          "description": "结合可用高度和屏幕宽度计算全屏比例 (fullScreenRatio)，并将结果存储在组件成员变量中，完成数据处理闭环。",
+          "context": {
+            "startLine": 135,
+            "lines": [
+              "      let height = dis.height;",
+              "      dis.getCutoutInfo().then((info) => {",
+              "        info.boundingRects.forEach(rect => {",
+              "          height -= rect.height;",
+              "        });",
+              "        this.fullScreenRatio = height / dis.width;",
+              "      })",
+              "    }",
+              "    this.player.setPlayId(this.bvid);",
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        },
+        {
+          "from": "p1:n6",
+          "to": "p1:n7"
+        },
+        {
+          "from": "p1:n7",
+          "to": "p1:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "屏幕分辨率 (宽高)",
+          "屏幕刘海/挖孔区域信息 (CutoutInfo)",
+          "全屏显示比例计算值"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件加载时)"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (组件实例变量 fullScreenRatio)",
+          "未加密 (纯数值计算)"
+        ],
+        "permissions": [
+          "ohos.permission.GET_DISPLAY_INFO (隐含，获取默认显示屏同步对象通常需要此权限或系统能力)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 143,
+          "code": "this.player.setPlayId(this.bvid);",
+          "description": "将业务视频 ID (bvid) 赋值给底层播放器内核，建立播放会话标识",
+          "context": {
+            "startLine": 138,
+            "lines": [
+              "          height -= rect.height;",
+              "        });",
+              "        this.fullScreenRatio = height / dis.width;",
+              "      })",
+              "    }",
+              "    this.player.setPlayId(this.bvid);",
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 145,
+          "code": "this.getDanmaku(true);",
+          "description": "条件触发弹幕获取逻辑，可能涉及网络请求拉取弹幕数据列表",
+          "context": {
+            "startLine": 140,
+            "lines": [
+              "        this.fullScreenRatio = height / dis.width;",
+              "      })",
+              "    }",
+              "    this.player.setPlayId(this.bvid);",
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染播放器界面结构",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建堆叠布局容器，用于居中承载视频渲染表面",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p2:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 152,
+          "code": "id: this.player.id(),",
+          "description": "读取并传递播放器组件的唯一硬件/软件标识符 (id)",
+          "context": {
+            "startLine": 147,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 154,
+          "code": "libraryname: this.player.libraryName(),",
+          "description": "读取并传递播放器底层动态库名称，用于加载特定解码引擎",
+          "context": {
+            "startLine": 149,
+            "lines": [
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {",
+              "          if (context) {",
+              "            this.mPlayContext = context;"
+            ]
+          }
+        },
+        {
+          "id": "p2:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 155,
+          "code": "controller: this.player.controller()",
+          "description": "获取并绑定播放器控制器对象，用于后续交互控制",
+          "context": {
+            "startLine": 150,
+            "lines": [
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {",
+              "          if (context) {",
+              "            this.mPlayContext = context;",
+              "            this.player.initPlay(this.mPlayContext).then(_ => {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 157,
+          "code": ".onLoad((context) => {",
+          "description": "注册视频表面加载完成回调，准备接收播放上下文",
+          "context": {
+            "startLine": 152,
+            "lines": [
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {",
+              "          if (context) {",
+              "            this.mPlayContext = context;",
+              "            this.player.initPlay(this.mPlayContext).then(_ => {",
+              "              if (this.cid == 0) {",
+              "                this.getPageList(this.bvid);"
+            ]
+          }
+        },
+        {
+          "id": "p2:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义初始化播放方法，接收视频流 URL 并配置播放回调机制",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 288,
+          "code": "class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+          "description": "实例化时间更新回调类，用于监听播放进度变化",
+          "context": {
+            "startLine": 283,
+            "lines": [
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;"
+            ]
+          }
+        },
+        {
+          "id": "p2:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 289,
+          "code": "onTimeUpdate(current: number, total: number): void {",
+          "description": "实现 onTimeUpdate 接口，周期性接收当前播放时间和总时长数据",
+          "context": {
+            "startLine": 284,
+            "lines": [
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;",
+              "          thisClass.progressValue = pos;"
+            ]
+          }
+        },
+        {
+          "id": "p2:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 330,
+          "code": "thisClass.mDanmakuModel.resume();",
+          "description": "当播放状态恢复为 PLAY 时，唤醒弹幕模型继续渲染",
+          "context": {
+            "startLine": 325,
+            "lines": [
+              "        } else if (status == IPlayStatus.PREPARED) {",
+              "          thisClass.mFirst = false;",
+              "          thisClass.hideLoadIng();",
+              "        } else if (status == IPlayStatus.PLAY) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();"
+            ]
+          }
+        },
+        {
+          "id": "p2:n13",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 333,
+          "code": "thisClass.mDanmakuModel.pause();",
+          "description": "当播放状态变为 PAUSE 时，暂停弹幕模型渲染以同步视频状态",
+          "context": {
+            "startLine": 328,
+            "lines": [
+              "        } else if (status == IPlayStatus.PLAY) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });"
+            ]
+          }
+        },
+        {
+          "id": "p2:n14",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "捕获播放错误状态 (ERROR)，调用系统 Toast 接口向用户展示错误提示文本",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        },
+        {
+          "from": "p2:n4",
+          "to": "p2:n5"
+        },
+        {
+          "from": "p2:n5",
+          "to": "p2:n6"
+        },
+        {
+          "from": "p2:n6",
+          "to": "p2:n7"
+        },
+        {
+          "from": "p2:n7",
+          "to": "p2:n8"
+        },
+        {
+          "from": "p2:n8",
+          "to": "p2:n9"
+        },
+        {
+          "from": "p2:n9",
+          "to": "p2:n10"
+        },
+        {
+          "from": "p2:n10",
+          "to": "p2:n11"
+        },
+        {
+          "from": "p2:n11",
+          "to": "p2:n12"
+        },
+        {
+          "from": "p2:n12",
+          "to": "p2:n13"
+        },
+        {
+          "from": "p2:n13",
+          "to": "p2:n14"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频播放 ID (bvid)",
+          "组件唯一标识 (player.id)",
+          "播放器库名称 (libraryName)",
+          "控制器实例 (controller)",
+          "视频流 URL",
+          "播放进度时间戳 (current/total)",
+          "播放状态码 (PLAY/PAUSE/ERROR/DONE)",
+          "弹幕数据模型 (DanmakuModel)"
+        ],
+        "collectionFrequency": [
+          "一次性 (初始化时获取 bvid, id, libraryName)",
+          "事件触发 (视频加载 onLoad 事件)",
+          "周期性 (OnTimeUpdateCallback 回调，随播放进度持续触发)",
+          "事件触发 (播放状态变更如 ERROR, PAUSE)"
+        ],
+        "cloudUpload": [
+          "未在当前片段发现直接网络发送代码",
+          "getDanmaku(true) 暗示可能发起网络请求获取弹幕",
+          "showToast 仅为本地 UI 反馈，不涉及上传"
+        ],
+        "storageAndEncryption": [
+          "数据暂存于内存变量 (thisClass, this.player)",
+          "UI 组件状态存储于 ArkUI 框架内部",
+          "未发现显式本地文件写入或加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于加载视频 URL 和 getDanmaku)",
+          "ohos.permission.ACCESS_NETWORK_STATE (隐含，用于检测播放异常)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数被调用，开始渲染视频播放器界面组件",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 容器组件，作为视频播放画面的底层布局容器",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 151,
+          "code": "XComponent({",
+          "description": "实例化 XComponent 组件，绑定播放器 ID、类型及控制器，准备承载视频表面 (Surface)",
+          "context": {
+            "startLine": 146,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 157,
+          "code": ".onLoad((context) => {",
+          "description": "注册 XComponent 的 onLoad 回调，当 UI 组件加载完成时触发后续逻辑",
+          "context": {
+            "startLine": 152,
+            "lines": [
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {",
+              "          if (context) {",
+              "            this.mPlayContext = context;",
+              "            this.player.initPlay(this.mPlayContext).then(_ => {",
+              "              if (this.cid == 0) {",
+              "                this.getPageList(this.bvid);"
+            ]
+          }
+        },
+        {
+          "id": "p3:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，接收视频标识 bvid 和分集 cid，发起网络请求获取真实播放地址",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p3:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 262,
+          "code": "ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+          "description": "调用 ApiManager 请求播放地址，此处涉及将 bvid/cid 数据发送至远程服务器",
+          "context": {
+            "startLine": 257,
+            "lines": [
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p3:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 263,
+          "code": "this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+          "description": "解析响应数据，提取视频 URL 并替换转义字符，存入成员变量 mPlayUrl",
+          "context": {
+            "startLine": 258,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p3:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 264,
+          "code": "BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+          "description": "将获取到的明文播放地址打印到系统日志 (BLog)，存在敏感信息本地留存风险",
+          "context": {
+            "startLine": 259,
+            "lines": [
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              "",
+              "  private showLoadIng() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 265,
+          "code": "this.initPlay(this.mPlayUrl);",
+          "description": "调用 initPlay 方法，传入解析后的视频 URL 以初始化播放器内核",
+          "context": {
+            "startLine": 260,
+            "lines": [
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              "",
+              "  private showLoadIng() {",
+              "    this.loadingVisible = true;"
+            ]
+          }
+        },
+        {
+          "id": "p3:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，配置播放器回调监听器，准备处理播放状态变化",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 289,
+          "code": "onTimeUpdate(current: number, total: number): void {",
+          "description": "实现 onTimeUpdate 回调，周期性接收当前播放时间和总时长，用于更新进度条",
+          "context": {
+            "startLine": 284,
+            "lines": [
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;",
+              "          thisClass.progressValue = pos;"
+            ]
+          }
+        },
+        {
+          "id": "p3:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 334,
+          "code": "} else if (status == IPlayStatus.ERROR) {",
+          "description": "检测到播放器状态变为 ERROR，触发异常处理分支",
+          "context": {
+            "startLine": 329,
+            "lines": [
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n13",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 向用户展示错误提示消息，此为数据流终点 (Sink)，仅本地 UI 反馈",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n4",
+          "to": "p3:n5"
+        },
+        {
+          "from": "p3:n5",
+          "to": "p3:n6"
+        },
+        {
+          "from": "p3:n6",
+          "to": "p3:n7"
+        },
+        {
+          "from": "p3:n7",
+          "to": "p3:n8"
+        },
+        {
+          "from": "p3:n8",
+          "to": "p3:n9"
+        },
+        {
+          "from": "p3:n9",
+          "to": "p3:n10"
+        },
+        {
+          "from": "p3:n10",
+          "to": "p3:n11"
+        },
+        {
+          "from": "p3:n11",
+          "to": "p3:n12"
+        },
+        {
+          "from": "p3:n12",
+          "to": "p3:n13"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频标识符 (bvid)",
+          "分集标识符 (cid)",
+          "视频播放地址 (url)",
+          "播放器状态 (status)",
+          "用户界面交互事件"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "周期性 (播放进度更新回调)",
+          "异常触发 (播放错误时)"
+        ],
+        "cloudUpload": [
+          "间接上传：通过 ApiManager.requestPlayUrl 将 bvid/cid 发送至服务端以获取播放地址",
+          "无直接隐私数据上传：showToast 仅为本地展示，不涉及网络发送"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储：mPlayUrl 存储在类成员变量中",
+          "日志记录：播放地址明文打印至 BLog (存在本地日志泄露风险)",
+          "未检测到加密存储行为"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含：用于请求视频地址和播放)",
+          "ohos.permission.WRITE_LOG (隐含：用于 BLog.i 输出)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化播放器界面组件。",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 容器组件，作为视频播放画面的布局容器。",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，接收视频标识 bvid 和分集标识 cid 作为输入参数，用于获取播放源。",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p4:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 262,
+          "code": "ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+          "description": "调用 ApiManager 请求网络接口，传入 bvid 和 cid 以获取视频播放地址。",
+          "context": {
+            "startLine": 257,
+            "lines": [
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p4:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 263,
+          "code": "this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+          "description": "解析网络响应，提取视频 URL 并解码，暂存于成员变量 mPlayUrl 中。",
+          "context": {
+            "startLine": 258,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p4:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 265,
+          "code": "this.initPlay(this.mPlayUrl);",
+          "description": "调用 initPlay 方法，将获取到的视频 URL 传递给播放器内核进行初始化。",
+          "context": {
+            "startLine": 260,
+            "lines": [
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              "",
+              "  private showLoadIng() {",
+              "    this.loadingVisible = true;"
+            ]
+          }
+        },
+        {
+          "id": "p4:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，配置播放器回调监听器（如时间更新、状态变更）。",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 334,
+          "code": "} else if (status == IPlayStatus.ERROR) {",
+          "description": "播放器状态机检测到 ERROR 状态，触发异常处理逻辑。",
+          "context": {
+            "startLine": 329,
+            "lines": [
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 向用户展示视频播放错误的提示信息，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        },
+        {
+          "from": "p4:n3",
+          "to": "p4:n4"
+        },
+        {
+          "from": "p4:n4",
+          "to": "p4:n5"
+        },
+        {
+          "from": "p4:n5",
+          "to": "p4:n6"
+        },
+        {
+          "from": "p4:n6",
+          "to": "p4:n7"
+        },
+        {
+          "from": "p4:n7",
+          "to": "p4:n8"
+        },
+        {
+          "from": "p4:n8",
+          "to": "p4:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频标识符 (bvid)",
+          "分集标识符 (cid)",
+          "视频播放地址 (url)",
+          "播放状态事件 (PLAY/PAUSE/ERROR)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "实时回调 (播放状态更新)"
+        ],
+        "cloudUpload": [
+          "无直接上传行为 (仅通过 ApiManager 请求数据，具体网络实现在外部)",
+          "无敏感隐私数据上传至云端"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (mPlayUrl)",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化视频播放器界面组件。",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 容器组件，作为视频播放画面的布局容器。",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p5:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，接收视频标识 bvid 和分集标识 cid 作为输入参数，准备发起网络请求。",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p5:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 262,
+          "code": "ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+          "description": "调用 ApiManager 发起网络请求获取真实播放地址，此处涉及将 bvid 和 cid 发送至远程服务器。",
+          "context": {
+            "startLine": 257,
+            "lines": [
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p5:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 263,
+          "code": "this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+          "description": "解析响应数据，提取视频流 URL 并解码，存入成员变量 mPlayUrl（内存存储）。",
+          "context": {
+            "startLine": 258,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p5:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 265,
+          "code": "this.initPlay(this.mPlayUrl);",
+          "description": "调用 initPlay 方法，将获取到的视频 URL 传递给播放器初始化逻辑。",
+          "context": {
+            "startLine": 260,
+            "lines": [
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              "",
+              "  private showLoadIng() {",
+              "    this.loadingVisible = true;"
+            ]
+          }
+        },
+        {
+          "id": "p5:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，开始配置播放器实例及注册回调监听器。",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 334,
+          "code": "} else if (status == IPlayStatus.ERROR) {",
+          "description": "播放器状态监听回调检测到 ERROR 状态，表明视频加载或播放失败。",
+          "context": {
+            "startLine": 329,
+            "lines": [
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 向用户展示错误提示消息，完成数据流的终点（用户反馈）。",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        },
+        {
+          "from": "p5:n2",
+          "to": "p5:n3"
+        },
+        {
+          "from": "p5:n3",
+          "to": "p5:n4"
+        },
+        {
+          "from": "p5:n4",
+          "to": "p5:n5"
+        },
+        {
+          "from": "p5:n5",
+          "to": "p5:n6"
+        },
+        {
+          "from": "p5:n6",
+          "to": "p5:n7"
+        },
+        {
+          "from": "p5:n7",
+          "to": "p5:n8"
+        },
+        {
+          "from": "p5:n8",
+          "to": "p5:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频标识符 (bvid)",
+          "分集标识符 (cid)",
+          "视频播放地址 (url)",
+          "播放器状态事件 (ERROR)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "一次性 (获取播放链接)"
+        ],
+        "cloudUpload": [
+          "无直接上传行为 (仅内部网络请求获取 URL，未将隐私数据发送至分析服务器)",
+          "网络请求 (ApiManager.requestPlayUrl 用于获取视频流地址)"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (mPlayUrl 变量)",
+          "无加密存储迹象"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于 ApiManager 请求)",
+          "无敏感隐私权限 (如位置、联系人等) 在此路径中被调用"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化播放器界面组件。",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 容器组件，作为视频播放画面的父布局容器。",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 143,
+          "code": "this.player.setPlayId(this.bvid);",
+          "description": "将视频唯一标识 bvid 设置到播放器内核，标记当前播放任务。",
+          "context": {
+            "startLine": 138,
+            "lines": [
+              "          height -= rect.height;",
+              "        });",
+              "        this.fullScreenRatio = height / dis.width;",
+              "      })",
+              "    }",
+              "    this.player.setPlayId(this.bvid);",
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p6:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 144,
+          "code": "if (this.cid > 0) {",
+          "description": "判断分集标识 cid 是否有效，决定是否加载弹幕数据。",
+          "context": {
+            "startLine": 139,
+            "lines": [
+              "        });",
+              "        this.fullScreenRatio = height / dis.width;",
+              "      })",
+              "    }",
+              "    this.player.setPlayId(this.bvid);",
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，接收 bvid 和 cid 参数，用于请求视频真实播放地址。",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p6:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 262,
+          "code": "ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+          "description": "调用 ApiManager 发起网络请求，传入 bvid 和 cid 获取播放 URL 响应。",
+          "context": {
+            "startLine": 257,
+            "lines": [
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p6:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 263,
+          "code": "this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+          "description": "解析响应数据，提取视频流 URL 并替换转义字符，存入成员变量 mPlayUrl。",
+          "context": {
+            "startLine": 258,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p6:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 265,
+          "code": "this.initPlay(this.mPlayUrl);",
+          "description": "调用 initPlay 方法，将获取到的视频 URL 传递给播放器进行初始化。",
+          "context": {
+            "startLine": 260,
+            "lines": [
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              "",
+              "  private showLoadIng() {",
+              "    this.loadingVisible = true;"
+            ]
+          }
+        },
+        {
+          "id": "p6:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，开始配置播放器实例及注册回调监听器。",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 289,
+          "code": "onTimeUpdate(current: number, total: number): void {",
+          "description": "实现时间更新回调 onTimeUpdate，周期性接收当前播放时间和总时长。",
+          "context": {
+            "startLine": 284,
+            "lines": [
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;",
+              "          thisClass.progressValue = pos;"
+            ]
+          }
+        },
+        {
+          "id": "p6:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 334,
+          "code": "} else if (status == IPlayStatus.ERROR) {",
+          "description": "检测播放器状态为 ERROR，触发异常处理逻辑。",
+          "context": {
+            "startLine": 329,
+            "lines": [
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 显示错误提示消息，告知用户视频播放异常。",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        },
+        {
+          "from": "p6:n3",
+          "to": "p6:n4"
+        },
+        {
+          "from": "p6:n4",
+          "to": "p6:n5"
+        },
+        {
+          "from": "p6:n5",
+          "to": "p6:n6"
+        },
+        {
+          "from": "p6:n6",
+          "to": "p6:n7"
+        },
+        {
+          "from": "p6:n7",
+          "to": "p6:n8"
+        },
+        {
+          "from": "p6:n8",
+          "to": "p6:n9"
+        },
+        {
+          "from": "p6:n9",
+          "to": "p6:n10"
+        },
+        {
+          "from": "p6:n10",
+          "to": "p6:n11"
+        },
+        {
+          "from": "p6:n11",
+          "to": "p6:n12"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频标识符 (bvid)",
+          "分集标识符 (cid)",
+          "视频播放地址 (url)",
+          "播放状态事件 (PLAY/PAUSE/ERROR)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "一次性 (获取播放链接)",
+          "周期性 (播放进度回调)"
+        ],
+        "cloudUpload": [
+          "无直接上传行为 (仅通过 ApiManager 发起请求获取数据，未在此片段发现显式上传用户隐私数据)"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (mPlayUrl)",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化播放器视图容器",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 布局容器，作为视频播放画面的父组件",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 151,
+          "code": "XComponent({",
+          "description": "实例化 XComponent 组件，用于承载底层视频渲染表面 (surface)",
+          "context": {
+            "startLine": 146,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p7:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 152,
+          "code": "id: this.player.id(),",
+          "description": "绑定播放器唯一 ID，关联 Native 层播放器实例",
+          "context": {
+            "startLine": 147,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 157,
+          "code": ".onLoad((context) => {",
+          "description": "注册 XComponent 加载完成回调 onLoad，准备初始化播放逻辑",
+          "context": {
+            "startLine": 152,
+            "lines": [
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {",
+              "          if (context) {",
+              "            this.mPlayContext = context;",
+              "            this.player.initPlay(this.mPlayContext).then(_ => {",
+              "              if (this.cid == 0) {",
+              "                this.getPageList(this.bvid);"
+            ]
+          }
+        },
+        {
+          "id": "p7:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 242,
+          "code": "private getPageList(bvid: string) {",
+          "description": "定义 getPageList 方法，接收视频 ID(bvid) 作为输入参数",
+          "context": {
+            "startLine": 237,
+            "lines": [
+              "    }.width('100%')",
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p7:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 243,
+          "code": "ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+          "description": "调用 ApiManager 发起网络请求，上传 bvid 获取视频分集列表",
+          "context": {
+            "startLine": 238,
+            "lines": [
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p7:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 244,
+          "code": "this.cid = resp.data[0].cid;",
+          "description": "解析响应数据，提取并本地存储第一集的 cid (分集 ID)",
+          "context": {
+            "startLine": 239,
+            "lines": [
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p7:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 246,
+          "code": "this.getPlayUrl(this.bvid, this.cid);",
+          "description": "使用 bvid 和 cid 调用 getPlayUrl 方法，请求具体播放地址",
+          "context": {
+            "startLine": 241,
+            "lines": [
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }",
+              "",
+              "  private getDanmaku(isInit: boolean) {",
+              "    BLog.i(\"getDanmaku index: \" + this.danmakuPn + \", isInit: \" + isInit);"
+            ]
+          }
+        },
+        {
+          "id": "p7:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，接收 bvid 和 cid 参数",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p7:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 262,
+          "code": "ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+          "description": "调用 ApiManager 发起网络请求，上传 bvid 和 cid 获取真实播放 URL",
+          "context": {
+            "startLine": 257,
+            "lines": [
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p7:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 263,
+          "code": "this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+          "description": "解析响应获取播放 URL，进行字符转义处理后存入本地变量 mPlayUrl",
+          "context": {
+            "startLine": 258,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p7:n13",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 265,
+          "code": "this.initPlay(this.mPlayUrl);",
+          "description": "调用 initPlay 方法，传入解析后的播放 URL 启动播放器",
+          "context": {
+            "startLine": 260,
+            "lines": [
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              "",
+              "  private showLoadIng() {",
+              "    this.loadingVisible = true;"
+            ]
+          }
+        },
+        {
+          "id": "p7:n14",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，初始化播放器内核及回调监听",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n15",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 288,
+          "code": "class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+          "description": "定义内部类 TimeUpdateCallbackImpl 实现播放进度回调接口",
+          "context": {
+            "startLine": 283,
+            "lines": [
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;"
+            ]
+          }
+        },
+        {
+          "id": "p7:n16",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 289,
+          "code": "onTimeUpdate(current: number, total: number): void {",
+          "description": "实现 onTimeUpdate 回调，周期性接收当前播放时间和总时长数据",
+          "context": {
+            "startLine": 284,
+            "lines": [
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;",
+              "          thisClass.progressValue = pos;"
+            ]
+          }
+        },
+        {
+          "id": "p7:n17",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 291,
+          "code": "thisClass.slideEnable = true;",
+          "description": "根据播放进度计算百分比，更新 UI 滑动条状态 (本地数据处理)",
+          "context": {
+            "startLine": 286,
+            "lines": [
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;",
+              "          thisClass.progressValue = pos;",
+              "",
+              "          if (current != 0 && thisClass.danmakuPn * DANMAKU_TIME < current) {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n18",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 334,
+          "code": "} else if (status == IPlayStatus.ERROR) {",
+          "description": "监听播放器状态机，捕获 ERROR 异常状态",
+          "context": {
+            "startLine": 329,
+            "lines": [
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n19",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "调用系统 Toast 接口 showToast，向用户展示视频播放错误的提示信息",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        },
+        {
+          "from": "p7:n3",
+          "to": "p7:n4"
+        },
+        {
+          "from": "p7:n4",
+          "to": "p7:n5"
+        },
+        {
+          "from": "p7:n5",
+          "to": "p7:n6"
+        },
+        {
+          "from": "p7:n6",
+          "to": "p7:n7"
+        },
+        {
+          "from": "p7:n7",
+          "to": "p7:n8"
+        },
+        {
+          "from": "p7:n8",
+          "to": "p7:n9"
+        },
+        {
+          "from": "p7:n9",
+          "to": "p7:n10"
+        },
+        {
+          "from": "p7:n10",
+          "to": "p7:n11"
+        },
+        {
+          "from": "p7:n11",
+          "to": "p7:n12"
+        },
+        {
+          "from": "p7:n12",
+          "to": "p7:n13"
+        },
+        {
+          "from": "p7:n13",
+          "to": "p7:n14"
+        },
+        {
+          "from": "p7:n14",
+          "to": "p7:n15"
+        },
+        {
+          "from": "p7:n15",
+          "to": "p7:n16"
+        },
+        {
+          "from": "p7:n16",
+          "to": "p7:n17"
+        },
+        {
+          "from": "p7:n17",
+          "to": "p7:n18"
+        },
+        {
+          "from": "p7:n18",
+          "to": "p7:n19"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频唯一标识 (bvid)",
+          "分集/分 P 标识 (cid)",
+          "视频播放地址 (url)",
+          "弹幕数据 (danmaku)",
+          "播放进度状态 (current/total time)",
+          "播放器错误状态"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "周期性 (播放进度回调 onTimeUpdate)",
+          "异常触发 (播放错误时)"
+        ],
+        "cloudUpload": [
+          "发送 bvid 和 cid 请求分集列表 (ApiManager.requestPageList)",
+          "发送 bvid 和 cid 请求播放地址 (ApiManager.requestPlayUrl)",
+          "可能隐含：获取弹幕数据时上报设备信息 (getDanmaku)"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储：mPlayUrl (播放链接)",
+          "本地内存存储：cid, bvid",
+          "未观察到显式的本地文件加密存储操作",
+          "URL 中的特殊字符进行了转义处理 (replace)"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含：用于 ApiManager 网络请求)",
+          "ohos.permission.ACCESS_NETWORK (隐含：网络状态检测)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p8",
+      "pathId": "p8",
+      "nodes": [
+        {
+          "id": "p8:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染视频播放器界面结构。",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p8:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 容器并设置内容居中对齐，作为视频画面的父布局。",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p8:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 151,
+          "code": "XComponent({",
+          "description": "实例化 XComponent 组件，用于承载原生视频播放器表面 (Surface)。",
+          "context": {
+            "startLine": 146,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p8:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 152,
+          "code": "id: this.player.id(),",
+          "description": "绑定播放器唯一标识 ID，将逻辑层 player 对象与 UI 层关联。",
+          "context": {
+            "startLine": 147,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 157,
+          "code": ".onLoad((context) => {",
+          "description": "注册 XComponent 加载完成回调，当底层资源准备就绪时触发后续逻辑。",
+          "context": {
+            "startLine": 152,
+            "lines": [
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {",
+              "          if (context) {",
+              "            this.mPlayContext = context;",
+              "            this.player.initPlay(this.mPlayContext).then(_ => {",
+              "              if (this.cid == 0) {",
+              "                this.getPageList(this.bvid);"
+            ]
+          }
+        },
+        {
+          "id": "p8:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 143,
+          "code": "this.player.setPlayId(this.bvid);",
+          "description": "调用 player.setPlayId 将当前视频 ID (bvid) 传递给底层播放器内核进行初始化。",
+          "context": {
+            "startLine": 138,
+            "lines": [
+              "          height -= rect.height;",
+              "        });",
+              "        this.fullScreenRatio = height / dis.width;",
+              "      })",
+              "    }",
+              "    this.player.setPlayId(this.bvid);",
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p8:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 242,
+          "code": "private getPageList(bvid: string) {",
+          "description": "定义 getPageList 方法，发起网络请求获取指定视频 (bvid) 的分集列表信息。",
+          "context": {
+            "startLine": 237,
+            "lines": [
+              "    }.width('100%')",
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p8:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 243,
+          "code": "ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+          "description": "执行 ApiManager 网络请求，向云端发送 bvid 以换取分集元数据 (包含 cid)。",
+          "context": {
+            "startLine": 238,
+            "lines": [
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p8:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 244,
+          "code": "this.cid = resp.data[0].cid;",
+          "description": "解析响应数据，提取第一个分集的 cid 并保存到本地成员变量，用于后续播放定位。",
+          "context": {
+            "startLine": 239,
+            "lines": [
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p8:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，利用 bvid 和 cid 向服务器请求具体的视频流播放地址。",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p8:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 262,
+          "code": "ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+          "description": "执行 ApiManager 网络请求，上传视频标识参数，接收包含真实播放 URL 的响应。",
+          "context": {
+            "startLine": 257,
+            "lines": [
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p8:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 263,
+          "code": "this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+          "description": "处理返回的播放 URL，进行字符转义修复后存入本地变量 mPlayUrl。",
+          "context": {
+            "startLine": 258,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p8:n13",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，初始化播放器实例并注册播放状态与进度回调监听器。",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n14",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 288,
+          "code": "class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+          "description": "内部类实现 OnTimeUpdateCallback 接口，用于周期性接收视频播放进度更新事件。",
+          "context": {
+            "startLine": 283,
+            "lines": [
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;"
+            ]
+          }
+        },
+        {
+          "id": "p8:n15",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 334,
+          "code": "} else if (status == IPlayStatus.ERROR) {",
+          "description": "在播放状态回调中判断状态为 ERROR，进入异常处理分支。",
+          "context": {
+            "startLine": 329,
+            "lines": [
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n16",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "调用系统提示框 API (prompt.showToast) 向用户展示视频播放错误的友好提示信息。",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p8:n1",
+          "to": "p8:n2"
+        },
+        {
+          "from": "p8:n2",
+          "to": "p8:n3"
+        },
+        {
+          "from": "p8:n3",
+          "to": "p8:n4"
+        },
+        {
+          "from": "p8:n4",
+          "to": "p8:n5"
+        },
+        {
+          "from": "p8:n5",
+          "to": "p8:n6"
+        },
+        {
+          "from": "p8:n6",
+          "to": "p8:n7"
+        },
+        {
+          "from": "p8:n7",
+          "to": "p8:n8"
+        },
+        {
+          "from": "p8:n8",
+          "to": "p8:n9"
+        },
+        {
+          "from": "p8:n9",
+          "to": "p8:n10"
+        },
+        {
+          "from": "p8:n10",
+          "to": "p8:n11"
+        },
+        {
+          "from": "p8:n11",
+          "to": "p8:n12"
+        },
+        {
+          "from": "p8:n12",
+          "to": "p8:n13"
+        },
+        {
+          "from": "p8:n13",
+          "to": "p8:n14"
+        },
+        {
+          "from": "p8:n14",
+          "to": "p8:n15"
+        },
+        {
+          "from": "p8:n15",
+          "to": "p8:n16"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频 ID (bvid)",
+          "分集 ID (cid)",
+          "视频播放 URL",
+          "弹幕数据",
+          "播放器状态 (播放/暂停/错误)",
+          "用户交互事件 (加载完成)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面初始化)",
+          "事件触发 (视频加载完成)",
+          "周期性 (播放进度更新回调)"
+        ],
+        "cloudUpload": [
+          "请求视频分集列表 (ApiManager.requestPageList)",
+          "请求视频播放地址 (ApiManager.requestPlayUrl)",
+          "获取弹幕数据 (隐含在网络请求中)"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (this.cid, this.mPlayUrl)",
+          "UI 组件状态存储 (player.setPlayId)",
+          "未检测到显式加密操作，依赖框架层传输安全"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于 ApiManager 网络请求)",
+          "ohos.permission.ACCESS_NETWORK (隐含，用于网络状态检测)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化播放器界面组件。",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 容器组件，作为视频播放器的根布局容器。",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 242,
+          "code": "private getPageList(bvid: string) {",
+          "description": "定义 getPageList 方法，接收视频标识符 bvid 作为输入参数，用于获取视频分集列表。",
+          "context": {
+            "startLine": 237,
+            "lines": [
+              "    }.width('100%')",
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p9:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 243,
+          "code": "ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+          "description": "调用 ApiManager 发起网络请求，将 bvid 发送至服务端以获取分集信息（包含 cid）。",
+          "context": {
+            "startLine": 238,
+            "lines": [
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p9:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 244,
+          "code": "this.cid = resp.data[0].cid;",
+          "description": "从响应数据中提取当前分集的唯一标识符 cid 并保存到成员变量。",
+          "context": {
+            "startLine": 239,
+            "lines": [
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p9:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 246,
+          "code": "this.getPlayUrl(this.bvid, this.cid);",
+          "description": "使用 bvid 和 cid 调用 getPlayUrl 方法，准备获取具体的视频流地址。",
+          "context": {
+            "startLine": 241,
+            "lines": [
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }",
+              "",
+              "  private getDanmaku(isInit: boolean) {",
+              "    BLog.i(\"getDanmaku index: \" + this.danmakuPn + \", isInit: \" + isInit);"
+            ]
+          }
+        },
+        {
+          "id": "p9:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，接收 bvid 和 cid 作为参数，用于请求视频播放地址。",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p9:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 262,
+          "code": "ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+          "description": "调用 ApiManager 发起网络请求，携带 bvid 和 cid 向服务端请求视频真实播放 URL。",
+          "context": {
+            "startLine": 257,
+            "lines": [
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p9:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 263,
+          "code": "this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+          "description": "解析响应数据，提取视频流 URL 并进行字符替换处理，存入成员变量 mPlayUrl。",
+          "context": {
+            "startLine": 258,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p9:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 265,
+          "code": "this.initPlay(this.mPlayUrl);",
+          "description": "调用 initPlay 方法，传入解析后的视频 URL 以初始化播放器内核。",
+          "context": {
+            "startLine": 260,
+            "lines": [
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              "",
+              "  private showLoadIng() {",
+              "    this.loadingVisible = true;"
+            ]
+          }
+        },
+        {
+          "id": "p9:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，接收视频 URL 字符串，配置播放器回调监听器。",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 289,
+          "code": "onTimeUpdate(current: number, total: number): void {",
+          "description": "实现时间更新回调 onTimeUpdate，处理视频播放进度数据（current/total），不涉及隐私泄露。",
+          "context": {
+            "startLine": 284,
+            "lines": [
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;",
+              "          thisClass.progressValue = pos;"
+            ]
+          }
+        },
+        {
+          "id": "p9:n13",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 334,
+          "code": "} else if (status == IPlayStatus.ERROR) {",
+          "description": "检测到播放器状态为 ERROR，触发异常处理逻辑分支。",
+          "context": {
+            "startLine": 329,
+            "lines": [
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n14",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 显示错误提示消息，作为数据流的终点（Sink），仅展示静态文本，未泄露敏感数据。",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        },
+        {
+          "from": "p9:n3",
+          "to": "p9:n4"
+        },
+        {
+          "from": "p9:n4",
+          "to": "p9:n5"
+        },
+        {
+          "from": "p9:n5",
+          "to": "p9:n6"
+        },
+        {
+          "from": "p9:n6",
+          "to": "p9:n7"
+        },
+        {
+          "from": "p9:n7",
+          "to": "p9:n8"
+        },
+        {
+          "from": "p9:n8",
+          "to": "p9:n9"
+        },
+        {
+          "from": "p9:n9",
+          "to": "p9:n10"
+        },
+        {
+          "from": "p9:n10",
+          "to": "p9:n11"
+        },
+        {
+          "from": "p9:n11",
+          "to": "p9:n12"
+        },
+        {
+          "from": "p9:n12",
+          "to": "p9:n13"
+        },
+        {
+          "from": "p9:n13",
+          "to": "p9:n14"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频标识符 (bvid)",
+          "分集标识符 (cid)",
+          "视频播放地址 (url)",
+          "播放状态事件 (PLAY/PAUSE/ERROR)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "一次性 (获取播放链接)"
+        ],
+        "cloudUpload": [
+          "无直接隐私数据上传 (仅通过 ApiManager 请求业务数据 bvid/cid)",
+          "无敏感信息发送至云端"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (mPlayUrl, cid)",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化播放器界面容器。",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 布局容器，作为视频播放画面的父级容器，设置居中对齐。",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 242,
+          "code": "private getPageList(bvid: string) {",
+          "description": "定义 getPageList 方法，接收视频 ID (bvid) 作为输入参数，准备发起网络请求获取分集信息。",
+          "context": {
+            "startLine": 237,
+            "lines": [
+              "    }.width('100%')",
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p10:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，接收视频 ID (bvid) 和分集 ID (cid)，准备发起网络请求获取真实播放地址。",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p10:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，接收播放 URL，初始化播放器内核并注册播放状态与进度回调监听器。",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "在播放状态回调中捕获 ERROR 状态，调用 prompt.showToast 向用户展示播放异常提示，涉及 UI 交互反馈。",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        },
+        {
+          "from": "p10:n3",
+          "to": "p10:n4"
+        },
+        {
+          "from": "p10:n4",
+          "to": "p10:n5"
+        },
+        {
+          "from": "p10:n5",
+          "to": "p10:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频 ID (bvid)",
+          "分集 ID (cid)",
+          "视频播放地址 (url)",
+          "播放状态 (status)",
+          "播放进度时间 (current/total)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "周期性 (播放进度回调 onTimeUpdate)",
+          "异常触发 (播放错误时)"
+        ],
+        "cloudUpload": [
+          "通过 ApiManager.requestPageList 发送 bvid 获取分集列表",
+          "通过 ApiManager.requestPlayUrl 发送 bvid 和 cid 获取播放地址"
+        ],
+        "storageAndEncryption": [
+          "播放地址存储在本地变量 mPlayUrl (未明确加密)",
+          "分集 ID 存储在本地变量 cid",
+          "UI 组件状态在内存中维护"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于网络请求)",
+          "ohos.permission.ACCESS_NETWORK (隐含，用于网络状态检测)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build()，开始渲染播放器界面组件",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 布局容器，设置内容居中对齐，作为视频播放器的父容器",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 151,
+          "code": "XComponent({",
+          "description": "实例化 XComponent 自定义组件，用于承载底层视频渲染表面 (surface)",
+          "context": {
+            "startLine": 146,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p11:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 152,
+          "code": "id: this.player.id(),",
+          "description": "绑定播放器唯一标识 ID，用于关联原生渲染上下文",
+          "context": {
+            "startLine": 147,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 157,
+          "code": ".onLoad((context) => {",
+          "description": "注册 XComponent 加载回调 onLoad，当渲染表面准备就绪时触发后续逻辑",
+          "context": {
+            "startLine": 152,
+            "lines": [
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })",
+              "        .onLoad((context) => {",
+              "          if (context) {",
+              "            this.mPlayContext = context;",
+              "            this.player.initPlay(this.mPlayContext).then(_ => {",
+              "              if (this.cid == 0) {",
+              "                this.getPageList(this.bvid);"
+            ]
+          }
+        },
+        {
+          "id": "p11:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 242,
+          "code": "private getPageList(bvid: string) {",
+          "description": "定义 getPageList 方法，接收视频 ID(bvid)，发起网络请求获取视频分集列表",
+          "context": {
+            "startLine": 237,
+            "lines": [
+              "    }.width('100%')",
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p11:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 243,
+          "code": "ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+          "description": "调用 ApiManager 发送网络请求，将 bvid 上传至服务器以获取分集信息",
+          "context": {
+            "startLine": 238,
+            "lines": [
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p11:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 244,
+          "code": "this.cid = resp.data[0].cid;",
+          "description": "解析响应数据，提取首个分集的 cid 并存储到本地成员变量 this.cid",
+          "context": {
+            "startLine": 239,
+            "lines": [
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p11:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 246,
+          "code": "this.getPlayUrl(this.bvid, this.cid);",
+          "description": "使用获取到的 bvid 和 cid 调用 getPlayUrl 方法，请求具体的视频播放地址",
+          "context": {
+            "startLine": 241,
+            "lines": [
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }",
+              "",
+              "  private getDanmaku(isInit: boolean) {",
+              "    BLog.i(\"getDanmaku index: \" + this.danmakuPn + \", isInit: \" + isInit);"
+            ]
+          }
+        },
+        {
+          "id": "p11:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，接收 bvid 和 cid，发起网络请求获取真实播放流 URL",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p11:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 262,
+          "code": "ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+          "description": "调用 ApiManager 发送网络请求，将 bvid 和 cid 上传至服务器换取播放地址",
+          "context": {
+            "startLine": 257,
+            "lines": [
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p11:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 263,
+          "code": "this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+          "description": "处理响应数据，提取播放 URL 并进行字符串解码 (替换转义符)，存入本地变量 mPlayUrl",
+          "context": {
+            "startLine": 258,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p11:n13",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 265,
+          "code": "this.initPlay(this.mPlayUrl);",
+          "description": "调用 initPlay 方法，传入解析后的播放 URL，初始化播放器内核",
+          "context": {
+            "startLine": 260,
+            "lines": [
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              "",
+              "  private showLoadIng() {",
+              "    this.loadingVisible = true;"
+            ]
+          }
+        },
+        {
+          "id": "p11:n14",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，配置播放器实例，注册时间更新回调和状态监听",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n15",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 289,
+          "code": "onTimeUpdate(current: number, total: number): void {",
+          "description": "实现 onTimeUpdate 回调，周期性接收当前播放时间和总时长，用于更新进度条",
+          "context": {
+            "startLine": 284,
+            "lines": [
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;",
+              "          thisClass.progressValue = pos;"
+            ]
+          }
+        },
+        {
+          "id": "p11:n16",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 334,
+          "code": "} else if (status == IPlayStatus.ERROR) {",
+          "description": "监听播放器状态机，当检测到 IPlayStatus.ERROR (播放错误) 状态时进入异常处理分支",
+          "context": {
+            "startLine": 329,
+            "lines": [
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n17",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "调用系统提示框 showToast，向用户展示视频播放失败的错误消息文本",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        },
+        {
+          "from": "p11:n3",
+          "to": "p11:n4"
+        },
+        {
+          "from": "p11:n4",
+          "to": "p11:n5"
+        },
+        {
+          "from": "p11:n5",
+          "to": "p11:n6"
+        },
+        {
+          "from": "p11:n6",
+          "to": "p11:n7"
+        },
+        {
+          "from": "p11:n7",
+          "to": "p11:n8"
+        },
+        {
+          "from": "p11:n8",
+          "to": "p11:n9"
+        },
+        {
+          "from": "p11:n9",
+          "to": "p11:n10"
+        },
+        {
+          "from": "p11:n10",
+          "to": "p11:n11"
+        },
+        {
+          "from": "p11:n11",
+          "to": "p11:n12"
+        },
+        {
+          "from": "p11:n12",
+          "to": "p11:n13"
+        },
+        {
+          "from": "p11:n13",
+          "to": "p11:n14"
+        },
+        {
+          "from": "p11:n14",
+          "to": "p11:n15"
+        },
+        {
+          "from": "p11:n15",
+          "to": "p11:n16"
+        },
+        {
+          "from": "p11:n16",
+          "to": "p11:n17"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频标识符 (bvid)",
+          "分集标识符 (cid)",
+          "视频播放地址 (url)",
+          "弹幕数据 (danmaku)",
+          "播放状态事件 (PLAY/PAUSE/ERROR)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "一次性 (获取分集列表)",
+          "一次性 (获取播放链接)",
+          "周期性 (播放进度回调 onTimeUpdate)",
+          "事件触发 (播放错误)"
+        ],
+        "cloudUpload": [
+          "发送 bvid 至云端请求分集列表 (ApiManager.requestPageList)",
+          "发送 bvid 和 cid 至云端请求播放地址 (ApiManager.requestPlayUrl)",
+          "可能发送设备信息作为 API 请求头 (隐含在 ApiManager 中)"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 cid (this.cid)",
+          "本地内存存储播放 URL (this.mPlayUrl)",
+          "URL 字符串处理 (替换转义字符)，未提及加密存储",
+          "弹幕模型本地初始化 (initDanmaku)"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含：用于 ApiManager 网络请求)",
+          "ohos.permission.ACCESS_NETWORK (隐含：用于检测网络状态以播放视频)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口，初始化视频播放器组件结构",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建堆叠布局容器，作为视频渲染表面的父节点",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p12:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 242,
+          "code": "private getPageList(bvid: string) {",
+          "description": "定义获取视频分集列表的方法，输入参数为视频 ID (bvid)",
+          "context": {
+            "startLine": 237,
+            "lines": [
+              "    }.width('100%')",
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p12:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义获取真实播放地址的方法，输入视频 ID 和分集 ID，发起网络请求",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p12:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "初始化播放逻辑，注册播放状态与时间更新回调监听器",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p12:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "捕获播放错误状态，调用系统 Toast 接口向用户展示错误提示信息",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        },
+        {
+          "from": "p12:n2",
+          "to": "p12:n3"
+        },
+        {
+          "from": "p12:n3",
+          "to": "p12:n4"
+        },
+        {
+          "from": "p12:n4",
+          "to": "p12:n5"
+        },
+        {
+          "from": "p12:n5",
+          "to": "p12:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频 ID (bvid)",
+          "分集 ID (cid)",
+          "视频播放 URL",
+          "弹幕数据",
+          "播放进度状态",
+          "播放器错误状态"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "周期性 (播放进度回调)",
+          "一次性 (获取播放链接)"
+        ],
+        "cloudUpload": [
+          "请求分页列表 (requestPageList)",
+          "请求播放地址 (requestPlayUrl)",
+          "请求弹幕数据 (getDanmaku)"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (this.mPlayUrl, this.cid)",
+          "未检测到显式加密操作",
+          "未检测到持久化文件存储"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于 ApiManager 网络请求)",
+          "ohos.permission.ACCESS_NETWORK (隐含，用于网络状态检测)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p13",
+      "pathId": "p13",
+      "nodes": [
+        {
+          "id": "p13:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化播放器视图组件",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p13:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 容器组件，作为视频播放器的布局容器",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p13:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 242,
+          "code": "private getPageList(bvid: string) {",
+          "description": "定义 getPageList 方法，接收视频标识 bvid 作为输入参数",
+          "context": {
+            "startLine": 237,
+            "lines": [
+              "    }.width('100%')",
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p13:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 243,
+          "code": "ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+          "description": "调用 ApiManager 发起网络请求，将 bvid 上传至云端以获取视频分集列表",
+          "context": {
+            "startLine": 238,
+            "lines": [
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p13:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 244,
+          "code": "this.cid = resp.data[0].cid;",
+          "description": "从网络响应中提取第一个分集的 cid (分集 ID) 并赋值给本地变量",
+          "context": {
+            "startLine": 239,
+            "lines": [
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p13:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，接收 bvid 和 cid 作为参数准备获取播放地址",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p13:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 262,
+          "code": "ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+          "description": "调用 ApiManager 发起网络请求，将 bvid 和 cid 上传至云端换取实际播放 URL",
+          "context": {
+            "startLine": 257,
+            "lines": [
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p13:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 263,
+          "code": "this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+          "description": "解析响应数据，提取视频流地址并去除转义字符，暂存于 mPlayUrl 变量",
+          "context": {
+            "startLine": 258,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p13:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，接收解析后的视频 URL 进行播放器初始化",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p13:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 288,
+          "code": "class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+          "description": "实现 OnTimeUpdateCallback 接口类，用于监听和处理视频播放进度回调",
+          "context": {
+            "startLine": 283,
+            "lines": [
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;"
+            ]
+          }
+        },
+        {
+          "id": "p13:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 334,
+          "code": "} else if (status == IPlayStatus.ERROR) {",
+          "description": "在播放状态回调中判断当前状态为 ERROR (播放异常)",
+          "context": {
+            "startLine": 329,
+            "lines": [
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {"
+            ]
+          }
+        },
+        {
+          "id": "p13:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 向用户展示错误提示消息，作为数据流的终点 (Sink)",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p13:n1",
+          "to": "p13:n2"
+        },
+        {
+          "from": "p13:n2",
+          "to": "p13:n3"
+        },
+        {
+          "from": "p13:n3",
+          "to": "p13:n4"
+        },
+        {
+          "from": "p13:n4",
+          "to": "p13:n5"
+        },
+        {
+          "from": "p13:n5",
+          "to": "p13:n6"
+        },
+        {
+          "from": "p13:n6",
+          "to": "p13:n7"
+        },
+        {
+          "from": "p13:n7",
+          "to": "p13:n8"
+        },
+        {
+          "from": "p13:n8",
+          "to": "p13:n9"
+        },
+        {
+          "from": "p13:n9",
+          "to": "p13:n10"
+        },
+        {
+          "from": "p13:n10",
+          "to": "p13:n11"
+        },
+        {
+          "from": "p13:n11",
+          "to": "p13:n12"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频标识符 (bvid)",
+          "分集标识符 (cid)",
+          "视频播放地址 (url)",
+          "播放状态事件 (PLAY/PAUSE/ERROR)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "周期性回调 (播放进度更新)"
+        ],
+        "cloudUpload": [
+          "通过 ApiManager 发送 bvid/cid 请求云端获取分页列表",
+          "通过 ApiManager 发送 bvid/cid 请求云端获取播放地址"
+        ],
+        "storageAndEncryption": [
+          "播放地址临时存储于成员变量 mPlayUrl (内存)",
+          "未观察到显式的本地文件持久化或加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于 ApiManager 网络请求)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p14",
+      "pathId": "p14",
+      "nodes": [
+        {
+          "id": "p14:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 149,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化视频播放器界面布局",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "    if (this.cid > 0) {",
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),"
+            ]
+          }
+        },
+        {
+          "id": "p14:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 150,
+          "code": "Stack({ alignContent: Alignment.Center }) {",
+          "description": "创建 Stack 容器组件，作为视频播放画面的根布局容器",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "      this.getDanmaku(true);",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()"
+            ]
+          }
+        },
+        {
+          "id": "p14:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 151,
+          "code": "XComponent({",
+          "description": "实例化 XComponent 组件，用于承载原生播放器表面 (Surface)，绑定播放器 ID 和控制句柄",
+          "context": {
+            "startLine": 146,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Center }) {",
+              "      XComponent({",
+              "        id: this.player.id(),",
+              "        type: 'surface',",
+              "        libraryname: this.player.libraryName(),",
+              "        controller: this.player.controller()",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p14:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 242,
+          "code": "private getPageList(bvid: string) {",
+          "description": "定义 getPageList 方法，接收视频标识符 bvid，准备请求分集列表数据",
+          "context": {
+            "startLine": 237,
+            "lines": [
+              "    }.width('100%')",
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p14:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 243,
+          "code": "ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+          "description": "调用 ApiManager 发起网络请求 requestPageList，将 bvid 发送至云端服务器",
+          "context": {
+            "startLine": 238,
+            "lines": [
+              "    .aspectRatio(this.isPortrait ? 16 / 9 : this.fullScreenRatio)",
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p14:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 244,
+          "code": "this.cid = resp.data[0].cid;",
+          "description": "解析响应数据，提取首个分集的 cid (内容 ID) 并保存至本地成员变量",
+          "context": {
+            "startLine": 239,
+            "lines": [
+              "    .backgroundColor(Color.Black)",
+              "  }",
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p14:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 246,
+          "code": "this.getPlayUrl(this.bvid, this.cid);",
+          "description": "使用获取到的 bvid 和 cid 调用 getPlayUrl 方法，触发播放地址获取流程",
+          "context": {
+            "startLine": 241,
+            "lines": [
+              "",
+              "  private getPageList(bvid: string) {",
+              "    ApiManager.getInstance().requestPageList(bvid).then((resp: VideoPartsResponse) => {",
+              "      this.cid = resp.data[0].cid;",
+              "      this.getDanmaku(true);",
+              "      this.getPlayUrl(this.bvid, this.cid);",
+              "    });",
+              "  }",
+              "",
+              "  private getDanmaku(isInit: boolean) {",
+              "    BLog.i(\"getDanmaku index: \" + this.danmakuPn + \", isInit: \" + isInit);"
+            ]
+          }
+        },
+        {
+          "id": "p14:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 261,
+          "code": "private getPlayUrl(bvid: string, cid: number) {",
+          "description": "定义 getPlayUrl 方法，接收 bvid 和 cid，准备请求具体的视频流媒体地址",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "        this.updateDanmaku(source);",
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p14:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 262,
+          "code": "ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+          "description": "调用 ApiManager 发起网络请求 requestPlayUrl，将 bvid 和 cid 发送至云端服务器",
+          "context": {
+            "startLine": 257,
+            "lines": [
+              "      }",
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p14:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 263,
+          "code": "this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+          "description": "从响应中提取视频播放 URL，进行字符转义处理 (&符号还原)，并存入 mPlayUrl 变量",
+          "context": {
+            "startLine": 258,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p14:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 265,
+          "code": "this.initPlay(this.mPlayUrl);",
+          "description": "调用 initPlay 方法，传入处理后的播放 URL，初始化播放器内核",
+          "context": {
+            "startLine": 260,
+            "lines": [
+              "",
+              "  private getPlayUrl(bvid: string, cid: number) {",
+              "    ApiManager.getInstance().requestPlayUrl(bvid, cid).then((resp: PlayUrlResponse) => {",
+              "      this.mPlayUrl = resp.data.durl[0].url.replace(/\\\\u0026/g, '&')",
+              "      BLog.i(\"requestPlayUrl Response Data url=\" + this.mPlayUrl);",
+              "      this.initPlay(this.mPlayUrl);",
+              "    });",
+              "  }",
+              "",
+              "  private showLoadIng() {",
+              "    this.loadingVisible = true;"
+            ]
+          }
+        },
+        {
+          "id": "p14:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 284,
+          "code": "private initPlay(url: string) {",
+          "description": "定义 initPlay 方法，配置播放器回调接口，准备监听播放状态和进度",
+          "context": {
+            "startLine": 279,
+            "lines": [
+              "  private showRePlay() {",
+              "    this.loadingVisible = false;",
+              "    this.replayVisible = true;",
+              "  }",
+              "",
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {"
+            ]
+          }
+        },
+        {
+          "id": "p14:n13",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 289,
+          "code": "onTimeUpdate(current: number, total: number): void {",
+          "description": "实现 onTimeUpdate 回调，周期性接收当前播放时间和总时长，用于更新进度条",
+          "context": {
+            "startLine": 284,
+            "lines": [
+              "  private initPlay(url: string) {",
+              "    let thisClass = this;",
+              "    ",
+              "    // 定义实现OnTimeUpdateCallback接口的类",
+              "    class TimeUpdateCallbackImpl implements OnTimeUpdateCallback {",
+              "      onTimeUpdate(current: number, total: number): void {",
+              "        if (total > 0) {",
+              "          thisClass.slideEnable = true;",
+              "          let curPercent = current / total;",
+              "          let pos = curPercent * 100;",
+              "          thisClass.progressValue = pos;"
+            ]
+          }
+        },
+        {
+          "id": "p14:n14",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 334,
+          "code": "} else if (status == IPlayStatus.ERROR) {",
+          "description": "监听播放器状态机，检测到 IPlayStatus.ERROR 错误状态",
+          "context": {
+            "startLine": 329,
+            "lines": [
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.resume();",
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {"
+            ]
+          }
+        },
+        {
+          "id": "p14:n15",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+          "line": 336,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 向用户展示播放异常的错误提示消息 (Sink 点)",
+          "context": {
+            "startLine": 331,
+            "lines": [
+              "        } else if (status == IPlayStatus.PAUSE) {",
+              "          thisClass.hideLoadIng();",
+              "          thisClass.mDanmakuModel.pause();",
+              "        } else if (status == IPlayStatus.ERROR) {",
+              "          thisClass.hideLoadIng();",
+              "          prompt.showToast({",
+              "            message: \"亲，视频播放异常，系统开小差咯\"",
+              "          });",
+              "        } else if (status == IPlayStatus.DONE) {",
+              "          thisClass.showRePlay();",
+              "          thisClass.slideEnable = false;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p14:n1",
+          "to": "p14:n2"
+        },
+        {
+          "from": "p14:n2",
+          "to": "p14:n3"
+        },
+        {
+          "from": "p14:n3",
+          "to": "p14:n4"
+        },
+        {
+          "from": "p14:n4",
+          "to": "p14:n5"
+        },
+        {
+          "from": "p14:n5",
+          "to": "p14:n6"
+        },
+        {
+          "from": "p14:n6",
+          "to": "p14:n7"
+        },
+        {
+          "from": "p14:n7",
+          "to": "p14:n8"
+        },
+        {
+          "from": "p14:n8",
+          "to": "p14:n9"
+        },
+        {
+          "from": "p14:n9",
+          "to": "p14:n10"
+        },
+        {
+          "from": "p14:n10",
+          "to": "p14:n11"
+        },
+        {
+          "from": "p14:n11",
+          "to": "p14:n12"
+        },
+        {
+          "from": "p14:n12",
+          "to": "p14:n13"
+        },
+        {
+          "from": "p14:n13",
+          "to": "p14:n14"
+        },
+        {
+          "from": "p14:n14",
+          "to": "p14:n15"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频标识符 (bvid)",
+          "分集标识符 (cid)",
+          "视频播放地址 (url)",
+          "用户交互事件 (播放/暂停/错误状态)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户进入播放页)",
+          "一次性 (获取分集列表)",
+          "一次性 (获取播放链接)",
+          "周期性 (播放进度回调 onTimeUpdate)"
+        ],
+        "cloudUpload": [
+          "间接上传：通过 ApiManager 发起网络请求 (requestPageList, requestPlayUrl) 将 bvid/cid 发送至服务端以换取数据",
+          "无直接隐私数据上传：日志仅记录播放 URL，提示框仅展示本地错误信息"
+        ],
+        "storageAndEncryption": [
+          "内存存储：bvid, cid, mPlayUrl 存储在组件实例变量中",
+          "未观察到显式本地文件存储或加密操作",
+          "URL 处理：执行了字符串替换操作 (\\u0026 -> &)"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含：ApiManager 发起网络请求必需)",
+          "ohos.permission.ACCESS_NETWORK (隐含：网络状态检测可能必需)"
+        ]
+      }
+    }
+  ]
+}

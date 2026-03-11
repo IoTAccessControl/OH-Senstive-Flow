@@ -1,0 +1,1340 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260306-212407",
+    "generatedAt": "2026-03-06T13:32:12.797Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 4,
+      "nodes": 45,
+      "edges": 41,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "Mine",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+        "structName": "Mine",
+        "line": 9,
+        "description": "我的页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Mine_4f14ddb6f2",
+      "kind": "ui",
+      "title": "头像"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 10,
+          "code": "@State imgPath: string = \"\"",
+          "description": "定义组件状态变量 imgPath，用于存储用户头像的图片路径，数据驻留在本地内存中。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "import { Toast } from '../../utils/Toast'",
+              "",
+              "@Preview",
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 12,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数，开始构建‘我的’页面 UI 结构。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "@Preview",
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)"
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 13,
+          "code": "Column() {",
+          "description": "创建 Column 容器作为页面主布局，承载后续子组件。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)"
+            ]
+          }
+        },
+        {
+          "id": "p9:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 16,
+          "code": "Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+          "description": "渲染 Image 组件，读取 imgPath 状态数据展示用户头像，若为空则使用默认资源，此处涉及个人形象数据的读取与展示。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 73,
+          "code": ".onClick(() => {",
+          "description": "为包含二维码入口的区域绑定 onClick 点击事件监听器。",
+          "context": {
+            "startLine": 68,
+            "lines": [
+              "",
+              "      }.width(\"100%\")",
+              "      .height(203)",
+              "      .backgroundColor(Color.White)",
+              "      .padding({ top: WindowManager.statusBarHeight })",
+              "      .onClick(() => {",
+              "        router.pushUrl({ url: 'pages/qrcode/MyQrCodePage' })",
+              "      })",
+              "",
+              "      Divider()",
+              "        .vertical(false)"
+            ]
+          }
+        },
+        {
+          "id": "p9:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 74,
+          "code": "router.pushUrl({ url: 'pages/qrcode/MyQrCodePage' })",
+          "description": "执行路由跳转，导航至 MyQrCodePage 页面，可能触发个人二维码（含用户标识信息）的生成或加载。",
+          "context": {
+            "startLine": 69,
+            "lines": [
+              "      }.width(\"100%\")",
+              "      .height(203)",
+              "      .backgroundColor(Color.White)",
+              "      .padding({ top: WindowManager.statusBarHeight })",
+              "      .onClick(() => {",
+              "        router.pushUrl({ url: 'pages/qrcode/MyQrCodePage' })",
+              "      })",
+              "",
+              "      Divider()",
+              "        .vertical(false)",
+              "        .color(\"#f3f3f3\")"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        },
+        {
+          "from": "p9:n3",
+          "to": "p9:n4"
+        },
+        {
+          "from": "p9:n4",
+          "to": "p9:n5"
+        },
+        {
+          "from": "p9:n5",
+          "to": "p9:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户头像路径 (imgPath)",
+          "页面导航目标 URL"
+        ],
+        "collectionFrequency": [
+          "一次性 (UI 构建时读取状态)",
+          "事件触发 (点击按钮时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地内存存储 (@State 状态管理)",
+          "未检测到加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 12,
+          "code": "build() {",
+          "description": "UI 组件构建入口，开始渲染'我的'页面布局",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "@Preview",
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 13,
+          "code": "Column() {",
+          "description": "创建垂直布局容器 Column，作为页面主结构",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 15,
+          "code": "Row() {",
+          "description": "创建水平布局容器 Row，用于排列头像等元素",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)"
+            ]
+          }
+        },
+        {
+          "id": "p10:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 21,
+          "code": ".onClick(() => {",
+          "description": "为 Image 组件绑定 onClick 事件监听器，准备响应用户点击头像的操作",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)"
+            ]
+          }
+        },
+        {
+          "id": "p10:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 22,
+          "code": "PhotoPickerUtils.openGallery(",
+          "description": "调用 PhotoPickerUtils.openGallery 方法，发起相册选择请求",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p10:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 12,
+          "code": "static async openGallery(onSuccess: (uri: string) => void, onFailed: (error: string) => void) {",
+          "description": "定义 openGallery 异步函数，封装相册选择逻辑及权限处理流程",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " *  相机相册访问工具",
+              " * @author www.icheny.cn",
+              " */",
+              "export class PhotoPickerUtils {",
+              "  static async openGallery(onSuccess: (uri: string) => void, onFailed: (error: string) => void) {",
+              "    try {",
+              "",
+              "      const granted = await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+              "      if (!granted) {",
+              "        setTimeout(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 15,
+          "code": "const granted = await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+          "description": "动态申请 READ_MEDIA 和 WRITE_MEDIA 权限，确保后续可访问媒体库",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              " */",
+              "export class PhotoPickerUtils {",
+              "  static async openGallery(onSuccess: (uri: string) => void, onFailed: (error: string) => void) {",
+              "    try {",
+              "",
+              "      const granted = await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+              "      if (!granted) {",
+              "        setTimeout(() => {",
+              "          AlertDialog.show({",
+              "            title: '温馨提示',",
+              "            message: '您已拒绝授予存储权限，是否允许前往设置中心授予权限？',"
+            ]
+          }
+        },
+        {
+          "id": "p10:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 41,
+          "code": "let PhotoSelectOptions = new picker.PhotoSelectOptions()",
+          "description": "实例化 PhotoSelectOptions 对象，配置图片选择器的参数（如类型、数量）",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "            }",
+              "          })",
+              "        }, 100)",
+              "        return",
+              "      }",
+              "      let PhotoSelectOptions = new picker.PhotoSelectOptions()",
+              "      PhotoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE",
+              "      PhotoSelectOptions.maxSelectNumber = 1",
+              "      let photoPicker = new picker.PhotoViewPicker()",
+              "      photoPicker.select(PhotoSelectOptions)",
+              "        .then(async res => {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 45,
+          "code": "photoPicker.select(PhotoSelectOptions)",
+          "description": "调用 photoPicker.select 启动系统相册选择界面，等待用户选择图片",
+          "context": {
+            "startLine": 40,
+            "lines": [
+              "      }",
+              "      let PhotoSelectOptions = new picker.PhotoSelectOptions()",
+              "      PhotoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE",
+              "      PhotoSelectOptions.maxSelectNumber = 1",
+              "      let photoPicker = new picker.PhotoViewPicker()",
+              "      photoPicker.select(PhotoSelectOptions)",
+              "        .then(async res => {",
+              "          if (res.photoUris.length < 1) {",
+              "            onFailed(\"用户取消\")",
+              "            return",
+              "          }"
+            ]
+          }
+        },
+        {
+          "id": "p10:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 46,
+          "code": ".then(async res => {",
+          "description": "处理选择结果 Promise，获取用户选中的图片 URI 列表",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "      let PhotoSelectOptions = new picker.PhotoSelectOptions()",
+              "      PhotoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE",
+              "      PhotoSelectOptions.maxSelectNumber = 1",
+              "      let photoPicker = new picker.PhotoViewPicker()",
+              "      photoPicker.select(PhotoSelectOptions)",
+              "        .then(async res => {",
+              "          if (res.photoUris.length < 1) {",
+              "            onFailed(\"用户取消\")",
+              "            return",
+              "          }",
+              "          const uri = res.photoUris[0]"
+            ]
+          }
+        },
+        {
+          "id": "p10:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 23,
+          "code": "uri => {",
+          "description": "接收 onSuccess 回调中的图片 URI，准备更新本地状态",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)",
+              "            })",
+              "          })"
+            ]
+          }
+        },
+        {
+          "id": "p10:n12",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 10,
+          "code": "@State imgPath: string = \"\"",
+          "description": "@State 装饰的 imgPath 变量被更新，触发 UI 重新渲染以显示新头像",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "import { Toast } from '../../utils/Toast'",
+              "",
+              "@Preview",
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        },
+        {
+          "from": "p10:n3",
+          "to": "p10:n4"
+        },
+        {
+          "from": "p10:n4",
+          "to": "p10:n5"
+        },
+        {
+          "from": "p10:n5",
+          "to": "p10:n6"
+        },
+        {
+          "from": "p10:n6",
+          "to": "p10:n7"
+        },
+        {
+          "from": "p10:n7",
+          "to": "p10:n8"
+        },
+        {
+          "from": "p10:n8",
+          "to": "p10:n9"
+        },
+        {
+          "from": "p10:n9",
+          "to": "p10:n10"
+        },
+        {
+          "from": "p10:n10",
+          "to": "p10:n11"
+        },
+        {
+          "from": "p10:n11",
+          "to": "p10:n12"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户选择的图片 URI",
+          "媒体文件内容"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户点击头像）"
+        ],
+        "cloudUpload": [
+          "当前片段未检测到直接上传行为，数据通过回调返回给 UI 层"
+        ],
+        "storageAndEncryption": [
+          "临时存储在 @State 变量 imgPath 中",
+          "未检测到加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.WRITE_MEDIA",
+          "ohos.permission.READ_MEDIA"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 12,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，初始化'我的'页面 UI 结构，准备渲染用户头像区域。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "@Preview",
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 13,
+          "code": "Column() {",
+          "description": "创建垂直布局容器 Column，作为页面主要内容区域的父节点。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 15,
+          "code": "Row() {",
+          "description": "创建水平布局容器 Row，用于排列用户头像图片及其他可能的信息元素。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)"
+            ]
+          }
+        },
+        {
+          "id": "p11:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 21,
+          "code": ".onClick(() => {",
+          "description": "为头像 Image 组件绑定 onClick 点击事件监听器，触发图片选择流程。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)"
+            ]
+          }
+        },
+        {
+          "id": "p11:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 22,
+          "code": "PhotoPickerUtils.openGallery(",
+          "description": "调用 PhotoPickerUtils.openGallery 静态方法，启动系统相册选择器。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p11:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 12,
+          "code": "static async openGallery(onSuccess: (uri: string) => void, onFailed: (error: string) => void) {",
+          "description": "定义 openGallery 异步函数入口，接收成功和失败回调，开始执行隐私权限检查逻辑。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " *  相机相册访问工具",
+              " * @author www.icheny.cn",
+              " */",
+              "export class PhotoPickerUtils {",
+              "  static async openGallery(onSuccess: (uri: string) => void, onFailed: (error: string) => void) {",
+              "    try {",
+              "",
+              "      const granted = await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+              "      if (!granted) {",
+              "        setTimeout(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 15,
+          "code": "const granted = await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+          "description": "动态请求媒体读写权限 (READ_MEDIA/WRITE_MEDIA)，这是访问用户相册的必要前置条件。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              " */",
+              "export class PhotoPickerUtils {",
+              "  static async openGallery(onSuccess: (uri: string) => void, onFailed: (error: string) => void) {",
+              "    try {",
+              "",
+              "      const granted = await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+              "      if (!granted) {",
+              "        setTimeout(() => {",
+              "          AlertDialog.show({",
+              "            title: '温馨提示',",
+              "            message: '您已拒绝授予存储权限，是否允许前往设置中心授予权限？',"
+            ]
+          }
+        },
+        {
+          "id": "p11:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 41,
+          "code": "let PhotoSelectOptions = new picker.PhotoSelectOptions()",
+          "description": "实例化 PhotoSelectOptions 配置对象，设定选择类型为图片且限制最大选择数量为 1。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "            }",
+              "          })",
+              "        }, 100)",
+              "        return",
+              "      }",
+              "      let PhotoSelectOptions = new picker.PhotoSelectOptions()",
+              "      PhotoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE",
+              "      PhotoSelectOptions.maxSelectNumber = 1",
+              "      let photoPicker = new picker.PhotoViewPicker()",
+              "      photoPicker.select(PhotoSelectOptions)",
+              "        .then(async res => {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 44,
+          "code": "let photoPicker = new picker.PhotoViewPicker()",
+          "description": "实例化 PhotoViewPicker 对象，这是调用系统底层相册选择能力的核心句柄（Sink 点）。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "        return",
+              "      }",
+              "      let PhotoSelectOptions = new picker.PhotoSelectOptions()",
+              "      PhotoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE",
+              "      PhotoSelectOptions.maxSelectNumber = 1",
+              "      let photoPicker = new picker.PhotoViewPicker()",
+              "      photoPicker.select(PhotoSelectOptions)",
+              "        .then(async res => {",
+              "          if (res.photoUris.length < 1) {",
+              "            onFailed(\"用户取消\")",
+              "            return"
+            ]
+          }
+        },
+        {
+          "id": "p11:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 45,
+          "code": "photoPicker.select(PhotoSelectOptions)",
+          "description": "调用 select 方法拉起系统相册界面，等待用户交互并返回选中的图片 URI 列表。",
+          "context": {
+            "startLine": 40,
+            "lines": [
+              "      }",
+              "      let PhotoSelectOptions = new picker.PhotoSelectOptions()",
+              "      PhotoSelectOptions.MIMEType = picker.PhotoViewMIMETypes.IMAGE_TYPE",
+              "      PhotoSelectOptions.maxSelectNumber = 1",
+              "      let photoPicker = new picker.PhotoViewPicker()",
+              "      photoPicker.select(PhotoSelectOptions)",
+              "        .then(async res => {",
+              "          if (res.photoUris.length < 1) {",
+              "            onFailed(\"用户取消\")",
+              "            return",
+              "          }"
+            ]
+          }
+        },
+        {
+          "id": "p11:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 51,
+          "code": "const uri = res.photoUris[0]",
+          "description": "从选择结果中提取第一个选中图片的 URI 字符串，作为后续处理的数据源。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "        .then(async res => {",
+              "          if (res.photoUris.length < 1) {",
+              "            onFailed(\"用户取消\")",
+              "            return",
+              "          }",
+              "          const uri = res.photoUris[0]",
+              "          const newFile = await PhotoPickerUtils.copyFileToCache(uri)",
+              "          if (newFile.length < 1) {",
+              "            onFailed(\"图片获取失败\")",
+              "            res",
+              "          }"
+            ]
+          }
+        },
+        {
+          "id": "p11:n12",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 52,
+          "code": "const newFile = await PhotoPickerUtils.copyFileToCache(uri)",
+          "description": "调用 copyFileToCache 方法将选中的图片文件复制到应用沙箱缓存目录，完成数据的本地持久化准备。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "          if (res.photoUris.length < 1) {",
+              "            onFailed(\"用户取消\")",
+              "            return",
+              "          }",
+              "          const uri = res.photoUris[0]",
+              "          const newFile = await PhotoPickerUtils.copyFileToCache(uri)",
+              "          if (newFile.length < 1) {",
+              "            onFailed(\"图片获取失败\")",
+              "            res",
+              "          }",
+              "          onSuccess(newFile)"
+            ]
+          }
+        },
+        {
+          "id": "p11:n13",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 23,
+          "code": "uri => {",
+          "description": "接收相册选择成功的回调，获取处理后的图片路径/URI，准备更新 UI 状态。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)",
+              "            })",
+              "          })"
+            ]
+          }
+        },
+        {
+          "id": "p11:n14",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 10,
+          "code": "@State imgPath: string = \"\"",
+          "description": "更新 @State 装饰的 imgPath 变量，触发 UI 重新渲染，将用户选择的图片显示在头像位置。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "import { Toast } from '../../utils/Toast'",
+              "",
+              "@Preview",
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        },
+        {
+          "from": "p11:n3",
+          "to": "p11:n4"
+        },
+        {
+          "from": "p11:n4",
+          "to": "p11:n5"
+        },
+        {
+          "from": "p11:n5",
+          "to": "p11:n6"
+        },
+        {
+          "from": "p11:n6",
+          "to": "p11:n7"
+        },
+        {
+          "from": "p11:n7",
+          "to": "p11:n8"
+        },
+        {
+          "from": "p11:n8",
+          "to": "p11:n9"
+        },
+        {
+          "from": "p11:n9",
+          "to": "p11:n10"
+        },
+        {
+          "from": "p11:n10",
+          "to": "p11:n11"
+        },
+        {
+          "from": "p11:n11",
+          "to": "p11:n12"
+        },
+        {
+          "from": "p11:n12",
+          "to": "p11:n13"
+        },
+        {
+          "from": "p11:n13",
+          "to": "p11:n14"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户选择的图片文件 URI",
+          "图片二进制数据（隐含）"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户点击头像并选择图片时）"
+        ],
+        "cloudUpload": [
+          "当前片段未直接发现网络上传操作，但获取的 URI 通常用于后续上传或本地展示"
+        ],
+        "storageAndEncryption": [
+          "临时存储：通过 copyFileToCache 方法将选中图片复制到应用缓存目录",
+          "加密状态：源码片段中未显示对图片数据进行显式加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.WRITE_MEDIA",
+          "ohos.permission.READ_MEDIA"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 12,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数，初始化页面渲染流程。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "@Preview",
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)"
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 13,
+          "code": "Column() {",
+          "description": "创建 Column 布局容器，作为页面主结构。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)"
+            ]
+          }
+        },
+        {
+          "id": "p12:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 15,
+          "code": "Row() {",
+          "description": "创建 Row 布局容器，用于排列头像等元素。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)"
+            ]
+          }
+        },
+        {
+          "id": "p12:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 21,
+          "code": ".onClick(() => {",
+          "description": "为头像 Image 组件绑定 onClick 点击事件，触发相册选择逻辑。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)"
+            ]
+          }
+        },
+        {
+          "id": "p12:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 22,
+          "code": "PhotoPickerUtils.openGallery(",
+          "description": "调用 PhotoPickerUtils.openGallery 方法，请求访问系统相册。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p12:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 12,
+          "code": "static async openGallery(onSuccess: (uri: string) => void, onFailed: (error: string) => void) {",
+          "description": "定义 openGallery 异步函数，处理相册打开及权限校验逻辑。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " *  相机相册访问工具",
+              " * @author www.icheny.cn",
+              " */",
+              "export class PhotoPickerUtils {",
+              "  static async openGallery(onSuccess: (uri: string) => void, onFailed: (error: string) => void) {",
+              "    try {",
+              "",
+              "      const granted = await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+              "      if (!granted) {",
+              "        setTimeout(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p12:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 15,
+          "code": "const granted = await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+          "description": "调用 PermissionUtils.request 动态申请媒体读写权限 (READ_MEDIA/WRITE_MEDIA)。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              " */",
+              "export class PhotoPickerUtils {",
+              "  static async openGallery(onSuccess: (uri: string) => void, onFailed: (error: string) => void) {",
+              "    try {",
+              "",
+              "      const granted = await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+              "      if (!granted) {",
+              "        setTimeout(() => {",
+              "          AlertDialog.show({",
+              "            title: '温馨提示',",
+              "            message: '您已拒绝授予存储权限，是否允许前往设置中心授予权限？',"
+            ]
+          }
+        },
+        {
+          "id": "p12:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "line": 18,
+          "code": "AlertDialog.show({",
+          "description": "若权限被拒绝，准备显示 AlertDialog 提示用户前往设置页授权。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "    try {",
+              "",
+              "      const granted = await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+              "      if (!granted) {",
+              "        setTimeout(() => {",
+              "          AlertDialog.show({",
+              "            title: '温馨提示',",
+              "            message: '您已拒绝授予存储权限，是否允许前往设置中心授予权限？',",
+              "            autoCancel: false,",
+              "            alignment: DialogAlignment.Center,",
+              "            primaryButton: {"
+            ]
+          }
+        },
+        {
+          "id": "p12:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 39,
+          "code": "static openPermissionSettingsPage() {",
+          "description": "定义 openPermissionSettingsPage 函数，用于跳转至系统应用设置页。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    // 返回 Promise 授权结果",
+              "    return isAuth",
+              "  }",
+              "",
+              "  // 打开系统设置的权限管理页（处理授权结果）",
+              "  static openPermissionSettingsPage() {",
+              "    // 获取上下文",
+              "    const context = getContext() as common.UIAbilityContext",
+              "    // 获取包信息",
+              "    const bundleInfo = bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION)",
+              "    // 打开系统设置页"
+            ]
+          }
+        },
+        {
+          "id": "p12:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 41,
+          "code": "const context = getContext() as common.UIAbilityContext",
+          "description": "获取当前 UIAbility 的上下文对象 (context)，用于后续启动 Ability。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "  }",
+              "",
+              "  // 打开系统设置的权限管理页（处理授权结果）",
+              "  static openPermissionSettingsPage() {",
+              "    // 获取上下文",
+              "    const context = getContext() as common.UIAbilityContext",
+              "    // 获取包信息",
+              "    const bundleInfo = bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION)",
+              "    // 打开系统设置页",
+              "    context.startAbility({",
+              "      bundleName: 'com.huawei.hmos.settings',"
+            ]
+          }
+        },
+        {
+          "id": "p12:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 43,
+          "code": "const bundleInfo = bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION)",
+          "description": "调用 bundleManager.getBundleInfoForSelfSync 同步获取当前应用的包信息 (BundleInfo)，包含包名等隐私数据。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "  // 打开系统设置的权限管理页（处理授权结果）",
+              "  static openPermissionSettingsPage() {",
+              "    // 获取上下文",
+              "    const context = getContext() as common.UIAbilityContext",
+              "    // 获取包信息",
+              "    const bundleInfo = bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION)",
+              "    // 打开系统设置页",
+              "    context.startAbility({",
+              "      bundleName: 'com.huawei.hmos.settings',",
+              "      abilityName: 'com.huawei.hmos.settings.MainAbility',",
+              "      uri: 'application_info_entry',"
+            ]
+          }
+        },
+        {
+          "id": "p12:n12",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 45,
+          "code": "context.startAbility({",
+          "description": "调用 context.startAbility 启动系统设置页 Ability。",
+          "context": {
+            "startLine": 40,
+            "lines": [
+              "    // 获取上下文",
+              "    const context = getContext() as common.UIAbilityContext",
+              "    // 获取包信息",
+              "    const bundleInfo = bundleManager.getBundleInfoForSelfSync(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION)",
+              "    // 打开系统设置页",
+              "    context.startAbility({",
+              "      bundleName: 'com.huawei.hmos.settings',",
+              "      abilityName: 'com.huawei.hmos.settings.MainAbility',",
+              "      uri: 'application_info_entry',",
+              "      parameters: {",
+              "        // 按照包名打开对应设置页"
+            ]
+          }
+        },
+        {
+          "id": "p12:n13",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 51,
+          "code": "pushParams: bundleInfo.name",
+          "description": "将获取到的包名 (bundleInfo.name) 作为参数传递给系统设置页，定位到特定应用的管理界面。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "      bundleName: 'com.huawei.hmos.settings',",
+              "      abilityName: 'com.huawei.hmos.settings.MainAbility',",
+              "      uri: 'application_info_entry',",
+              "      parameters: {",
+              "        // 按照包名打开对应设置页",
+              "        pushParams: bundleInfo.name",
+              "      }",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        },
+        {
+          "from": "p12:n2",
+          "to": "p12:n3"
+        },
+        {
+          "from": "p12:n3",
+          "to": "p12:n4"
+        },
+        {
+          "from": "p12:n4",
+          "to": "p12:n5"
+        },
+        {
+          "from": "p12:n5",
+          "to": "p12:n6"
+        },
+        {
+          "from": "p12:n6",
+          "to": "p12:n7"
+        },
+        {
+          "from": "p12:n7",
+          "to": "p12:n8"
+        },
+        {
+          "from": "p12:n8",
+          "to": "p12:n9"
+        },
+        {
+          "from": "p12:n9",
+          "to": "p12:n10"
+        },
+        {
+          "from": "p12:n10",
+          "to": "p12:n11"
+        },
+        {
+          "from": "p12:n11",
+          "to": "p12:n12"
+        },
+        {
+          "from": "p12:n12",
+          "to": "p12:n13"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用包信息 (BundleInfo)",
+          "应用名称 (BundleName)",
+          "用户头像图片路径 (Image URI)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (点击头像时)",
+          "一次性 (获取自身包信息)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地内存存储 (@State imgPath)",
+          "未检测到加密操作",
+          "未检测到云端上传操作"
+        ],
+        "permissions": [
+          "ohos.permission.WRITE_MEDIA",
+          "ohos.permission.READ_MEDIA"
+        ]
+      }
+    }
+  ]
+}

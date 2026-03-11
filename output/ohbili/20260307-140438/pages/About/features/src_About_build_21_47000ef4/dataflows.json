@@ -1,0 +1,559 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "generatedAt": "2026-03-07T06:21:31.406Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 18,
+      "edges": 16,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "About",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/About.ets",
+        "structName": "About",
+        "line": 19,
+        "description": "关于页面"
+      }
+    },
+    "feature": {
+      "featureId": "src_About_build_21_47000ef4",
+      "kind": "source",
+      "title": "关于页面展示与交互"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p24",
+      "pathId": "p24",
+      "nodes": [
+        {
+          "id": "p24:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 19,
+          "code": "@StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+          "description": "声明 @StorageLink 变量 searchDefault，从本地持久化存储中读取用户的搜索默认值或历史记录，建立双向数据绑定。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "import promptAction from '@ohos.promptAction'",
+              "",
+              "@Component",
+              "export struct HomeSearchBar {",
+              "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+              "  @StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))",
+              "        .width(24)"
+            ]
+          }
+        },
+        {
+          "id": "p24:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 18,
+          "code": "@StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+          "description": "声明 @StorageLink 变量 isShowPage，从本地存储读取控制搜索框是否可聚焦的状态标志。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "import router from '@ohos.router';",
+              "import promptAction from '@ohos.promptAction'",
+              "",
+              "@Component",
+              "export struct HomeSearchBar {",
+              "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+              "  @StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))"
+            ]
+          }
+        },
+        {
+          "id": "p24:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口函数开始执行，初始化搜索栏 UI 结构。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "@Component",
+              "export struct HomeSearchBar {",
+              "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+              "  @StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))",
+              "        .width(24)",
+              "        .height(24)",
+              "      TextInput({ placeholder: this.searchDefault })"
+            ]
+          }
+        },
+        {
+          "id": "p24:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 22,
+          "code": "Row() {",
+          "description": "创建 Row 容器组件，作为搜索栏内容的水平布局载体。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "export struct HomeSearchBar {",
+              "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+              "  @StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))",
+              "        .width(24)",
+              "        .height(24)",
+              "      TextInput({ placeholder: this.searchDefault })",
+              "        .focusable(this.isShowPage)"
+            ]
+          }
+        },
+        {
+          "id": "p24:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 26,
+          "code": "TextInput({ placeholder: this.searchDefault })",
+          "description": "创建 TextInput 输入组件，并将之前从存储读取的 searchDefault 数据设置为占位符 (placeholder)，此时敏感数据已加载到内存 UI 对象中。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  build() {",
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))",
+              "        .width(24)",
+              "        .height(24)",
+              "      TextInput({ placeholder: this.searchDefault })",
+              "        .focusable(this.isShowPage)",
+              "        .layoutWeight(1)",
+              "        .backgroundColor(Color.Transparent)",
+              "        .onClick(() => {",
+              "          router.pushUrl({ url: 'pages/Search', params: {"
+            ]
+          }
+        },
+        {
+          "id": "p24:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 27,
+          "code": ".focusable(this.isShowPage)",
+          "description": "设置 TextInput 的 focusable 属性，绑定 isShowPage 状态以控制输入框的交互行为。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))",
+              "        .width(24)",
+              "        .height(24)",
+              "      TextInput({ placeholder: this.searchDefault })",
+              "        .focusable(this.isShowPage)",
+              "        .layoutWeight(1)",
+              "        .backgroundColor(Color.Transparent)",
+              "        .onClick(() => {",
+              "          router.pushUrl({ url: 'pages/Search', params: {",
+              "            defaultKeyword: this.searchDefault"
+            ]
+          }
+        },
+        {
+          "id": "p24:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 30,
+          "code": ".onClick(() => {",
+          "description": "为 TextInput 组件注册 onClick 点击事件监听器，准备处理用户交互逻辑。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "        .height(24)",
+              "      TextInput({ placeholder: this.searchDefault })",
+              "        .focusable(this.isShowPage)",
+              "        .layoutWeight(1)",
+              "        .backgroundColor(Color.Transparent)",
+              "        .onClick(() => {",
+              "          router.pushUrl({ url: 'pages/Search', params: {",
+              "            defaultKeyword: this.searchDefault",
+              "          } });",
+              "        })",
+              "      Image($r('app.media.ic_live_no_face_dark'))"
+            ]
+          }
+        },
+        {
+          "id": "p24:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 31,
+          "code": "router.pushUrl({ url: 'pages/Search', params: {",
+          "description": "在点击回调中调用 router.pushUrl 方法，发起页面跳转请求，并将包含敏感数据的 params 对象作为参数传入。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "      TextInput({ placeholder: this.searchDefault })",
+              "        .focusable(this.isShowPage)",
+              "        .layoutWeight(1)",
+              "        .backgroundColor(Color.Transparent)",
+              "        .onClick(() => {",
+              "          router.pushUrl({ url: 'pages/Search', params: {",
+              "            defaultKeyword: this.searchDefault",
+              "          } });",
+              "        })",
+              "      Image($r('app.media.ic_live_no_face_dark'))",
+              "        .width(36)"
+            ]
+          }
+        },
+        {
+          "id": "p24:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 32,
+          "code": "defaultKeyword: this.searchDefault",
+          "description": "将内存中的 searchDefault 数据项提取并封装到路由参数 defaultKeyword 中，完成数据从本地存储到页面间传递的流动。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "        .focusable(this.isShowPage)",
+              "        .layoutWeight(1)",
+              "        .backgroundColor(Color.Transparent)",
+              "        .onClick(() => {",
+              "          router.pushUrl({ url: 'pages/Search', params: {",
+              "            defaultKeyword: this.searchDefault",
+              "          } });",
+              "        })",
+              "      Image($r('app.media.ic_live_no_face_dark'))",
+              "        .width(36)",
+              "        .height(36)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p24:n1",
+          "to": "p24:n3"
+        },
+        {
+          "from": "p24:n2",
+          "to": "p24:n3"
+        },
+        {
+          "from": "p24:n3",
+          "to": "p24:n4"
+        },
+        {
+          "from": "p24:n4",
+          "to": "p24:n5"
+        },
+        {
+          "from": "p24:n5",
+          "to": "p24:n6"
+        },
+        {
+          "from": "p24:n6",
+          "to": "p24:n7"
+        },
+        {
+          "from": "p24:n7",
+          "to": "p24:n8"
+        },
+        {
+          "from": "p24:n8",
+          "to": "p24:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "searchDefault (搜索默认关键词/历史)",
+          "isShowPage (页面显示状态)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击搜索框时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地存储 (通过 @StorageLink 关联应用首选项/Storage)",
+          "未加密 (明文字符串传递)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p25",
+      "pathId": "p25",
+      "nodes": [
+        {
+          "id": "p25:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 18,
+          "code": "@StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+          "description": "声明 @StorageLink 变量 isShowPage，从应用全局存储中读取页面显示状态，涉及本地持久化数据读取。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "import router from '@ohos.router';",
+              "import promptAction from '@ohos.promptAction'",
+              "",
+              "@Component",
+              "export struct HomeSearchBar {",
+              "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+              "  @StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))"
+            ]
+          }
+        },
+        {
+          "id": "p25:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 19,
+          "code": "@StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+          "description": "声明 @StorageLink 变量 searchDefault，从应用全局存储中读取默认搜索词，涉及本地持久化数据读取。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "import promptAction from '@ohos.promptAction'",
+              "",
+              "@Component",
+              "export struct HomeSearchBar {",
+              "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+              "  @StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))",
+              "        .width(24)"
+            ]
+          }
+        },
+        {
+          "id": "p25:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "ArkUI 组件 build() 入口函数开始执行，初始化 UI 构建上下文。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "@Component",
+              "export struct HomeSearchBar {",
+              "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+              "  @StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))",
+              "        .width(24)",
+              "        .height(24)",
+              "      TextInput({ placeholder: this.searchDefault })"
+            ]
+          }
+        },
+        {
+          "id": "p25:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 22,
+          "code": "Row() {",
+          "description": "创建 Row 布局容器，作为搜索栏的主结构。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "export struct HomeSearchBar {",
+              "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+              "  @StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))",
+              "        .width(24)",
+              "        .height(24)",
+              "      TextInput({ placeholder: this.searchDefault })",
+              "        .focusable(this.isShowPage)"
+            ]
+          }
+        },
+        {
+          "id": "p25:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 26,
+          "code": "TextInput({ placeholder: this.searchDefault })",
+          "description": "创建 TextInput 组件，并将之前读取的 searchDefault 数据绑定为占位符文本。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  build() {",
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))",
+              "        .width(24)",
+              "        .height(24)",
+              "      TextInput({ placeholder: this.searchDefault })",
+              "        .focusable(this.isShowPage)",
+              "        .layoutWeight(1)",
+              "        .backgroundColor(Color.Transparent)",
+              "        .onClick(() => {",
+              "          router.pushUrl({ url: 'pages/Search', params: {"
+            ]
+          }
+        },
+        {
+          "id": "p25:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 27,
+          "code": ".focusable(this.isShowPage)",
+          "description": "将 isShowPage 状态数据绑定到 TextInput 的 focusable 属性，控制输入框是否可聚焦。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "    Row() {",
+              "      Image($r('app.media.ic_home_search'))",
+              "        .width(24)",
+              "        .height(24)",
+              "      TextInput({ placeholder: this.searchDefault })",
+              "        .focusable(this.isShowPage)",
+              "        .layoutWeight(1)",
+              "        .backgroundColor(Color.Transparent)",
+              "        .onClick(() => {",
+              "          router.pushUrl({ url: 'pages/Search', params: {",
+              "            defaultKeyword: this.searchDefault"
+            ]
+          }
+        },
+        {
+          "id": "p25:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 39,
+          "code": ".onClick(() => {",
+          "description": "定义右侧图片的 onClick 事件监听器，准备处理用户点击登录图标的操作。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "        })",
+              "      Image($r('app.media.ic_live_no_face_dark'))",
+              "        .width(36)",
+              "        .height(36)",
+              "        .borderRadius(12)",
+              "        .onClick(() => {",
+              "          promptAction.showToast({",
+              "            message: '登录功能暂未实现',",
+              "            duration: 2000",
+              "          });",
+              "        })"
+            ]
+          }
+        },
+        {
+          "id": "p25:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 40,
+          "code": "promptAction.showToast({",
+          "description": "调用 promptAction.showToast API，作为数据流的终点（Sink），向用户展示静态提示信息。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "      Image($r('app.media.ic_live_no_face_dark'))",
+              "        .width(36)",
+              "        .height(36)",
+              "        .borderRadius(12)",
+              "        .onClick(() => {",
+              "          promptAction.showToast({",
+              "            message: '登录功能暂未实现',",
+              "            duration: 2000",
+              "          });",
+              "        })",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p25:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/SearchBar.ets",
+          "line": 41,
+          "code": "message: '登录功能暂未实现',",
+          "description": "定义 Toast 消息的具体内容 '登录功能暂未实现'，此为硬编码字符串，非动态采集的用户隐私数据。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "        .width(36)",
+              "        .height(36)",
+              "        .borderRadius(12)",
+              "        .onClick(() => {",
+              "          promptAction.showToast({",
+              "            message: '登录功能暂未实现',",
+              "            duration: 2000",
+              "          });",
+              "        })",
+              "    }",
+              "    .width('100%')"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p25:n1",
+          "to": "p25:n3"
+        },
+        {
+          "from": "p25:n2",
+          "to": "p25:n3"
+        },
+        {
+          "from": "p25:n3",
+          "to": "p25:n4"
+        },
+        {
+          "from": "p25:n4",
+          "to": "p25:n5"
+        },
+        {
+          "from": "p25:n5",
+          "to": "p25:n6"
+        },
+        {
+          "from": "p25:n6",
+          "to": "p25:n7"
+        },
+        {
+          "from": "p25:n7",
+          "to": "p25:n8"
+        },
+        {
+          "from": "p25:n8",
+          "to": "p25:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户界面交互状态 (isShowPage)",
+          "默认搜索关键词 (searchDefault)",
+          "静态提示消息 (message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (onClick)",
+          "UI 渲染时一次性读取"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地持久化存储 (@StorageLink)",
+          "未加密 (明文字符串/布尔值)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

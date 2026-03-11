@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260306-212407",
+    "featureId": "ui_Mine_4f14ddb6f2",
+    "generatedAt": "2026-03-06T13:33:27.504Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户在‘我的’页面点击头像以更换个人形象图片时，应用读取用户选择的图片文件并更新本地显示。",
+        "dataSources": [
+          "用户相册（系统媒体库）",
+          "应用本地缓存"
+        ],
+        "dataItems": [
+          {
+            "name": "用户选择的图片 URI",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n10"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n11"
+              }
+            ]
+          },
+          {
+            "name": "用户头像图片路径 (imgPath)",
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n4"
+              },
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n12"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n14"
+              }
+            ]
+          },
+          {
+            "name": "图片二进制数据",
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n12"
+              }
+            ]
+          },
+          {
+            "name": "应用包信息 (BundleInfo)",
+            "refs": [
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n11"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取用户选中的图片 URI，将图片文件复制到应用沙箱缓存目录，并更新内存状态变量以触发 UI 重新渲染展示新头像。",
+        "storageMethod": "临时存储在应用本地内存 (@State 状态管理) 及本地缓存目录中，未检测到加密操作。",
+        "dataRecipients": [],
+        "processingPurpose": "允许用户自定义和更新个人资料中的头像图片，并在‘我的’页面进行展示。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "用户在‘我的’页面点击头像按钮选择新图片时，应用需要访问系统相册以获取用户选中的图片文件。",
+        "permissionPurpose": "读取用户设备上的媒体文件（图片），以便将其设置为新的个人头像。",
+        "denyImpact": "若拒绝授权，用户将无法从相册中选择图片来更新头像，只能使用默认头像或无法完成更换操作。",
+        "refs": [
+          {
+            "flowId": "flow:p10",
+            "nodeId": "p10:n7"
+          },
+          {
+            "flowId": "flow:p11",
+            "nodeId": "p11:n7"
+          },
+          {
+            "flowId": "flow:p12",
+            "nodeId": "p12:n7"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.WRITE_MEDIA",
+        "businessScenario": "用户在‘我的’页面点击头像按钮选择新图片时，应用可能需要写入媒体库或相关缓存区域。",
+        "permissionPurpose": "配合读取权限，确保能够完整处理媒体文件的选择与后续可能的写入操作（如复制到缓存）。",
+        "denyImpact": "若拒绝授权，可能导致无法完成图片选择流程或无法将选中的图片保存至应用缓存，从而无法更新头像。",
+        "refs": [
+          {
+            "flowId": "flow:p10",
+            "nodeId": "p10:n7"
+          },
+          {
+            "flowId": "flow:p11",
+            "nodeId": "p11:n7"
+          },
+          {
+            "flowId": "flow:p12",
+            "nodeId": "p12:n7"
+          }
+        ]
+      }
+    ]
+  }
+}

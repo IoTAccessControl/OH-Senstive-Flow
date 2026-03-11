@@ -23,9 +23,27 @@ function uniq(arr: string[]): string[] {
 
 function normalizeCsvApiKey(raw: string): string {
   let s = raw.trim();
+
+  // Remove signature / params part.
   const paren = s.indexOf('(');
   if (paren !== -1) s = s.slice(0, paren);
+
+  // Normalize separators seen in some CSV exports (e.g. "a->b", "a-->b").
+  s = s.replaceAll('-->', '.').replaceAll('->', '.');
+
+  // Normalize common typos / punctuation.
   s = s.replaceAll('#', '.');
+  s = s.replaceAll("'", '').replaceAll('"', '').replaceAll('`', '');
+
+  // Drop URL-like suffixes that are not part of the API key.
+  const urlIdx = s.indexOf('://');
+  if (urlIdx !== -1) s = s.slice(0, urlIdx);
+
+  // Cleanup redundant dots.
+  s = s.replaceAll(/\s+/gu, '');
+  s = s.replaceAll(/\.{2,}/gu, '.');
+  s = s.replaceAll(/^\.+|\.+$/gu, '');
+
   return s.trim();
 }
 

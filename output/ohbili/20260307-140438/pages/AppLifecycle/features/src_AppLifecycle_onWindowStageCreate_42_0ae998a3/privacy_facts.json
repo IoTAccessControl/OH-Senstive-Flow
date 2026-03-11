@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "featureId": "src_AppLifecycle_onWindowStageCreate_42_0ae998a3",
+    "generatedAt": "2026-03-07T06:23:05.562Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACCESS_FILE_SYSTEM 未在应用源码/配置中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.ACCESS_NETWORK_STATE 未在应用源码/配置中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.READ_APPLICATION_INFO 未在应用源码/配置中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.WRITE_LOG 未在应用源码/配置中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "应用启动初始化时，记录系统日志、配置本地存储路径及网络状态监听",
+        "dataSources": [
+          "应用上下文信息",
+          "系统生命周期事件",
+          "网络连接状态回调"
+        ],
+        "dataItems": [
+          {
+            "name": "应用文件目录路径 (filesDir)",
+            "refs": [
+              {
+                "flowId": "flow:p57",
+                "nodeId": "p57:n4"
+              },
+              {
+                "flowId": "flow:p58",
+                "nodeId": "p58:n2"
+              },
+              {
+                "flowId": "flow:p59",
+                "nodeId": "p59:n4"
+              }
+            ]
+          },
+          {
+            "name": "应用包信息 (AppBundleInfo)",
+            "refs": [
+              {
+                "flowId": "flow:p57",
+                "nodeId": "p57:n8"
+              },
+              {
+                "flowId": "flow:p58",
+                "nodeId": "p58:n5"
+              }
+            ]
+          },
+          {
+            "name": "网络状态标识 (netIsAvailable)",
+            "refs": [
+              {
+                "flowId": "flow:p57",
+                "nodeId": "p57:n6"
+              },
+              {
+                "flowId": "flow:p60",
+                "nodeId": "p60:n11"
+              },
+              {
+                "flowId": "flow:p61",
+                "nodeId": "p61:n12"
+              }
+            ]
+          },
+          {
+            "name": "网络连接 ID (netId)",
+            "refs": [
+              {
+                "flowId": "flow:p60",
+                "nodeId": "p60:n10"
+              },
+              {
+                "flowId": "flow:p61",
+                "nodeId": "p61:n11"
+              }
+            ]
+          },
+          {
+            "name": "页面加载错误详情 (Error Object)",
+            "refs": [
+              {
+                "flowId": "flow:p58",
+                "nodeId": "p58:n8"
+              },
+              {
+                "flowId": "flow:p59",
+                "nodeId": "p59:n11"
+              }
+            ]
+          },
+          {
+            "name": "页面加载成功数据 (Load Content Data)",
+            "refs": [
+              {
+                "flowId": "flow:p59",
+                "nodeId": "p59:n12"
+              }
+            ]
+          },
+          {
+            "name": "生命周期事件日志字符串",
+            "refs": [
+              {
+                "flowId": "flow:p57",
+                "nodeId": "p57:n2"
+              },
+              {
+                "flowId": "flow:p59",
+                "nodeId": "p59:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中赋值给全局变量或本地持久化存储，部分数据（如错误对象）被序列化为 JSON 字符串后输出至系统日志缓冲区",
+        "storageMethod": "未加密的本地内存存储 (globalThis) 和本地持久化存储 (AppStorage)，以及系统日志缓冲区",
+        "dataRecipients": [],
+        "processingPurpose": "初始化应用运行环境，记录启动过程日志，监控网络连接状态以支持后续业务功能"
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "应用启动初始化时",
+        "permissionPurpose": "创建网络连接实例并注册网络状态监听",
+        "denyImpact": "无法建立网络连接，无法监听网络可用/不可用状态变化",
+        "refs": [
+          {
+            "flowId": "flow:p60",
+            "nodeId": "p60:n8"
+          },
+          {
+            "flowId": "flow:p61",
+            "nodeId": "p61:n9"
+          }
+        ]
+      }
+    ]
+  }
+}

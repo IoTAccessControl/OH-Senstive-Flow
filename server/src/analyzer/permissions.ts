@@ -30,12 +30,11 @@ export async function collectPermissionsFromApp(appDirAbs: string): Promise<Set<
   const permissions = new Set<string>();
   const files = await walkFiles(appDirAbs, {
     extensions: ['ets', 'ts', 'js', 'json', 'json5'],
-    ignoreDirNames: ['node_modules', '.git', 'build', 'dist', 'out'],
+    ignoreDirNames: ['node_modules', '.git', 'build', 'dist', 'out', 'hvigor'],
   });
 
   for (const filePath of files) {
     const normalized = filePath.split(path.sep).join('/');
-    if (!normalized.includes('/src/main/')) continue;
     if (normalized.includes('/src/ohosTest/')) continue;
 
     let text = '';

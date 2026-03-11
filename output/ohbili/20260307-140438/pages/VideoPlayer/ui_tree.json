@@ -1,0 +1,198 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "generatedAt": "2026-03-07T06:21:31.495Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 6,
+      "edges": 5,
+      "pages": 1,
+      "elements": 5
+    }
+  },
+  "roots": [
+    "page:87e3308c31d3"
+  ],
+  "nodes": {
+    "page:87e3308c31d3": {
+      "id": "page:87e3308c31d3",
+      "category": "Page",
+      "name": "VideoPlayer",
+      "description": "视频详情页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 33,
+      "code": "struct VideoPlayer {",
+      "context": {
+        "startLine": 28,
+        "lines": [
+          "  vInfo?: BaseVideo;",
+          "}",
+          "",
+          "@Entry",
+          "@Component",
+          "struct VideoPlayer {",
+          "  @State vInfo: BaseVideo = EmptyBaseVideo(\"\")",
+          "  @StorageLink('isPortrait') @Watch('onPortraitUpdated') isPortrait: boolean = true;",
+          "  @State currentIndex: number = 0;",
+          "  @StorageLink('replyCount') @Watch('onCountUpdated') replyCount: number = 0;",
+          "  @State tabTitle: ResourceStr[] = [$r('app.string.video_overview'), $r('app.string.video_reply', 0)];"
+        ]
+      }
+    },
+    "ui:8575c4a06188": {
+      "id": "ui:8575c4a06188",
+      "category": "Component",
+      "name": "build",
+      "description": "视频播放页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 139,
+      "code": "build() {",
+      "context": {
+        "startLine": 134,
+        "lines": [
+          "    .height('100%')",
+          "    .justifyContent(FlexAlign.Center)",
+          "    .border({ width: { bottom: 0.5 }, color: '#cccccc' })",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      PlayerView({ cid: this.vInfo.cid, bvid: this.vInfo.bvid, pageState: $pageState })",
+          "      if (this.isPortrait) {",
+          "        if (this.replyItem != null) {",
+          "          Column() {"
+        ]
+      }
+    },
+    "ui:afd4a60b9171": {
+      "id": "ui:afd4a60b9171",
+      "category": "Component",
+      "name": "PlayerView",
+      "description": "视频播放器",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 141,
+      "code": "PlayerView({ cid: this.vInfo.cid, bvid: this.vInfo.bvid, pageState: $pageState })",
+      "context": {
+        "startLine": 136,
+        "lines": [
+          "    .border({ width: { bottom: 0.5 }, color: '#cccccc' })",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      PlayerView({ cid: this.vInfo.cid, bvid: this.vInfo.bvid, pageState: $pageState })",
+          "      if (this.isPortrait) {",
+          "        if (this.replyItem != null) {",
+          "          Column() {",
+          "            ReplyDetailView({ vInfo: this.vInfo })",
+          "          }.layoutWeight(1)"
+        ]
+      }
+    },
+    "ui:17cff722761b": {
+      "id": "ui:17cff722761b",
+      "category": "Component",
+      "name": "ReplyDetailView",
+      "description": "回复详情",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 145,
+      "code": "ReplyDetailView({ vInfo: this.vInfo })",
+      "context": {
+        "startLine": 140,
+        "lines": [
+          "    Column() {",
+          "      PlayerView({ cid: this.vInfo.cid, bvid: this.vInfo.bvid, pageState: $pageState })",
+          "      if (this.isPortrait) {",
+          "        if (this.replyItem != null) {",
+          "          Column() {",
+          "            ReplyDetailView({ vInfo: this.vInfo })",
+          "          }.layoutWeight(1)",
+          "        } else {",
+          "          Tabs({ index: this.currentIndex }) {",
+          "            TabContent() {",
+          "              VideoOverview({ vInfo: $vInfo, isFollowing: $isFollowing, fansCount: $fansCount, archiveCount: $archiveCount })"
+        ]
+      }
+    },
+    "ui:b3dfe9957b36": {
+      "id": "ui:b3dfe9957b36",
+      "category": "Component",
+      "name": "VideoOverview",
+      "description": "视频概览",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 150,
+      "code": "VideoOverview({ vInfo: $vInfo, isFollowing: $isFollowing, fansCount: $fansCount, archiveCount: $archiveCount })",
+      "context": {
+        "startLine": 145,
+        "lines": [
+          "            ReplyDetailView({ vInfo: this.vInfo })",
+          "          }.layoutWeight(1)",
+          "        } else {",
+          "          Tabs({ index: this.currentIndex }) {",
+          "            TabContent() {",
+          "              VideoOverview({ vInfo: $vInfo, isFollowing: $isFollowing, fansCount: $fansCount, archiveCount: $archiveCount })",
+          "            }",
+          "            .tabBar(this.TabBuilder(0))",
+          "",
+          "            TabContent() {",
+          "              VideoReply({ vInfo: this.vInfo })"
+        ]
+      }
+    },
+    "ui:771eb712479e": {
+      "id": "ui:771eb712479e",
+      "category": "Component",
+      "name": "VideoReply",
+      "description": "视频评论区",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 155,
+      "code": "VideoReply({ vInfo: this.vInfo })",
+      "context": {
+        "startLine": 150,
+        "lines": [
+          "              VideoOverview({ vInfo: $vInfo, isFollowing: $isFollowing, fansCount: $fansCount, archiveCount: $archiveCount })",
+          "            }",
+          "            .tabBar(this.TabBuilder(0))",
+          "",
+          "            TabContent() {",
+          "              VideoReply({ vInfo: this.vInfo })",
+          "            }",
+          "            .tabBar(this.TabBuilder(1))",
+          "          }.barHeight(40).onChange((index) => {",
+          "            if (this.replyItem == null) {",
+          "              BLog.i(\"onChange: \" + index);"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:87e3308c31d3",
+      "to": "ui:8575c4a06188",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87e3308c31d3",
+      "to": "ui:afd4a60b9171",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87e3308c31d3",
+      "to": "ui:17cff722761b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87e3308c31d3",
+      "to": "ui:b3dfe9957b36",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87e3308c31d3",
+      "to": "ui:771eb712479e",
+      "kind": "contains"
+    }
+  ]
+}

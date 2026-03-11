@@ -1,0 +1,432 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260306-212407",
+    "generatedAt": "2026-03-06T13:32:12.797Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 13,
+      "edges": 11,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_14_891864d5",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p16",
+      "pathId": "p16",
+      "nodes": [
+        {
+          "id": "p16:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 14,
+          "code": "onDestroy() {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时由系统自动触发。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)"
+            ]
+          }
+        },
+        {
+          "id": "p16:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 15,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onDestroy' 与标签 'testTag' 组合，向系统日志缓冲区写入 INFO 级别的日志信息。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p16:n1",
+          "to": "p16:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "日志标签 (testTag)",
+          "固定日志消息字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为 (仅本地系统日志输出)"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (由系统日志服务处理)",
+          "无应用层加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p18",
+      "pathId": "p18",
+      "nodes": [
+        {
+          "id": "p18:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 10,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "Ability  onCreate 生命周期入口，记录应用启动日志，不涉及敏感数据收集。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "import AbilityConstant from '@ohos.app.ability.AbilityConstant';",
+              "import Want from '@ohos.app.ability.Want';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        },
+        {
+          "id": "p18:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 14,
+          "code": "onDestroy() {",
+          "description": "Ability  onDestroy 生命周期入口，记录应用销毁日志，不涉及敏感数据收集。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)"
+            ]
+          }
+        },
+        {
+          "id": "p18:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 18,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage) {",
+          "description": "onWindowStageCreate 生命周期函数入口，窗口阶段创建时触发，开始初始化 UI 环境。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {"
+            ]
+          }
+        },
+        {
+          "id": "p18:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 19,
+          "code": "WindowManager.immerseFullScreenSync(windowStage)",
+          "description": "调用 WindowManager.immerseFullScreenSync 设置全屏模式，操作 windowStage 对象，属于 UI 配置。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p18:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "记录窗口创建成功的普通信息日志，不包含用户隐私数据。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;"
+            ]
+          }
+        },
+        {
+          "id": "p18:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 23,
+          "code": "windowStage.loadContent('pages/Index', (err, data) => {",
+          "description": "异步加载页面内容 'pages/Index'，注册回调函数处理加载结果 (err, data)。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p18:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "if (err.code) {",
+          "description": "检查加载结果中的错误码 (err.code)，判断是否发生异常。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "    WindowManager.immerseFullScreenSync(windowStage)",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p18:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 25,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "【Sink】将错误对象 err 序列化为 JSON 字符串并写入错误日志，潜在泄露错误堆栈或内部状态信息。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p18:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 26,
+          "code": "return;",
+          "description": "遇到错误时提前返回，终止后续成功逻辑执行。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p18:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 28,
+          "code": "hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+          "description": "【Sink】将加载成功返回的数据 data 序列化为 JSON 字符串并写入信息日志，若 data 含敏感信息则存在泄露风险。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources"
+            ]
+          }
+        },
+        {
+          "id": "p18:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 32,
+          "code": "onWindowStageDestroy() {",
+          "description": "onWindowStageDestroy 生命周期函数入口，用于释放 UI 相关资源。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p18:n1",
+          "to": "p18:n2"
+        },
+        {
+          "from": "p18:n2",
+          "to": "p18:n3"
+        },
+        {
+          "from": "p18:n3",
+          "to": "p18:n4"
+        },
+        {
+          "from": "p18:n4",
+          "to": "p18:n5"
+        },
+        {
+          "from": "p18:n5",
+          "to": "p18:n6"
+        },
+        {
+          "from": "p18:n6",
+          "to": "p18:n7"
+        },
+        {
+          "from": "p18:n7",
+          "to": "p18:n8"
+        },
+        {
+          "from": "p18:n8",
+          "to": "p18:n9"
+        },
+        {
+          "from": "p18:n9",
+          "to": "p18:n10"
+        },
+        {
+          "from": "p18:n10",
+          "to": "p18:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "错误对象 (err)",
+          "错误码 (err.code)",
+          "加载内容返回数据 (data)",
+          "应用生命周期状态 (onCreate/onDestroy/onWindowStageCreate)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (Ability 生命周期)",
+          "异步回调触发 (loadContent 完成或失败时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为",
+          "仅本地日志输出 (hilog)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密操作",
+          "数据仅在内存中处理并转换为字符串用于日志"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

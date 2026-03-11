@@ -1,0 +1,138 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "generatedAt": "2026-03-07T06:21:31.494Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 4,
+      "edges": 3,
+      "pages": 1,
+      "elements": 3
+    }
+  },
+  "roots": [
+    "page:39c45203cc7e"
+  ],
+  "nodes": {
+    "page:39c45203cc7e": {
+      "id": "page:39c45203cc7e",
+      "category": "Page",
+      "name": "LogDetail",
+      "description": "LogDetail页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+      "line": 22,
+      "code": "struct LogDetail {",
+      "context": {
+        "startLine": 17,
+        "lines": [
+          "interface LogDetailParams {",
+          "  logFilePath: string;",
+          "}",
+          "@Entry",
+          "@Component",
+          "struct LogDetail {",
+          "  private logFilePath: string = '';",
+          "  @State logStr: string = \"\"",
+          "",
+          "  aboutToAppear() {",
+          "    let params = router.getParams() as LogDetailParams | undefined;"
+        ]
+      }
+    },
+    "ui:255622cd0aa8": {
+      "id": "ui:255622cd0aa8",
+      "category": "Component",
+      "name": "build",
+      "description": "日志详情",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+      "line": 34,
+      "code": "build() {",
+      "context": {
+        "startLine": 29,
+        "lines": [
+          "      this.logFilePath = params.logFilePath;",
+          "    }",
+          "    this.logStr = fs.readTextSync(this.logFilePath)",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '日志详情' })",
+          "      Scroll() {",
+          "        Text(this.logStr).fontSize(14).width('100%').padding(8)",
+          "      }.layoutWeight(1)"
+        ]
+      }
+    },
+    "ui:4d66fd8c3b07": {
+      "id": "ui:4d66fd8c3b07",
+      "category": "Component",
+      "name": "OhNavBar",
+      "description": "日志详情导航栏",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+      "line": 36,
+      "code": "OhNavBar({ title: '日志详情' })",
+      "context": {
+        "startLine": 31,
+        "lines": [
+          "    this.logStr = fs.readTextSync(this.logFilePath)",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '日志详情' })",
+          "      Scroll() {",
+          "        Text(this.logStr).fontSize(14).width('100%').padding(8)",
+          "      }.layoutWeight(1)",
+          "      .align(Alignment.Top)",
+          "      .edgeEffect(EdgeEffect.Fade)"
+        ]
+      }
+    },
+    "ui:fb1b01f8eaa0": {
+      "id": "ui:fb1b01f8eaa0",
+      "category": "Display",
+      "name": "Text",
+      "description": "日志详情",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+      "line": 38,
+      "code": "Text(this.logStr).fontSize(14).width('100%').padding(8)",
+      "context": {
+        "startLine": 33,
+        "lines": [
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '日志详情' })",
+          "      Scroll() {",
+          "        Text(this.logStr).fontSize(14).width('100%').padding(8)",
+          "      }.layoutWeight(1)",
+          "      .align(Alignment.Top)",
+          "      .edgeEffect(EdgeEffect.Fade)",
+          "    }.width('100%').height('100%')",
+          "  }"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:39c45203cc7e",
+      "to": "ui:255622cd0aa8",
+      "kind": "contains"
+    },
+    {
+      "from": "page:39c45203cc7e",
+      "to": "ui:4d66fd8c3b07",
+      "kind": "contains"
+    },
+    {
+      "from": "page:39c45203cc7e",
+      "to": "ui:fb1b01f8eaa0",
+      "kind": "contains"
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "generatedAt": "2026-03-07T06:21:31.495Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 5,
+      "edges": 4,
+      "pages": 1,
+      "elements": 4
+    }
+  },
+  "roots": [
+    "page:aead19abd172"
+  ],
+  "nodes": {
+    "page:aead19abd172": {
+      "id": "page:aead19abd172",
+      "category": "Page",
+      "name": "PopularView",
+      "description": "热门页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Popular.ets",
+      "line": 21,
+      "code": "export struct PopularView {",
+      "context": {
+        "startLine": 16,
+        "lines": [
+          "import { DataSourceManager } from '../model/DataSourceManager';",
+          "import { PopularItemView } from '../view/home/PopularItem';",
+          "import { BaseVideo } from '../model/response/Response';",
+          "",
+          "@Component",
+          "export struct PopularView {",
+          "  private scroller: Scroller = new Scroller();",
+          "  @State data: PopularItem[] = [];",
+          "  @State pn: number = 1;",
+          "",
+          "  build() {"
+        ]
+      }
+    },
+    "ui:da65484371a5": {
+      "id": "ui:da65484371a5",
+      "category": "Component",
+      "name": "build",
+      "description": "热门列表",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Popular.ets",
+      "line": 26,
+      "code": "build() {",
+      "context": {
+        "startLine": 21,
+        "lines": [
+          "export struct PopularView {",
+          "  private scroller: Scroller = new Scroller();",
+          "  @State data: PopularItem[] = [];",
+          "  @State pn: number = 1;",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      HomePullToRefresh({",
+          "        // 必传项，列表组件所绑定的数据",
+          "        data: $data,",
+          "        // 必传项，需绑定传入主体布局内的列表或宫格组件"
+        ]
+      }
+    },
+    "ui:f6185a166791": {
+      "id": "ui:f6185a166791",
+      "category": "Component",
+      "name": "HomePullToRefresh",
+      "description": "下拉刷新",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Popular.ets",
+      "line": 28,
+      "code": "HomePullToRefresh({",
+      "context": {
+        "startLine": 23,
+        "lines": [
+          "  @State data: PopularItem[] = [];",
+          "  @State pn: number = 1;",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      HomePullToRefresh({",
+          "        // 必传项，列表组件所绑定的数据",
+          "        data: $data,",
+          "        // 必传项，需绑定传入主体布局内的列表或宫格组件",
+          "        scroller: this.scroller,",
+          "        // 必传项，自定义主体布局，内部有列表或宫格组件"
+        ]
+      }
+    },
+    "ui:07a4dcbd6676": {
+      "id": "ui:07a4dcbd6676",
+      "category": "Component",
+      "name": "resolve",
+      "description": "下拉刷新",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Popular.ets",
+      "line": 40,
+      "code": "resolve('');",
+      "context": {
+        "startLine": 35,
+        "lines": [
+          "        // 可选项，下拉刷新回调",
+          "        onRefresh: () => {",
+          "          return new Promise<string>((resolve, reject) => {",
+          "            this.pn = 1;",
+          "            ApiManager.getInstance().requestPopular(this.pn).then((resp: boolean) => {",
+          "              resolve('');",
+          "            });",
+          "          });",
+          "        },",
+          "        // 可选项，上拉加载更多回调",
+          "        onLoadMore: () => {"
+        ]
+      }
+    },
+    "ui:437024ba421f": {
+      "id": "ui:437024ba421f",
+      "category": "Component",
+      "name": "resolve",
+      "description": "加载更多数据",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Popular.ets",
+      "line": 49,
+      "code": "resolve('');",
+      "context": {
+        "startLine": 44,
+        "lines": [
+          "        // 可选项，上拉加载更多回调",
+          "        onLoadMore: () => {",
+          "          return new Promise<string>((resolve, reject) => {",
+          "            this.pn++;",
+          "            ApiManager.getInstance().requestPopular(this.pn).then((resp: boolean) => {",
+          "              resolve('');",
+          "            });",
+          "          });",
+          "        },",
+          "        customLoad: undefined,",
+          "        customRefresh: undefined,"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:aead19abd172",
+      "to": "ui:da65484371a5",
+      "kind": "contains"
+    },
+    {
+      "from": "page:aead19abd172",
+      "to": "ui:f6185a166791",
+      "kind": "contains"
+    },
+    {
+      "from": "page:aead19abd172",
+      "to": "ui:07a4dcbd6676",
+      "kind": "contains"
+    },
+    {
+      "from": "page:aead19abd172",
+      "to": "ui:437024ba421f",
+      "kind": "contains"
+    }
+  ]
+}

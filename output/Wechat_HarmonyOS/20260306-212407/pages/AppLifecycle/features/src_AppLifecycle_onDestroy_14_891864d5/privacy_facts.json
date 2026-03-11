@@ -1,0 +1,116 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260306-212407",
+    "featureId": "src_AppLifecycle_onDestroy_14_891864d5",
+    "generatedAt": "2026-03-06T13:32:24.435Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "应用退出时记录系统状态日志",
+        "dataSources": [
+          "应用内部运行状态"
+        ],
+        "dataItems": [
+          {
+            "name": "应用生命周期状态事件",
+            "refs": [
+              {
+                "flowId": "flow:p16",
+                "nodeId": "p16:n2"
+              },
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n2"
+              }
+            ]
+          },
+          {
+            "name": "日志标签 (testTag)",
+            "refs": [
+              {
+                "flowId": "flow:p16",
+                "nodeId": "p16:n2"
+              }
+            ]
+          },
+          {
+            "name": "固定日志消息字符串",
+            "refs": [
+              {
+                "flowId": "flow:p16",
+                "nodeId": "p16:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "调用系统日志接口写入本地缓冲区",
+        "storageMethod": "临时内存存储，由系统日志服务处理，无应用层持久化或加密",
+        "dataRecipients": [],
+        "processingPurpose": "记录应用销毁时的系统状态以便调试与监控"
+      },
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "应用启动及页面加载过程中记录错误与状态信息",
+        "dataSources": [
+          "应用内部运行状态",
+          "页面加载返回数据",
+          "系统错误对象"
+        ],
+        "dataItems": [
+          {
+            "name": "应用生命周期状态",
+            "refs": [
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n1"
+              },
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n5"
+              }
+            ]
+          },
+          {
+            "name": "错误对象 (err)",
+            "refs": [
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n8"
+              }
+            ]
+          },
+          {
+            "name": "错误码 (err.code)",
+            "refs": [
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n7"
+              }
+            ]
+          },
+          {
+            "name": "加载内容返回数据 (data)",
+            "refs": [
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n10"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "将数据序列化为 JSON 字符串后调用系统日志接口输出",
+        "storageMethod": "仅内存中处理并输出至系统日志，无本地持久化存储或加密",
+        "dataRecipients": [],
+        "processingPurpose": "记录应用启动、窗口创建及页面加载过程中的成功或失败状态，用于故障排查"
+      }
+    ],
+    "permissionPractices": []
+  }
+}

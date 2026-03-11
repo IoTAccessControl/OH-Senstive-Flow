@@ -1,0 +1,234 @@
+{
+  "meta": {
+    "runId": "open_neteasy_cloud_20260307-144238",
+    "generatedAt": "2026-03-07T06:44:13.396Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 6,
+      "edges": 4,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "HomePage",
+      "entry": {
+        "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+        "structName": "HomePage",
+        "line": 10,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_HomePage_90e481f2da",
+      "kind": "ui",
+      "title": "首页内容区域"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 13,
+          "code": "aboutToAppear() {",
+          "description": "定义 aboutToAppear 生命周期回调函数，作为数据流的起点，在组件即将显示时自动触发。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 14,
+          "code": "if (router.getParams()) {",
+          "description": "调用 router.getParams() 获取当前页面的路由参数对象，并检查其是否存在，这是敏感数据（外部传入参数）的读取点。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "@Component",
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 15,
+          "code": "this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+          "description": "从路由参数中提取特定键 (KEY_PARAM_DATA) 对应的值，将其强制转换为 Resource 类型并赋值给成员变量 titleParam，完成数据在组件内部的流转与持久化（内存级）。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Page Route Params)",
+          "资源标识符 (Resource Identifier)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地内存处理)"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (未加密，生命周期随组件)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 13,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，当 HomePage 组件即将显示时被系统调用，作为数据流的起始触发点。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 14,
+          "code": "if (router.getParams()) {",
+          "description": "调用 router.getParams() 检查是否存在从上一个页面传递过来的路由参数对象，防止空指针异常。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "@Component",
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 15,
+          "code": "this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+          "description": "再次调用 router.getParams() 获取参数对象，并通过键值 CommonConstants.KEY_PARAM_DATA 提取具体的业务数据（Resource 类型），将其赋值给组件私有变量 titleParam，完成敏感数据的接收与本地暂存。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        },
+        {
+          "from": "p5:n2",
+          "to": "p5:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Router Params)",
+          "资源标识符 (Resource Key)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存存储 (组件私有变量)",
+          "无加密 (内部数据传递)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

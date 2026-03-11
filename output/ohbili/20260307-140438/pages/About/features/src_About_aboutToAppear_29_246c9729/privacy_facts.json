@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "runId": "ohbili_20260307-140438",
+    "featureId": "src_About_aboutToAppear_29_246c9729",
+    "generatedAt": "2026-03-07T06:22:17.568Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "应用启动及闪屏页展示时，初始化设备标识并检查媒体相关权限状态。",
+        "dataSources": [
+          "本地存储",
+          "系统日志"
+        ],
+        "dataItems": [
+          {
+            "name": "appUuid (设备唯一标识)",
+            "refs": [
+              {
+                "flowId": "flow:p48",
+                "nodeId": "p48:n7"
+              },
+              {
+                "flowId": "flow:p49",
+                "nodeId": "p49:n7"
+              },
+              {
+                "flowId": "flow:p50",
+                "nodeId": "p50:n7"
+              },
+              {
+                "flowId": "flow:p51",
+                "nodeId": "p51:n3"
+              }
+            ]
+          },
+          {
+            "name": "appLogDebug (调试配置)",
+            "refs": [
+              {
+                "flowId": "flow:p51",
+                "nodeId": "p51:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "生成随机 UUID 作为设备标识，读取本地存储中的调试配置，并将设备标识写入系统日志。",
+        "storageMethod": "通过 @StorageLink 机制将 appUuid 和 appLogDebug 明文持久化存储于应用首选项 (Preferences) 中；部分数据（appUuid）被明文记录至系统日志。",
+        "dataRecipients": [],
+        "processingPurpose": "用于标识当前设备或安装实例，以便区分首次启动与后续启动，并控制日志输出级别。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.MEDIA_LOCATION",
+        "businessScenario": "应用启动及闪屏页展示时，准备获取用户媒体文件的位置信息。",
+        "permissionPurpose": "访问用户媒体文件关联的地理位置信息。",
+        "denyImpact": "若拒绝授权，应用可能无法获取媒体文件的地理位置信息，但根据代码逻辑，应用仍会尝试跳转至主页面，具体功能受限情况取决于后续业务逻辑。",
+        "refs": [
+          {
+            "flowId": "flow:p48",
+            "nodeId": "p48:n3"
+          },
+          {
+            "flowId": "flow:p49",
+            "nodeId": "p49:n3"
+          },
+          {
+            "flowId": "flow:p50",
+            "nodeId": "p50:n3"
+          },
+          {
+            "flowId": "flow:p51",
+            "nodeId": "p51:n6"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "应用启动及闪屏页展示时，准备读取用户媒体文件内容。",
+        "permissionPurpose": "读取用户设备上的媒体文件（如图片、视频等）。",
+        "denyImpact": "若拒绝授权，应用将无法读取用户媒体文件，可能导致依赖媒体内容的功能（如推荐内容拉取）无法正常工作。",
+        "refs": [
+          {
+            "flowId": "flow:p48",
+            "nodeId": "p48:n4"
+          },
+          {
+            "flowId": "flow:p49",
+            "nodeId": "p49:n4"
+          },
+          {
+            "flowId": "flow:p50",
+            "nodeId": "p50:n4"
+          },
+          {
+            "flowId": "flow:p51",
+            "nodeId": "p51:n7"
+          }
+        ]
+      }
+    ]
+  }
+}

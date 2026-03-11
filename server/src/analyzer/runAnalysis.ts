@@ -10,7 +10,7 @@ import { scanAppArkTsFiles } from './appScanner.js';
 import { analyzeSinks } from './sinkAnalyzer.js';
 import { analyzeSources } from './sourceAnalyzer.js';
 import { ensureDir, writeCsvFile, writeJsonFile } from './io.js';
-import { loadCsvApiDescriptions } from './csvSupplement.js';
+import { loadCsvApiDescriptions, loadCsvApiPermissions } from './csvSupplement.js';
 import { loadOverrideDescriptions } from './overrideCsv.js';
 import { writeRunRegistry } from './runRegistry.js';
 import { buildCallGraph } from './callGraph/buildCallGraph.js';
@@ -121,6 +121,7 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
   report(4);
 
   const csvDescriptions = await loadCsvApiDescriptions(csvAbs);
+  const csvPermissions = await loadCsvApiPermissions(csvAbs);
   const overrideDescriptions = await loadOverrideDescriptions(csvAbs);
 
   report(5);
@@ -130,6 +131,7 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
     appFiles,
     sdkIndex,
     csvDescriptions,
+    csvPermissions,
     overrideDescriptions,
   });
 

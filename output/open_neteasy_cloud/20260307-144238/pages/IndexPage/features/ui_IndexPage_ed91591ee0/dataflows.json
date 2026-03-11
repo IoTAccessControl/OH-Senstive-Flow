@@ -1,0 +1,289 @@
+{
+  "meta": {
+    "runId": "open_neteasy_cloud_20260307-144238",
+    "generatedAt": "2026-03-07T06:44:13.396Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 8,
+      "edges": 6,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "IndexPage",
+      "entry": {
+        "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+        "structName": "IndexPage",
+        "line": 10,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_IndexPage_ed91591ee0",
+      "kind": "ui",
+      "title": "功能入口"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 16,
+          "code": "aboutToAppear() {",
+          "description": "定义 aboutToAppear 生命周期函数，作为数据流的起点，在组件即将显示时自动触发。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "  private controller: TabsController = new TabsController()",
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 17,
+          "code": "if (router.getParams()) {",
+          "description": "调用 router.getParams() 检查是否存在从上游页面传递的路由参数，作为条件判断的入口。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  private controller: TabsController = new TabsController()",
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  @Builder TabTextBuilder(text: string,index:number) {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 18,
+          "code": "this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+          "description": "再次调用 router.getParams() 获取具体参数对象，并提取 KEY_PARAM_DATA 对应的值（资源标识），将其赋值给本地状态变量 titleParam。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  @Builder TabTextBuilder(text: string,index:number) {",
+              "    Text(text)"
+            ]
+          }
+        },
+        {
+          "id": "p6:n4",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 11,
+          "code": "private titleParam: Resource = $r('app.string.detail_default_title');",
+          "description": "定义私有成员变量 titleParam 并初始化为默认资源，此处被第 18 行更新为动态传入的资源标识，用于后续 UI 渲染。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              " * Detail page to display more information.",
+              " */",
+              "@Entry",
+              "@Component",
+              "struct IndexPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "  private controller: TabsController = new TabsController()",
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        },
+        {
+          "from": "p6:n3",
+          "to": "p6:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Page Route Params)",
+          "资源标识符 (Resource Identifier)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地内存使用)"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (未加密，随组件销毁释放)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 16,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，当 IndexPage 组件即将显示时触发，作为数据流的起始点。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "  private controller: TabsController = new TabsController()",
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 17,
+          "code": "if (router.getParams()) {",
+          "description": "调用 router.getParams() 检查是否存在路由跳转携带的参数对象，防止空指针异常。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  private controller: TabsController = new TabsController()",
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  @Builder TabTextBuilder(text: string,index:number) {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 18,
+          "code": "this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+          "description": "从路由参数中提取键为 KEY_PARAM_DATA 的数据项，将其强制转换为 Resource 类型并赋值给成员变量 titleParam，完成数据从路由到组件状态的流转。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  @Builder TabTextBuilder(text: string,index:number) {",
+              "    Text(text)"
+            ]
+          }
+        },
+        {
+          "id": "p7:n4",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 11,
+          "code": "private titleParam: Resource = $r('app.string.detail_default_title');",
+          "description": "成员变量 titleParam 接收数据后的存储位置，初始值为默认字符串资源，此处被路由参数覆盖，用于后续 UI 渲染。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              " * Detail page to display more information.",
+              " */",
+              "@Entry",
+              "@Component",
+              "struct IndexPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "  private controller: TabsController = new TabsController()",
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        },
+        {
+          "from": "p7:n3",
+          "to": "p7:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Route Params)",
+          "资源标识符 (Resource Identifier)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地内存赋值)"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (未加密，随组件销毁释放)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}
