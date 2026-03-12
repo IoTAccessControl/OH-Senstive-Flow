@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260312-230216",
+    "generatedAt": "2026-03-12T15:49:50.401Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_14_891864d5",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p150",
+      "pathId": "p150",
+      "nodes": [
+        {
+          "id": "p150:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 14,
+          "code": "onDestroy() {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时由系统自动触发。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)"
+            ]
+          }
+        },
+        {
+          "id": "p150:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 15,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口，构建包含'Ability onDestroy'文本的日志消息，指定域值 0x0000 和标签'testTag'，并将敏感度标记为 public。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p150:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 15,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "系统将构造好的日志信息写入设备日志缓冲区，此操作不涉及网络发送或持久化文件存储，仅供调试或系统监控使用。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p150:n1",
+          "to": "p150:n2"
+        },
+        {
+          "from": "p150:n2",
+          "to": "p150:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "日志标签 (testTag)",
+          "格式化日志字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "存储方式：系统日志缓冲区 (hilog)",
+          "加密状态：未加密 (明文日志，标记为%{public}s)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

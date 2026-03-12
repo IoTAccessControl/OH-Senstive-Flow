@@ -1,0 +1,3798 @@
+{
+  "meta": {
+    "runId": "Test_user_info_20260312-201247",
+    "generatedAt": "2026-03-12T12:16:09.114Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 12,
+      "nodes": 127,
+      "edges": 115,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "ComprehensiveInfoForm",
+      "entry": {
+        "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+        "structName": "ComprehensiveInfoForm",
+        "line": 5,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_ComprehensiveInfoForm_b4538563a7",
+      "kind": "ui",
+      "title": "个人信息登记表"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build()，负责渲染包含个人信息输入框的界面，是用户输入数据的起点。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm() 私有方法，作为表单提交的逻辑入口，被 UI 事件（如按钮点击）触发。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "读取并校验组件状态变量 this.name (姓名)，判断用户是否已输入姓名数据。",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 407,
+          "code": "prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+          "description": "调用 prompt.showToast 显示错误提示，当姓名数据缺失时阻断提交流程，此处为数据流分析的 Sink 点。",
+          "context": {
+            "startLine": 402,
+            "lines": [
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });"
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "读取并校验组件状态变量 this.familyMembers (家庭成员信息)，判断用户是否已填写该敏感数据。",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "调用 prompt.showToast 显示错误提示，当家庭成员信息缺失时阻断提交流程。",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "家庭成员信息 (familyMembers)",
+          "身高 (height1)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "教育背景 (education)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮时)"
+        ],
+        "cloudUpload": [
+          "未在当前片段中发现网络发送或云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "数据暂存于组件本地状态 (@State)，未观察到持久化存储或加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口 build()，初始化包含个人敏感信息（身高、体重、婚姻、家庭成员等）的界面组件状态。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "@State height1: number = 170; // 身高(cm)",
+          "description": "定义并初始化身高数据状态变量 height1，属于个人生物识别相关数据。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State country: string = '中国'; // 国家",
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "@State weight: number = 60; // 体重(kg)",
+          "description": "定义并初始化体重数据状态变量 weight，属于个人生物识别相关数据。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 20,
+          "code": "@State maritalStatus: string = '未婚'; // 婚姻状况",
+          "description": "定义并初始化婚姻状况状态变量 maritalStatus，属于个人社会关系数据。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 21,
+          "code": "@State familyMembers: string = ''; // 家庭成员",
+          "description": "定义并初始化家庭成员信息状态变量 familyMembers，属于个人社会关系及隐私数据。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 22,
+          "code": "@State education: string = ''; // 教育背景",
+          "description": "定义并初始化教育背景状态变量 education，属于个人隐私数据。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm() 方法，作为用户触发数据提交逻辑的入口点。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n8",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "校验姓名 (name) 字段是否为空，访问个人身份标识数据。",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n9",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "校验家庭成员 (familyMembers) 字段是否为空，访问个人社会关系数据。",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p2:n10",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "调用 prompt.showToast 显示错误提示，告知用户需补充家庭成员信息，此为数据流的中断点（验证失败）。",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        },
+        {
+          "id": "p2:n11",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 417,
+          "code": "console.log('完整个人信息提交：', JSON.stringify({",
+          "description": "将收集到的所有个人敏感信息（姓名、昵称、性别等）序列化为 JSON 字符串。",
+          "context": {
+            "startLine": 412,
+            "lines": [
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({",
+              "      name: this.name,",
+              "      nickname: this.nickname,",
+              "      gender: this.gender,",
+              "      age: this.age,",
+              "      ageGroup: this.ageGroup,"
+            ]
+          }
+        },
+        {
+          "id": "p2:n12",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 418,
+          "code": "name: this.name,",
+          "description": "读取并打包姓名数据到待提交对象中。",
+          "context": {
+            "startLine": 413,
+            "lines": [
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({",
+              "      name: this.name,",
+              "      nickname: this.nickname,",
+              "      gender: this.gender,",
+              "      age: this.age,",
+              "      ageGroup: this.ageGroup,",
+              "      birthday: this.birthday,"
+            ]
+          }
+        },
+        {
+          "id": "p2:n13",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 420,
+          "code": "gender: this.gender,",
+          "description": "读取并打包性别数据到待提交对象中。",
+          "context": {
+            "startLine": 415,
+            "lines": [
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({",
+              "      name: this.name,",
+              "      nickname: this.nickname,",
+              "      gender: this.gender,",
+              "      age: this.age,",
+              "      ageGroup: this.ageGroup,",
+              "      birthday: this.birthday,",
+              "      grade: this.grade,",
+              "      country: this.country,"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        },
+        {
+          "from": "p2:n4",
+          "to": "p2:n5"
+        },
+        {
+          "from": "p2:n5",
+          "to": "p2:n6"
+        },
+        {
+          "from": "p2:n6",
+          "to": "p2:n7"
+        },
+        {
+          "from": "p2:n7",
+          "to": "p2:n8"
+        },
+        {
+          "from": "p2:n8",
+          "to": "p2:n9"
+        },
+        {
+          "from": "p2:n9",
+          "to": "p2:n10"
+        },
+        {
+          "from": "p2:n10",
+          "to": "p2:n11"
+        },
+        {
+          "from": "p2:n11",
+          "to": "p2:n12"
+        },
+        {
+          "from": "p2:n12",
+          "to": "p2:n13"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "昵称 (nickname)",
+          "性别 (gender)",
+          "身高 (height)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员信息 (familyMembers)",
+          "教育背景 (education)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮时)"
+        ],
+        "cloudUpload": [
+          "代码注释表明意图上传至服务器，当前实现仅为本地日志输出 (console.log)"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (@State 装饰的组件状态)",
+          "未观察到本地持久化存储",
+          "未观察到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build()，初始化界面并绑定个人敏感信息（身高、体重、婚姻状况等）的状态变量。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "@State height1: number = 170; // 身高(cm)",
+          "description": "定义并初始化身高数据 (height1)，属于个人生物识别相关数据。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State country: string = '中国'; // 国家",
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "@State weight: number = 60; // 体重(kg)",
+          "description": "定义并初始化体重数据 (weight)，属于个人生物识别相关数据。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 20,
+          "code": "@State maritalStatus: string = '未婚'; // 婚姻状况",
+          "description": "定义并初始化婚姻状况 (maritalStatus)，属于个人隐私信息。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p3:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 21,
+          "code": "@State familyMembers: string = ''; // 家庭成员",
+          "description": "定义并初始化家庭成员信息 (familyMembers)，涉及第三方隐私数据。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 22,
+          "code": "@State education: string = ''; // 教育背景",
+          "description": "定义并初始化教育背景 (education)，属于个人隐私履历信息。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm() 方法，作为数据收集与处理的触发点，响应用户提交操作。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p3:n8",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "校验姓名 (name) 字段是否为空，访问个人身份标识数据。",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n9",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 407,
+          "code": "prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+          "description": "若姓名为空，调用 showToast 显示错误提示，不涉及敏感数据外传。",
+          "context": {
+            "startLine": 402,
+            "lines": [
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });"
+            ]
+          }
+        },
+        {
+          "id": "p3:n10",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "校验家庭成员信息 (familyMembers) 字段是否为空，访问隐私数据。",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p3:n11",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "若家庭成员信息为空，调用 showToast 显示错误提示。",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        },
+        {
+          "id": "p3:n12",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 429,
+          "code": "houseData: this.houseData,",
+          "description": "组装待提交数据包，读取房产数据 (houseData)。",
+          "context": {
+            "startLine": 424,
+            "lines": [
+              "      grade: this.grade,",
+              "      country: this.country,",
+              "      nation: this.nation,",
+              "      job: this.job,",
+              "      income: this.income,",
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education"
+            ]
+          }
+        },
+        {
+          "id": "p3:n13",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 430,
+          "code": "height: this.height,",
+          "description": "读取身高数据 (height) 并入包。",
+          "context": {
+            "startLine": 425,
+            "lines": [
+              "      country: this.country,",
+              "      nation: this.nation,",
+              "      job: this.job,",
+              "      income: this.income,",
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));"
+            ]
+          }
+        },
+        {
+          "id": "p3:n14",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 431,
+          "code": "weight: this.weight,",
+          "description": "读取体重数据 (weight) 并入包。",
+          "context": {
+            "startLine": 426,
+            "lines": [
+              "      nation: this.nation,",
+              "      job: this.job,",
+              "      income: this.income,",
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p3:n15",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 432,
+          "code": "maritalStatus: this.maritalStatus,",
+          "description": "读取婚姻状况 (maritalStatus) 并入包。",
+          "context": {
+            "startLine": 427,
+            "lines": [
+              "      job: this.job,",
+              "      income: this.income,",
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({"
+            ]
+          }
+        },
+        {
+          "id": "p3:n16",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 433,
+          "code": "familyMembers: this.familyMembers,",
+          "description": "读取家庭成员信息 (familyMembers) 并入包。",
+          "context": {
+            "startLine": 428,
+            "lines": [
+              "      income: this.income,",
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({",
+              "      message: `信息提交成功！\\n姓名：${this.name}\\n年龄：${this.age}岁`,"
+            ]
+          }
+        },
+        {
+          "id": "p3:n17",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 434,
+          "code": "education: this.education",
+          "description": "读取教育背景 (education) 并入包。",
+          "context": {
+            "startLine": 429,
+            "lines": [
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({",
+              "      message: `信息提交成功！\\n姓名：${this.name}\\n年龄：${this.age}岁`,",
+              "      duration: 3000"
+            ]
+          }
+        },
+        {
+          "id": "p3:n18",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 437,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 显示提交成功提示，并在消息中明文拼接展示了姓名和年龄，存在隐私泄露风险。",
+          "context": {
+            "startLine": 432,
+            "lines": [
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({",
+              "      message: `信息提交成功！\\n姓名：${this.name}\\n年龄：${this.age}岁`,",
+              "      duration: 3000",
+              "    });",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n4",
+          "to": "p3:n5"
+        },
+        {
+          "from": "p3:n5",
+          "to": "p3:n6"
+        },
+        {
+          "from": "p3:n6",
+          "to": "p3:n7"
+        },
+        {
+          "from": "p3:n7",
+          "to": "p3:n8"
+        },
+        {
+          "from": "p3:n8",
+          "to": "p3:n9"
+        },
+        {
+          "from": "p3:n9",
+          "to": "p3:n10"
+        },
+        {
+          "from": "p3:n10",
+          "to": "p3:n11"
+        },
+        {
+          "from": "p3:n11",
+          "to": "p3:n12"
+        },
+        {
+          "from": "p3:n12",
+          "to": "p3:n13"
+        },
+        {
+          "from": "p3:n13",
+          "to": "p3:n14"
+        },
+        {
+          "from": "p3:n14",
+          "to": "p3:n15"
+        },
+        {
+          "from": "p3:n15",
+          "to": "p3:n16"
+        },
+        {
+          "from": "p3:n16",
+          "to": "p3:n17"
+        },
+        {
+          "from": "p3:n17",
+          "to": "p3:n18"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "年龄 (age)",
+          "身高 (height)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员信息 (familyMembers)",
+          "教育背景 (education)",
+          "房产数据 (houseData)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮)"
+        ],
+        "cloudUpload": [
+          "未检测到明确的网络上传行为 (代码片段中仅包含本地校验与提示)"
+        ],
+        "storageAndEncryption": [
+          "内存存储 (@State 装饰的组件状态变量)",
+          "未检测到本地持久化存储",
+          "未检测到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "@State height1: number = 170; // 身高(cm)",
+          "description": "定义身高数据状态变量 height1，初始值 170，用于存储用户身高隐私数据",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State country: string = '中国'; // 国家",
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "@State weight: number = 60; // 体重(kg)",
+          "description": "定义体重数据状态变量 weight，初始值 60，用于存储用户体重隐私数据",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 20,
+          "code": "@State maritalStatus: string = '未婚'; // 婚姻状况",
+          "description": "定义婚姻状况状态变量 maritalStatus，用于存储用户婚姻隐私数据",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p4:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 21,
+          "code": "@State familyMembers: string = ''; // 家庭成员",
+          "description": "定义家庭成员状态变量 familyMembers，用于存储用户家庭关系隐私数据",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 22,
+          "code": "@State education: string = ''; // 教育背景",
+          "description": "定义教育背景状态变量 education，用于存储用户学历隐私数据",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口 build() 函数开始，初始化界面渲染流程",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p4:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 27,
+          "code": "Scroll() {",
+          "description": "创建 Scroll 滚动容器，作为个人信息表单的主布局容器",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)"
+            ]
+          }
+        },
+        {
+          "id": "p4:n8",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm 私有方法，作为表单数据提交与校验的逻辑入口",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p4:n9",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "校验姓名数据 (this.name) 是否为空，判断用户是否已输入敏感个人信息",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n10",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 407,
+          "code": "prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+          "description": "调用 prompt.showToast 显示错误提示，反馈姓名缺失情况，属于数据校验后的用户交互环节",
+          "context": {
+            "startLine": 402,
+            "lines": [
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });"
+            ]
+          }
+        },
+        {
+          "id": "p4:n11",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "校验家庭成员数据 (this.familyMembers) 是否为空，判断用户是否已输入敏感个人关系信息",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p4:n12",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "调用 prompt.showToast 显示错误提示，反馈家庭成员信息缺失情况",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        },
+        {
+          "from": "p4:n3",
+          "to": "p4:n4"
+        },
+        {
+          "from": "p4:n4",
+          "to": "p4:n5"
+        },
+        {
+          "from": "p4:n5",
+          "to": "p4:n6"
+        },
+        {
+          "from": "p4:n6",
+          "to": "p4:n7"
+        },
+        {
+          "from": "p4:n7",
+          "to": "p4:n8"
+        },
+        {
+          "from": "p4:n8",
+          "to": "p4:n9"
+        },
+        {
+          "from": "p4:n9",
+          "to": "p4:n10"
+        },
+        {
+          "from": "p4:n10",
+          "to": "p4:n11"
+        },
+        {
+          "from": "p4:n11",
+          "to": "p4:n12"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "身高 (height1)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员 (familyMembers)",
+          "教育背景 (education)"
+        ],
+        "collectionFrequency": [
+          "用户手动输入触发",
+          "表单提交时一次性收集"
+        ],
+        "cloudUpload": [
+          "当前片段未检测到网络上传行为 (无 http/request 调用)"
+        ],
+        "storageAndEncryption": [
+          "数据暂存于内存 (@State 装饰的组件状态)",
+          "当前片段未检测到本地持久化存储 (无 preferences/database 调用)",
+          "当前片段未检测到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "@State height1: number = 170; // 身高(cm)",
+          "description": "定义身高数据状态变量，初始化默认值 170cm，作为隐私数据项存储",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State country: string = '中国'; // 国家",
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "@State weight: number = 60; // 体重(kg)",
+          "description": "定义体重数据状态变量，初始化默认值 60kg，作为隐私数据项存储",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p5:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 20,
+          "code": "@State maritalStatus: string = '未婚'; // 婚姻状况",
+          "description": "定义婚姻状况状态变量，初始化默认值，作为个人敏感信息存储",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p5:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 21,
+          "code": "@State familyMembers: string = ''; // 家庭成员",
+          "description": "定义家庭成员信息状态变量，用于收集家庭关系隐私数据",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 22,
+          "code": "@State education: string = ''; // 教育背景",
+          "description": "定义教育背景状态变量，用于收集个人履历隐私数据",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口函数 build()，开始渲染包含隐私输入框的界面",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p5:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 27,
+          "code": "Scroll() {",
+          "description": "创建可滚动容器 Scroll()，包裹所有隐私数据输入表单元素",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)"
+            ]
+          }
+        },
+        {
+          "id": "p5:n8",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义私有方法 submitForm()，作为隐私数据提交逻辑的触发点",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p5:n9",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "校验家庭成员信息是否为空，执行隐私数据完整性检查",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p5:n10",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "调用系统提示 API showToast 警告用户补充家庭成员隐私信息",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        },
+        {
+          "id": "p5:n11",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 417,
+          "code": "console.log('完整个人信息提交：', JSON.stringify({",
+          "description": "将所有收集的隐私数据 (姓名、性别、身高、体重等) 序列化为 JSON 字符串",
+          "context": {
+            "startLine": 412,
+            "lines": [
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({",
+              "      name: this.name,",
+              "      nickname: this.nickname,",
+              "      gender: this.gender,",
+              "      age: this.age,",
+              "      ageGroup: this.ageGroup,"
+            ]
+          }
+        },
+        {
+          "id": "p5:n12",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 418,
+          "code": "name: this.name,",
+          "description": "通过 console.log 在本地控制台输出完整隐私数据包，模拟提交前的数据处理",
+          "context": {
+            "startLine": 413,
+            "lines": [
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({",
+              "      name: this.name,",
+              "      nickname: this.nickname,",
+              "      gender: this.gender,",
+              "      age: this.age,",
+              "      ageGroup: this.ageGroup,",
+              "      birthday: this.birthday,"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        },
+        {
+          "from": "p5:n2",
+          "to": "p5:n3"
+        },
+        {
+          "from": "p5:n3",
+          "to": "p5:n4"
+        },
+        {
+          "from": "p5:n4",
+          "to": "p5:n5"
+        },
+        {
+          "from": "p5:n5",
+          "to": "p5:n6"
+        },
+        {
+          "from": "p5:n6",
+          "to": "p5:n7"
+        },
+        {
+          "from": "p5:n7",
+          "to": "p5:n8"
+        },
+        {
+          "from": "p5:n8",
+          "to": "p5:n9"
+        },
+        {
+          "from": "p5:n9",
+          "to": "p5:n10"
+        },
+        {
+          "from": "p5:n10",
+          "to": "p5:n11"
+        },
+        {
+          "from": "p5:n11",
+          "to": "p5:n12"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "昵称 (nickname)",
+          "性别 (gender)",
+          "身高 (height1/heightInput)",
+          "体重 (weight/weightInput)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员信息 (familyMembers)",
+          "教育背景 (education)"
+        ],
+        "collectionFrequency": [
+          "用户手动输入触发",
+          "表单提交时一次性收集"
+        ],
+        "cloudUpload": [
+          "代码注释表明意图上传至服务器 (line 416)",
+          "当前实现仅为本地日志输出 (console.log)，未实际执行网络请求"
+        ],
+        "storageAndEncryption": [
+          "数据存储在组件本地状态 (@State) 中",
+          "未观察到显式加密操作",
+          "未观察到持久化存储 (如 Preferences 或 Database) 调用"
+        ],
+        "permissions": [
+          "无显式敏感权限调用 (如 ohos.permission.READ_CONTACTS 等)",
+          "仅使用基础 UI 提示能力 (ohos.prompt.showToast)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化页面渲染上下文。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 27,
+          "code": "Scroll() {",
+          "description": "创建 Scroll 滚动容器，作为个人信息表单的主布局容器。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm() 私有方法，响应用户提交操作，开始收集表单数据。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p6:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 430,
+          "code": "height: this.height,",
+          "description": "从组件状态中读取身高 (height) 和体重 (weight) 等敏感个人生理数据。",
+          "context": {
+            "startLine": 425,
+            "lines": [
+              "      country: this.country,",
+              "      nation: this.nation,",
+              "      job: this.job,",
+              "      income: this.income,",
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));"
+            ]
+          }
+        },
+        {
+          "id": "p6:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 432,
+          "code": "maritalStatus: this.maritalStatus,",
+          "description": "从组件状态中读取婚姻状况、家庭成员及教育背景等个人社会属性数据。",
+          "context": {
+            "startLine": 427,
+            "lines": [
+              "      job: this.job,",
+              "      income: this.income,",
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({"
+            ]
+          }
+        },
+        {
+          "id": "p6:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 437,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast API，将收集的姓名和年龄拼接成字符串并在界面展示，构成数据流出点 (Sink)。",
+          "context": {
+            "startLine": 432,
+            "lines": [
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({",
+              "      message: `信息提交成功！\\n姓名：${this.name}\\n年龄：${this.age}岁`,",
+              "      duration: 3000",
+              "    });",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        },
+        {
+          "from": "p6:n3",
+          "to": "p6:n4"
+        },
+        {
+          "from": "p6:n4",
+          "to": "p6:n5"
+        },
+        {
+          "from": "p6:n5",
+          "to": "p6:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "年龄 (age)",
+          "身高 (height)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员 (familyMembers)",
+          "教育背景 (education)",
+          "房产数据 (houseData)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮)"
+        ],
+        "cloudUpload": [
+          "当前代码片段未显示网络发送行为，仅在本地构建提示消息"
+        ],
+        "storageAndEncryption": [
+          "数据存储在组件 @State 状态变量中 (易失性内存)",
+          "未观察到本地持久化存储 (如 Preferences/Database)",
+          "未观察到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "@State height1: number = 170; // 身高(cm)",
+          "description": "定义身高数据状态变量 height1，初始化默认值 170，作为隐私数据项之一",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State country: string = '中国'; // 国家",
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "@State weight: number = 60; // 体重(kg)",
+          "description": "定义体重数据状态变量 weight，初始化默认值 60，作为隐私数据项之一",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 20,
+          "code": "@State maritalStatus: string = '未婚'; // 婚姻状况",
+          "description": "定义婚姻状况状态变量 maritalStatus，用于存储用户敏感个人信息",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p7:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 21,
+          "code": "@State familyMembers: string = ''; // 家庭成员",
+          "description": "定义家庭成员状态变量 familyMembers，用于存储用户敏感社会关系信息",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 22,
+          "code": "@State education: string = ''; // 教育背景",
+          "description": "定义教育背景状态变量 education，用于存储用户敏感个人履历信息",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，渲染包含隐私收集表单的页面结构",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p7:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 27,
+          "code": "Scroll() {",
+          "description": "创建 Scroll 滚动容器，包裹表单内容以适配不同屏幕高度",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)"
+            ]
+          }
+        },
+        {
+          "id": "p7:n8",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 28,
+          "code": "Column() {",
+          "description": "创建 Column 垂直布局容器，排列标题及各个隐私数据输入控件",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .margin({ bottom: 20 })"
+            ]
+          }
+        },
+        {
+          "id": "p7:n9",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm 私有方法，作为表单提交和数据校验的逻辑入口",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p7:n10",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "校验姓名 (name) 数据项是否为空，判断用户是否已输入必要隐私信息",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n11",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 407,
+          "code": "prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+          "description": "调用 prompt.showToast 显示错误提示，反馈姓名缺失情况，未进行数据外传",
+          "context": {
+            "startLine": 402,
+            "lines": [
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });"
+            ]
+          }
+        },
+        {
+          "id": "p7:n12",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "校验家庭成员 (familyMembers) 数据项是否为空，继续检查其他敏感字段完整性",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p7:n13",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "调用 prompt.showToast 显示错误提示，反馈家庭成员信息缺失情况",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        },
+        {
+          "from": "p7:n3",
+          "to": "p7:n4"
+        },
+        {
+          "from": "p7:n4",
+          "to": "p7:n5"
+        },
+        {
+          "from": "p7:n5",
+          "to": "p7:n6"
+        },
+        {
+          "from": "p7:n6",
+          "to": "p7:n7"
+        },
+        {
+          "from": "p7:n7",
+          "to": "p7:n8"
+        },
+        {
+          "from": "p7:n8",
+          "to": "p7:n9"
+        },
+        {
+          "from": "p7:n9",
+          "to": "p7:n10"
+        },
+        {
+          "from": "p7:n10",
+          "to": "p7:n11"
+        },
+        {
+          "from": "p7:n11",
+          "to": "p7:n12"
+        },
+        {
+          "from": "p7:n12",
+          "to": "p7:n13"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "身高 (height1)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员 (familyMembers)",
+          "教育背景 (education)"
+        ],
+        "collectionFrequency": [
+          "用户手动输入触发",
+          "表单提交时一次性收集"
+        ],
+        "cloudUpload": [
+          "当前片段未检测到网络发送行为 (无 http/httpRequest 调用)",
+          "数据仅在本地校验和展示提示"
+        ],
+        "storageAndEncryption": [
+          "数据存储在组件 @State 状态变量中 (易失性内存)",
+          "未检测到本地持久化存储 (如 Preferences/Database)",
+          "未检测到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p8",
+      "pathId": "p8",
+      "nodes": [
+        {
+          "id": "p8:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "@State height1: number = 170; // 身高(cm)",
+          "description": "定义身高数据状态变量 (height1)，初始化默认值 170cm，作为隐私数据源之一",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State country: string = '中国'; // 国家",
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p8:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "@State weight: number = 60; // 体重(kg)",
+          "description": "定义体重数据状态变量 (weight)，初始化默认值 60kg，作为隐私数据源之一",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p8:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 20,
+          "code": "@State maritalStatus: string = '未婚'; // 婚姻状况",
+          "description": "定义婚姻状况状态变量 (maritalStatus)，初始化默认值，作为隐私数据源之一",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p8:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 21,
+          "code": "@State familyMembers: string = ''; // 家庭成员",
+          "description": "定义家庭成员信息状态变量 (familyMembers)，用于存储用户输入的敏感家庭关系数据",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 22,
+          "code": "@State education: string = ''; // 教育背景",
+          "description": "定义教育背景状态变量 (education)，用于存储用户学历信息",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始，初始化页面渲染流程",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p8:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 27,
+          "code": "Scroll() {",
+          "description": "创建 Scroll 滚动容器，包裹表单内容以支持长页面展示",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)"
+            ]
+          }
+        },
+        {
+          "id": "p8:n8",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 28,
+          "code": "Column() {",
+          "description": "创建 Column 垂直布局容器，排列表单标题及各个输入项组件",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .margin({ bottom: 20 })"
+            ]
+          }
+        },
+        {
+          "id": "p8:n9",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm 私有方法，作为表单数据提交的业务逻辑入口",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p8:n10",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "校验家庭成员信息 (familyMembers) 是否为空，判断是否已收集该隐私数据",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p8:n11",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "调用 prompt.showToast 显示提示信息，告知用户需填写家庭成员信息，此为数据收集失败时的反馈节点",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        },
+        {
+          "id": "p8:n12",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 417,
+          "code": "console.log('完整个人信息提交：', JSON.stringify({",
+          "description": "将姓名、昵称、性别等所有收集的隐私数据序列化为 JSON 字符串并打印到控制台日志，模拟数据汇聚点",
+          "context": {
+            "startLine": 412,
+            "lines": [
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({",
+              "      name: this.name,",
+              "      nickname: this.nickname,",
+              "      gender: this.gender,",
+              "      age: this.age,",
+              "      ageGroup: this.ageGroup,"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p8:n1",
+          "to": "p8:n2"
+        },
+        {
+          "from": "p8:n2",
+          "to": "p8:n3"
+        },
+        {
+          "from": "p8:n3",
+          "to": "p8:n4"
+        },
+        {
+          "from": "p8:n4",
+          "to": "p8:n5"
+        },
+        {
+          "from": "p8:n5",
+          "to": "p8:n6"
+        },
+        {
+          "from": "p8:n6",
+          "to": "p8:n7"
+        },
+        {
+          "from": "p8:n7",
+          "to": "p8:n8"
+        },
+        {
+          "from": "p8:n8",
+          "to": "p8:n9"
+        },
+        {
+          "from": "p8:n9",
+          "to": "p8:n10"
+        },
+        {
+          "from": "p8:n10",
+          "to": "p8:n11"
+        },
+        {
+          "from": "p8:n11",
+          "to": "p8:n12"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "昵称 (nickname)",
+          "性别 (gender)",
+          "身高 (height)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员信息 (familyMembers)",
+          "教育背景 (education)"
+        ],
+        "collectionFrequency": [
+          "用户手动输入触发",
+          "表单提交时一次性收集"
+        ],
+        "cloudUpload": [
+          "当前代码仅打印日志 (console.log)，注释表明意图是上传至服务器，但实际网络发送逻辑未实现"
+        ],
+        "storageAndEncryption": [
+          "数据存储在组件 @State 状态变量中（内存）",
+          "未观察到本地持久化存储 (如 Preferences/Database)",
+          "未观察到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化页面渲染上下文",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 27,
+          "code": "Scroll() {",
+          "description": "创建 Scroll 滚动容器，作为个人信息表单的最外层布局",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)"
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 28,
+          "code": "Column() {",
+          "description": "在滚动容器内创建 Column 垂直布局，用于排列表单项",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .margin({ bottom: 20 })"
+            ]
+          }
+        },
+        {
+          "id": "p9:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm 私有方法，响应用户提交操作，开始校验和收集隐私数据",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p9:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 430,
+          "code": "height: this.height,",
+          "description": "从组件状态中读取身高 (height) 和体重 (weight) 等敏感生理数据",
+          "context": {
+            "startLine": 425,
+            "lines": [
+              "      country: this.country,",
+              "      nation: this.nation,",
+              "      job: this.job,",
+              "      income: this.income,",
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));"
+            ]
+          }
+        },
+        {
+          "id": "p9:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 432,
+          "code": "maritalStatus: this.maritalStatus,",
+          "description": "从组件状态中读取婚姻状况、家庭成员及教育背景等个人社会属性数据",
+          "context": {
+            "startLine": 427,
+            "lines": [
+              "      job: this.job,",
+              "      income: this.income,",
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({"
+            ]
+          }
+        },
+        {
+          "id": "p9:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 437,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 接口，将收集到的姓名和年龄等隐私数据拼接成字符串并显示在 UI 界面上",
+          "context": {
+            "startLine": 432,
+            "lines": [
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({",
+              "      message: `信息提交成功！\\n姓名：${this.name}\\n年龄：${this.age}岁`,",
+              "      duration: 3000",
+              "    });",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        },
+        {
+          "from": "p9:n3",
+          "to": "p9:n4"
+        },
+        {
+          "from": "p9:n4",
+          "to": "p9:n5"
+        },
+        {
+          "from": "p9:n5",
+          "to": "p9:n6"
+        },
+        {
+          "from": "p9:n6",
+          "to": "p9:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "年龄 (age)",
+          "身高 (height)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员信息 (familyMembers)",
+          "教育背景 (education)",
+          "房产数据 (houseData)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮)"
+        ],
+        "cloudUpload": [
+          "代码片段中未直接发现网络发送行为 (如 http 请求)，数据目前仅在本地内存中组装并用于 UI 提示"
+        ],
+        "storageAndEncryption": [
+          "数据存储在组件状态 (@State) 中，属于易失性内存存储",
+          "未发现本地持久化存储 (如 Preferences/Database)",
+          "未发现加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "@State height1: number = 170; // 身高(cm)",
+          "description": "定义身高数据状态变量，初始化默认值为 170cm，属于个人敏感健康数据",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State country: string = '中国'; // 国家",
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "@State weight: number = 60; // 体重(kg)",
+          "description": "定义体重数据状态变量，初始化默认值为 60kg，属于个人敏感健康数据",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  @State nation: string = '汉族'; // 民族",
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 20,
+          "code": "@State maritalStatus: string = '未婚'; // 婚姻状况",
+          "description": "定义婚姻状况状态变量，属于个人隐私社会关系数据",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "  @State job: string = ''; // 工作",
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p10:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 21,
+          "code": "@State familyMembers: string = ''; // 家庭成员",
+          "description": "定义家庭成员信息状态变量，用于存储用户填写的家庭成员详情，属于高敏感隐私数据",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  @State income: string = '5000-10000元'; // 收入状况",
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 22,
+          "code": "@State education: string = ''; // 教育背景",
+          "description": "定义教育背景状态变量，属于个人隐私履历数据",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  @State houseData: string = '自有住房无贷款'; // 房屋数据",
+              "  @State height1: number = 170; // 身高(cm)",
+              "  @State weight: number = 60; // 体重(kg)",
+              "  @State maritalStatus: string = '未婚'; // 婚姻状况",
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口函数 build()，开始渲染包含隐私输入框的界面",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p10:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 28,
+          "code": "Column() {",
+          "description": "创建 Column 布局容器，作为个人信息登记表单的主容器，承载所有隐私数据输入控件",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .margin({ bottom: 20 })"
+            ]
+          }
+        },
+        {
+          "id": "p10:n8",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm 私有方法，作为表单数据提交的逻辑入口，在此处汇聚所有待提交的隐私数据项",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p10:n9",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "校验姓名 (name) 字段是否为空，访问隐私数据项进行逻辑判断",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n10",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 407,
+          "code": "prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+          "description": "调用系统提示接口 showToast 显示错误信息，当姓名缺失时阻断提交流程，此处为数据流的一个终止点（Sink）",
+          "context": {
+            "startLine": 402,
+            "lines": [
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });"
+            ]
+          }
+        },
+        {
+          "id": "p10:n11",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "校验家庭成员 (familyMembers) 字段是否为空，访问高敏感隐私数据项进行逻辑判断",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p10:n12",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "调用系统提示接口 showToast 显示错误信息，当家庭成员信息缺失时阻断提交流程",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n6"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n6"
+        },
+        {
+          "from": "p10:n3",
+          "to": "p10:n6"
+        },
+        {
+          "from": "p10:n4",
+          "to": "p10:n6"
+        },
+        {
+          "from": "p10:n5",
+          "to": "p10:n6"
+        },
+        {
+          "from": "p10:n6",
+          "to": "p10:n7"
+        },
+        {
+          "from": "p10:n7",
+          "to": "p10:n8"
+        },
+        {
+          "from": "p10:n8",
+          "to": "p10:n9"
+        },
+        {
+          "from": "p10:n9",
+          "to": "p10:n10"
+        },
+        {
+          "from": "p10:n10",
+          "to": "p10:n11"
+        },
+        {
+          "from": "p10:n9",
+          "to": "p10:n12"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "身高 (height1)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员信息 (familyMembers)",
+          "教育背景 (education)"
+        ],
+        "collectionFrequency": [
+          "用户手动输入触发",
+          "表单提交时一次性收集"
+        ],
+        "cloudUpload": [
+          "当前片段未包含网络发送或云端上传逻辑"
+        ],
+        "storageAndEncryption": [
+          "数据暂存于组件内存 (@State 装饰器)",
+          "未观察到本地持久化存储 (如 Preferences/Database)",
+          "未观察到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化页面渲染流程",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 28,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为个人信息表单的主要布局结构",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .margin({ bottom: 20 })"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm() 私有方法，响应用户提交操作，开始校验收集到的个人敏感数据",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p11:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "校验家庭成员信息 (familyMembers) 是否为空，该字段属于个人隐私数据",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p11:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "调用 prompt.showToast 显示提示信息，告知用户需填写家庭成员信息，此为数据流的中断点（因校验失败）",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        },
+        {
+          "id": "p11:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 417,
+          "code": "console.log('完整个人信息提交：', JSON.stringify({",
+          "description": "若校验通过，将姓名、昵称、性别等完整个人信息对象序列化为 JSON 字符串并准备输出",
+          "context": {
+            "startLine": 412,
+            "lines": [
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({",
+              "      name: this.name,",
+              "      nickname: this.nickname,",
+              "      gender: this.gender,",
+              "      age: this.age,",
+              "      ageGroup: this.ageGroup,"
+            ]
+          }
+        },
+        {
+          "id": "p11:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 418,
+          "code": "name: this.name,",
+          "description": "读取 this.name (姓名) 状态变量值，汇入待处理数据流",
+          "context": {
+            "startLine": 413,
+            "lines": [
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({",
+              "      name: this.name,",
+              "      nickname: this.nickname,",
+              "      gender: this.gender,",
+              "      age: this.age,",
+              "      ageGroup: this.ageGroup,",
+              "      birthday: this.birthday,"
+            ]
+          }
+        },
+        {
+          "id": "p11:n8",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 419,
+          "code": "nickname: this.nickname,",
+          "description": "读取 this.nickname (昵称) 状态变量值，汇入待处理数据流",
+          "context": {
+            "startLine": 414,
+            "lines": [
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({",
+              "      name: this.name,",
+              "      nickname: this.nickname,",
+              "      gender: this.gender,",
+              "      age: this.age,",
+              "      ageGroup: this.ageGroup,",
+              "      birthday: this.birthday,",
+              "      grade: this.grade,"
+            ]
+          }
+        },
+        {
+          "id": "p11:n9",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 420,
+          "code": "gender: this.gender,",
+          "description": "读取 this.gender (性别) 状态变量值，汇入待处理数据流",
+          "context": {
+            "startLine": 415,
+            "lines": [
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({",
+              "      name: this.name,",
+              "      nickname: this.nickname,",
+              "      gender: this.gender,",
+              "      age: this.age,",
+              "      ageGroup: this.ageGroup,",
+              "      birthday: this.birthday,",
+              "      grade: this.grade,",
+              "      country: this.country,"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        },
+        {
+          "from": "p11:n3",
+          "to": "p11:n4"
+        },
+        {
+          "from": "p11:n4",
+          "to": "p11:n5"
+        },
+        {
+          "from": "p11:n3",
+          "to": "p11:n6"
+        },
+        {
+          "from": "p11:n6",
+          "to": "p11:n7"
+        },
+        {
+          "from": "p11:n6",
+          "to": "p11:n8"
+        },
+        {
+          "from": "p11:n6",
+          "to": "p11:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "昵称 (nickname)",
+          "性别 (gender)",
+          "身高 (height)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员信息 (familyMembers)",
+          "教育背景 (education)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮时)"
+        ],
+        "cloudUpload": [
+          "当前代码仅通过 console.log 在本地日志输出，注释表明实际应用中会提交至服务器，但当前片段未实现网络发送逻辑"
+        ],
+        "storageAndEncryption": [
+          "数据存储在组件 @State 状态变量中 (易失性内存)",
+          "未观察到本地持久化存储 (如 Preferences 或 Database)",
+          "未观察到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化页面渲染上下文。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 28,
+          "code": "Column() {",
+          "description": "构建 Column 布局容器，作为个人信息表单的主要载体，准备渲染输入框与文本展示。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .margin({ bottom: 20 })"
+            ]
+          }
+        },
+        {
+          "id": "p12:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm() 私有方法，响应用户提交操作，开始执行数据收集与校验逻辑。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p12:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "读取并校验 'name' (姓名) 数据项，若为空则中断流程并提示用户。",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p12:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "读取并校验 'familyMembers' (家庭成员) 数据项，若为空则中断流程并提示用户。",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p12:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 429,
+          "code": "houseData: this.houseData,",
+          "description": "聚合所有隐私数据项 (包括 houseData, height, weight, maritalStatus, familyMembers, education) 构建待提交的数据对象。",
+          "context": {
+            "startLine": 424,
+            "lines": [
+              "      grade: this.grade,",
+              "      country: this.country,",
+              "      nation: this.nation,",
+              "      job: this.job,",
+              "      income: this.income,",
+              "      houseData: this.houseData,",
+              "      height: this.height,",
+              "      weight: this.weight,",
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education"
+            ]
+          }
+        },
+        {
+          "id": "p12:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 437,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast API 作为 Sink 点，将收集到的 'name' 和 'age' 拼接成字符串并在界面显示，完成本次数据流的终端展示。",
+          "context": {
+            "startLine": 432,
+            "lines": [
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({",
+              "      message: `信息提交成功！\\n姓名：${this.name}\\n年龄：${this.age}岁`,",
+              "      duration: 3000",
+              "    });",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        },
+        {
+          "from": "p12:n2",
+          "to": "p12:n3"
+        },
+        {
+          "from": "p12:n3",
+          "to": "p12:n4"
+        },
+        {
+          "from": "p12:n4",
+          "to": "p12:n5"
+        },
+        {
+          "from": "p12:n5",
+          "to": "p12:n6"
+        },
+        {
+          "from": "p12:n6",
+          "to": "p12:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "年龄 (age)",
+          "身高 (height)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员 (familyMembers)",
+          "教育背景 (education)",
+          "房产数据 (houseData)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮)"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为 (代码中仅包含本地校验与 Toast 提示，无 http 请求或数据上传逻辑)"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (@State 装饰的组件状态变量)",
+          "未检测到持久化存储 (无文件写入或数据库操作)",
+          "未检测到加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

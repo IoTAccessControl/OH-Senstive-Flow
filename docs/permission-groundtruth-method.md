@@ -68,11 +68,7 @@ python3 scripts/gen_permission_groundtruth.py
   - `--mode inferred`：仅 SDK API 推断
   - `--mode intersection`：两者交集（更保守）
 
-对应的 Node/TS CLI 为：
-
-```bash
-node --import tsx server/src/cli/inferAppPermissions.ts --app Wechat_HarmonyOS --mode union --format text --details
-```
+如需在 Node/TS 侧复用 run 产物的权限评估逻辑，可直接从 `server/src/app/run.ts` 导入 `collectPredictedPermissionsFromRun` 和 `evaluatePermissionSets`。groundtruth 生成命令行当前建议使用上面的 Python 脚本。
 
 ## 3.项目逻辑更新：确保评估覆盖率 100%，误报率 < 5%
 
@@ -80,7 +76,7 @@ node --import tsx server/src/cli/inferAppPermissions.ts --app Wechat_HarmonyOS -
 
 为了让 Pred 覆盖 “Declared ∪ Inferred” 的完整 groundtruth：
 
-- `server/src/analyzer/privacyReport/generatePrivacyReportArtifacts.ts` 会将：
+- `server/src/analyzer/privacy/report.ts` 中的 `generatePrivacyReportArtifacts(...)` 会将：
   - App 源码/配置扫描出的权限
   - sinks 推断出的权限（`sinks.json` 中的 `__permissions` + CSV fallback）
   合并为 “knownAppPermissions”
@@ -99,4 +95,3 @@ python3 scripts/eval_permissions.py --app Wechat_HarmonyOS --run-id Wechat_Harmo
 
 - 覆盖率（Recall）= TP / |GT|
 - 误报率（False Positive Rate）= FP / |Pred|
-

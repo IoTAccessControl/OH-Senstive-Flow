@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260312-230216",
+    "featureId": "ui_Mine_a15f7db910",
+    "generatedAt": "2026-03-12T15:52:31.280Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户在“我的”页面点击头像以更换个人头像图片",
+        "dataSources": [
+          "系统相册/媒体库"
+        ],
+        "dataItems": [
+          {
+            "name": "用户头像图片 URI",
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n11"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n5"
+              },
+              {
+                "flowId": "flow:p30",
+                "nodeId": "p30:n8"
+              }
+            ]
+          },
+          {
+            "name": "用户头像图片文件内容",
+            "refs": [
+              {
+                "flowId": "flow:p30",
+                "nodeId": "p30:n13"
+              },
+              {
+                "flowId": "flow:p31",
+                "nodeId": "p31:n11"
+              },
+              {
+                "flowId": "flow:p32",
+                "nodeId": "p32:n10"
+              }
+            ]
+          },
+          {
+            "name": "应用包信息 (BundleInfo)",
+            "refs": [
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n10"
+              },
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n9"
+              },
+              {
+                "flowId": "flow:p29",
+                "nodeId": "p29:n11"
+              }
+            ]
+          },
+          {
+            "name": "访问令牌 ID (AccessTokenId)",
+            "refs": [
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n11"
+              },
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n10"
+              },
+              {
+                "flowId": "flow:p28",
+                "nodeId": "p28:n13"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取系统相册中的图片 URI，将图片文件从系统媒体库复制到应用私有沙箱缓存目录，并更新 UI 状态变量以显示新头像",
+        "storageMethod": "本地存储：应用沙箱缓存目录 (cacheDir/pictures)；内存临时存储 (@State imgPath)",
+        "dataRecipients": [],
+        "processingPurpose": "允许用户自定义和展示个人头像，完善个人资料信息",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "用户在“我的”页面点击头像以选择照片作为新头像时",
+        "permissionPurpose": "读取用户设备上的媒体文件（如照片），以便用户选择并设置为个人头像",
+        "denyImpact": "无法打开系统相册选择图片，导致无法更换头像",
+        "refs": [
+          {
+            "flowId": "flow:p24",
+            "nodeId": "p24:n6"
+          },
+          {
+            "flowId": "flow:p25",
+            "nodeId": "p25:n7"
+          },
+          {
+            "flowId": "flow:p26",
+            "nodeId": "p26:n6"
+          },
+          {
+            "flowId": "flow:p27",
+            "nodeId": "p27:n6"
+          },
+          {
+            "flowId": "flow:p28",
+            "nodeId": "p28:n7"
+          },
+          {
+            "flowId": "flow:p29",
+            "nodeId": "p29:n7"
+          },
+          {
+            "flowId": "flow:p30",
+            "nodeId": "p30:n7"
+          },
+          {
+            "flowId": "flow:p31",
+            "nodeId": "p31:n7"
+          },
+          {
+            "flowId": "flow:p32",
+            "nodeId": "p32:n6"
+          },
+          {
+            "flowId": "flow:p33",
+            "nodeId": "p33:n7"
+          },
+          {
+            "flowId": "flow:p34",
+            "nodeId": "p34:n7"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.WRITE_MEDIA",
+        "businessScenario": "用户在“我的”页面点击头像以选择照片作为新头像时",
+        "permissionPurpose": "写入或修改媒体文件相关数据，配合读取权限完成图片选择及后续可能的缓存操作",
+        "denyImpact": "无法完成图片选择流程，导致无法更换头像",
+        "refs": [
+          {
+            "flowId": "flow:p24",
+            "nodeId": "p24:n6"
+          },
+          {
+            "flowId": "flow:p25",
+            "nodeId": "p25:n7"
+          },
+          {
+            "flowId": "flow:p26",
+            "nodeId": "p26:n6"
+          },
+          {
+            "flowId": "flow:p27",
+            "nodeId": "p27:n6"
+          },
+          {
+            "flowId": "flow:p28",
+            "nodeId": "p28:n7"
+          },
+          {
+            "flowId": "flow:p29",
+            "nodeId": "p29:n7"
+          },
+          {
+            "flowId": "flow:p30",
+            "nodeId": "p30:n7"
+          },
+          {
+            "flowId": "flow:p31",
+            "nodeId": "p31:n7"
+          },
+          {
+            "flowId": "flow:p32",
+            "nodeId": "p32:n6"
+          },
+          {
+            "flowId": "flow:p33",
+            "nodeId": "p33:n7"
+          },
+          {
+            "flowId": "flow:p34",
+            "nodeId": "p34:n7"
+          }
+        ]
+      }
+    ]
+  }
+}

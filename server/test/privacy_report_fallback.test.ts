@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildPrivacyReport } from '../src/analyzer/privacyReport/buildPrivacyReport.js';
+import { buildPrivacyReport } from '../src/analyzer/privacy/report.js';
 
 describe('privacy report evidence rules', () => {
   it('keeps collection text but omits permission text when permission refs are missing', async () => {

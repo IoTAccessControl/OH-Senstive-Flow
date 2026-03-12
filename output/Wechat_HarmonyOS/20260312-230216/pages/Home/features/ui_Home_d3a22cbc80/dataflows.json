@@ -1,0 +1,485 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260312-230216",
+    "generatedAt": "2026-03-12T15:49:50.401Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 15,
+      "edges": 13,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "Home",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+        "structName": "Home",
+        "line": 7,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Home_d3a22cbc80",
+      "kind": "ui",
+      "title": "老弟"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p95",
+      "pathId": "p95",
+      "nodes": [
+        {
+          "id": "p95:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 41,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 函数入口，开始构建首页 UI 结构，准备渲染聊天列表数据。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "      nickname: \"老弟\",",
+              "      content: \"好的，哥\",",
+              "      time: \"周一\" }",
+              "  ]",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      WechatToolbar({ title: \"微信(5)\" })",
+              "",
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {"
+            ]
+          }
+        },
+        {
+          "id": "p95:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 45,
+          "code": "List() {",
+          "description": "创建 List 容器组件，用于展示聊天会话列表，数据源绑定为 this.chatList。",
+          "context": {
+            "startLine": 40,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      WechatToolbar({ title: \"微信(5)\" })",
+              "",
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p95:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 46,
+          "code": "ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+          "description": "使用 ForEach 遍历聊天数据数组，将每个聊天项（包含昵称、头像、最后消息等隐私数据）映射为列表项。",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "  build() {",
+              "    Column() {",
+              "      WechatToolbar({ title: \"微信(5)\" })",
+              "",
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {",
+              "            router.pushUrl({ url: 'pages/chat/ChatPage',"
+            ]
+          }
+        },
+        {
+          "id": "p95:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 48,
+          "code": "ListChatItem({ data: item })",
+          "description": "渲染单个聊天列表项组件 ListChatItem，将当前遍历到的聊天数据对象（含联系人昵称）作为属性传入进行展示。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "      WechatToolbar({ title: \"微信(5)\" })",
+              "",
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {",
+              "            router.pushUrl({ url: 'pages/chat/ChatPage',",
+              "              params: {name:item.nickname}",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p95:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 50,
+          "code": ".onClick(() => {",
+          "description": "为列表项注册 onClick 点击事件监听器，当用户点击特定聊天会话时触发数据流转。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {",
+              "            router.pushUrl({ url: 'pages/chat/ChatPage',",
+              "              params: {name:item.nickname}",
+              "            })",
+              "          })",
+              "        })"
+            ]
+          }
+        },
+        {
+          "id": "p95:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 51,
+          "code": "router.pushUrl({ url: 'pages/chat/ChatPage',",
+          "description": "调用 router.pushUrl 发起页面跳转，目标为聊天详情页，并将当前选中项的联系人昵称作为敏感参数传递。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {",
+              "            router.pushUrl({ url: 'pages/chat/ChatPage',",
+              "              params: {name:item.nickname}",
+              "            })",
+              "          })",
+              "        })",
+              "        ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p95:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 52,
+          "code": "params: {name:item.nickname}",
+          "description": "构造路由跳转参数对象，提取当前聊天项的 nickname 字段（个人身份信息），准备传入下一页面。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {",
+              "            router.pushUrl({ url: 'pages/chat/ChatPage',",
+              "              params: {name:item.nickname}",
+              "            })",
+              "          })",
+              "        })",
+              "        ListItem() {",
+              "          Divider().color('#0000').strokeWidth(0)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p95:n1",
+          "to": "p95:n2"
+        },
+        {
+          "from": "p95:n2",
+          "to": "p95:n3"
+        },
+        {
+          "from": "p95:n3",
+          "to": "p95:n4"
+        },
+        {
+          "from": "p95:n4",
+          "to": "p95:n5"
+        },
+        {
+          "from": "p95:n5",
+          "to": "p95:n6"
+        },
+        {
+          "from": "p95:n6",
+          "to": "p95:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "聊天列表数据 (chatList)",
+          "联系人昵称 (nickname)"
+        ],
+        "collectionFrequency": [
+          "UI 渲染时一次性加载",
+          "用户点击事件触发"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存中临时存储 (this.chatList)",
+          "未检测到加密处理",
+          "通过路由参数在页面间传递"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p96",
+      "pathId": "p96",
+      "nodes": [
+        {
+          "id": "p96:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 41,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化页面组件树。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "      nickname: \"老弟\",",
+              "      content: \"好的，哥\",",
+              "      time: \"周一\" }",
+              "  ]",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      WechatToolbar({ title: \"微信(5)\" })",
+              "",
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {"
+            ]
+          }
+        },
+        {
+          "id": "p96:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 42,
+          "code": "Column() {",
+          "description": "创建 Column 垂直布局容器，作为页面主结构。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "      content: \"好的，哥\",",
+              "      time: \"周一\" }",
+              "  ]",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      WechatToolbar({ title: \"微信(5)\" })",
+              "",
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p96:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 45,
+          "code": "List() {",
+          "description": "创建 List 列表组件，准备渲染聊天会话列表数据。",
+          "context": {
+            "startLine": 40,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      WechatToolbar({ title: \"微信(5)\" })",
+              "",
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p96:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 46,
+          "code": "ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+          "description": "遍历 this.chatList 数据源，提取包含昵称、头像、内容等隐私数据的 ChatItemData 对象。",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "  build() {",
+              "    Column() {",
+              "      WechatToolbar({ title: \"微信(5)\" })",
+              "",
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {",
+              "            router.pushUrl({ url: 'pages/chat/ChatPage',"
+            ]
+          }
+        },
+        {
+          "id": "p96:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 48,
+          "code": "ListChatItem({ data: item })",
+          "description": "将单个聊天项数据 (item) 传递给 ListChatItem 子组件进行渲染展示。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "      WechatToolbar({ title: \"微信(5)\" })",
+              "",
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {",
+              "            router.pushUrl({ url: 'pages/chat/ChatPage',",
+              "              params: {name:item.nickname}",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p96:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 50,
+          "code": ".onClick(() => {",
+          "description": "为列表项绑定 onClick 点击事件监听器，等待用户交互。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "      List() {",
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {",
+              "            router.pushUrl({ url: 'pages/chat/ChatPage',",
+              "              params: {name:item.nickname}",
+              "            })",
+              "          })",
+              "        })"
+            ]
+          }
+        },
+        {
+          "id": "p96:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 51,
+          "code": "router.pushUrl({ url: 'pages/chat/ChatPage',",
+          "description": "用户点击后调用 router.pushUrl 发起页面路由跳转，目标为聊天详情页。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "        ForEach(this.chatList, (item: ChatItemData, index: number) => {",
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {",
+              "            router.pushUrl({ url: 'pages/chat/ChatPage',",
+              "              params: {name:item.nickname}",
+              "            })",
+              "          })",
+              "        })",
+              "        ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p96:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/home/Home.ets",
+          "line": 52,
+          "code": "params: {name:item.nickname}",
+          "description": "将当前选中项的用户昵称 (item.nickname) 作为参数传递至下一页，完成敏感数据在页面间的流转。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "          ListItem() {",
+              "            ListChatItem({ data: item })",
+              "          }",
+              "          .onClick(() => {",
+              "            router.pushUrl({ url: 'pages/chat/ChatPage',",
+              "              params: {name:item.nickname}",
+              "            })",
+              "          })",
+              "        })",
+              "        ListItem() {",
+              "          Divider().color('#0000').strokeWidth(0)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p96:n1",
+          "to": "p96:n2"
+        },
+        {
+          "from": "p96:n2",
+          "to": "p96:n3"
+        },
+        {
+          "from": "p96:n3",
+          "to": "p96:n4"
+        },
+        {
+          "from": "p96:n4",
+          "to": "p96:n5"
+        },
+        {
+          "from": "p96:n5",
+          "to": "p96:n6"
+        },
+        {
+          "from": "p96:n6",
+          "to": "p96:n7"
+        },
+        {
+          "from": "p96:n7",
+          "to": "p96:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "聊天列表数据 (chatList)",
+          "用户昵称 (nickname)",
+          "头像资源标识 (headSrc)",
+          "聊天内容预览 (content)",
+          "时间戳 (time)"
+        ],
+        "collectionFrequency": [
+          "一次性加载 (应用启动/页面渲染时)",
+          "事件触发 (用户点击列表项时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (当前片段仅为本地路由跳转)"
+        ],
+        "storageAndEncryption": [
+          "内存存储 (chatList 数组驻留内存)",
+          "未观察到加密操作",
+          "未观察到持久化存储操作"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

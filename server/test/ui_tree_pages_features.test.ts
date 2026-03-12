@@ -3,8 +3,8 @@ import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { buildUiTree } from '../src/analyzer/uiTree/buildUiTree.js';
-import { groupDataflowsByPageFeature } from '../src/analyzer/pages/buildPageFeatureGroups.js';
+import { buildUiTree } from '../src/analyzer/feature/ui.js';
+import { groupDataflowsByPageFeature } from '../src/analyzer/feature/group.js';
 
 describe('ui tree + page/feature grouping', () => {
   it('extracts UI nodes and router navigation edges', async () => {

@@ -1,0 +1,1418 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260312-230216",
+    "generatedAt": "2026-03-12T15:49:50.401Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 5,
+      "nodes": 47,
+      "edges": 42,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "Contact",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+        "structName": "Contact",
+        "line": 9,
+        "description": "通讯录页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Contact_f0c287e3b4",
+      "kind": "ui",
+      "title": "通讯录"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p97",
+      "pathId": "p97",
+      "nodes": [
+        {
+          "id": "p97:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 84,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建通讯录页面 UI 结构",
+          "context": {
+            "startLine": 79,
+            "lines": [
+              "      .height(36)",
+              "      .width(\"100%\")",
+              "      .padding({ left: 20 })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.End }) {",
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })"
+            ]
+          }
+        },
+        {
+          "id": "p97:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 85,
+          "code": "Stack({ alignContent: Alignment.End }) {",
+          "description": "创建 Stack 容器作为页面根布局，设定内容对齐方式",
+          "context": {
+            "startLine": 80,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .padding({ left: 20 })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.End }) {",
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表"
+            ]
+          }
+        },
+        {
+          "id": "p97:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 91,
+          "code": "List({ scroller: this.scroller }) {",
+          "description": "初始化 List 列表组件并绑定 scroller 控制器，用于展示通讯录数据",
+          "context": {
+            "startLine": 86,
+            "lines": [
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p97:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 93,
+          "code": "ForEach(this.dataList, (item: DataItem) => {",
+          "description": "遍历 dataList 数据源渲染列表项，数据源包含联系人分组信息",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p97:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 139,
+          "code": ".onSelect((index: number) => {",
+          "description": "注册字母索引栏 onSelect 事件回调，响应用户点击字母进行快速跳转",
+          "context": {
+            "startLine": 134,
+            "lines": [
+              "        .popupBackground(\"#57be6a\")",
+              "        .popupFont({ size: 32, weight: FontWeight.Bolder })",
+              "        .itemSize(20)",
+              "        .alignStyle(IndexerAlign.Right)",
+              "        .margin({ top: 80 })",
+              "        .onSelect((index: number) => {",
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)"
+            ]
+          }
+        },
+        {
+          "id": "p97:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 140,
+          "code": "let letter = this.letterList[index]",
+          "description": "获取用户点击的字母标签 (letter)，作为搜索关键字",
+          "context": {
+            "startLine": 135,
+            "lines": [
+              "        .popupFont({ size: 32, weight: FontWeight.Bolder })",
+              "        .itemSize(20)",
+              "        .alignStyle(IndexerAlign.Right)",
+              "        .margin({ top: 80 })",
+              "        .onSelect((index: number) => {",
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)",
+              "              prompt.showToast({ message: \"\" + target })"
+            ]
+          }
+        },
+        {
+          "id": "p97:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 142,
+          "code": "for (const item of this.dataList) {",
+          "description": "遍历本地内存中的通讯录 dataList，查找与点击字母匹配的分组标题",
+          "context": {
+            "startLine": 137,
+            "lines": [
+              "        .alignStyle(IndexerAlign.Right)",
+              "        .margin({ top: 80 })",
+              "        .onSelect((index: number) => {",
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)",
+              "              prompt.showToast({ message: \"\" + target })",
+              "              break",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p97:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 144,
+          "code": "this.scroller.scrollToIndex(target)",
+          "description": "计算匹配项在列表中的目标索引位置 (target)，准备执行滚动操作",
+          "context": {
+            "startLine": 139,
+            "lines": [
+              "        .onSelect((index: number) => {",
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)",
+              "              prompt.showToast({ message: \"\" + target })",
+              "              break",
+              "            }",
+              "            target++",
+              "          }"
+            ]
+          }
+        },
+        {
+          "id": "p97:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 145,
+          "code": "prompt.showToast({ message: \"\" + target })",
+          "description": "调用 prompt.showToast 显示包含目标索引值的提示消息，完成数据流 Sink 点",
+          "context": {
+            "startLine": 140,
+            "lines": [
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)",
+              "              prompt.showToast({ message: \"\" + target })",
+              "              break",
+              "            }",
+              "            target++",
+              "          }",
+              "        })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p97:n1",
+          "to": "p97:n2"
+        },
+        {
+          "from": "p97:n2",
+          "to": "p97:n3"
+        },
+        {
+          "from": "p97:n3",
+          "to": "p97:n4"
+        },
+        {
+          "from": "p97:n4",
+          "to": "p97:n5"
+        },
+        {
+          "from": "p97:n5",
+          "to": "p97:n6"
+        },
+        {
+          "from": "p97:n6",
+          "to": "p97:n7"
+        },
+        {
+          "from": "p97:n7",
+          "to": "p97:n8"
+        },
+        {
+          "from": "p97:n8",
+          "to": "p97:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "通讯录列表索引位置 (List Index)",
+          "字母索引标签 (Letter Index)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击字母索引时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "仅内存中临时计算，无持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p98",
+      "pathId": "p98",
+      "nodes": [
+        {
+          "id": "p98:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 84,
+          "code": "build() {",
+          "description": "UI 组件构建入口 build() 函数开始执行，初始化通讯录页面视图。",
+          "context": {
+            "startLine": 79,
+            "lines": [
+              "      .height(36)",
+              "      .width(\"100%\")",
+              "      .padding({ left: 20 })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.End }) {",
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })"
+            ]
+          }
+        },
+        {
+          "id": "p98:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 85,
+          "code": "Stack({ alignContent: Alignment.End }) {",
+          "description": "创建 Stack 容器作为根布局，设定内容对齐方式，准备承载子组件。",
+          "context": {
+            "startLine": 80,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .padding({ left: 20 })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.End }) {",
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表"
+            ]
+          }
+        },
+        {
+          "id": "p98:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 91,
+          "code": "List({ scroller: this.scroller }) {",
+          "description": "初始化 List 列表组件，绑定滚动控制器 scroller，准备渲染通讯录数据。",
+          "context": {
+            "startLine": 86,
+            "lines": [
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p98:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 93,
+          "code": "ForEach(this.dataList, (item: DataItem) => {",
+          "description": "遍历通讯录主数据列表 (dataList)，读取分组数据项 (DataItem)。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p98:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 95,
+          "code": "ListItemGroup({ header: this.itemHead(item.title) }) {",
+          "description": "渲染分组头部 (ListItemGroup)，访问并显示分组标题 (item.title) 数据。",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })"
+            ]
+          }
+        },
+        {
+          "id": "p98:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 97,
+          "code": "ForEach(item.contactList, (contact: ContactItem) => {",
+          "description": "遍历当前分组内的联系人列表 (contactList)，逐个读取联系人对象 (ContactItem)。",
+          "context": {
+            "startLine": 92,
+            "lines": [
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p98:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 100,
+          "code": "ListContactItem({ head: contact.head, name: contact.name })",
+          "description": "渲染单个联系人项 (ListContactItem)，读取并展示联系人头像 (head) 和姓名 (name) 数据。",
+          "context": {
+            "startLine": 95,
+            "lines": [
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }"
+            ]
+          }
+        },
+        {
+          "id": "p98:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 102,
+          "code": ".onClick(() => {",
+          "description": "为联系人列表项注册 onClick 点击事件监听器，等待用户交互。",
+          "context": {
+            "startLine": 97,
+            "lines": [
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })"
+            ]
+          }
+        },
+        {
+          "id": "p98:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 103,
+          "code": "router.pushUrl({",
+          "description": "用户点击触发路由跳转，调用 router.pushUrl 发起页面导航请求。",
+          "context": {
+            "startLine": 98,
+            "lines": [
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p98:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 105,
+          "code": "params: { name: contact.name }",
+          "description": "将选中联系人的姓名 (contact.name) 作为参数封装，准备传递至聊天页面 (ChatPage)。",
+          "context": {
+            "startLine": 100,
+            "lines": [
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })",
+              "              })",
+              "            }",
+              "            .divider({"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p98:n1",
+          "to": "p98:n2"
+        },
+        {
+          "from": "p98:n2",
+          "to": "p98:n3"
+        },
+        {
+          "from": "p98:n3",
+          "to": "p98:n4"
+        },
+        {
+          "from": "p98:n4",
+          "to": "p98:n5"
+        },
+        {
+          "from": "p98:n5",
+          "to": "p98:n6"
+        },
+        {
+          "from": "p98:n6",
+          "to": "p98:n7"
+        },
+        {
+          "from": "p98:n7",
+          "to": "p98:n8"
+        },
+        {
+          "from": "p98:n8",
+          "to": "p98:n9"
+        },
+        {
+          "from": "p98:n9",
+          "to": "p98:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "联系人姓名 (contact.name)",
+          "联系人头像 (contact.head)",
+          "通讯录分组标题 (item.title)"
+        ],
+        "collectionFrequency": [
+          "一次性（用户点击事件触发）",
+          "周期性（UI 渲染时遍历列表）"
+        ],
+        "cloudUpload": [
+          "无直接网络发送行为（仅内部页面路由跳转）"
+        ],
+        "storageAndEncryption": [
+          "内存中临时存储（ArkTS 组件状态 dataList）",
+          "未观察到显式本地文件存储或加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.READ_CONTACTS (隐含需求，用于获取联系人列表)",
+          "ohos.permission.INTERNET (若 ChatPage 后续发送消息则需要，当前片段未体现)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p102",
+      "pathId": "p102",
+      "nodes": [
+        {
+          "id": "p102:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 84,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染通讯录页面 UI 结构",
+          "context": {
+            "startLine": 79,
+            "lines": [
+              "      .height(36)",
+              "      .width(\"100%\")",
+              "      .padding({ left: 20 })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.End }) {",
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })"
+            ]
+          }
+        },
+        {
+          "id": "p102:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 91,
+          "code": "List({ scroller: this.scroller }) {",
+          "description": "初始化 List 容器并绑定滚动控制器，准备展示通讯录列表数据",
+          "context": {
+            "startLine": 86,
+            "lines": [
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p102:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 93,
+          "code": "ForEach(this.dataList, (item: DataItem) => {",
+          "description": "遍历通讯录数据源 (this.dataList)，获取每个分组的数据项 (DataItem)",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p102:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 95,
+          "code": "ListItemGroup({ header: this.itemHead(item.title) }) {",
+          "description": "创建 ListItemGroup 组件，渲染分组头部标题 (item.title)，涉及分组隐私数据展示",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })"
+            ]
+          }
+        },
+        {
+          "id": "p102:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 97,
+          "code": "ForEach(item.contactList, (contact: ContactItem) => {",
+          "description": "遍历当前分组内的联系人列表 (item.contactList)，获取单个联系人对象 (ContactItem)",
+          "context": {
+            "startLine": 92,
+            "lines": [
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p102:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 100,
+          "code": "ListContactItem({ head: contact.head, name: contact.name })",
+          "description": "渲染单个联系人列表项，将联系人头像 (head) 和姓名 (name) 绑定到 UI 组件进行展示",
+          "context": {
+            "startLine": 95,
+            "lines": [
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }"
+            ]
+          }
+        },
+        {
+          "id": "p102:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 102,
+          "code": ".onClick(() => {",
+          "description": "为联系人列表项注册点击事件监听器，等待用户交互",
+          "context": {
+            "startLine": 97,
+            "lines": [
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })"
+            ]
+          }
+        },
+        {
+          "id": "p102:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 103,
+          "code": "router.pushUrl({",
+          "description": "用户点击联系人后触发路由跳转，调用 pushUrl 方法准备导航至聊天页面",
+          "context": {
+            "startLine": 98,
+            "lines": [
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p102:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 105,
+          "code": "params: { name: contact.name }",
+          "description": "将当前选中联系人的姓名 (contact.name) 作为敏感参数封装进路由 params，传递给目标页面",
+          "context": {
+            "startLine": 100,
+            "lines": [
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })",
+              "              })",
+              "            }",
+              "            .divider({"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p102:n1",
+          "to": "p102:n2"
+        },
+        {
+          "from": "p102:n2",
+          "to": "p102:n3"
+        },
+        {
+          "from": "p102:n3",
+          "to": "p102:n4"
+        },
+        {
+          "from": "p102:n4",
+          "to": "p102:n5"
+        },
+        {
+          "from": "p102:n5",
+          "to": "p102:n6"
+        },
+        {
+          "from": "p102:n6",
+          "to": "p102:n7"
+        },
+        {
+          "from": "p102:n7",
+          "to": "p102:n8"
+        },
+        {
+          "from": "p102:n8",
+          "to": "p102:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "联系人姓名 (contact.name)",
+          "联系人头像 (contact.head)",
+          "通讯录分组标题 (item.title)"
+        ],
+        "collectionFrequency": [
+          "UI 渲染时一次性加载",
+          "用户点击事件触发"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "数据暂存于内存组件状态 (this.dataList)",
+          "通过路由参数在页面间传递，未观察到本地持久化或加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.READ_CONTACTS (推断：访问通讯录列表通常需要此权限，虽代码片段未直接展示申请逻辑)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p103",
+      "pathId": "p103",
+      "nodes": [
+        {
+          "id": "p103:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 84,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口 build() 函数，开始渲染通讯录页面 UI",
+          "context": {
+            "startLine": 79,
+            "lines": [
+              "      .height(36)",
+              "      .width(\"100%\")",
+              "      .padding({ left: 20 })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.End }) {",
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })"
+            ]
+          }
+        },
+        {
+          "id": "p103:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 87,
+          "code": "Column() {",
+          "description": "创建 Column 布局容器，作为通讯录页面的主体垂直布局",
+          "context": {
+            "startLine": 82,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.End }) {",
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签"
+            ]
+          }
+        },
+        {
+          "id": "p103:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 91,
+          "code": "List({ scroller: this.scroller }) {",
+          "description": "初始化 List 列表组件并绑定 scroller 对象，准备渲染通讯录长列表",
+          "context": {
+            "startLine": 86,
+            "lines": [
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p103:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 93,
+          "code": "ForEach(this.dataList, (item: DataItem) => {",
+          "description": "遍历 this.dataList 数据源，循环生成通讯录的大组（如字母索引分组）",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p103:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 95,
+          "code": "ListItemGroup({ header: this.itemHead(item.title) }) {",
+          "description": "创建 ListItemGroup 组件，设置组头标题，开始渲染单个分组内的联系人项",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })"
+            ]
+          }
+        },
+        {
+          "id": "p103:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 97,
+          "code": "ForEach(item.contactList, (contact: ContactItem) => {",
+          "description": "遍历当前分组下的 contactList 数组，循环生成具体的联系人列表项",
+          "context": {
+            "startLine": 92,
+            "lines": [
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p103:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 100,
+          "code": "ListContactItem({ head: contact.head, name: contact.name })",
+          "description": "渲染单个联系人项 UI (ListContactItem)，将联系人姓名 (name) 和头像 (head) 数据绑定到视图进行展示",
+          "context": {
+            "startLine": 95,
+            "lines": [
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }"
+            ]
+          }
+        },
+        {
+          "id": "p103:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 102,
+          "code": ".onClick(() => {",
+          "description": "为联系人列表项注册 onClick 点击事件监听器，等待用户交互",
+          "context": {
+            "startLine": 97,
+            "lines": [
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })"
+            ]
+          }
+        },
+        {
+          "id": "p103:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 103,
+          "code": "router.pushUrl({",
+          "description": "触发路由跳转 sink 点，调用 router.pushUrl 准备导航至聊天页面",
+          "context": {
+            "startLine": 98,
+            "lines": [
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p103:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 105,
+          "code": "params: { name: contact.name }",
+          "description": "将当前选中联系人的姓名 (contact.name) 作为参数封装，传递给目标页面 ChatPage",
+          "context": {
+            "startLine": 100,
+            "lines": [
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })",
+              "              })",
+              "            }",
+              "            .divider({"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p103:n1",
+          "to": "p103:n2"
+        },
+        {
+          "from": "p103:n2",
+          "to": "p103:n3"
+        },
+        {
+          "from": "p103:n3",
+          "to": "p103:n4"
+        },
+        {
+          "from": "p103:n4",
+          "to": "p103:n5"
+        },
+        {
+          "from": "p103:n5",
+          "to": "p103:n6"
+        },
+        {
+          "from": "p103:n6",
+          "to": "p103:n7"
+        },
+        {
+          "from": "p103:n7",
+          "to": "p103:n8"
+        },
+        {
+          "from": "p103:n8",
+          "to": "p103:n9"
+        },
+        {
+          "from": "p103:n9",
+          "to": "p103:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "联系人姓名 (contact.name)",
+          "联系人头像 (contact.head)",
+          "通讯录列表数据 (this.dataList)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击联系人时)",
+          "UI 渲染时 (一次性加载当前视图数据)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地内存存储 (ArkUI 组件状态 dataList)",
+          "未检测到加密操作",
+          "未检测到持久化存储操作 (仅 UI 展示与路由传参)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p105",
+      "pathId": "p105",
+      "nodes": [
+        {
+          "id": "p105:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 84,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建通讯录页面 UI 结构，准备渲染数据。",
+          "context": {
+            "startLine": 79,
+            "lines": [
+              "      .height(36)",
+              "      .width(\"100%\")",
+              "      .padding({ left: 20 })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.End }) {",
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })"
+            ]
+          }
+        },
+        {
+          "id": "p105:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 91,
+          "code": "List({ scroller: this.scroller }) {",
+          "description": "创建 List 滚动容器，绑定 scroller 对象，用于展示通讯录长列表数据。",
+          "context": {
+            "startLine": 86,
+            "lines": [
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p105:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 93,
+          "code": "ForEach(this.dataList, (item: DataItem) => {",
+          "description": "遍历 this.dataList 数据源，该数据源包含分组后的联系人信息，涉及隐私数据读取。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p105:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 95,
+          "code": "ListItemGroup({ header: this.itemHead(item.title) }) {",
+          "description": "创建 ListItemGroup 组件，渲染联系人分组标题（如字母索引或自定义组名）。",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })"
+            ]
+          }
+        },
+        {
+          "id": "p105:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 97,
+          "code": "ForEach(item.contactList, (contact: ContactItem) => {",
+          "description": "遍历当前分组下的具体联系人列表 (contactList)，提取单个联系人隐私数据。",
+          "context": {
+            "startLine": 92,
+            "lines": [
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p105:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 100,
+          "code": "ListContactItem({ head: contact.head, name: contact.name })",
+          "description": "渲染单个联系人项，将 contact.name (姓名) 和 contact.head (头像) 传递给子组件显示。",
+          "context": {
+            "startLine": 95,
+            "lines": [
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表",
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }"
+            ]
+          }
+        },
+        {
+          "id": "p105:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 102,
+          "code": ".onClick(() => {",
+          "description": "为联系人列表项注册 onClick 点击事件监听器，等待用户交互。",
+          "context": {
+            "startLine": 97,
+            "lines": [
+              "              ForEach(item.contactList, (contact: ContactItem) => {",
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })"
+            ]
+          }
+        },
+        {
+          "id": "p105:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 103,
+          "code": "router.pushUrl({",
+          "description": "响应点击事件，调用 router.pushUrl 发起页面跳转，将选中的联系人姓名作为参数传递。",
+          "context": {
+            "startLine": 98,
+            "lines": [
+              "                // // 小组联系人列表",
+              "                ListItem() {",
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p105:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 105,
+          "code": "params: { name: contact.name }",
+          "description": "构造路由参数对象，明确将 privacy-sensitive 的 contact.name 放入 params 中传输至聊天页。",
+          "context": {
+            "startLine": 100,
+            "lines": [
+              "                  ListContactItem({ head: contact.head, name: contact.name })",
+              "                }",
+              "                .onClick(() => {",
+              "                  router.pushUrl({",
+              "                    url: 'pages/chat/ChatPage',",
+              "                    params: { name: contact.name }",
+              "                  })",
+              "                })",
+              "              })",
+              "            }",
+              "            .divider({"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p105:n1",
+          "to": "p105:n2"
+        },
+        {
+          "from": "p105:n2",
+          "to": "p105:n3"
+        },
+        {
+          "from": "p105:n3",
+          "to": "p105:n4"
+        },
+        {
+          "from": "p105:n4",
+          "to": "p105:n5"
+        },
+        {
+          "from": "p105:n5",
+          "to": "p105:n6"
+        },
+        {
+          "from": "p105:n6",
+          "to": "p105:n7"
+        },
+        {
+          "from": "p105:n7",
+          "to": "p105:n8"
+        },
+        {
+          "from": "p105:n8",
+          "to": "p105:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "联系人姓名 (contact.name)",
+          "联系人头像 (contact.head)",
+          "通讯录列表数据 (this.dataList)"
+        ],
+        "collectionFrequency": [
+          "UI 渲染时一次性加载",
+          "用户点击事件触发"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存中临时存储用于 UI 渲染",
+          "未观察到本地持久化存储操作",
+          "未观察到加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.READ_CONTACTS (隐含，需读取联系人数据填充 dataList)"
+        ]
+      }
+    }
+  ]
+}

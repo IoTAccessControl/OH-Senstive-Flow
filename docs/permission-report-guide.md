@@ -34,14 +34,7 @@
 
 **评估命令示例**
 
-```bash
-node --import tsx server/src/cli/evalPermissions.ts \
-  --app Wechat_HarmonyOS \
-  --runId Wechat_HarmonyOS_20260306-212407 \
-  --details
-```
-
-也可以使用 Python 评估脚本（与上述指标口径一致）：
+当前仓库保留了 Python 评估脚本，指标口径与后端运行器中的权限评估辅助函数一致：
 
 ```bash
 python3 scripts/eval_permissions.py \

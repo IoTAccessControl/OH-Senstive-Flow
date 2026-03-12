@@ -3,7 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { buildUiTree } from '../src/analyzer/uiTree/buildUiTree.js';
+import { buildUiTree } from '../src/analyzer/feature/ui.js';
 
 describe('ui tree titles (heuristics)', () => {
   it('generates human-readable page/feature titles without UI LLM', async () => {

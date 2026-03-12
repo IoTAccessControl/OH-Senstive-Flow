@@ -1,0 +1,176 @@
+{
+  "meta": {
+    "runId": "Test_user_info_20260313-031608",
+    "featureId": "ui_ComprehensiveInfoForm_b4538563a7",
+    "generatedAt": "2026-03-12T19:19:31.802Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Test_user_info",
+        "businessScenario": "用户在个人信息登记表中手动输入并提交姓名、性别、身高、体重、婚姻状况、家庭成员及教育背景等个人敏感信息。",
+        "dataSources": [
+          "用户手动输入"
+        ],
+        "dataItems": [
+          {
+            "name": "姓名 (name)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n3"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n8"
+              }
+            ]
+          },
+          {
+            "name": "家庭成员信息 (familyMembers)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n9"
+              }
+            ]
+          },
+          {
+            "name": "身高 (height/height1)",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n1"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n1"
+              }
+            ]
+          },
+          {
+            "name": "体重 (weight)",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n2"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n2"
+              }
+            ]
+          },
+          {
+            "name": "婚姻状况 (maritalStatus)",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n3"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n3"
+              }
+            ]
+          },
+          {
+            "name": "教育背景 (education)",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n5"
+              }
+            ]
+          },
+          {
+            "name": "房产数据 (houseData)",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n10"
+              }
+            ]
+          },
+          {
+            "name": "年龄 (age)",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n16"
+              }
+            ]
+          },
+          {
+            "name": "昵称 (nickname)",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n11"
+              }
+            ]
+          },
+          {
+            "name": "性别 (gender)",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n11"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在组件内存中暂存，提交时进行非空校验，部分数据被序列化为 JSON 字符串打印至控制台日志或在 UI 提示框中明文展示。",
+        "storageMethod": "数据存储在组件 @State 状态变量中（易失性内存），未检测到本地持久化存储或加密处理。",
+        "dataRecipients": [
+          {
+            "name": "本地控制台日志",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n11"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n11"
+              }
+            ]
+          },
+          {
+            "name": "UI 界面提示 (Toast)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n16"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n7"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "收集并验证用户填写的完整个人信息，用于后续业务逻辑处理（当前代码片段仅实现校验与日志记录）。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260312-230216",
+    "featureId": "ui_ChatPage_e19e4bc985",
+    "generatedAt": "2026-03-12T15:50:55.953Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户在聊天页面点击语音输入图标，将语音转换为文本消息并发送",
+        "dataSources": [
+          "用户设备麦克风",
+          "用户输入"
+        ],
+        "dataItems": [
+          {
+            "name": "用户聊天消息内容 (text/voice)",
+            "refs": [
+              {
+                "flowId": "flow:p118",
+                "nodeId": "p118:n7"
+              },
+              {
+                "flowId": "flow:p118",
+                "nodeId": "p118:n8"
+              }
+            ]
+          },
+          {
+            "name": "联系人/聊天对象名称",
+            "refs": [
+              {
+                "flowId": "flow:p118",
+                "nodeId": "p118:n3"
+              }
+            ]
+          },
+          {
+            "name": "麦克风音频数据 (潜在)",
+            "refs": [
+              {
+                "flowId": "flow:p134",
+                "nodeId": "p134:n3"
+              },
+              {
+                "flowId": "flow:p135",
+                "nodeId": "p135:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "本地内存暂存与语音转文字处理",
+        "storageMethod": "本地内存存储于 chatList 数组",
+        "dataRecipients": [
+          {
+            "name": "微信服务器",
+            "inferred": true
+          }
+        ],
+        "processingPurpose": "实现语音转文字功能以生成聊天消息",
+        "privacyToggleUi": {
+          "where": "聊天页面底部工具栏的语音输入按钮",
+          "refs": [
+            {
+              "uiNodeId": "ui:1450354868e2"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.MICROPHONE",
+        "businessScenario": "用户在聊天界面使用语音输入功能时",
+        "permissionPurpose": "获取麦克风权限以录制用户语音并进行转文字处理",
+        "denyImpact": "无法使用语音输入功能，需切换为键盘输入",
+        "refs": [
+          {
+            "flowId": "flow:p118",
+            "nodeId": "p118:n9"
+          },
+          {
+            "flowId": "flow:p118",
+            "nodeId": "p118:n10"
+          },
+          {
+            "flowId": "flow:p118",
+            "nodeId": "p118:n11"
+          },
+          {
+            "flowId": "flow:p134",
+            "nodeId": "p134:n4"
+          },
+          {
+            "flowId": "flow:p134",
+            "nodeId": "p134:n6"
+          },
+          {
+            "flowId": "flow:p134",
+            "nodeId": "p134:n7"
+          },
+          {
+            "flowId": "flow:p135",
+            "nodeId": "p135:n4"
+          },
+          {
+            "flowId": "flow:p135",
+            "nodeId": "p135:n6"
+          },
+          {
+            "flowId": "flow:p135",
+            "nodeId": "p135:n7"
+          }
+        ]
+      }
+    ]
+  }
+}

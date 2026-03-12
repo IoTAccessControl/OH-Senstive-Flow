@@ -7,18 +7,18 @@ const { mockChat } = vi.hoisted(() => ({
   mockChat: vi.fn(),
 }));
 
-vi.mock('../src/llm/openaiCompatible.js', async () => {
-  const actual = await vi.importActual<typeof import('../src/llm/openaiCompatible.js')>('../src/llm/openaiCompatible.js');
+vi.mock('../src/llm/client.js', async () => {
+  const actual = await vi.importActual<typeof import('../src/llm/client.js')>('../src/llm/client.js');
   return {
     ...actual,
     openAiCompatibleChat: mockChat,
   };
 });
 
-import { LlmNetworkError } from '../src/llm/openaiCompatible.js';
-import { buildDataflows } from '../src/analyzer/dataflow/buildDataflows.js';
-import type { CallGraph } from '../src/analyzer/callGraph/types.js';
-import type { SinkRecord, SourceRecord } from '../src/analyzer/types.js';
+import { LlmNetworkError } from '../src/llm/client.js';
+import { buildDataflows } from '../src/analyzer/dataflow/build.js';
+import type { CallGraph } from '../src/analyzer/callgraph/types.js';
+import type { SinkRecord, SourceRecord } from '../src/analyzer/extract/types.js';
 
 async function makeRepoFile(lines: string[]): Promise<{ repoRoot: string; filePath: string; fileRel: string }> {
   const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-dataflow-'));

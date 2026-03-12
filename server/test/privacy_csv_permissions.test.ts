@@ -3,7 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { generatePrivacyReportArtifacts } from '../src/analyzer/privacyReport/generatePrivacyReportArtifacts.js';
+import { generatePrivacyReportArtifacts } from '../src/analyzer/privacy/report.js';
 
 describe('privacy facts - deterministic permissions from CSV', () => {
   it('injects CSV-mapped permissions into privacy_facts.json and privacy_report.json', async () => {

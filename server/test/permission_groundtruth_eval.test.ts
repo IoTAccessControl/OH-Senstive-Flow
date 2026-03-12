@@ -3,7 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { collectPredictedPermissionsFromRun, evaluatePermissionSets } from '../src/eval/permissionGroundtruthEval.js';
+import { collectPredictedPermissionsFromRun, evaluatePermissionSets } from '../src/app/run.js';
 
 describe('permission groundtruth evaluation', () => {
   it('computes TP/FP/FN, recall and FP/Pred', () => {
@@ -60,4 +60,3 @@ describe('permission groundtruth evaluation', () => {
     expect([...perms].sort()).toEqual(['ohos.permission.GET_NETWORK_INFO', 'ohos.permission.INTERNET']);
   });
 });
-

@@ -3,15 +3,15 @@ import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-import { collectPredictedPermissionsFromRun } from '../src/eval/permissionGroundtruthEval.js';
+import { collectPredictedPermissionsFromRun } from '../src/app/run.js';
 
 const mockExtractFeaturePrivacyFacts = vi.fn();
 
-vi.mock('../src/analyzer/privacyReport/extractFeaturePrivacyFacts.js', () => ({
+vi.mock('../src/analyzer/privacy/facts.js', () => ({
   extractFeaturePrivacyFacts: (...args: unknown[]) => mockExtractFeaturePrivacyFacts(...args),
 }));
 
-import { generatePrivacyReportArtifacts } from '../src/analyzer/privacyReport/generatePrivacyReportArtifacts.js';
+import { generatePrivacyReportArtifacts } from '../src/analyzer/privacy/report.js';
 
 async function writeJson(filePath: string, data: unknown): Promise<void> {
   await fs.mkdir(path.dirname(filePath), { recursive: true });

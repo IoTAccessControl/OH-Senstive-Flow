@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260312-230216",
+    "generatedAt": "2026-03-12T15:49:50.401Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onForeground_37_5e45c9e0",
+      "kind": "source",
+      "title": "应用切到前台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p155",
+      "pathId": "p155",
+      "nodes": [
+        {
+          "id": "p155:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 37,
+          "code": "onForeground() {",
+          "description": "定义 onForeground 生命周期回调函数，作为数据流的起点，当 UIAbility 切换到前台时被系统自动触发。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {"
+            ]
+          }
+        },
+        {
+          "id": "p155:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "// Ability has brought to foreground",
+          "description": "代码注释行，说明当前逻辑用于处理应用进入前台的状态，不涉及实际数据操作。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {",
+              "    // Ability has back to background"
+            ]
+          }
+        },
+        {
+          "id": "p155:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+          "description": "调用 hilog.info 接口，将字符串常量 'Ability onForeground' 作为信息级日志输出到系统日志缓冲区，此处为数据流终点（Sink）。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p155:n1",
+          "to": "p155:n2"
+        },
+        {
+          "from": "p155:n2",
+          "to": "p155:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件 (Foreground)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (每次应用切换至前台时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出，未检测到网络发送行为)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (仅运行时日志打印，依赖系统日志服务配置)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

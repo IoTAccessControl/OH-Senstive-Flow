@@ -4,16 +4,14 @@ import path from 'node:path';
 import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 
-import { buildSdkModuleIndex } from '../src/analyzer/sdkIndexer.js';
-import { SdkDocStore } from '../src/analyzer/sdkDocStore.js';
-import { resolveKitExportBinding } from '../src/analyzer/kitResolver.js';
-import { analyzeSinks } from '../src/analyzer/sinkAnalyzer.js';
-import { analyzeSources } from '../src/analyzer/sourceAnalyzer.js';
-import { buildCallGraph } from '../src/analyzer/callGraph/buildCallGraph.js';
-import { scanFunctionBlocks } from '../src/analyzer/callGraph/functionBlocks.js';
-import { extractPaths } from '../src/analyzer/callGraph/extractPaths.js';
-import { buildDataflows } from '../src/analyzer/dataflow/buildDataflows.js';
-import { scanAppArkTsFiles } from '../src/analyzer/appScanner.js';
+import { buildSdkModuleIndex, resolveKitExportBinding, SdkDocStore } from '../src/analyzer/extract/sdk.js';
+import { analyzeSinks } from '../src/analyzer/extract/sinks.js';
+import { analyzeSources } from '../src/analyzer/extract/sources.js';
+import { buildCallGraph } from '../src/analyzer/callgraph/build.js';
+import { scanFunctionBlocks } from '../src/analyzer/callgraph/functionBlocks.js';
+import { extractPaths } from '../src/analyzer/dataflow/paths.js';
+import { buildDataflows } from '../src/analyzer/dataflow/build.js';
+import { scanAppArkTsFiles } from '../src/analyzer/extract/app.js';
 
 const REPO_ROOT = path.resolve(process.cwd(), '..');
 const SDK_ROOT = path.join(REPO_ROOT, 'input/sdk/default/openharmony/ets');

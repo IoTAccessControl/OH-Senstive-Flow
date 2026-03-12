@@ -75,7 +75,7 @@
 
 ## 3. 输入会经过哪些处理流程
 
-后端主流程集中在 `server/src/analyzer/runAnalysis.ts` 中，可以按下面的顺序理解。
+后端主流程集中在 `server/src/app/run.ts` 中，可以按下面的顺序理解。
 
 ### 3.1 校验输入路径
 
