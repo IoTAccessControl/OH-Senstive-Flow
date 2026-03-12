@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "runId": "map-kit_-codelab_20260312-044534",
+    "featureId": "ui_BasicMapDemo_8803d5ae46",
+    "generatedAt": "2026-03-11T20:47:53.802Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.LOCATION 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "map-kit_-codelab",
+        "businessScenario": "在 BasicMapDemo 页面展示地图时，应用初始化地图组件并加载地图瓦片数据，同时根据配置可能获取用户实时位置以显示定位图标或调整地图视角。",
+        "dataSources": [
+          "设备传感器 (GPS/网络定位)",
+          "设备网络状态",
+          "用户交互操作"
+        ],
+        "dataItems": [
+          {
+            "name": "用户地理位置 (Latitude/Longitude)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n4"
+              }
+            ]
+          },
+          {
+            "name": "设备网络状态",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              }
+            ]
+          },
+          {
+            "name": "地图交互事件 (点击、缩放、平移)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "持续性收集与实时处理：地图渲染期间周期性获取位置数据，并在用户交互时触发事件处理；SDK 内部自动发起网络请求获取对应区域的地图瓦片。",
+        "storageMethod": "本地缓存：地图瓦片数据通常会被 SDK 自动缓存到应用沙箱目录；加密情况取决于 SDK 内部实现，源码未显式调用加密 API。",
+        "dataRecipients": [
+          {
+            "name": "地图服务提供商",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "提供地图可视化服务，包括加载正确的地图区域瓦片、显示用户当前位置以及响应用户的缩放和平移操作。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "在 BasicMapDemo 页面展示地图时，应用需要连接互联网以从服务器下载地图瓦片数据。",
+        "permissionPurpose": "访问网络资源，下载矢量或栅格地图瓦片以渲染地图界面。",
+        "denyImpact": "若拒绝该权限，地图组件将无法加载任何地图图像，导致地图区域显示为空白或仅显示离线缓存的旧数据（若有），核心地图浏览功能不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n5"
+          }
+        ]
+      }
+    ]
+  }
+}

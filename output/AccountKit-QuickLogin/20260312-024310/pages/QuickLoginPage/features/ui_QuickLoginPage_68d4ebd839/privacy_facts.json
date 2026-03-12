@@ -1,0 +1,287 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260312-024310",
+    "featureId": "ui_QuickLoginPage_68d4ebd839",
+    "generatedAt": "2026-03-11T19:23:24.534Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACCESS_NETWORK 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "AccountKit-QuickLogin",
+        "businessScenario": "用户进入快速登录页面时，系统自动记录页面加载事件及匿名手机号参数，用于后续业务逻辑判断。",
+        "dataSources": [
+          "应用内部状态"
+        ],
+        "dataItems": [
+          {
+            "name": "匿名手机号 (anonymousPhone)",
+            "refs": [
+              {
+                "flowId": "flow:p92",
+                "nodeId": "p92:n4"
+              }
+            ]
+          },
+          {
+            "name": "日志标签 (logTag)",
+            "refs": [
+              {
+                "flowId": "flow:p92",
+                "nodeId": "p92:n2"
+              }
+            ]
+          },
+          {
+            "name": "域 ID (domainId)",
+            "refs": [
+              {
+                "flowId": "flow:p92",
+                "nodeId": "p92:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中临时存储并输出至本地系统日志（hilog.info），未检测到直接上传行为。",
+        "storageMethod": "临时内存存储（组件状态变量）及系统日志缓冲区（明文）。",
+        "dataRecipients": [],
+        "processingPurpose": "支持快速登录功能的初始化与调试信息记录。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "AccountKit-QuickLogin",
+        "businessScenario": "用户点击返回按钮时，系统记录当前页面栈深度信息以执行回退操作。",
+        "dataSources": [
+          "应用内部状态"
+        ],
+        "dataItems": [
+          {
+            "name": "页面栈大小 (pageInfos.size)",
+            "refs": [
+              {
+                "flowId": "flow:p93",
+                "nodeId": "p93:n5"
+              }
+            ]
+          },
+          {
+            "name": "日志域 ID (domainId)",
+            "refs": [
+              {
+                "flowId": "flow:p93",
+                "nodeId": "p93:n5"
+              }
+            ]
+          },
+          {
+            "name": "日志标签 (logTag)",
+            "refs": [
+              {
+                "flowId": "flow:p93",
+                "nodeId": "p93:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中处理并输出至本地系统日志（hilog.info）。",
+        "storageMethod": "临时内存存储（日志缓冲区）。",
+        "dataRecipients": [],
+        "processingPurpose": "实现页面导航回退逻辑及相应的操作审计。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "AccountKit-QuickLogin",
+        "businessScenario": "用户点击隐私协议链接时，系统获取设备网络状态和系统语言环境，构建目标页面 URL 并跳转。",
+        "dataSources": [
+          "设备系统配置",
+          "网络连接状态"
+        ],
+        "dataItems": [
+          {
+            "name": "系统语言设置 (systemLanguage)",
+            "refs": [
+              {
+                "flowId": "flow:p97",
+                "nodeId": "p97:n5"
+              }
+            ]
+          },
+          {
+            "name": "隐私协议文本内容 (Privacy Policy Text)",
+            "refs": [
+              {
+                "flowId": "flow:p96",
+                "nodeId": "p96:n3"
+              }
+            ]
+          },
+          {
+            "name": "网络连接状态",
+            "refs": [
+              {
+                "flowId": "flow:p98",
+                "nodeId": "p98:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "从系统配置读取语言环境，结合硬编码或动态获取的协议链接进行拼接，并记录相关操作日志。",
+        "storageMethod": "数据仅在内存中用于 UI 展示、URL 拼接和日志输出，无持久化存储。",
+        "dataRecipients": [],
+        "processingPurpose": "根据用户设备语言环境展示对应的隐私政策内容。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.GET_NETWORK_INFO",
+        "businessScenario": "Checks whether the default data network is activated.",
+        "permissionPurpose": "使用相关系统能力（由 SDK API 权限映射确定）",
+        "denyImpact": "拒绝授权可能导致对应功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p96",
+            "nodeId": "p96:n5"
+          },
+          {
+            "flowId": "flow:p97",
+            "nodeId": "p97:n4"
+          },
+          {
+            "flowId": "flow:p98",
+            "nodeId": "p98:n3"
+          },
+          {
+            "flowId": "flow:p99",
+            "nodeId": "p99:n3"
+          },
+          {
+            "flowId": "flow:p103",
+            "nodeId": "p103:n5"
+          },
+          {
+            "flowId": "flow:p104",
+            "nodeId": "p104:n5"
+          },
+          {
+            "flowId": "flow:p105",
+            "nodeId": "p105:n4"
+          },
+          {
+            "flowId": "flow:p106",
+            "nodeId": "p106:n4"
+          },
+          {
+            "flowId": "flow:p110",
+            "nodeId": "p110:n6"
+          },
+          {
+            "flowId": "flow:p111",
+            "nodeId": "p111:n6"
+          },
+          {
+            "flowId": "flow:p112",
+            "nodeId": "p112:n5"
+          },
+          {
+            "flowId": "flow:p113",
+            "nodeId": "p113:n5"
+          },
+          {
+            "flowId": "flow:p117",
+            "nodeId": "p117:n7"
+          },
+          {
+            "flowId": "flow:p118",
+            "nodeId": "p118:n7"
+          },
+          {
+            "flowId": "flow:p122",
+            "nodeId": "p122:n6"
+          },
+          {
+            "flowId": "flow:p123",
+            "nodeId": "p123:n6"
+          },
+          {
+            "flowId": "flow:p127",
+            "nodeId": "p127:n7"
+          },
+          {
+            "flowId": "flow:p129",
+            "nodeId": "p129:n6"
+          },
+          {
+            "flowId": "flow:p134",
+            "nodeId": "p134:n5"
+          },
+          {
+            "flowId": "flow:p135",
+            "nodeId": "p135:n5"
+          },
+          {
+            "flowId": "flow:p136",
+            "nodeId": "p136:n4"
+          },
+          {
+            "flowId": "flow:p137",
+            "nodeId": "p137:n4"
+          },
+          {
+            "flowId": "flow:p141",
+            "nodeId": "p141:n6"
+          },
+          {
+            "flowId": "flow:p142",
+            "nodeId": "p142:n6"
+          },
+          {
+            "flowId": "flow:p146",
+            "nodeId": "p146:n5"
+          },
+          {
+            "flowId": "flow:p147",
+            "nodeId": "p147:n5"
+          },
+          {
+            "flowId": "flow:p151",
+            "nodeId": "p151:n6"
+          },
+          {
+            "flowId": "flow:p153",
+            "nodeId": "p153:n5"
+          },
+          {
+            "flowId": "flow:p154",
+            "nodeId": "p154:n5"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "检查网络连接状态及加载远程隐私政策页面。",
+        "permissionPurpose": "用于调用 hasDefaultNetSync() 检测网络连通性，以及潜在地加载远程资源。",
+        "denyImpact": "若拒绝此权限，应用可能无法验证网络状态，导致无法正确跳转或显示错误提示。",
+        "refs": [
+          {
+            "flowId": "flow:p96",
+            "nodeId": "p96:n5"
+          }
+        ]
+      }
+    ]
+  }
+}

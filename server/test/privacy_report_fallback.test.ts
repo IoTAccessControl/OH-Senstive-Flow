@@ -73,4 +73,42 @@ describe('privacy report evidence rules', () => {
     expect(result.warnings.some((item) => item.includes('权限段落缺少有效跳转引用'))).toBe(false);
     expect(result.warnings.some((item) => item.includes('个人信息段落缺少有效跳转引用'))).toBe(true);
   });
+
+  it('renders a non-empty fallback sentence for synthetic app-level permissions without refs', async () => {
+    const result = await buildPrivacyReport({
+      runId: 'run2',
+      appName: 'App',
+      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3-32b' },
+      features: [
+        {
+          featureId: '__app_permissions',
+          facts: {
+            dataPractices: [],
+            permissionPractices: [
+              {
+                permissionName: 'ohos.permission.INTERNET',
+                businessScenario: '应用源码/配置声明或 SDK API 使用推断的权限',
+                permissionPurpose: '当前已在应用源码/配置扫描或 SDK API→权限映射中识别到该权限，但尚未定位到具体功能点数据流。',
+                denyImpact: '当前未从已识别的数据流中定位到具体拒绝授权影响。',
+                refs: [],
+              },
+            ],
+          },
+          dataflows: {
+            meta: {
+              runId: 'run2',
+              generatedAt: new Date().toISOString(),
+              counts: { flows: 0, nodes: 0, edges: 0 },
+            },
+            flows: [],
+          },
+        },
+      ],
+    });
+
+    const permissionSection = result.report.sections.permissions[0];
+    expect(permissionSection?.tokens.length).toBeGreaterThan(0);
+    expect(permissionSection?.tokens[0]?.text).toContain('ohos.permission.INTERNET');
+    expect(result.text).toContain('尚未定位到可回溯的功能点数据流');
+  });
 });

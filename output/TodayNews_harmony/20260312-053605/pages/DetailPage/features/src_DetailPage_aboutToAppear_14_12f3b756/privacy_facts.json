@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260312-053605",
+    "featureId": "src_DetailPage_aboutToAppear_14_12f3b756",
+    "generatedAt": "2026-03-11T21:45:35.405Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "TodayNews_harmony",
+        "businessScenario": "在新闻详情页面加载时，计算并展示新闻发布的相对时间（如“X 天前”）。",
+        "dataSources": [
+          "系统当前时间"
+        ],
+        "dataItems": [
+          {
+            "name": "系统当前时间 (System Current Time)",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n2"
+              }
+            ]
+          },
+          {
+            "name": "新闻展示时间戳 (News Display Timestamp)",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n3"
+              }
+            ]
+          },
+          {
+            "name": "时间差计算结果 (Time Difference)",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "获取系统当前时间与本地存储的新闻展示时间进行减法运算，计算出时间差后转换为天、小时、分钟数。",
+        "storageMethod": "计算结果仅临时存储在组件状态变量中用于界面渲染，未检测到持久化存储或加密操作。",
+        "dataRecipients": [],
+        "processingPurpose": "为了在用户界面上动态显示新闻发布距今的相对时长（例如：'1 天前'），提升用户体验。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260312-053605",
+    "featureId": "src_DetailPage_aboutToAppear_13_146345f0",
+    "generatedAt": "2026-03-11T21:45:23.491Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.SYSTEM_TIME 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "TodayNews_harmony",
+        "businessScenario": "在新闻详情页面加载时，计算并展示新闻发布时间的相对时长（如“X天前”）",
+        "dataSources": [
+          "系统时间"
+        ],
+        "dataItems": [
+          {
+            "name": "系统当前时间戳 (Unix Epoch)",
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n2"
+              }
+            ]
+          },
+          {
+            "name": "业务展示时间偏移量 (display_dt)",
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n3"
+              }
+            ]
+          },
+          {
+            "name": "计算后的相对时间 (天/小时/分钟)",
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n4"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n5"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "本地计算：获取系统时间后与本地存储的新闻发布时间进行差值运算，转换为天、小时、分钟单位",
+        "storageMethod": "内存临时存储：数据仅保存在组件状态变量中用于 UI 渲染，未检测到持久化存储或加密处理",
+        "dataRecipients": [],
+        "processingPurpose": "优化用户体验，以相对时间格式（如'1天前'）展示新闻发布时间",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

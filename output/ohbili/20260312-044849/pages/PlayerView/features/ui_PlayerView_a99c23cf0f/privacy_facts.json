@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "featureId": "ui_PlayerView_a99c23cf0f",
+    "generatedAt": "2026-03-11T21:09:06.529Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.GET_DISPLAY_INFO 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "视频播放页面加载时，为适配不同屏幕（特别是处理刘海屏/挖孔屏）以优化视频显示效果。",
+        "dataSources": [
+          "设备显示屏信息"
+        ],
+        "dataItems": [
+          {
+            "name": "屏幕分辨率 (width/height)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n4"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n4"
+              }
+            ]
+          },
+          {
+            "name": "屏幕刘海/挖孔区域信息 (CutoutInfo)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              }
+            ]
+          },
+          {
+            "name": "全屏显示比例 (fullScreenRatio)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n8"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n8"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "在组件即将显示时自动触发，获取默认显示屏对象，读取屏幕高度和宽度，异步获取刘海/挖孔区域的矩形框信息，计算实际可用显示高度并存储比例值。",
+        "storageMethod": "本地内存存储于组件实例变量 (this.fullScreenRatio)，未检测到持久化存储或加密操作。",
+        "dataRecipients": [],
+        "processingPurpose": "为了在不同物理形态的屏幕上正确渲染视频播放器界面，避免UI元素被手机听筒、前置摄像头等硬件遮挡。",
+        "privacyToggleUi": {
+          "where": "未识别到用户可手动关闭此数据收集的开关，该行为是系统级基础功能调用。"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

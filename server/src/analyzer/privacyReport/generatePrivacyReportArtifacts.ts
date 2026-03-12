@@ -92,6 +92,7 @@ function featureFactsFile(args: {
 
 function placeholderReport(args: { runId: string; llm: LlmConfig; features: string[]; skipReason: string }): PrivacyReportFile {
   const generatedAt = new Date().toISOString();
+  const featureIds = args.features.length > 0 ? args.features : ['__analysis_status'];
   return {
     meta: {
       runId: args.runId,
@@ -102,13 +103,27 @@ function placeholderReport(args: { runId: string; llm: LlmConfig; features: stri
       counts: { features: args.features.length },
     },
     sections: {
-      collectionAndUse: args.features.map((featureId) => ({
+      collectionAndUse: featureIds.map((featureId) => ({
         featureId,
-        tokens: [{ text: `在【${featureId}】功能点中：隐私声明报告未生成（原因：${args.skipReason}）。` }],
+        tokens: [
+          {
+            text:
+              featureId === '__analysis_status'
+                ? `当前未识别到可用于生成“我们如何收集和使用您的个人信息”章节的页面功能或数据流证据（原因：${args.skipReason}）。`
+                : `在【${featureId}】功能点中：隐私声明报告未生成（原因：${args.skipReason}）。`,
+          },
+        ],
       })),
-      permissions: args.features.map((featureId) => ({
+      permissions: featureIds.map((featureId) => ({
         featureId,
-        tokens: [{ text: `在【${featureId}】功能点中：隐私声明报告未生成（原因：${args.skipReason}）。` }],
+        tokens: [
+          {
+            text:
+              featureId === '__analysis_status'
+                ? `当前未识别到可用于生成“设备权限调用”章节的权限证据（原因：${args.skipReason}）。`
+                : `在【${featureId}】功能点中：隐私声明报告未生成（原因：${args.skipReason}）。`,
+          },
+        ],
       })),
     },
   };

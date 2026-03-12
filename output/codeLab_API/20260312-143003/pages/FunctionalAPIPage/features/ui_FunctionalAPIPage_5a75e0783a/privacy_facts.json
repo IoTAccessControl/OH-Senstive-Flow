@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "runId": "codeLab_API_20260312-143003",
+    "featureId": "ui_FunctionalAPIPage_5a75e0783a",
+    "generatedAt": "2026-03-12T06:31:17.177Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.READ_SYSTEM_SETTING 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "codeLab_API",
+        "businessScenario": "用户点击按钮触发系统信息获取操作，用于在页面展示设备屏幕尺寸、品牌或方向等基础设置。",
+        "dataSources": [
+          "设备系统服务"
+        ],
+        "dataItems": [
+          {
+            "name": "窗口宽度 (windowWidth)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n9"
+              }
+            ]
+          },
+          {
+            "name": "设备品牌 (brand)",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              }
+            ]
+          },
+          {
+            "name": "设备方向 (deviceOrientation)",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "通过 atomicService 接口异步或同步请求系统属性，结果暂存于内存变量并更新 UI 显示。",
+        "storageMethod": "数据仅临时存储于组件状态变量（@State）中，未检测到持久化存储或加密操作。",
+        "dataRecipients": [],
+        "processingPurpose": "在应用界面动态展示当前设备的屏幕参数及硬件标识信息。",
+        "privacyToggleUi": {
+          "where": "首页功能列表中的独立按钮入口",
+          "refs": [
+            {
+              "uiNodeId": "ui:1ec4bb3a29d9"
+            },
+            {
+              "uiNodeId": "ui:de247131ec74"
+            },
+            {
+              "uiNodeId": "ui:4392a97919ac"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

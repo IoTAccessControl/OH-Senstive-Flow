@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "featureId": "src_About_build_21_47000ef4",
+    "generatedAt": "2026-03-11T21:06:46.084Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户在搜索栏界面进行交互时，应用读取本地存储的默认搜索关键词和页面显示状态，用于初始化输入框占位符及控制焦点行为；当用户点击搜索栏时，将默认关键词传递至搜索页面。",
+        "dataSources": [
+          "本地存储 (Preferences)"
+        ],
+        "dataItems": [
+          {
+            "name": "searchDefault",
+            "refs": [
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n2"
+              },
+              {
+                "flowId": "flow:p13",
+                "nodeId": "p13:n4"
+              }
+            ]
+          },
+          {
+            "name": "isShowPage",
+            "refs": [
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n1"
+              },
+              {
+                "flowId": "flow:p13",
+                "nodeId": "p13:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据从本地存储读取后，在内存中用于 UI 组件渲染（设置占位符、控制焦点）及路由参数传递。",
+        "storageMethod": "通过 @StorageLink 绑定应用首选项 (Preferences) 进行本地持久化存储，加密状态未知。",
+        "dataRecipients": [],
+        "processingPurpose": "优化搜索体验，提供默认搜索词提示并控制输入框交互状态。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

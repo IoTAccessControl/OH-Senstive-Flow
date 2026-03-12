@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "runId": "codeLab_API_20260311-214734",
+    "featureId": "ui_FunctionalAPIPage_ec056f325b",
+    "generatedAt": "2026-03-11T13:48:29.442Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.SCENARIO_FUSION 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "codeLab_API",
+        "businessScenario": "用户点击界面按钮请求获取设备系统信息（如屏幕宽度、设备品牌、屏幕方向）以在本地页面展示。",
+        "dataSources": [
+          "设备系统服务"
+        ],
+        "dataItems": [
+          {
+            "name": "窗口宽度 (windowWidth)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n10"
+              }
+            ]
+          },
+          {
+            "name": "设备品牌 (brand)",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          },
+          {
+            "name": "设备屏幕方向 (deviceOrientation)",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "通过调用系统 API (atomicService) 异步或同步读取设备属性，并将结果转换为字符串更新到 UI 状态变量中。",
+        "storageMethod": "数据仅临时存储于应用内存中的组件状态变量 (@State)，未检测到持久化存储或加密操作。",
+        "dataRecipients": [],
+        "processingPurpose": "响应式编程模型下，根据用户交互动态获取并渲染设备配置信息至用户界面。",
+        "privacyToggleUi": {
+          "where": "首页 (Index.ets) 上的功能入口按钮区域",
+          "refs": [
+            {
+              "uiNodeId": "ui:1ec4bb3a29d9"
+            },
+            {
+              "uiNodeId": "ui:de247131ec74"
+            },
+            {
+              "uiNodeId": "ui:4392a97919ac"
+            },
+            {
+              "uiNodeId": "ui:0ac26114556c"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

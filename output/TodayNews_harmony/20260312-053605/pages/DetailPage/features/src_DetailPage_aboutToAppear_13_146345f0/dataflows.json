@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260312-053605",
+    "generatedAt": "2026-03-11T21:44:43.659Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 8,
+      "edges": 7,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "DetailPage",
+      "entry": {
+        "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+        "structName": "DetailPage",
+        "line": 11,
+        "description": "详情页面"
+      }
+    },
+    "feature": {
+      "featureId": "src_DetailPage_aboutToAppear_13_146345f0",
+      "kind": "source",
+      "title": "详情页面进入时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets",
+          "line": 13,
+          "code": "aboutToAppear() {",
+          "description": "生命周期入口：组件即将显示时触发 aboutToAppear 函数，启动数据初始化流程。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "  @State day: number = 0;",
+              "  @State hour: number = 0;",
+              "  @State minute: number = 0;",
+              "  @State timeShow: string = \"\";",
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    systemTime.getCurrentTime(false, (error, time) => {",
+              "      let temp = time / 1000 - this.itemData.display_dt;",
+              "      this.day = Math.trunc(temp / 3600 / 24);",
+              "      this.hour = Math.trunc((temp % (3600 * 24)) / 3600);"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets",
+          "line": 15,
+          "code": "systemTime.getCurrentTime(false, (error, time) => {",
+          "description": "隐私数据采集点：调用 systemTime.getCurrentTime 获取当前系统时间戳（毫秒级），涉及用户设备的时间上下文信息。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  @State minute: number = 0;",
+              "  @State timeShow: string = \"\";",
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    systemTime.getCurrentTime(false, (error, time) => {",
+              "      let temp = time / 1000 - this.itemData.display_dt;",
+              "      this.day = Math.trunc(temp / 3600 / 24);",
+              "      this.hour = Math.trunc((temp % (3600 * 24)) / 3600);",
+              "      this.minute = Math.trunc((temp % 3600) / 60);",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets",
+          "line": 16,
+          "code": "let temp = time / 1000 - this.itemData.display_dt;",
+          "description": "数据计算：将获取的系统时间戳转换为秒，并与本地模型 itemData.display_dt 进行差值计算，得出时间偏移量。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  @State timeShow: string = \"\";",
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    systemTime.getCurrentTime(false, (error, time) => {",
+              "      let temp = time / 1000 - this.itemData.display_dt;",
+              "      this.day = Math.trunc(temp / 3600 / 24);",
+              "      this.hour = Math.trunc((temp % (3600 * 24)) / 3600);",
+              "      this.minute = Math.trunc((temp % 3600) / 60);",
+              "",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p9:n4",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets",
+          "line": 17,
+          "code": "this.day = Math.trunc(temp / 3600 / 24);",
+          "description": "数据转换：将时间偏移量转换为“天”单位的整数，准备用于 UI 展示。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    systemTime.getCurrentTime(false, (error, time) => {",
+              "      let temp = time / 1000 - this.itemData.display_dt;",
+              "      this.day = Math.trunc(temp / 3600 / 24);",
+              "      this.hour = Math.trunc((temp % (3600 * 24)) / 3600);",
+              "      this.minute = Math.trunc((temp % 3600) / 60);",
+              "",
+              "",
+              "      if (this.day > 0) {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n5",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets",
+          "line": 18,
+          "code": "this.hour = Math.trunc((temp % (3600 * 24)) / 3600);",
+          "description": "数据转换：将时间偏移量转换为“小时”单位的整数，准备用于 UI 展示。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  aboutToAppear() {",
+              "",
+              "    systemTime.getCurrentTime(false, (error, time) => {",
+              "      let temp = time / 1000 - this.itemData.display_dt;",
+              "      this.day = Math.trunc(temp / 3600 / 24);",
+              "      this.hour = Math.trunc((temp % (3600 * 24)) / 3600);",
+              "      this.minute = Math.trunc((temp % 3600) / 60);",
+              "",
+              "",
+              "      if (this.day > 0) {",
+              "        this.timeShow = `${this.day}天前`;"
+            ]
+          }
+        },
+        {
+          "id": "p9:n6",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets",
+          "line": 19,
+          "code": "this.minute = Math.trunc((temp % 3600) / 60);",
+          "description": "数据转换：将时间偏移量转换为“分钟”单位的整数，准备用于 UI 展示。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "",
+              "    systemTime.getCurrentTime(false, (error, time) => {",
+              "      let temp = time / 1000 - this.itemData.display_dt;",
+              "      this.day = Math.trunc(temp / 3600 / 24);",
+              "      this.hour = Math.trunc((temp % (3600 * 24)) / 3600);",
+              "      this.minute = Math.trunc((temp % 3600) / 60);",
+              "",
+              "",
+              "      if (this.day > 0) {",
+              "        this.timeShow = `${this.day}天前`;",
+              "      } else if (this.hour > 0) {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n7",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets",
+          "line": 22,
+          "code": "if (this.day > 0) {",
+          "description": "逻辑判断：检查计算出的天数是否大于 0，决定后续的展示格式。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "      this.day = Math.trunc(temp / 3600 / 24);",
+              "      this.hour = Math.trunc((temp % (3600 * 24)) / 3600);",
+              "      this.minute = Math.trunc((temp % 3600) / 60);",
+              "",
+              "",
+              "      if (this.day > 0) {",
+              "        this.timeShow = `${this.day}天前`;",
+              "      } else if (this.hour > 0) {",
+              "        this.timeShow = `${this.hour}小时前`;",
+              "      } else if (this.minute > 0) {",
+              "        this.timeShow = `${this.minute}分钟前`;"
+            ]
+          }
+        },
+        {
+          "id": "p9:n8",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets",
+          "line": 23,
+          "code": "this.timeShow = `${this.day}天前`;",
+          "description": "状态更新：将计算好的相对时间字符串赋值给 @State 变量 timeShow，触发 UI 重新渲染，数据驻留在内存中。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "      this.hour = Math.trunc((temp % (3600 * 24)) / 3600);",
+              "      this.minute = Math.trunc((temp % 3600) / 60);",
+              "",
+              "",
+              "      if (this.day > 0) {",
+              "        this.timeShow = `${this.day}天前`;",
+              "      } else if (this.hour > 0) {",
+              "        this.timeShow = `${this.hour}小时前`;",
+              "      } else if (this.minute > 0) {",
+              "        this.timeShow = `${this.minute}分钟前`;",
+              "      }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        },
+        {
+          "from": "p9:n3",
+          "to": "p9:n4"
+        },
+        {
+          "from": "p9:n4",
+          "to": "p9:n5"
+        },
+        {
+          "from": "p9:n5",
+          "to": "p9:n6"
+        },
+        {
+          "from": "p9:n6",
+          "to": "p9:n7"
+        },
+        {
+          "from": "p9:n7",
+          "to": "p9:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "系统当前时间戳 (Unix Epoch)",
+          "业务展示时间偏移量 (display_dt)",
+          "计算后的相对时间 (天/小时/分钟)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (组件生命周期 aboutToAppear)",
+          "一次性收集"
+        ],
+        "cloudUpload": [
+          "未检测到直接网络发送行为",
+          "数据仅用于本地 UI 状态更新"
+        ],
+        "storageAndEncryption": [
+          "内存存储 (@State 装饰器管理的组件状态)",
+          "未检测到持久化存储 (如 Preferences/File)",
+          "未检测到加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.SYSTEM_TIME (隐式依赖，读取系统时间通常需要此权限或默认允许)"
+        ]
+      }
+    }
+  ]
+}

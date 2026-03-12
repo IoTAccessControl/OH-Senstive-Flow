@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260311-214131",
+    "featureId": "src_inferred_aboutToAppear_17_3ab0311e",
+    "generatedAt": "2026-03-11T13:42:33.339Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "AccountKit-QuickLogin",
+        "businessScenario": "用户进入快速登录准备页面时，系统记录页面加载状态并准备跳转至下一环节。",
+        "dataSources": [
+          "应用内部日志系统",
+          "页面导航参数"
+        ],
+        "dataItems": [
+          {
+            "name": "组件生命周期状态",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n5"
+              }
+            ]
+          },
+          {
+            "name": "日志标签 (logTag)",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n1"
+              }
+            ]
+          },
+          {
+            "name": "匿名手机号 (anonymousPhone)",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "在页面即将显示时，将组件名称与生命周期事件拼接后输出到系统日志；同时接收并校验匿名化处理的手机号码参数，将其封装为路由参数对象。",
+        "storageMethod": "内存临时存储（State/Consume 机制）及未加密的系统日志输出。",
+        "dataRecipients": [],
+        "processingPurpose": "用于标识当前操作上下文、追踪页面加载流程以及传递必要的登录验证信息。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

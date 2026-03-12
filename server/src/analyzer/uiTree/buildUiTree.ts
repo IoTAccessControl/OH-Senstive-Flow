@@ -7,8 +7,8 @@ import { resolveLlmBaseUrls } from '../../llm/provider.js';
 import { LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/openaiCompatible.js';
 import { DEFAULT_APP_SCAN_SUBDIR } from '../defaults.js';
 import { toPosixPath, toWorkspaceRelativePath } from '../pathUtils.js';
-import { scanTokens, type Token } from '../tokenScanner.js';
 import { scanFunctionBlocks, type FunctionBlock } from '../callGraph/functionBlocks.js';
+import { buildLineStarts, findMatchingDelimiter, lineNumberAt } from '../shared/textScan.js';
 
 import type { UiTreeEdge, UiTreeNavTarget, UiTreeNode, UiTreeNodeCategory, UiTreeResult } from './types.js';
 import {
@@ -81,52 +81,46 @@ function buildContext(lines: string[], line1Based: number, radius: number): { st
   };
 }
 
-function findMatchingBrace(tokens: Token[], openBraceIndex: number): number | null {
-  let depth = 0;
-  for (let i = openBraceIndex; i < tokens.length; i += 1) {
-    const k = tokens[i]?.kind;
-    if (k === ts.SyntaxKind.OpenBraceToken) depth += 1;
-    else if (k === ts.SyntaxKind.CloseBraceToken) depth -= 1;
-    if (depth === 0) return i;
-  }
-  return null;
-}
-
 function scanStructBlocks(fileText: string, sourceFile: ts.SourceFile): StructBlock[] {
-  const tokens = scanTokens(fileText);
+  const lineStarts = buildLineStarts(fileText);
   const blocks: StructBlock[] = [];
+  const regex = /\bstruct\s+([A-Za-z_][A-Za-z0-9_]*)\s*\{/gu;
+  let match: RegExpExecArray | null = regex.exec(fileText);
 
-  for (let i = 0; i < tokens.length; i += 1) {
-    const t = tokens[i];
-    if (!t) continue;
-    if (t.kind !== ts.SyntaxKind.Identifier || t.text !== 'struct') continue;
+  while (match) {
+    const name = match[1] ?? '';
+    const structPos = match.index ?? 0;
+    const openBracePos = fileText.indexOf('{', structPos);
+    const closeBracePos = openBracePos >= 0 ? findMatchingDelimiter(fileText, openBracePos, '{', '}') : null;
+    if (name && openBracePos >= 0 && closeBracePos !== null) {
+      const namePos = structPos + match[0].indexOf(name);
+      const beforeStruct = fileText.slice(Math.max(0, structPos - 64), structPos);
+      const exportDefault = /\bexport\s+default\s*$/u.test(beforeStruct);
+      const startLine = sourceFile.getLineAndCharacterOfPosition(namePos).line + 1;
+      const endLine = lineNumberAt(lineStarts, closeBracePos);
 
-    const nameTok = tokens[i + 1];
-    const openBrace = tokens[i + 2];
-    if (nameTok?.kind !== ts.SyntaxKind.Identifier) continue;
-    if (openBrace?.kind !== ts.SyntaxKind.OpenBraceToken) continue;
-
-    const closeBraceIndex = findMatchingBrace(tokens, i + 2);
-    if (closeBraceIndex === null) continue;
-
-    const exportDefault =
-      tokens[i - 2]?.kind === ts.SyntaxKind.ExportKeyword && tokens[i - 1]?.kind === ts.SyntaxKind.DefaultKeyword;
-
-    const startLine = sourceFile.getLineAndCharacterOfPosition(nameTok.pos).line + 1;
-    const endLine = sourceFile.getLineAndCharacterOfPosition(tokens[closeBraceIndex]!.pos).line + 1;
-
-    blocks.push({
-      name: nameTok.text,
-      exportDefault,
-      startLine,
-      endLine,
-      bodyStartPos: openBrace.pos,
-      bodyEndPos: tokens[closeBraceIndex]!.pos,
-      namePos: nameTok.pos,
-    });
+      blocks.push({
+        name,
+        exportDefault,
+        startLine,
+        endLine,
+        bodyStartPos: openBracePos,
+        bodyEndPos: closeBracePos,
+        namePos,
+      });
+    }
+    match = regex.exec(fileText);
   }
 
   return blocks;
+}
+
+function relToArkUiRoot(scanRootAbs: string, abs: string): string {
+  const normalized = toPosixPath(abs);
+  const marker = '/src/main/ets/';
+  const idx = normalized.lastIndexOf(marker);
+  if (idx >= 0) return normalized.slice(idx + marker.length);
+  return toPosixPath(path.relative(scanRootAbs, abs));
 }
 
 function findEntryStructs(lines: string[], structs: StructBlock[]): StructBlock[] {
@@ -347,7 +341,7 @@ export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeRe
   const routeToFileRel = new Map<string, string>();
   const fileRelToAbs = new Map<string, string>();
   for (const abs of options.appFiles) {
-    const relToScan = toPosixPath(path.relative(scanRootAbs, abs));
+    const relToScan = relToArkUiRoot(scanRootAbs, abs);
     if (!relToScan || relToScan.startsWith('..')) continue;
     const noExt = relToScan.replace(/\.[^.]+$/u, '');
     const fileRel = toWorkspaceRelativePath(options.repoRoot, abs);
@@ -379,7 +373,7 @@ export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeRe
       pageQueue.push({ fileRel, structName: s.name, structStartLine: s.startLine, isRoot: true });
     }
 
-    const relToScan = toPosixPath(path.relative(scanRootAbs, abs));
+    const relToScan = relToArkUiRoot(scanRootAbs, abs);
     const isPageFile = /(?:^|\/)pages\//u.test(relToScan);
     const primary = isPageFile ? pickPrimaryStruct(structs) : null;
     if (!primary) continue;

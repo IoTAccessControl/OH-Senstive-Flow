@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260312-054801",
+    "featureId": "ui_ChatPage_e19e4bc985",
+    "generatedAt": "2026-03-11T22:27:40.104Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户在聊天界面使用语音输入功能时，应用会收集用户的语音数据并可能转换为文本消息。",
+        "dataSources": [
+          "用户设备麦克风",
+          "本地内存"
+        ],
+        "dataItems": [
+          {
+            "name": "语音输入内容 (voiceToText)",
+            "refs": [
+              {
+                "flowId": "flow:p118",
+                "nodeId": "p118:n11"
+              }
+            ]
+          },
+          {
+            "name": "聊天消息列表 (chatList/dataList)",
+            "refs": [
+              {
+                "flowId": "flow:p118",
+                "nodeId": "p118:n4"
+              },
+              {
+                "flowId": "flow:p118",
+                "nodeId": "p118:n12"
+              }
+            ]
+          },
+          {
+            "name": "用户昵称 (name)",
+            "refs": [
+              {
+                "flowId": "flow:p118",
+                "nodeId": "p118:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "客户端处理（UI 渲染、内存中构建消息对象）",
+        "storageMethod": "本地内存存储（如 chatList 数组），未明确发现持久化加密逻辑",
+        "dataRecipients": [],
+        "processingPurpose": "实现即时通讯中的语音转文字及消息发送功能",
+        "privacyToggleUi": {
+          "where": "聊天页面底部工具栏的语音输入按钮区域",
+          "refs": [
+            {
+              "uiNodeId": "ui:1450354868e2"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.MICROPHONE",
+        "businessScenario": "当用户点击或触发语音输入功能时，需要获取麦克风权限以录制音频。",
+        "permissionPurpose": "采集用户语音数据以进行语音识别或发送语音消息。",
+        "denyImpact": "如果拒绝授权，用户将无法使用语音输入功能，只能使用纯文本输入。",
+        "refs": [
+          {
+            "flowId": "flow:p118",
+            "nodeId": "p118:n7"
+          },
+          {
+            "flowId": "flow:p118",
+            "nodeId": "p118:n9"
+          },
+          {
+            "flowId": "flow:p118",
+            "nodeId": "p118:n10"
+          },
+          {
+            "flowId": "flow:p134",
+            "nodeId": "p134:n4"
+          },
+          {
+            "flowId": "flow:p134",
+            "nodeId": "p134:n6"
+          },
+          {
+            "flowId": "flow:p134",
+            "nodeId": "p134:n7"
+          },
+          {
+            "flowId": "flow:p135",
+            "nodeId": "p135:n4"
+          },
+          {
+            "flowId": "flow:p135",
+            "nodeId": "p135:n6"
+          },
+          {
+            "flowId": "flow:p135",
+            "nodeId": "p135:n7"
+          }
+        ]
+      }
+    ]
+  }
+}

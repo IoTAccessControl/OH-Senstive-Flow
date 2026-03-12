@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260312-024310",
+    "featureId": "ui_PrepareLoginPage_9fcc9f9718",
+    "generatedAt": "2026-03-11T19:22:49.421Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.LOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "AccountKit-QuickLogin",
+        "businessScenario": "用户点击登录按钮触发快速登录流程时，应用通过华为账号服务获取用户的匿名手机号、UnionID 和 OpenID，用于后续业务验证。",
+        "dataSources": [
+          "系统账号服务 (HuaweiIDProvider)"
+        ],
+        "dataItems": [
+          {
+            "name": "匿名手机号 (quickLoginAnonymousPhone)",
+            "refs": [
+              {
+                "flowId": "flow:p64",
+                "nodeId": "p64:n9"
+              },
+              {
+                "flowId": "flow:p65",
+                "nodeId": "p65:n9"
+              },
+              {
+                "flowId": "flow:p66",
+                "nodeId": "p66:n7"
+              }
+            ]
+          },
+          {
+            "name": "UnionID",
+            "refs": [
+              {
+                "flowId": "flow:p64",
+                "nodeId": "p64:n7"
+              },
+              {
+                "flowId": "flow:p65",
+                "nodeId": "p65:n7"
+              }
+            ]
+          },
+          {
+            "name": "OpenID",
+            "refs": [
+              {
+                "flowId": "flow:p64",
+                "nodeId": "p64:n8"
+              },
+              {
+                "flowId": "flow:p65",
+                "nodeId": "p65:n8"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "从华为账号服务响应中提取并解析",
+        "storageMethod": "使用 AppStorage.setOrCreate 进行本地状态存储（未显式加密）",
+        "dataRecipients": [
+          {
+            "name": "华为账号认证服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p64",
+                "nodeId": "p64:n4"
+              },
+              {
+                "flowId": "flow:p65",
+                "nodeId": "p65:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现用户身份的快速验证与无感登录"
+      },
+      {
+        "appName": "AccountKit-QuickLogin",
+        "businessScenario": "用户在登录准备页查看或点击隐私协议链接时，应用记录相关操作日志及错误信息。",
+        "dataSources": [
+          "用户交互事件",
+          "系统配置"
+        ],
+        "dataItems": [
+          {
+            "name": "系统语言环境",
+            "refs": [
+              {
+                "flowId": "flow:p63",
+                "nodeId": "p63:n5"
+              }
+            ]
+          },
+          {
+            "name": "网络连接状态",
+            "refs": [
+              {
+                "flowId": "flow:p62",
+                "nodeId": "p62:n5"
+              },
+              {
+                "flowId": "flow:p63",
+                "nodeId": "p63:n4"
+              }
+            ]
+          },
+          {
+            "name": "异常错误码与消息",
+            "refs": [
+              {
+                "flowId": "flow:p59",
+                "nodeId": "p59:n6"
+              },
+              {
+                "flowId": "flow:p61",
+                "nodeId": "p61:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "调用 hilog.info 或 hilog.error 输出至系统日志缓冲区",
+        "storageMethod": "临时存储于系统日志服务，非应用本地持久化文件",
+        "dataRecipients": [],
+        "processingPurpose": "调试追踪、错误诊断及多语言协议适配"
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.GET_NETWORK_INFO",
+        "businessScenario": "Checks whether the default data network is activated.",
+        "permissionPurpose": "使用相关系统能力（由 SDK API 权限映射确定）",
+        "denyImpact": "拒绝授权可能导致对应功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p62",
+            "nodeId": "p62:n5"
+          },
+          {
+            "flowId": "flow:p63",
+            "nodeId": "p63:n4"
+          },
+          {
+            "flowId": "flow:p69",
+            "nodeId": "p69:n6"
+          },
+          {
+            "flowId": "flow:p70",
+            "nodeId": "p70:n6"
+          },
+          {
+            "flowId": "flow:p76",
+            "nodeId": "p76:n9"
+          },
+          {
+            "flowId": "flow:p77",
+            "nodeId": "p77:n8"
+          },
+          {
+            "flowId": "flow:p83",
+            "nodeId": "p83:n5"
+          },
+          {
+            "flowId": "flow:p84",
+            "nodeId": "p84:n5"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "应用发起华为账号授权请求以获取用户标识符，以及加载远程隐私协议网页内容。",
+        "permissionPurpose": "建立与服务器的网络通信，完成身份验证握手及动态资源加载。",
+        "denyImpact": "若拒绝此权限，应用将无法连接华为账号服务获取用户信息，导致快速登录功能完全不可用；同时无法加载在线的隐私协议文本。",
+        "refs": [
+          {
+            "flowId": "flow:p62",
+            "nodeId": "p62:n5"
+          },
+          {
+            "flowId": "flow:p64",
+            "nodeId": "p64:n4"
+          }
+        ]
+      }
+    ]
+  }
+}

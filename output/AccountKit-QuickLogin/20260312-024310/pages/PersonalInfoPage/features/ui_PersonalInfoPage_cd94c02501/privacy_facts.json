@@ -1,0 +1,215 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260312-024310",
+    "featureId": "ui_PersonalInfoPage_cd94c02501",
+    "generatedAt": "2026-03-11T19:22:29.731Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACCESS_NETWORK_STATE 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.LOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "AccountKit-QuickLogin",
+        "businessScenario": "用户点击隐私协议链接时，应用记录操作日志并检查网络状态以加载对应语言的协议页面。",
+        "dataSources": [
+          "用户交互事件",
+          "系统环境信息"
+        ],
+        "dataItems": [
+          {
+            "name": "用户操作事件（点击协议链接）",
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n6"
+              },
+              {
+                "flowId": "flow:p32",
+                "nodeId": "p32:n6"
+              }
+            ]
+          },
+          {
+            "name": "日志域标识符 (domainId)",
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n6"
+              },
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n8"
+              }
+            ]
+          },
+          {
+            "name": "日志标签 (logTag)",
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n6"
+              },
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n8"
+              }
+            ]
+          },
+          {
+            "name": "网络连接状态",
+            "refs": [
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n7"
+              },
+              {
+                "flowId": "flow:p34",
+                "nodeId": "p34:n6"
+              }
+            ]
+          },
+          {
+            "name": "系统语言环境",
+            "refs": [
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n8"
+              },
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n7"
+              }
+            ]
+          },
+          {
+            "name": "错误码 (error.code)",
+            "refs": [
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n8"
+              },
+              {
+                "flowId": "flow:p33",
+                "nodeId": "p33:n7"
+              }
+            ]
+          },
+          {
+            "name": "错误消息 (error.message)",
+            "refs": [
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n9"
+              },
+              {
+                "flowId": "flow:p33",
+                "nodeId": "p33:n7"
+              }
+            ]
+          },
+          {
+            "name": "隐私协议文本内容",
+            "refs": [
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n5"
+              },
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中临时处理，通过 hilog 接口写入系统日志，或用于构建 WebView 跳转参数。",
+        "storageMethod": "临时内存存储（日志缓冲区、异常对象），最终由系统日志服务管理（未加密）。",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n6"
+              },
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n8"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "记录用户交互行为以便调试，获取设备环境信息以适配多语言协议展示，监控网络状态以确保协议页面可加载。",
+        "privacyToggleUi": {
+          "where": "个人信息页中的退出登录按钮区域附近（关联隐私协议查看入口）",
+          "refs": [
+            {
+              "uiNodeId": "ui:aa1350ae2fb2"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.GET_NETWORK_INFO",
+        "businessScenario": "Checks whether the default data network is activated.",
+        "permissionPurpose": "使用相关系统能力（由 SDK API 权限映射确定）",
+        "denyImpact": "拒绝授权可能导致对应功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p26",
+            "nodeId": "p26:n7"
+          },
+          {
+            "flowId": "flow:p34",
+            "nodeId": "p34:n6"
+          },
+          {
+            "flowId": "flow:p35",
+            "nodeId": "p35:n6"
+          },
+          {
+            "flowId": "flow:p47",
+            "nodeId": "p47:n6"
+          },
+          {
+            "flowId": "flow:p48",
+            "nodeId": "p48:n6"
+          },
+          {
+            "flowId": "flow:p55",
+            "nodeId": "p55:n5"
+          },
+          {
+            "flowId": "flow:p56",
+            "nodeId": "p56:n5"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "用户点击隐私协议链接后，应用尝试加载远程协议页面。",
+        "permissionPurpose": "隐含依赖，用于支持 WebView 加载远程隐私协议内容及网络连通性检查。",
+        "denyImpact": "若拒绝该权限，用户将无法查看在线版本的隐私协议内容。",
+        "refs": [
+          {
+            "flowId": "flow:p27",
+            "nodeId": "p27:n10"
+          },
+          {
+            "flowId": "flow:p35",
+            "nodeId": "p35:n10"
+          }
+        ]
+      }
+    ]
+  }
+}

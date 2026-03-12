@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260312-054801",
+    "generatedAt": "2026-03-11T22:26:47.743Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onWindowStageDestroy_32_3b2773f5",
+      "kind": "source",
+      "title": "主窗口销毁时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p154",
+      "pathId": "p154",
+      "nodes": [
+        {
+          "id": "p154:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 32,
+          "code": "onWindowStageDestroy() {",
+          "description": "定义 onWindowStageDestroy 生命周期回调函数，作为数据流的起点，当主窗口阶段销毁时被系统触发。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {"
+            ]
+          }
+        },
+        {
+          "id": "p154:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "// Main window is destroyed, release UI related resources",
+          "description": "代码注释行，说明此处逻辑旨在释放 UI 相关资源，不涉及实际数据操作。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground"
+            ]
+          }
+        },
+        {
+          "id": "p154:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 34,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+          "description": "调用 hilog.info 接口，将固定的生命周期状态字符串 'Ability onWindowStageDestroy' 格式化并输出到系统信息日志中，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p154:n1",
+          "to": "p154:n2"
+        },
+        {
+          "from": "p154:n2",
+          "to": "p154:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "固定日志标签 (testTag)",
+          "静态描述字符串 (Ability onWindowStageDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 销毁时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "由系统日志服务管理 (hilog)，通常存储于本地日志缓冲区，未在此代码片段中体现加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

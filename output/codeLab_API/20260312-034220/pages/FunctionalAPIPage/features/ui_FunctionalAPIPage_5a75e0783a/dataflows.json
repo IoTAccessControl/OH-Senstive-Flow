@@ -1,0 +1,719 @@
+{
+  "meta": {
+    "runId": "codeLab_API_20260312-034220",
+    "generatedAt": "2026-03-11T19:42:57.100Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 3,
+      "nodes": 23,
+      "edges": 20,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "FunctionalAPIPage",
+      "entry": {
+        "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+        "structName": "FunctionalAPIPage",
+        "line": 5,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_FunctionalAPIPage_5a75e0783a",
+      "kind": "ui",
+      "title": "获取系统设置"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 10,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化页面组件树。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "struct FunctionalAPIPage {",
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 11,
+          "code": "Column() {",
+          "description": "创建 Column 布局容器，作为按钮等子组件的父节点。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 17,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 事件回调函数，标记数据收集流程由用户交互事件触发。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+          "description": "定义请求参数数组 arr，指定需要获取的系统信息类型为 'windowWidth'（窗口宽度）。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "atomicService.getSystemInfo(arr).then((result) => {",
+          "description": "调用 atomicService.getSystemInfo 接口发起异步请求，传入参数以获取设备窗口宽度信息。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              "",
+              "      Button(this.systemInfoSync)"
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 20,
+          "code": "this.systemInfo = String(result.windowWidth);",
+          "description": "处理异步回调结果，将获取到的 windowWidth 数值转换为字符串并赋值给 @State 变量 systemInfo，完成数据在本地内存中的更新与展示准备。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              "",
+              "      Button(this.systemInfoSync)",
+              "        .type(ButtonType.Capsule)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "窗口宽度 (windowWidth)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (@State 状态变量)，未加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 10,
+          "code": "build() {",
+          "description": "UI 组件构建入口 build() 函数开始执行，初始化界面渲染流程",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "struct FunctionalAPIPage {",
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 11,
+          "code": "Column() {",
+          "description": "创建 Column 布局容器，作为页面主要内容的父节点",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')"
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 24,
+          "code": "Button(this.systemInfoSync)",
+          "description": "定义用于触发同步获取系统信息的按钮组件 (systemInfoSync)",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              "",
+              "      Button(this.systemInfoSync)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 29,
+          "code": ".onClick(() => {",
+          "description": "注册按钮点击事件监听器 onClick，准备执行数据收集逻辑",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      Button(this.systemInfoSync)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n5",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 30,
+          "code": "let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+          "description": "定义请求参数数组 arr，指定需要收集的数据项为设备品牌 'brand'",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              "",
+              "      Button(this.systemSettings)"
+            ]
+          }
+        },
+        {
+          "id": "p2:n6",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 31,
+          "code": "let result = atomicService.getSystemInfoSync(arr);",
+          "description": "调用 atomicService.getSystemInfoSync 接口，同步读取设备品牌信息并赋值给 result 变量",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              "",
+              "      Button(this.systemSettings)",
+              "        .type(ButtonType.Capsule)"
+            ]
+          }
+        },
+        {
+          "id": "p2:n7",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 32,
+          "code": "this.systemInfoSync = String(result.brand);",
+          "description": "将获取到的设备品牌数据转换为字符串并更新到 @State 状态变量 systemInfoSync，触发 UI 刷新",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              "",
+              "      Button(this.systemSettings)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        },
+        {
+          "from": "p2:n4",
+          "to": "p2:n5"
+        },
+        {
+          "from": "p2:n5",
+          "to": "p2:n6"
+        },
+        {
+          "from": "p2:n6",
+          "to": "p2:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备品牌 (brand)",
+          "窗口宽度 (windowWidth)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (@State 变量)",
+          "未检测到加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.SCENARIO_FUSION (隐含，调用 ScenarioFusionKit 所需)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 10,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口 build() 函数开始执行，初始化 UI 渲染流程。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "struct FunctionalAPIPage {",
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 11,
+          "code": "Column() {",
+          "description": "创建 Column 布局容器，作为页面主要内容的垂直排列容器。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 35,
+          "code": "Button(this.systemSettings)",
+          "description": "定义用于获取系统设置的按钮组件，绑定文本标签 'GetSystemSettings'。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              "",
+              "      Button(this.systemSettings)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 40,
+          "code": ".onClick(() => {",
+          "description": "注册按钮点击事件监听器 onClick，准备在用户交互时触发数据收集逻辑。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "      Button(this.systemSettings)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemSettingType> = ['deviceOrientation'];",
+              "          let result = atomicService.getSystemSetting(arr);",
+              "          this.systemSettings = String(result.deviceOrientation);",
+              "        })",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p3:n5",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 41,
+          "code": "let arr: Array<atomicService.SystemSettingType> = ['deviceOrientation'];",
+          "description": "定义待查询的系统设置项数组，指定目标数据项为 'deviceOrientation'（设备屏幕方向）。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemSettingType> = ['deviceOrientation'];",
+              "          let result = atomicService.getSystemSetting(arr);",
+              "          this.systemSettings = String(result.deviceOrientation);",
+              "        })",
+              "    }",
+              "    .justifyContent(FlexAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p3:n6",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 42,
+          "code": "let result = atomicService.getSystemSetting(arr);",
+          "description": "调用 atomicService.getSystemSetting 接口，传入参数数组，从系统服务同步获取设备屏幕方向数据。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemSettingType> = ['deviceOrientation'];",
+              "          let result = atomicService.getSystemSetting(arr);",
+              "          this.systemSettings = String(result.deviceOrientation);",
+              "        })",
+              "    }",
+              "    .justifyContent(FlexAlign.Center)",
+              "    .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p3:n7",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 43,
+          "code": "this.systemSettings = String(result.deviceOrientation);",
+          "description": "将获取到的设备方向结果转换为字符串，并更新到组件的状态变量 systemSettings 中，触发 UI 刷新。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemSettingType> = ['deviceOrientation'];",
+              "          let result = atomicService.getSystemSetting(arr);",
+              "          this.systemSettings = String(result.deviceOrientation);",
+              "        })",
+              "    }",
+              "    .justifyContent(FlexAlign.Center)",
+              "    .width('100%')",
+              "    .height('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p3:n8",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 17,
+          "code": ".onClick(() => {",
+          "description": "【关联分支】另一个按钮的点击事件监听器，用于触发窗口宽度数据的收集。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })"
+            ]
+          }
+        },
+        {
+          "id": "p3:n9",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+          "description": "【关联分支】定义待查询的系统信息项数组，指定目标数据项为 'windowWidth'（窗口宽度）。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p3:n10",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "atomicService.getSystemInfo(arr).then((result) => {",
+          "description": "【关联分支】调用 atomicService.getSystemInfo 异步接口，请求获取窗口宽度等系统信息。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              "",
+              "      Button(this.systemInfoSync)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n4",
+          "to": "p3:n5"
+        },
+        {
+          "from": "p3:n5",
+          "to": "p3:n6"
+        },
+        {
+          "from": "p3:n6",
+          "to": "p3:n7"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n8"
+        },
+        {
+          "from": "p3:n8",
+          "to": "p3:n9"
+        },
+        {
+          "from": "p3:n9",
+          "to": "p3:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备屏幕方向 (deviceOrientation)",
+          "窗口宽度 (windowWidth)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮时)"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "仅存储在组件内存状态 (@State) 中，未持久化存储",
+          "未检测到加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.ACCESS_DEVICE_SETTINGS (隐含，读取系统设置通常需要此权限或无需敏感权限取决于具体字段)"
+        ]
+      }
+    }
+  ]
+}

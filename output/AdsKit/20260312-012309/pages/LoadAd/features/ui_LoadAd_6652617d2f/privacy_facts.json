@@ -1,0 +1,184 @@
+{
+  "meta": {
+    "runId": "AdsKit_20260312-012309",
+    "featureId": "ui_LoadAd_6652617d2f",
+    "generatedAt": "2026-03-11T17:25:25.983Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "AdsKit",
+        "businessScenario": "页面加载时初始化广告组件并获取设备标识以支持广告追踪与展示",
+        "dataSources": [
+          "系统设备标识接口",
+          "用户权限授权状态"
+        ],
+        "dataItems": [
+          {
+            "name": "OAID (Open Anonymous Device Identifier)",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n7"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n8"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n7"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n7"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n7"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n7"
+              }
+            ]
+          },
+          {
+            "name": "用户追踪同意状态",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n5"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n5"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n5"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n5"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n5"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n5"
+              }
+            ]
+          },
+          {
+            "name": "错误代码 (Error Code)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              }
+            ]
+          },
+          {
+            "name": "错误消息 (Error Message)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n10"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "在页面即将显示时自动触发，通过异步请求获取用户授权状态及 OAID，若授权成功则调用系统接口获取标识符并赋值给内存变量；若失败或拒绝则记录日志。",
+        "storageMethod": "本地内存临时存储（类成员变量 this.oaid），部分错误信息输出至系统日志缓冲区（hilog），未观察到持久化加密存储。",
+        "dataRecipients": [
+          {
+            "name": "广告服务器",
+            "inferred": true
+          }
+        ],
+        "processingPurpose": "用于广告归因、个性化广告推荐及广告展示功能",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.APP_TRACKING_CONSENT",
+        "businessScenario": "页面加载时初始化广告组件并获取设备标识以支持广告追踪与展示",
+        "permissionPurpose": "申请用户同意进行应用活动追踪，以便获取设备匿名标识符 (OAID) 用于广告投放",
+        "denyImpact": "若用户拒绝授权，应用将无法获取 OAID，可能导致无法展示个性化广告或广告加载失败",
+        "refs": [
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n5"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n5"
+          },
+          {
+            "flowId": "flow:p5",
+            "nodeId": "p5:n5"
+          },
+          {
+            "flowId": "flow:p6",
+            "nodeId": "p6:n5"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n5"
+          },
+          {
+            "flowId": "flow:p8",
+            "nodeId": "p8:n5"
+          },
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n7"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n8"
+          },
+          {
+            "flowId": "flow:p5",
+            "nodeId": "p5:n7"
+          },
+          {
+            "flowId": "flow:p6",
+            "nodeId": "p6:n7"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n7"
+          },
+          {
+            "flowId": "flow:p8",
+            "nodeId": "p8:n7"
+          }
+        ]
+      }
+    ]
+  }
+}

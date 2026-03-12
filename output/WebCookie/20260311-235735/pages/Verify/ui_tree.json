@@ -1,0 +1,258 @@
+{
+  "meta": {
+    "runId": "WebCookie_20260311-235735",
+    "generatedAt": "2026-03-11T15:58:51.333Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 8,
+      "edges": 7,
+      "pages": 1,
+      "elements": 7
+    }
+  },
+  "roots": [
+    "page:d435fe8f6df1"
+  ],
+  "nodes": {
+    "page:d435fe8f6df1": {
+      "id": "page:d435fe8f6df1",
+      "category": "Page",
+      "name": "Verify",
+      "description": "验证页面",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 29,
+      "code": "export struct Verify {",
+      "context": {
+        "startLine": 24,
+        "lines": [
+          "",
+          "/**",
+          " * Page use to verify login free.",
+          " */",
+          "@Component",
+          "export struct Verify {",
+          "  pathStack: NavPathStack = new NavPathStack();",
+          "  fileAccess: boolean = true;",
+          "  controller: webview.WebviewController = new webview.WebviewController();",
+          "  isRedirect: boolean = false;",
+          ""
+        ]
+      }
+    },
+    "ui:11d4dd9b953c": {
+      "id": "ui:11d4dd9b953c",
+      "category": "Component",
+      "name": "build",
+      "description": "页面构建入口",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 39,
+      "code": "build() {",
+      "context": {
+        "startLine": 34,
+        "lines": [
+          "",
+          "  onPageShow(): void {",
+          "    this.isRedirect = false;",
+          "  }",
+          "",
+          "  build() {",
+          "    NavDestination() {",
+          "      Text($r('app.string.title_name'))",
+          "        .fontSize(CommonConstants.TITLE_SIZE)",
+          "        .fontWeight(CommonConstants.FONT_WEIGHT_DEEPER)",
+          "        .fontColor($r('app.color.title_black'))"
+        ]
+      }
+    },
+    "ui:d347685cb4fe": {
+      "id": "ui:d347685cb4fe",
+      "category": "Component",
+      "name": "NavDestination",
+      "description": "导航目标区域",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 40,
+      "code": "NavDestination() {",
+      "context": {
+        "startLine": 35,
+        "lines": [
+          "  onPageShow(): void {",
+          "    this.isRedirect = false;",
+          "  }",
+          "",
+          "  build() {",
+          "    NavDestination() {",
+          "      Text($r('app.string.title_name'))",
+          "        .fontSize(CommonConstants.TITLE_SIZE)",
+          "        .fontWeight(CommonConstants.FONT_WEIGHT_DEEPER)",
+          "        .fontColor($r('app.color.title_black'))",
+          "        .width(CommonConstants.PAGE_TITLE_WIDTH)"
+        ]
+      }
+    },
+    "ui:f198e308dfc3": {
+      "id": "ui:f198e308dfc3",
+      "category": "Display",
+      "name": "Text",
+      "description": "显示内容",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 41,
+      "code": "Text($r('app.string.title_name'))",
+      "context": {
+        "startLine": 36,
+        "lines": [
+          "    this.isRedirect = false;",
+          "  }",
+          "",
+          "  build() {",
+          "    NavDestination() {",
+          "      Text($r('app.string.title_name'))",
+          "        .fontSize(CommonConstants.TITLE_SIZE)",
+          "        .fontWeight(CommonConstants.FONT_WEIGHT_DEEPER)",
+          "        .fontColor($r('app.color.title_black'))",
+          "        .width(CommonConstants.PAGE_TITLE_WIDTH)",
+          "        .height(CommonConstants.PAGE_TITLE_HEIGHT)"
+        ]
+      }
+    },
+    "ui:eea2ff9f9003": {
+      "id": "ui:eea2ff9f9003",
+      "category": "Component",
+      "name": "Web",
+      "description": "Web视图容器",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 52,
+      "code": "Web({",
+      "context": {
+        "startLine": 47,
+        "lines": [
+          "        .margin({",
+          "          top: $r('app.float.page_title_margin_top'),",
+          "          bottom: $r('app.float.page_title_margin_bottom')",
+          "        })",
+          "",
+          "      Web({",
+          "        src: CommonConstants.USER_ABOUT_URL,",
+          "        controller: this.controller",
+          "      })",
+          "        .height(CommonConstants.WEB_HEIGHT)",
+          "        .width(CommonConstants.WEB_WIDTH)"
+        ]
+      }
+    },
+    "ui:ffdfa9da4b38": {
+      "id": "ui:ffdfa9da4b38",
+      "category": "Component",
+      "name": "try",
+      "description": "功能入口",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 61,
+      "code": "try {",
+      "context": {
+        "startLine": 56,
+        "lines": [
+          "        .height(CommonConstants.WEB_HEIGHT)",
+          "        .width(CommonConstants.WEB_WIDTH)",
+          "        .fileAccess(this.fileAccess)",
+          "        .javaScriptAccess(true)",
+          "        .onPageEnd(() => {",
+          "          try {",
+          "            let originCookie = webview.WebCookieManager.fetchCookieSync(CommonConstants.USER_ABOUT_URL);",
+          "            if (originCookie === '' || this.isRedirect) {",
+          "              return;",
+          "            }",
+          "            this.isRedirect = true;"
+        ]
+      }
+    },
+    "ui:104304831cf7": {
+      "id": "ui:104304831cf7",
+      "category": "Component",
+      "name": "showDialog",
+      "description": "显示加载失败提示",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 67,
+      "code": "showDialog(originCookie);",
+      "context": {
+        "startLine": 62,
+        "lines": [
+          "            let originCookie = webview.WebCookieManager.fetchCookieSync(CommonConstants.USER_ABOUT_URL);",
+          "            if (originCookie === '' || this.isRedirect) {",
+          "              return;",
+          "            }",
+          "            this.isRedirect = true;",
+          "            showDialog(originCookie);",
+          "          } catch (error) {",
+          "            showDialog('Failed to load the web page.' + JSON.stringify(error));",
+          "          }",
+          "        })",
+          "    }"
+        ]
+      }
+    },
+    "ui:8c573b863565": {
+      "id": "ui:8c573b863565",
+      "category": "Component",
+      "name": "showDialog",
+      "description": "显示网页加载失败",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 69,
+      "code": "showDialog('Failed to load the web page.' + JSON.stringify(error));",
+      "context": {
+        "startLine": 64,
+        "lines": [
+          "              return;",
+          "            }",
+          "            this.isRedirect = true;",
+          "            showDialog(originCookie);",
+          "          } catch (error) {",
+          "            showDialog('Failed to load the web page.' + JSON.stringify(error));",
+          "          }",
+          "        })",
+          "    }",
+          "    .backgroundColor($r('app.color.page_background_grey'))",
+          "    .width(CommonConstants.FULL_WIDTH)"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:11d4dd9b953c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:d347685cb4fe",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:f198e308dfc3",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:eea2ff9f9003",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:ffdfa9da4b38",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:104304831cf7",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:8c573b863565",
+      "kind": "contains"
+    }
+  ]
+}

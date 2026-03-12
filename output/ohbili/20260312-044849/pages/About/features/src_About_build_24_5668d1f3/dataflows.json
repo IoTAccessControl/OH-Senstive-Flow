@@ -1,0 +1,402 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "generatedAt": "2026-03-11T21:06:30.122Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 12,
+      "edges": 10,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "About",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/About.ets",
+        "structName": "About",
+        "line": 19,
+        "description": "关于页面"
+      }
+    },
+    "feature": {
+      "featureId": "src_About_build_24_5668d1f3",
+      "kind": "source",
+      "title": "关于页面展示与交互"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 21,
+          "code": "private item: BaseVideo | undefined;",
+          "description": "定义组件私有成员变量 item，类型为 BaseVideo，用于在内存中持有视频数据对象（包含封面、标题等隐私相关展示信息）。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "import { RichString, RichStringType, StringUtil } from '../../utils/StringUtil'",
+              "import { BaseVideo } from '../../model/response/Response'",
+              "",
+              "@Component",
+              "export struct PopularItemView {",
+              "  private item: BaseVideo | undefined;",
+              "  private isReplaceUrl: boolean = false;",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      /*ImageKnifeComponent({ imageKnifeOption: this.getImageKnifeOption()})"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 24,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数开始执行，初始化 UI 渲染树，此时准备读取 this.item 中的数据用于界面展示。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "@Component",
+              "export struct PopularItemView {",
+              "  private item: BaseVideo | undefined;",
+              "  private isReplaceUrl: boolean = false;",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      /*ImageKnifeComponent({ imageKnifeOption: this.getImageKnifeOption()})",
+              "        .width('50%')",
+              "        .aspectRatio(16 / 9)",
+              "        .margin({ right: 8 })*/"
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 32,
+          "code": "Image(this.item?.pic ? this.item.pic : $r('app.media.bg_default_show'))",
+          "description": "读取 this.item.pic 字段获取视频封面图片地址，若为空则使用默认资源，此步骤涉及个人化内容（观看历史或推荐视频）的视觉呈现。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "        .width('50%')",
+              "        .aspectRatio(16 / 9)",
+              "        .margin({ right: 8 })*/",
+              "",
+              "      Stack({alignContent: Alignment.BottomEnd}){",
+              "        Image(this.item?.pic ? this.item.pic : $r('app.media.bg_default_show'))",
+              "          .width('100%')",
+              "          .aspectRatio(16 / 9)",
+              "          .borderRadius(4)",
+              "          .zIndex(1)",
+              "        Text(typeof(this.item?.duration) == \"number\" ? StringUtil.parseSecondToVideoDuration(this.item.duration) : (this.item?.duration || ''))"
+            ]
+          }
+        },
+        {
+          "id": "p9:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 103,
+          "code": ".onClick(() => {",
+          "description": "注册 Row 容器的 onClick 点击事件监听器，当用户交互发生时触发数据流转逻辑。",
+          "context": {
+            "startLine": 98,
+            "lines": [
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "        }",
+              "      }.width('50%')",
+              "    }",
+              "    .onClick(() => {",
+              "      if (this.isReplaceUrl) {",
+              "        router.replaceUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "      } else {",
+              "        router.pushUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p9:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 104,
+          "code": "if (this.isReplaceUrl) {",
+          "description": "检查内部标志位 isReplaceUrl，决定后续路由跳转的具体策略，不改变数据本身但控制数据流向的目标页面栈行为。",
+          "context": {
+            "startLine": 99,
+            "lines": [
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "        }",
+              "      }.width('50%')",
+              "    }",
+              "    .onClick(() => {",
+              "      if (this.isReplaceUrl) {",
+              "        router.replaceUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "      } else {",
+              "        router.pushUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "      }",
+              "    })"
+            ]
+          }
+        },
+        {
+          "id": "p9:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 105,
+          "code": "router.replaceUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+          "description": "调用 router.replaceUrl API，将完整的视频数据对象 (this.item) 序列化后作为参数 vInfo 传递给 'pages/Video' 页面，完成敏感数据在应用内部的跨页面传输。",
+          "context": {
+            "startLine": 100,
+            "lines": [
+              "        }",
+              "      }.width('50%')",
+              "    }",
+              "    .onClick(() => {",
+              "      if (this.isReplaceUrl) {",
+              "        router.replaceUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "      } else {",
+              "        router.pushUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "      }",
+              "    })",
+              "    .margin({ top: 8, bottom: 8 })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        },
+        {
+          "from": "p9:n3",
+          "to": "p9:n4"
+        },
+        {
+          "from": "p9:n4",
+          "to": "p9:n5"
+        },
+        {
+          "from": "p9:n5",
+          "to": "p9:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频信息对象 (BaseVideo)",
+          "视频封面图片 URL",
+          "视频标题",
+          "视频播放数/弹幕数统计"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅在应用内页面间传递)"
+        ],
+        "storageAndEncryption": [
+          "内存暂存 (作为组件属性 this.item)",
+          "路由参数传递 (未加密，明文传递)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 21,
+          "code": "private item: BaseVideo | undefined;",
+          "description": "定义组件内部状态变量 item，类型为 BaseVideo，用于持有待展示的视频元数据对象。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "import { RichString, RichStringType, StringUtil } from '../../utils/StringUtil'",
+              "import { BaseVideo } from '../../model/response/Response'",
+              "",
+              "@Component",
+              "export struct PopularItemView {",
+              "  private item: BaseVideo | undefined;",
+              "  private isReplaceUrl: boolean = false;",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      /*ImageKnifeComponent({ imageKnifeOption: this.getImageKnifeOption()})"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 24,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数开始执行，初始化 UI 渲染树构建过程。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "@Component",
+              "export struct PopularItemView {",
+              "  private item: BaseVideo | undefined;",
+              "  private isReplaceUrl: boolean = false;",
+              "",
+              "  build() {",
+              "    Row() {",
+              "      /*ImageKnifeComponent({ imageKnifeOption: this.getImageKnifeOption()})",
+              "        .width('50%')",
+              "        .aspectRatio(16 / 9)",
+              "        .margin({ right: 8 })*/"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 31,
+          "code": "Stack({alignContent: Alignment.BottomEnd}){",
+          "description": "构建 Stack 容器组件，准备布局视频封面图片及覆盖在其上的文本信息。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "      /*ImageKnifeComponent({ imageKnifeOption: this.getImageKnifeOption()})",
+              "        .width('50%')",
+              "        .aspectRatio(16 / 9)",
+              "        .margin({ right: 8 })*/",
+              "",
+              "      Stack({alignContent: Alignment.BottomEnd}){",
+              "        Image(this.item?.pic ? this.item.pic : $r('app.media.bg_default_show'))",
+              "          .width('100%')",
+              "          .aspectRatio(16 / 9)",
+              "          .borderRadius(4)",
+              "          .zIndex(1)"
+            ]
+          }
+        },
+        {
+          "id": "p10:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 32,
+          "code": "Image(this.item?.pic ? this.item.pic : $r('app.media.bg_default_show'))",
+          "description": "从 item 对象中读取 pic 字段（视频封面 URL），作为 Image 组件的数据源进行渲染。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "        .width('50%')",
+              "        .aspectRatio(16 / 9)",
+              "        .margin({ right: 8 })*/",
+              "",
+              "      Stack({alignContent: Alignment.BottomEnd}){",
+              "        Image(this.item?.pic ? this.item.pic : $r('app.media.bg_default_show'))",
+              "          .width('100%')",
+              "          .aspectRatio(16 / 9)",
+              "          .borderRadius(4)",
+              "          .zIndex(1)",
+              "        Text(typeof(this.item?.duration) == \"number\" ? StringUtil.parseSecondToVideoDuration(this.item.duration) : (this.item?.duration || ''))"
+            ]
+          }
+        },
+        {
+          "id": "p10:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 103,
+          "code": ".onClick(() => {",
+          "description": "为根容器注册 onClick 点击事件监听器，当用户点击该视频项时触发数据流转逻辑。",
+          "context": {
+            "startLine": 98,
+            "lines": [
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "        }",
+              "      }.width('50%')",
+              "    }",
+              "    .onClick(() => {",
+              "      if (this.isReplaceUrl) {",
+              "        router.replaceUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "      } else {",
+              "        router.pushUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p10:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/PopularItem.ets",
+          "line": 107,
+          "code": "router.pushUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+          "description": "调用 router.pushUrl API，将当前的 item 视频元数据对象序列化后作为参数 vInfo 传递至 Video 页面，完成页面间数据导航。",
+          "context": {
+            "startLine": 102,
+            "lines": [
+              "    }",
+              "    .onClick(() => {",
+              "      if (this.isReplaceUrl) {",
+              "        router.replaceUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "      } else {",
+              "        router.pushUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "      }",
+              "    })",
+              "    .margin({ top: 8, bottom: 8 })",
+              "  }",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        },
+        {
+          "from": "p10:n3",
+          "to": "p10:n4"
+        },
+        {
+          "from": "p10:n4",
+          "to": "p10:n5"
+        },
+        {
+          "from": "p10:n5",
+          "to": "p10:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频元数据 (BaseVideo)",
+          "视频封面 URL",
+          "视频标题",
+          "视频 ID"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存中临时传递 (通过路由参数)",
+          "未涉及本地持久化存储",
+          "未涉及加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

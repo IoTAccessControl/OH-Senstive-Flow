@@ -1,0 +1,1644 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "generatedAt": "2026-03-11T21:06:30.122Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 5,
+      "nodes": 55,
+      "edges": 50,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onWindowStageCreate_42_0ae998a3",
+      "kind": "source",
+      "title": "主窗口创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p73",
+      "pathId": "p73",
+      "nodes": [
+        {
+          "id": "p73:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 42,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage) {",
+          "description": "生命周期回调入口：onWindowStageCreate 被系统调用，标志着 UI 窗口阶段创建开始，触发后续初始化流程。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;"
+            ]
+          }
+        },
+        {
+          "id": "p73:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 44,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "日志记录点：调用 hilog.info 记录 Ability 创建事件，将字符串 'Ability onWindowStageCreate' 写入系统日志（Sink）。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);"
+            ]
+          }
+        },
+        {
+          "id": "p73:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 46,
+          "code": "globalThis.windowStage = windowStage;",
+          "description": "数据流转存：将传入的 windowStage 对象赋值给 globalThis 全局变量，使其在应用范围内可访问。",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();"
+            ]
+          }
+        },
+        {
+          "id": "p73:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 47,
+          "code": "globalThis.filesDir = this.context.filesDir;",
+          "description": "敏感数据获取与存储：通过 this.context.filesDir 获取应用私有文件目录路径，并保存至 globalThis 全局变量。",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p73:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 48,
+          "code": "BLog.init(this.context.filesDir);",
+          "description": "日志模块初始化：调用 BLog.init 并传入文件目录路径，可能用于配置本地日志文件的存储位置。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,"
+            ]
+          }
+        },
+        {
+          "id": "p73:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 49,
+          "code": "AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+          "description": "状态标记设置：使用 AppStorage 设置 'netIsAvailable' 键值为 true，标记网络初始状态为可用。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);"
+            ]
+          }
+        },
+        {
+          "id": "p73:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 50,
+          "code": "this.netConnRegister();",
+          "description": "网络注册触发：调用 netConnRegister 方法，推测此处会申请网络权限并注册网络连接状态监听器。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p73:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 51,
+          "code": "this.getAppBundleInfo();",
+          "description": "包信息获取触发：调用 getAppBundleInfo 方法，推测此处会读取应用包名、版本号等设备/应用标识信息。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              "",
+              "        windowStage.loadContent('pages/Splash', (err, data) => {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p73:n1",
+          "to": "p73:n2"
+        },
+        {
+          "from": "p73:n2",
+          "to": "p73:n3"
+        },
+        {
+          "from": "p73:n3",
+          "to": "p73:n4"
+        },
+        {
+          "from": "p73:n4",
+          "to": "p73:n5"
+        },
+        {
+          "from": "p73:n5",
+          "to": "p73:n6"
+        },
+        {
+          "from": "p73:n6",
+          "to": "p73:n7"
+        },
+        {
+          "from": "p73:n7",
+          "to": "p73:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用文件目录路径 (filesDir)",
+          "窗口阶段对象引用 (windowStage)",
+          "网络连接状态标志",
+          "应用包信息"
+        ],
+        "collectionFrequency": [
+          "一次性收集 (应用启动/Ability 创建时)"
+        ],
+        "cloudUpload": [
+          "未在当前片段发现直接上传行为",
+          "日志通过 hilog.info 输出到系统日志缓冲区"
+        ],
+        "storageAndEncryption": [
+          "文件路径存储于 globalThis 全局对象 (内存)",
+          "网络状态存储于 AppStorage (应用级内存存储)",
+          "未观察到加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含于 netConnRegister)",
+          "ohos.permission.GET_BUNDLE_INFO (隐含于 getAppBundleInfo)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p74",
+      "pathId": "p74",
+      "nodes": [
+        {
+          "id": "p74:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 42,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage) {",
+          "description": "生命周期回调 onWindowStageCreate 入口，当 WindowStage 创建时触发，开始初始化应用界面和环境。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;"
+            ]
+          }
+        },
+        {
+          "id": "p74:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 44,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "记录应用生命周期日志，标记 WindowStage 创建事件。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);"
+            ]
+          }
+        },
+        {
+          "id": "p74:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 46,
+          "code": "globalThis.windowStage = windowStage;",
+          "description": "将 windowStage 对象赋值给全局变量 globalThis，以便在其他模块中访问窗口实例。",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();"
+            ]
+          }
+        },
+        {
+          "id": "p74:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 47,
+          "code": "globalThis.filesDir = this.context.filesDir;",
+          "description": "获取并保存应用私有文件目录路径 (filesDir) 到全局变量，涉及文件系统路径数据。",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p74:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 48,
+          "code": "BLog.init(this.context.filesDir);",
+          "description": "使用获取到的文件目录路径初始化日志模块 (BLog)，可能用于后续日志文件的本地存储路径配置。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,"
+            ]
+          }
+        },
+        {
+          "id": "p74:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 49,
+          "code": "AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+          "description": "将网络可用状态默认为 true 存入 AppStorage，这是应用级的状态存储。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);"
+            ]
+          }
+        },
+        {
+          "id": "p74:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 50,
+          "code": "this.netConnRegister();",
+          "description": "注册网络连接状态监听器，准备收集网络状态变化数据。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p74:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 51,
+          "code": "this.getAppBundleInfo();",
+          "description": "调用 getAppBundleInfo 方法，可能用于收集应用包名、版本号等设备/应用标识信息。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              "",
+              "        windowStage.loadContent('pages/Splash', (err, data) => {"
+            ]
+          }
+        },
+        {
+          "id": "p74:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 53,
+          "code": "WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+          "description": "配置窗口管理器布局属性，设置全屏模式及颜色主题。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              "",
+              "        windowStage.loadContent('pages/Splash', (err, data) => {",
+              "            if (err.code) {",
+              "                hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p74:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 56,
+          "code": "windowStage.loadContent('pages/Splash', (err, data) => {",
+          "description": "异步加载页面内容 ('pages/Splash')，注册回调函数处理加载结果。",
+          "context": {
+            "startLine": 51,
+            "lines": [
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              "",
+              "        windowStage.loadContent('pages/Splash', (err, data) => {",
+              "            if (err.code) {",
+              "                hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "                return;",
+              "            }",
+              "            hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p74:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 57,
+          "code": "if (err.code) {",
+          "description": "检查页面加载回调中的错误对象 err，判断是否发生加载失败。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              "",
+              "        windowStage.loadContent('pages/Splash', (err, data) => {",
+              "            if (err.code) {",
+              "                hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "                return;",
+              "            }",
+              "            hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "        });"
+            ]
+          }
+        },
+        {
+          "id": "p74:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 58,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "【Sink】将错误对象 err 序列化为 JSON 字符串，并通过 hilog.error 输出到系统日志。若 err 包含敏感信息（如路径、内部状态），则会以明文形式泄露到日志系统中。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              "",
+              "        windowStage.loadContent('pages/Splash', (err, data) => {",
+              "            if (err.code) {",
+              "                hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "                return;",
+              "            }",
+              "            hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "        });",
+              "    }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p74:n1",
+          "to": "p74:n2"
+        },
+        {
+          "from": "p74:n2",
+          "to": "p74:n3"
+        },
+        {
+          "from": "p74:n3",
+          "to": "p74:n4"
+        },
+        {
+          "from": "p74:n4",
+          "to": "p74:n5"
+        },
+        {
+          "from": "p74:n5",
+          "to": "p74:n6"
+        },
+        {
+          "from": "p74:n6",
+          "to": "p74:n7"
+        },
+        {
+          "from": "p74:n7",
+          "to": "p74:n8"
+        },
+        {
+          "from": "p74:n8",
+          "to": "p74:n9"
+        },
+        {
+          "from": "p74:n9",
+          "to": "p74:n10"
+        },
+        {
+          "from": "p74:n10",
+          "to": "p74:n11"
+        },
+        {
+          "from": "p74:n11",
+          "to": "p74:n12"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用文件目录路径 (filesDir)",
+          "网络状态标志 (netIsAvailable)",
+          "窗口加载错误信息 (err)",
+          "应用包信息 (AppBundleInfo)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动/WindowStage 创建时)",
+          "事件触发 (窗口内容加载失败时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地存储：通过 globalThis 缓存 filesDir",
+          "本地存储：通过 AppStorage 设置 netIsAvailable",
+          "日志输出：错误信息以明文形式输出到系统日志 (hilog.error)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p75",
+      "pathId": "p75",
+      "nodes": [
+        {
+          "id": "p75:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 42,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage) {",
+          "description": "生命周期入口：onWindowStageCreate 函数被调用，标志着 UI 窗口阶段开始创建，数据流起点。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;"
+            ]
+          }
+        },
+        {
+          "id": "p75:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 44,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "日志记录：输出 Ability 创建的生命周期事件信息。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);"
+            ]
+          }
+        },
+        {
+          "id": "p75:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 46,
+          "code": "globalThis.windowStage = windowStage;",
+          "description": "数据存储：将 windowStage 对象赋值给 globalThis，使其成为全局可访问的 UI 上下文。",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();"
+            ]
+          }
+        },
+        {
+          "id": "p75:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 47,
+          "code": "globalThis.filesDir = this.context.filesDir;",
+          "description": "敏感数据获取与存储：从 context 获取应用私有文件目录路径 (filesDir) 并存入全局变量，涉及文件访问权限隐式依赖。",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p75:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 48,
+          "code": "BLog.init(this.context.filesDir);",
+          "description": "初始化操作：使用文件目录路径初始化日志模块 (BLog)，可能涉及本地日志文件的写入配置。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,"
+            ]
+          }
+        },
+        {
+          "id": "p75:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 49,
+          "code": "AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+          "description": "状态存储：将网络可用状态设置为 true 并存入 AppStorage，用于应用内全局状态共享。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);"
+            ]
+          }
+        },
+        {
+          "id": "p75:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 50,
+          "code": "this.netConnRegister();",
+          "description": "功能注册：调用 netConnRegister 注册网络连接状态监听，可能触发后续网络权限相关操作。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p75:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 56,
+          "code": "windowStage.loadContent('pages/Splash', (err, data) => {",
+          "description": "异步加载：调用 loadContent 加载 Splash 页面，注册回调函数以接收加载结果 (err, data)。",
+          "context": {
+            "startLine": 51,
+            "lines": [
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              "",
+              "        windowStage.loadContent('pages/Splash', (err, data) => {",
+              "            if (err.code) {",
+              "                hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "                return;",
+              "            }",
+              "            hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p75:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 57,
+          "code": "if (err.code) {",
+          "description": "条件判断：检查页面加载回调中的错误码 (err.code)，决定数据流走向。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              "",
+              "        windowStage.loadContent('pages/Splash', (err, data) => {",
+              "            if (err.code) {",
+              "                hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "                return;",
+              "            }",
+              "            hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "        });"
+            ]
+          }
+        },
+        {
+          "id": "p75:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 58,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "异常数据处理：若加载失败，将错误对象序列化为 JSON 字符串并通过 hilog.error 输出，包含潜在堆栈或错误详情。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              "",
+              "        windowStage.loadContent('pages/Splash', (err, data) => {",
+              "            if (err.code) {",
+              "                hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "                return;",
+              "            }",
+              "            hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "        });",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p75:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 61,
+          "code": "hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+          "description": "成功数据处理 (Sink)：若加载成功，将回调返回的 data 对象序列化为 JSON 字符串，并通过 hilog.info 明文输出到系统日志。",
+          "context": {
+            "startLine": 56,
+            "lines": [
+              "        windowStage.loadContent('pages/Splash', (err, data) => {",
+              "            if (err.code) {",
+              "                hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "                return;",
+              "            }",
+              "            hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "        });",
+              "    }",
+              "",
+              "    onWindowStageDestroy() {",
+              "        // Main window is destroyed, release UI related resources"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p75:n1",
+          "to": "p75:n2"
+        },
+        {
+          "from": "p75:n2",
+          "to": "p75:n3"
+        },
+        {
+          "from": "p75:n3",
+          "to": "p75:n4"
+        },
+        {
+          "from": "p75:n4",
+          "to": "p75:n5"
+        },
+        {
+          "from": "p75:n5",
+          "to": "p75:n6"
+        },
+        {
+          "from": "p75:n6",
+          "to": "p75:n7"
+        },
+        {
+          "from": "p75:n7",
+          "to": "p75:n8"
+        },
+        {
+          "from": "p75:n8",
+          "to": "p75:n9"
+        },
+        {
+          "from": "p75:n9",
+          "to": "p75:n10"
+        },
+        {
+          "from": "p75:n9",
+          "to": "p75:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面加载回调数据 (data)",
+          "错误对象 (err)",
+          "应用文件目录路径 (filesDir)",
+          "网络状态标志 (netIsAvailable)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 创建时)",
+          "异步回调触发 (页面加载完成或失败时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地全局变量存储 (globalThis.windowStage, globalThis.filesDir)",
+          "应用级存储 (AppStorage.SetOrCreate)",
+          "日志明文输出 (未加密，标记为 %{public}s)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p76",
+      "pathId": "p76",
+      "nodes": [
+        {
+          "id": "p76:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 42,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage) {",
+          "description": "生命周期回调 onWindowStageCreate 入口，当窗口阶段创建时触发，开始初始化应用环境。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;"
+            ]
+          }
+        },
+        {
+          "id": "p76:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 47,
+          "code": "globalThis.filesDir = this.context.filesDir;",
+          "description": "获取并保存应用上下文中的文件目录路径 (filesDir)，作为后续日志初始化的数据源。",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p76:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 48,
+          "code": "BLog.init(this.context.filesDir);",
+          "description": "使用文件目录路径初始化日志模块 (BLog)，准备记录应用运行数据。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,"
+            ]
+          }
+        },
+        {
+          "id": "p76:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 49,
+          "code": "AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+          "description": "在 AppStorage 中初始化网络状态标志 'netIsAvailable' 为 true，存入内存供全局访问。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);"
+            ]
+          }
+        },
+        {
+          "id": "p76:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 50,
+          "code": "this.netConnRegister();",
+          "description": "调用 netConnRegister 方法，启动网络连接注册流程。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p76:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 80,
+          "code": "netConnRegister() {",
+          "description": "进入 netConnRegister 函数定义，准备配置网络参数。",
+          "context": {
+            "startLine": 75,
+            "lines": [
+              "    onBackground() {",
+              "        // Ability has back to background",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "    }",
+              "",
+              "    netConnRegister() {",
+              "        let netCap: connection.NetCapabilities = {",
+              "            bearerTypes: [connection.NetBearType.BEARER_CELLULAR, connection.NetBearType.BEARER_WIFI],",
+              "            networkCap: [connection.NetCap.NET_CAPABILITY_INTERNET]",
+              "        };",
+              "        let netSpec: connection.NetSpecifier = {"
+            ]
+          }
+        },
+        {
+          "id": "p76:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 81,
+          "code": "let netCap: connection.NetCapabilities = {",
+          "description": "构建 NetCapabilities 对象，指定需要的承载类型（蜂窝/WiFi）和网络能力（互联网）。",
+          "context": {
+            "startLine": 76,
+            "lines": [
+              "        // Ability has back to background",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "    }",
+              "",
+              "    netConnRegister() {",
+              "        let netCap: connection.NetCapabilities = {",
+              "            bearerTypes: [connection.NetBearType.BEARER_CELLULAR, connection.NetBearType.BEARER_WIFI],",
+              "            networkCap: [connection.NetCap.NET_CAPABILITY_INTERNET]",
+              "        };",
+              "        let netSpec: connection.NetSpecifier = {",
+              "            netCapabilities: netCap"
+            ]
+          }
+        },
+        {
+          "id": "p76:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 85,
+          "code": "let netSpec: connection.NetSpecifier = {",
+          "description": "构建 NetSpecifier 对象，将上述网络能力配置封装为网络请求规范。",
+          "context": {
+            "startLine": 80,
+            "lines": [
+              "    netConnRegister() {",
+              "        let netCap: connection.NetCapabilities = {",
+              "            bearerTypes: [connection.NetBearType.BEARER_CELLULAR, connection.NetBearType.BEARER_WIFI],",
+              "            networkCap: [connection.NetCap.NET_CAPABILITY_INTERNET]",
+              "        };",
+              "        let netSpec: connection.NetSpecifier = {",
+              "            netCapabilities: netCap",
+              "        };",
+              "        let timeout = 5 * 1000;",
+              "        this.netConn = connection.createNetConnection(netSpec, timeout);",
+              "        this.netConn?.on('netAvailable', (data => {"
+            ]
+          }
+        },
+        {
+          "id": "p76:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 88,
+          "code": "let timeout = 5 * 1000;",
+          "description": "设置网络连接超时时间为 5000 毫秒。",
+          "context": {
+            "startLine": 83,
+            "lines": [
+              "            networkCap: [connection.NetCap.NET_CAPABILITY_INTERNET]",
+              "        };",
+              "        let netSpec: connection.NetSpecifier = {",
+              "            netCapabilities: netCap",
+              "        };",
+              "        let timeout = 5 * 1000;",
+              "        this.netConn = connection.createNetConnection(netSpec, timeout);",
+              "        this.netConn?.on('netAvailable', (data => {",
+              "            BLog.i(\"net is available, netId is \" + data.netId);",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        }));"
+            ]
+          }
+        },
+        {
+          "id": "p76:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 89,
+          "code": "this.netConn = connection.createNetConnection(netSpec, timeout);",
+          "description": "调用 createNetConnection API 发起网络连接请求，系统可能在此处收集设备网络接口信息以建立连接。",
+          "context": {
+            "startLine": 84,
+            "lines": [
+              "        };",
+              "        let netSpec: connection.NetSpecifier = {",
+              "            netCapabilities: netCap",
+              "        };",
+              "        let timeout = 5 * 1000;",
+              "        this.netConn = connection.createNetConnection(netSpec, timeout);",
+              "        this.netConn?.on('netAvailable', (data => {",
+              "            BLog.i(\"net is available, netId is \" + data.netId);",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        }));",
+              "        this.netConn?.on('netUnavailable', (data => {"
+            ]
+          }
+        },
+        {
+          "id": "p76:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 90,
+          "code": "this.netConn?.on('netAvailable', (data => {",
+          "description": "注册 'netAvailable' 事件监听器，当网络连接成功建立时触发回调。",
+          "context": {
+            "startLine": 85,
+            "lines": [
+              "        let netSpec: connection.NetSpecifier = {",
+              "            netCapabilities: netCap",
+              "        };",
+              "        let timeout = 5 * 1000;",
+              "        this.netConn = connection.createNetConnection(netSpec, timeout);",
+              "        this.netConn?.on('netAvailable', (data => {",
+              "            BLog.i(\"net is available, netId is \" + data.netId);",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        }));",
+              "        this.netConn?.on('netUnavailable', (data => {",
+              "            BLog.i(\"net is unavailable, data is \" + JSON.stringify(data));"
+            ]
+          }
+        },
+        {
+          "id": "p76:n12",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 91,
+          "code": "BLog.i(\"net is available, netId is \" + data.netId);",
+          "description": "在网络可用回调中，提取系统返回的 netId (网络标识符) 并记录到日志。",
+          "context": {
+            "startLine": 86,
+            "lines": [
+              "            netCapabilities: netCap",
+              "        };",
+              "        let timeout = 5 * 1000;",
+              "        this.netConn = connection.createNetConnection(netSpec, timeout);",
+              "        this.netConn?.on('netAvailable', (data => {",
+              "            BLog.i(\"net is available, netId is \" + data.netId);",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        }));",
+              "        this.netConn?.on('netUnavailable', (data => {",
+              "            BLog.i(\"net is unavailable, data is \" + JSON.stringify(data));",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", false);"
+            ]
+          }
+        },
+        {
+          "id": "p76:n13",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 92,
+          "code": "AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+          "description": "将全局内存状态 'netIsAvailable' 更新为 true，反映当前网络连通性。",
+          "context": {
+            "startLine": 87,
+            "lines": [
+              "        };",
+              "        let timeout = 5 * 1000;",
+              "        this.netConn = connection.createNetConnection(netSpec, timeout);",
+              "        this.netConn?.on('netAvailable', (data => {",
+              "            BLog.i(\"net is available, netId is \" + data.netId);",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        }));",
+              "        this.netConn?.on('netUnavailable', (data => {",
+              "            BLog.i(\"net is unavailable, data is \" + JSON.stringify(data));",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", false);",
+              "        }));"
+            ]
+          }
+        },
+        {
+          "id": "p76:n14",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 94,
+          "code": "this.netConn?.on('netUnavailable', (data => {",
+          "description": "注册 'netUnavailable' 事件监听器，当网络连接断开时触发回调。",
+          "context": {
+            "startLine": 89,
+            "lines": [
+              "        this.netConn = connection.createNetConnection(netSpec, timeout);",
+              "        this.netConn?.on('netAvailable', (data => {",
+              "            BLog.i(\"net is available, netId is \" + data.netId);",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        }));",
+              "        this.netConn?.on('netUnavailable', (data => {",
+              "            BLog.i(\"net is unavailable, data is \" + JSON.stringify(data));",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", false);",
+              "        }));",
+              "        this.netConn?.register((err, data) => { });",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p76:n15",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 96,
+          "code": "AppStorage.SetOrCreate(\"netIsAvailable\", false);",
+          "description": "将全局内存状态 'netIsAvailable' 更新为 false，反映网络中断状态。",
+          "context": {
+            "startLine": 91,
+            "lines": [
+              "            BLog.i(\"net is available, netId is \" + data.netId);",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        }));",
+              "        this.netConn?.on('netUnavailable', (data => {",
+              "            BLog.i(\"net is unavailable, data is \" + JSON.stringify(data));",
+              "            AppStorage.SetOrCreate(\"netIsAvailable\", false);",
+              "        }));",
+              "        this.netConn?.register((err, data) => { });",
+              "    }",
+              "",
+              "    netConnUnregister() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p76:n1",
+          "to": "p76:n2"
+        },
+        {
+          "from": "p76:n2",
+          "to": "p76:n3"
+        },
+        {
+          "from": "p76:n3",
+          "to": "p76:n4"
+        },
+        {
+          "from": "p76:n4",
+          "to": "p76:n5"
+        },
+        {
+          "from": "p76:n5",
+          "to": "p76:n6"
+        },
+        {
+          "from": "p76:n6",
+          "to": "p76:n7"
+        },
+        {
+          "from": "p76:n7",
+          "to": "p76:n8"
+        },
+        {
+          "from": "p76:n8",
+          "to": "p76:n9"
+        },
+        {
+          "from": "p76:n9",
+          "to": "p76:n10"
+        },
+        {
+          "from": "p76:n10",
+          "to": "p76:n11"
+        },
+        {
+          "from": "p76:n11",
+          "to": "p76:n12"
+        },
+        {
+          "from": "p76:n12",
+          "to": "p76:n13"
+        },
+        {
+          "from": "p76:n10",
+          "to": "p76:n14"
+        },
+        {
+          "from": "p76:n14",
+          "to": "p76:n15"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "网络状态标识 (netIsAvailable)",
+          "网络连接 ID (netId)",
+          "应用文件目录路径 (filesDir)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)",
+          "事件触发 (网络可用/不可用状态变更)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地状态更新与日志记录)"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (AppStorage)",
+          "未加密 (明文存储布尔值与字符串)",
+          "本地日志记录 (BLog)"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于创建网络连接)",
+          "ohos.permission.ACCESS_NETWORK_STATE (隐含，用于监听网络状态)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p77",
+      "pathId": "p77",
+      "nodes": [
+        {
+          "id": "p77:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 42,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage) {",
+          "description": "生命周期入口：onWindowStageCreate 函数被调用，标志着 UI 窗口阶段创建，数据流开始。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;"
+            ]
+          }
+        },
+        {
+          "id": "p77:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 49,
+          "code": "AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+          "description": "上下文初始化：注册网络状态监听，可能触发后续依赖网络的数据操作准备。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "        globalThis.windowStage = windowStage;",
+              "        globalThis.filesDir = this.context.filesDir;",
+              "        BLog.init(this.context.filesDir);",
+              "        AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+              "        this.netConnRegister();",
+              "        this.getAppBundleInfo();",
+              "",
+              "        WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+              "            WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);"
+            ]
+          }
+        },
+        {
+          "id": "p77:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 105,
+          "code": "getAppBundleInfo() {",
+          "description": "方法定义：getAppBundleInfo 方法被定义，用于封装获取应用自身信息的逻辑。",
+          "context": {
+            "startLine": 100,
+            "lines": [
+              "",
+              "    netConnUnregister() {",
+              "        this.netConn?.unregister((err, data) => { });",
+              "    }",
+              "",
+              "    getAppBundleInfo() {",
+              "        try {",
+              "            bundleManager.getBundleInfoForSelf(0).then(info => {",
+              "                BLog.i(`app info name: ${info.name}, versionName: ${info.versionName}`);",
+              "                AppStorage.SetOrCreate(\"appTargetVersion\", info.targetVersion);",
+              "                AppStorage.SetOrCreate(\"appBundleName\", info.name);"
+            ]
+          }
+        },
+        {
+          "id": "p77:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 107,
+          "code": "bundleManager.getBundleInfoForSelf(0).then(info => {",
+          "description": "敏感数据源：调用 bundleManager.getBundleInfoForSelf(0) 异步获取当前应用的 BundleInfo 对象，包含包名、版本等隐私元数据。",
+          "context": {
+            "startLine": 102,
+            "lines": [
+              "        this.netConn?.unregister((err, data) => { });",
+              "    }",
+              "",
+              "    getAppBundleInfo() {",
+              "        try {",
+              "            bundleManager.getBundleInfoForSelf(0).then(info => {",
+              "                BLog.i(`app info name: ${info.name}, versionName: ${info.versionName}`);",
+              "                AppStorage.SetOrCreate(\"appTargetVersion\", info.targetVersion);",
+              "                AppStorage.SetOrCreate(\"appBundleName\", info.name);",
+              "                AppStorage.SetOrCreate(\"appVersionName\", info.versionName);",
+              "                AppStorage.SetOrCreate(\"appVendor\", info.vendor);"
+            ]
+          }
+        },
+        {
+          "id": "p77:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 108,
+          "code": "BLog.i(`app info name: ${info.name}, versionName: ${info.versionName}`);",
+          "description": "数据处理：将获取到的应用名称和版本号拼接字符串，并通过 BLog.i 输出到日志系统（存在日志泄露风险）。",
+          "context": {
+            "startLine": 103,
+            "lines": [
+              "    }",
+              "",
+              "    getAppBundleInfo() {",
+              "        try {",
+              "            bundleManager.getBundleInfoForSelf(0).then(info => {",
+              "                BLog.i(`app info name: ${info.name}, versionName: ${info.versionName}`);",
+              "                AppStorage.SetOrCreate(\"appTargetVersion\", info.targetVersion);",
+              "                AppStorage.SetOrCreate(\"appBundleName\", info.name);",
+              "                AppStorage.SetOrCreate(\"appVersionName\", info.versionName);",
+              "                AppStorage.SetOrCreate(\"appVendor\", info.vendor);",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p77:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 109,
+          "code": "AppStorage.SetOrCreate(\"appTargetVersion\", info.targetVersion);",
+          "description": "数据存储：将 info.targetVersion (应用目标版本) 写入全局 AppStorage，供应用内其他模块读取。",
+          "context": {
+            "startLine": 104,
+            "lines": [
+              "",
+              "    getAppBundleInfo() {",
+              "        try {",
+              "            bundleManager.getBundleInfoForSelf(0).then(info => {",
+              "                BLog.i(`app info name: ${info.name}, versionName: ${info.versionName}`);",
+              "                AppStorage.SetOrCreate(\"appTargetVersion\", info.targetVersion);",
+              "                AppStorage.SetOrCreate(\"appBundleName\", info.name);",
+              "                AppStorage.SetOrCreate(\"appVersionName\", info.versionName);",
+              "                AppStorage.SetOrCreate(\"appVendor\", info.vendor);",
+              "            })",
+              "        } catch (err) {"
+            ]
+          }
+        },
+        {
+          "id": "p77:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 110,
+          "code": "AppStorage.SetOrCreate(\"appBundleName\", info.name);",
+          "description": "数据存储：将 info.name (应用包名) 写入全局 AppStorage，作为应用标识持久化在内存中。",
+          "context": {
+            "startLine": 105,
+            "lines": [
+              "    getAppBundleInfo() {",
+              "        try {",
+              "            bundleManager.getBundleInfoForSelf(0).then(info => {",
+              "                BLog.i(`app info name: ${info.name}, versionName: ${info.versionName}`);",
+              "                AppStorage.SetOrCreate(\"appTargetVersion\", info.targetVersion);",
+              "                AppStorage.SetOrCreate(\"appBundleName\", info.name);",
+              "                AppStorage.SetOrCreate(\"appVersionName\", info.versionName);",
+              "                AppStorage.SetOrCreate(\"appVendor\", info.vendor);",
+              "            })",
+              "        } catch (err) {",
+              "            BLog.e(`getBundleInfo failed: ${err.message}`);"
+            ]
+          }
+        },
+        {
+          "id": "p77:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 111,
+          "code": "AppStorage.SetOrCreate(\"appVersionName\", info.versionName);",
+          "description": "数据存储：将 info.versionName (应用版本名) 写入全局 AppStorage，用于版本管理或上报准备。",
+          "context": {
+            "startLine": 106,
+            "lines": [
+              "        try {",
+              "            bundleManager.getBundleInfoForSelf(0).then(info => {",
+              "                BLog.i(`app info name: ${info.name}, versionName: ${info.versionName}`);",
+              "                AppStorage.SetOrCreate(\"appTargetVersion\", info.targetVersion);",
+              "                AppStorage.SetOrCreate(\"appBundleName\", info.name);",
+              "                AppStorage.SetOrCreate(\"appVersionName\", info.versionName);",
+              "                AppStorage.SetOrCreate(\"appVendor\", info.vendor);",
+              "            })",
+              "        } catch (err) {",
+              "            BLog.e(`getBundleInfo failed: ${err.message}`);",
+              "        }"
+            ]
+          }
+        },
+        {
+          "id": "p77:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 112,
+          "code": "AppStorage.SetOrCreate(\"appVendor\", info.vendor);",
+          "description": "数据存储：将 info.vendor (应用厂商) 写入全局 AppStorage，收集开发者/厂商信息。",
+          "context": {
+            "startLine": 107,
+            "lines": [
+              "            bundleManager.getBundleInfoForSelf(0).then(info => {",
+              "                BLog.i(`app info name: ${info.name}, versionName: ${info.versionName}`);",
+              "                AppStorage.SetOrCreate(\"appTargetVersion\", info.targetVersion);",
+              "                AppStorage.SetOrCreate(\"appBundleName\", info.name);",
+              "                AppStorage.SetOrCreate(\"appVersionName\", info.versionName);",
+              "                AppStorage.SetOrCreate(\"appVendor\", info.vendor);",
+              "            })",
+              "        } catch (err) {",
+              "            BLog.e(`getBundleInfo failed: ${err.message}`);",
+              "        }",
+              "    }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p77:n1",
+          "to": "p77:n2"
+        },
+        {
+          "from": "p77:n2",
+          "to": "p77:n3"
+        },
+        {
+          "from": "p77:n3",
+          "to": "p77:n4"
+        },
+        {
+          "from": "p77:n4",
+          "to": "p77:n5"
+        },
+        {
+          "from": "p77:n5",
+          "to": "p77:n6"
+        },
+        {
+          "from": "p77:n6",
+          "to": "p77:n7"
+        },
+        {
+          "from": "p77:n7",
+          "to": "p77:n8"
+        },
+        {
+          "from": "p77:n8",
+          "to": "p77:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用包名 (Bundle Name)",
+          "应用版本号 (Version Name)",
+          "应用目标版本 (Target Version)",
+          "应用厂商 (Vendor)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动/WindowStage 创建时)"
+        ],
+        "cloudUpload": [
+          "未检测到直接网络发送行为 (数据存入 AppStorage)"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (AppStorage)",
+          "未检测到加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.GET_BUNDLE_INFO (隐式需要，用于获取自身包信息)"
+        ]
+      }
+    }
+  ]
+}

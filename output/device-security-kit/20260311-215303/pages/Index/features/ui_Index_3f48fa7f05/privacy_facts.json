@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "runId": "device-security-kit_20260311-215303",
+    "featureId": "ui_Index_3f48fa7f05",
+    "generatedAt": "2026-03-11T13:53:54.847Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "device-security-kit",
+        "businessScenario": "用户点击“获取设备令牌”按钮时，应用请求并展示设备安全令牌信息。",
+        "dataSources": [
+          "系统底层设备安全服务"
+        ],
+        "dataItems": [
+          {
+            "name": "设备安全令牌 (Device Token)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n8"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "异步调用系统接口获取令牌，将结果拼接至日志字符串输出，并赋值给内存变量后通过回调返回 UI 层展示。",
+        "storageMethod": "临时内存存储（类成员变量 dispalyText），未检测到本地持久化存储或加密处理。",
+        "dataRecipients": [],
+        "processingPurpose": "获取并展示设备的唯一安全标识符，用于设备验证或证书管理功能。",
+        "privacyToggleUi": {
+          "where": "首页 Index.ets 中的“获取设备令牌”按钮触发操作，无独立隐私开关。",
+          "refs": [
+            {
+              "uiNodeId": "ui:fe5a655b44b4"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.DISTRIBUTED_DEVICE_CERTIFICATION",
+        "businessScenario": "用户点击“获取设备令牌”按钮时，应用尝试获取设备安全令牌。",
+        "permissionPurpose": "访问分布式设备认证服务以获取设备唯一标识符。",
+        "denyImpact": "无法获取设备安全令牌，导致“获取设备令牌”功能失败，无法展示相关证书信息。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n8"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.HIVIEW_PERMISSION",
+        "businessScenario": "在获取设备令牌过程中，应用记录调试日志。",
+        "permissionPurpose": "允许应用写入 HiLog 日志，用于记录设备令牌获取状态及内容。",
+        "denyImpact": "无法记录获取设备令牌的日志信息，可能影响问题排查，但不影响令牌获取本身。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n9"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.READ_DEVICE_INFO",
+        "businessScenario": "用户点击“获取设备令牌”按钮时，应用读取设备标识符。",
+        "permissionPurpose": "读取设备硬件或系统层面的唯一标识信息。",
+        "denyImpact": "无法读取设备标识符，导致无法生成或获取设备令牌。",
+        "refs": [
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n7"
+          }
+        ]
+      }
+    ]
+  }
+}

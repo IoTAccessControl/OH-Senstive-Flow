@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "runId": "map-kit_-codelab_20260312-044534",
+    "generatedAt": "2026-03-11T20:47:05.092Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_11_7c2682fb",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/map-kit_-codelab/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 6,
+          "code": "storage: LocalStorage = new LocalStorage();",
+          "description": "类成员变量初始化：实例化 LocalStorage 对象，用于后续可能的本地数据存储操作",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';",
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "    storage: LocalStorage = new LocalStorage();",
+              "    onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {",
+              "        hilog.info(0x0000, 'testTag', 'Ability onCreate 1 ', \"hello\");",
+              "    }",
+              "",
+              "    onDestroy() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/map-kit_-codelab/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 11,
+          "code": "onDestroy() {",
+          "description": "生命周期回调入口：定义 onDestroy 函数，当 UIAbility 被销毁时由系统自动调用",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    storage: LocalStorage = new LocalStorage();",
+              "    onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {",
+              "        hilog.info(0x0000, 'testTag', 'Ability onCreate 1 ', \"hello\");",
+              "    }",
+              "",
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/map-kit_-codelab/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 12,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "隐私数据流出点：调用 hilog.info 将固定的生命周期状态字符串 'Ability onDestroy' 以明文形式写入系统日志",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "    onCreate(want: Want, launchParam: AbilityConstant.LaunchParam) {",
+              "        hilog.info(0x0000, 'testTag', 'Ability onCreate 1 ', \"hello\");",
+              "    }",
+              "",
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "生命周期状态字符串 (Ability onDestroy)",
+          "日志标签 (testTag)",
+          "日志模块标识 (0x0000)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时单次执行)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "非持久化存储 (通过 hilog 接口输出到系统日志缓冲区)",
+          "无加密处理 (明文日志)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

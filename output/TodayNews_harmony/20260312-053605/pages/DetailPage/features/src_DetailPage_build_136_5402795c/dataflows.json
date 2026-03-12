@@ -1,0 +1,476 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260312-053605",
+    "generatedAt": "2026-03-11T21:44:43.659Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 15,
+      "edges": 13,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "DetailPage",
+      "entry": {
+        "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+        "structName": "DetailPage",
+        "line": 11,
+        "description": "详情页面"
+      }
+    },
+    "feature": {
+      "featureId": "src_DetailPage_build_136_5402795c",
+      "kind": "source",
+      "title": "详情页面展示与交互"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 136,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数，负责渲染界面。当页面状态变为成功或用户触发刷新时，间接调用数据加载逻辑。",
+          "context": {
+            "startLine": 131,
+            "lines": [
+              "",
+              "    })",
+              "",
+              "  }",
+              "",
+              "  build() {",
+              "",
+              "    Column() {",
+              "",
+              "      if (this.pageState === PageState.Loading) {",
+              "        // 加载页面"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 63,
+          "code": "loadMoreNewsData() {",
+          "description": "定义 loadMoreNewsData 函数，该函数被 UI 层调用以执行加载更多新闻数据的业务逻辑。",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "    })",
+              "",
+              "",
+              "  }",
+              "",
+              "  loadMoreNewsData() {",
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 65,
+          "code": "return new Promise<string>((resolve, reject) => {",
+          "description": "创建 Promise 对象以处理异步数据加载流程，确保在获取系统时间后继续执行后续网络请求。",
+          "context": {
+            "startLine": 60,
+            "lines": [
+              "",
+              "  }",
+              "",
+              "  loadMoreNewsData() {",
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+              "          .then((value: ResponseResult) => {",
+              "            this.responseData = value;"
+            ]
+          }
+        },
+        {
+          "id": "p11:n4",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 66,
+          "code": "systemTime.getCurrentTime(false, (error, time) => {",
+          "description": "调用 systemTime.getCurrentTime 接口获取当前系统时间（毫秒级时间戳），这是数据流中的隐私数据源点。",
+          "context": {
+            "startLine": 61,
+            "lines": [
+              "  }",
+              "",
+              "  loadMoreNewsData() {",
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+              "          .then((value: ResponseResult) => {",
+              "            this.responseData = value;",
+              "            let temp = value.data as Array<DataModel>;"
+            ]
+          }
+        },
+        {
+          "id": "p11:n5",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 67,
+          "code": "this.timeStamp = Math.trunc(time / 1000);",
+          "description": "将获取到的毫秒级时间戳转换为秒级整数，并赋值给组件成员变量 this.timeStamp，完成数据的初步处理。",
+          "context": {
+            "startLine": 62,
+            "lines": [
+              "",
+              "  loadMoreNewsData() {",
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+              "          .then((value: ResponseResult) => {",
+              "            this.responseData = value;",
+              "            let temp = value.data as Array<DataModel>;",
+              "            this.dataList = this.dataList.concat(temp);"
+            ]
+          }
+        },
+        {
+          "id": "p11:n6",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 68,
+          "code": "NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+          "description": "调用 NewsDataViewModel.getNewsList 方法，将处理后的时间戳 (this.timeStamp) 作为参数传入，用于构建新闻列表请求，数据在此处流向网络层。",
+          "context": {
+            "startLine": 63,
+            "lines": [
+              "  loadMoreNewsData() {",
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+              "          .then((value: ResponseResult) => {",
+              "            this.responseData = value;",
+              "            let temp = value.data as Array<DataModel>;",
+              "            this.dataList = this.dataList.concat(temp);",
+              "            resolve('刷新成功')"
+            ]
+          }
+        },
+        {
+          "id": "p11:n7",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 69,
+          "code": ".then((value: ResponseResult) => {",
+          "description": "处理网络请求返回的 Promise 结果，接收包含新闻数据的 ResponseResult 对象。",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+              "          .then((value: ResponseResult) => {",
+              "            this.responseData = value;",
+              "            let temp = value.data as Array<DataModel>;",
+              "            this.dataList = this.dataList.concat(temp);",
+              "            resolve('刷新成功')",
+              "          }).catch(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n8",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 70,
+          "code": "this.responseData = value;",
+          "description": "将网络响应数据赋值给组件成员变量 this.responseData，暂存于内存中。",
+          "context": {
+            "startLine": 65,
+            "lines": [
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+              "          .then((value: ResponseResult) => {",
+              "            this.responseData = value;",
+              "            let temp = value.data as Array<DataModel>;",
+              "            this.dataList = this.dataList.concat(temp);",
+              "            resolve('刷新成功')",
+              "          }).catch(() => {",
+              "          resolve('')"
+            ]
+          }
+        },
+        {
+          "id": "p11:n9",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 72,
+          "code": "this.dataList = this.dataList.concat(temp);",
+          "description": "将新获取的新闻数据合并到现有的 dataList 列表中，更新 UI 数据源，完成数据流的消费环节。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+              "          .then((value: ResponseResult) => {",
+              "            this.responseData = value;",
+              "            let temp = value.data as Array<DataModel>;",
+              "            this.dataList = this.dataList.concat(temp);",
+              "            resolve('刷新成功')",
+              "          }).catch(() => {",
+              "          resolve('')",
+              "        })",
+              "      })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        },
+        {
+          "from": "p11:n3",
+          "to": "p11:n4"
+        },
+        {
+          "from": "p11:n4",
+          "to": "p11:n5"
+        },
+        {
+          "from": "p11:n5",
+          "to": "p11:n6"
+        },
+        {
+          "from": "p11:n6",
+          "to": "p11:n7"
+        },
+        {
+          "from": "p11:n7",
+          "to": "p11:n8"
+        },
+        {
+          "from": "p11:n8",
+          "to": "p11:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "系统时间戳 (System Timestamp)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户滚动加载/刷新列表时)"
+        ],
+        "cloudUpload": [
+          "作为请求参数传递给 NewsDataViewModel.getNewsList，极大概率随 HTTP 请求发送至云端新闻服务器"
+        ],
+        "storageAndEncryption": [
+          "临时存储在组件成员变量 this.timeStamp 中，未观察到本地持久化存储，未观察到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 136,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口 build() 函数开始执行，初始化 UI 渲染流程。",
+          "context": {
+            "startLine": 131,
+            "lines": [
+              "",
+              "    })",
+              "",
+              "  }",
+              "",
+              "  build() {",
+              "",
+              "    Column() {",
+              "",
+              "      if (this.pageState === PageState.Loading) {",
+              "        // 加载页面"
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 138,
+          "code": "Column() {",
+          "description": "构建 Column 布局容器，根据页面状态（如 Success）准备渲染新闻列表内容，可能触发数据加载逻辑。",
+          "context": {
+            "startLine": 133,
+            "lines": [
+              "",
+              "  }",
+              "",
+              "  build() {",
+              "",
+              "    Column() {",
+              "",
+              "      if (this.pageState === PageState.Loading) {",
+              "        // 加载页面",
+              "        LoadingLayout()",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p12:n3",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 63,
+          "code": "loadMoreNewsData() {",
+          "description": "定义 loadMoreNewsData 方法，该方法用于加载更多新闻数据，是数据获取流程的业务逻辑入口。",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "    })",
+              "",
+              "",
+              "  }",
+              "",
+              "  loadMoreNewsData() {",
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)"
+            ]
+          }
+        },
+        {
+          "id": "p12:n4",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 66,
+          "code": "systemTime.getCurrentTime(false, (error, time) => {",
+          "description": "调用 systemTime.getCurrentTime 接口获取当前系统时间（毫秒级时间戳），这是隐私数据流的源头（Source）。",
+          "context": {
+            "startLine": 61,
+            "lines": [
+              "  }",
+              "",
+              "  loadMoreNewsData() {",
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+              "          .then((value: ResponseResult) => {",
+              "            this.responseData = value;",
+              "            let temp = value.data as Array<DataModel>;"
+            ]
+          }
+        },
+        {
+          "id": "p12:n5",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 67,
+          "code": "this.timeStamp = Math.trunc(time / 1000);",
+          "description": "将获取到的毫秒级时间戳转换为秒级整数，并赋值给组件成员变量 this.timeStamp，完成数据的本地暂存。",
+          "context": {
+            "startLine": 62,
+            "lines": [
+              "",
+              "  loadMoreNewsData() {",
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+              "          .then((value: ResponseResult) => {",
+              "            this.responseData = value;",
+              "            let temp = value.data as Array<DataModel>;",
+              "            this.dataList = this.dataList.concat(temp);"
+            ]
+          }
+        },
+        {
+          "id": "p12:n6",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/NewsDataList.ets",
+          "line": 68,
+          "code": "NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+          "description": "调用 NewsDataViewModel.getNewsList 方法，将包含时间戳的参数传入，发起网络请求获取新闻列表，数据在此处流出应用（Sink）。",
+          "context": {
+            "startLine": 63,
+            "lines": [
+              "  loadMoreNewsData() {",
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      systemTime.getCurrentTime(false, (error, time) => {",
+              "        this.timeStamp = Math.trunc(time / 1000);",
+              "        NewsDataViewModel.getNewsList(this.currentPage, this.pageCount, this.timeStamp)",
+              "          .then((value: ResponseResult) => {",
+              "            this.responseData = value;",
+              "            let temp = value.data as Array<DataModel>;",
+              "            this.dataList = this.dataList.concat(temp);",
+              "            resolve('刷新成功')"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        },
+        {
+          "from": "p12:n2",
+          "to": "p12:n3"
+        },
+        {
+          "from": "p12:n3",
+          "to": "p12:n4"
+        },
+        {
+          "from": "p12:n4",
+          "to": "p12:n5"
+        },
+        {
+          "from": "p12:n5",
+          "to": "p12:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "系统时间戳 (System Timestamp)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户刷新/加载列表时)"
+        ],
+        "cloudUpload": [
+          "作为请求参数传递给 NewsDataViewModel.getNewsList，极可能随 HTTP 请求发送至云端服务器以获取新闻列表"
+        ],
+        "storageAndEncryption": [
+          "临时存储在组件成员变量 this.timeStamp 中，未观察到持久化存储或加密操作"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

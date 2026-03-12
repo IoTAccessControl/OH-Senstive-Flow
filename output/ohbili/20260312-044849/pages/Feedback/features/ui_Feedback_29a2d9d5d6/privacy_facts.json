@@ -1,0 +1,176 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "featureId": "ui_Feedback_29a2d9d5d6",
+    "generatedAt": "2026-03-11T21:08:36.430Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.READ_APPLICATION_LOGS 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户在反馈页面查看日志列表、切换调试模式或提交问题时，应用收集本地日志文件元数据及内容并上传至云端。",
+        "dataSources": [
+          "应用私有沙箱目录 (filesDir/log)",
+          "本地持久化存储 (@StorageLink)"
+        ],
+        "dataItems": [
+          {
+            "name": "应用唯一标识 (appUuid)",
+            "refs": [
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n1"
+              },
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n2"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n9"
+              }
+            ]
+          },
+          {
+            "name": "调试模式状态 (appLogDebug)",
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n1"
+              },
+              {
+                "flowId": "flow:p28",
+                "nodeId": "p28:n12"
+              }
+            ]
+          },
+          {
+            "name": "应用日志文件列表",
+            "refs": [
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n4"
+              },
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n6"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n4"
+              }
+            ]
+          },
+          {
+            "name": "日志文件大小",
+            "refs": [
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n7"
+              },
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n9"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n7"
+              }
+            ]
+          },
+          {
+            "name": "日志文件路径",
+            "refs": [
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n6"
+              },
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n8"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n6"
+              }
+            ]
+          },
+          {
+            "name": "日志文件内容",
+            "refs": [
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n9"
+              },
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n12"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n11"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取本地文件系统获取日志元数据与内容，通过 GistClient 构建 HTTP POST 请求上传至远程仓库。",
+        "storageMethod": "日志文件以明文形式存储在应用沙箱的 log 目录下；appUuid 和调试状态通过 @StorageLink 持久化存储；内存中暂存 LogFile 对象数组。",
+        "dataRecipients": [
+          {
+            "name": "Gitee/GitHub 类代码托管服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n9"
+              },
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n12"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n11"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于问题定位、故障排查及接收用户反馈，将设备运行日志发送至开发者服务器进行分析。",
+        "privacyToggleUi": {
+          "where": "反馈页面导航栏下方，包含“关闭 Debug 日志”按钮",
+          "refs": [
+            {
+              "uiNodeId": "ui:47097712e5bf"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "用户点击上传或自动触发日志同步时。",
+        "permissionPurpose": "将日志内容和元数据上传至 Gitee 云端仓库。",
+        "denyImpact": "无法将日志上传至服务器，反馈提交失败。",
+        "refs": [
+          {
+            "flowId": "flow:p23",
+            "nodeId": "p23:n9"
+          },
+          {
+            "flowId": "flow:p24",
+            "nodeId": "p24:n12"
+          }
+        ]
+      }
+    ]
+  }
+}

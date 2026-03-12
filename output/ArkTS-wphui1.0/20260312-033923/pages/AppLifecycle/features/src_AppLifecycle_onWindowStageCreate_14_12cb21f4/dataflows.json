@@ -1,0 +1,501 @@
+{
+  "meta": {
+    "runId": "ArkTS-wphui1.0_20260312-033923",
+    "generatedAt": "2026-03-11T19:41:45.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 3,
+      "nodes": 15,
+      "edges": 12,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onWindowStageCreate_14_12cb21f4",
+      "kind": "source",
+      "title": "主窗口创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 14,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage) {",
+          "description": "定义 onWindowStageCreate 生命周期回调函数，作为数据流的起点，响应窗口阶段创建事件。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 16,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "调用 hilog.info 记录'Ability onWindowStageCreate'日志，将生命周期事件信息输出到系统日志（Sink 点）。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;"
+            ]
+          }
+        },
+        {
+          "id": "p5:n3",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 18,
+          "code": "windowStage.loadContent('pages/Index', (err, data) => {",
+          "description": "调用 windowStage.loadContent 加载主页面内容，发起异步页面渲染请求，可能产生加载结果数据。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p5:n4",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 19,
+          "code": "if (err.code) {",
+          "description": "在 loadContent 的回调中检查错误码，判断页面加载是否失败。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p5:n5",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 20,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "若加载失败，调用 hilog.error 记录包含错误详情（JSON 字符串）的日志，输出敏感错误信息到系统日志。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p5:n6",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 23,
+          "code": "hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+          "description": "若加载成功，调用 hilog.info 记录包含加载返回数据（JSON 字符串）的日志，输出业务数据到系统日志。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        },
+        {
+          "from": "p5:n1",
+          "to": "p5:n3"
+        },
+        {
+          "from": "p5:n3",
+          "to": "p5:n4"
+        },
+        {
+          "from": "p5:n4",
+          "to": "p5:n5"
+        },
+        {
+          "from": "p5:n4",
+          "to": "p5:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "窗口创建事件",
+          "页面加载结果数据"
+        ],
+        "collectionFrequency": [
+          "事件触发（应用启动/窗口创建时）"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "仅内存中临时日志输出"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 14,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage) {",
+          "description": "生命周期回调函数 onWindowStageCreate 的入口点，当应用主窗口阶段创建时被系统触发，作为数据流的起始源点。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 18,
+          "code": "windowStage.loadContent('pages/Index', (err, data) => {",
+          "description": "调用 windowStage.loadContent 异步加载主页面内容，注册回调函数以接收加载结果（成功数据或错误对象）。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 19,
+          "code": "if (err.code) {",
+          "description": "在回调函数中检查 err 对象是否存在 code 属性，判断页面加载是否发生故障，决定后续错误处理分支。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p6:n4",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 20,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "将错误对象 err 序列化为 JSON 字符串，并通过 hilog.error 接口输出到系统日志。此处使用了 %{public}s 标记，意味着敏感的错误堆栈或信息将以明文形式暴露于日志中，构成隐私泄露风险点（Sink）。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        },
+        {
+          "from": "p6:n3",
+          "to": "p6:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面加载错误对象 (err)",
+          "错误码 (err.code)",
+          "错误详情字符串化数据"
+        ],
+        "collectionFrequency": [
+          "事件触发 (仅在页面内容加载失败时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "非持久化存储 (写入系统日志缓冲区)",
+          "未加密 (以明文形式写入日志，且标记为 %{public}s)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 14,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage) {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，作为数据流的起始触发点。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 18,
+          "code": "windowStage.loadContent('pages/Index', (err, data) => {",
+          "description": "调用 windowStage.loadContent 加载主页面内容，注册异步回调函数以接收加载结果（data 或 err）。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 19,
+          "code": "if (err.code) {",
+          "description": "在回调中判断加载是否失败，检查 err.code 是否存在，决定后续数据流向。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p7:n4",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 20,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "若加载失败，将错误对象 err 序列化为 JSON 字符串，并通过 hilog.error 输出到系统日志（包含敏感调试信息风险）。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p7:n5",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 23,
+          "code": "hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+          "description": "若加载成功，将回调返回的数据对象 data 序列化为 JSON 字符串，并通过 hilog.info 输出到系统日志，此处为数据汇点（Sink），可能导致内部数据结构泄露。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        },
+        {
+          "from": "p7:n3",
+          "to": "p7:n4"
+        },
+        {
+          "from": "p7:n3",
+          "to": "p7:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面加载回调数据 (loadContent callback data)",
+          "错误对象 (error object)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 创建时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "仅输出到系统日志 (hilog)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

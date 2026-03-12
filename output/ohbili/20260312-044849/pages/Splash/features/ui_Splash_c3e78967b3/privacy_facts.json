@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "featureId": "ui_Splash_c3e78967b3",
+    "generatedAt": "2026-03-11T21:09:50.594Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "应用启动时初始化设备标识与调试配置",
+        "dataSources": [
+          "本地存储",
+          "系统生成"
+        ],
+        "dataItems": [
+          {
+            "name": "设备唯一标识符 (appUuid)",
+            "refs": [
+              {
+                "flowId": "flow:p58",
+                "nodeId": "p58:n7"
+              },
+              {
+                "flowId": "flow:p59",
+                "nodeId": "p59:n4"
+              },
+              {
+                "flowId": "flow:p60",
+                "nodeId": "p60:n11"
+              }
+            ]
+          },
+          {
+            "name": "调试日志开关 (appLogDebug)",
+            "refs": [
+              {
+                "flowId": "flow:p60",
+                "nodeId": "p60:n2"
+              },
+              {
+                "flowId": "flow:p61",
+                "nodeId": "p61:n2"
+              }
+            ]
+          },
+          {
+            "name": "应用包信息 (BundleInfo)",
+            "refs": [
+              {
+                "flowId": "flow:p63",
+                "nodeId": "p63:n9"
+              },
+              {
+                "flowId": "flow:p64",
+                "nodeId": "p64:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取本地持久化数据，若未存在则生成随机 UUID；获取应用包信息以校验权限状态；将生成的标识符记录至日志。",
+        "storageMethod": "通过 @StorageLink 机制明文持久化存储于本地首选项（Preferences）。",
+        "dataRecipients": [
+          {
+            "name": "云端推荐服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p61",
+                "nodeId": "p61:n12"
+              },
+              {
+                "flowId": "flow:p63",
+                "nodeId": "p63:n12"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于设备识别、应用初始化、权限校验及后续内容推荐服务的用户身份关联。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.MEDIA_LOCATION",
+        "businessScenario": "应用启动时检查并申请访问媒体文件位置信息的权限",
+        "permissionPurpose": "获取用户媒体文件的位置信息，可能用于基于位置的媒体推荐或管理。",
+        "denyImpact": "若拒绝授权，应用可能无法获取媒体文件的地理位置信息，影响相关功能的正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p58",
+            "nodeId": "p58:n3"
+          },
+          {
+            "flowId": "flow:p60",
+            "nodeId": "p60:n6"
+          },
+          {
+            "flowId": "flow:p62",
+            "nodeId": "p62:n3"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "应用启动时检查并申请读取用户媒体文件的权限",
+        "permissionPurpose": "读取用户相册或文件系统中的媒体文件内容，用于展示或处理。",
+        "denyImpact": "若拒绝授权，应用将无法读取用户的媒体文件，导致无法查看或处理相关内容。",
+        "refs": [
+          {
+            "flowId": "flow:p58",
+            "nodeId": "p58:n4"
+          },
+          {
+            "flowId": "flow:p60",
+            "nodeId": "p60:n7"
+          },
+          {
+            "flowId": "flow:p62",
+            "nodeId": "p62:n4"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260312-051445",
+    "featureId": "ui_HomePage_b6ae04dee5",
+    "generatedAt": "2026-03-11T21:31:36.280Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "计步数据追踪与位置服务",
+        "dataSources": [
+          "用户授权状态",
+          "计步器传感器 (PEDOMETER)",
+          "地理位置信息 (Location)",
+          "本地存储配置"
+        ],
+        "dataItems": [
+          {
+            "name": "计步器传感器数据 (PEDOMETER)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n7"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n7"
+              }
+            ]
+          },
+          {
+            "name": "地理位置名称 (placeName)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n8"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n6"
+              }
+            ]
+          },
+          {
+            "name": "用户设定的步数目标 (stepGoal)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n9"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n4"
+              }
+            ]
+          },
+          {
+            "name": "错误日志信息 (Error Log Messages)",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n7"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n10"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "客户端处理（本地计算与展示）",
+        "storageMethod": "本地存储（Preferences/SharedPrefs），未加密",
+        "dataRecipients": [],
+        "processingPurpose": "记录用户步数、提供运动状态反馈及基于位置的上下文展示",
+        "privacyToggleUi": {
+          "where": "页面主布局容器内可能包含相关控制逻辑，但具体开关未在当前片段显式定义，依赖系统权限管理界面。",
+          "refs": [
+            {
+              "uiNodeId": "ui:599a65fa9471"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCELEROMETER",
+        "businessScenario": "Subscribe to accelerometer sensor data.",
+        "permissionPurpose": "使用相关系统能力（由 SDK API 权限映射确定）",
+        "denyImpact": "拒绝授权可能导致对应功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n7"
+          },
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n7"
+          },
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n10"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n2"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.ACTIVITY_MOTION",
+        "businessScenario": "计步功能初始化时申请访问计步器传感器",
+        "permissionPurpose": "用于获取用户的实时步数和运动状态",
+        "denyImpact": "若拒绝，应用无法启动计步计数，导致核心计步功能不可用",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n5"
+          },
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n5"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.APPROXIMATELY_LOCATION",
+        "businessScenario": "Subscribe location changed.",
+        "permissionPurpose": "使用相关系统能力（由 SDK API 权限映射确定）",
+        "denyImpact": "拒绝授权可能导致对应功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n8"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "businessScenario": "Service ability uses this method to request start running in…",
+        "permissionPurpose": "使用相关系统能力（由 SDK API 权限映射确定）",
+        "denyImpact": "拒绝授权可能导致对应功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p14",
+            "nodeId": "p14:n7"
+          },
+          {
+            "flowId": "flow:p15",
+            "nodeId": "p15:n8"
+          },
+          {
+            "flowId": "flow:p24",
+            "nodeId": "p24:n10"
+          },
+          {
+            "flowId": "flow:p25",
+            "nodeId": "p25:n8"
+          },
+          {
+            "flowId": "flow:p35",
+            "nodeId": "p35:n8"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.LOCATION",
+        "businessScenario": "页面加载时申请获取用户地理位置",
+        "permissionPurpose": "用于获取当前位置名称并显示在界面上",
+        "denyImpact": "若拒绝，应用无法显示当前所在地点名称，可能影响基于位置的运动轨迹记录",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n5"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n4"
+          }
+        ]
+      }
+    ]
+  }
+}

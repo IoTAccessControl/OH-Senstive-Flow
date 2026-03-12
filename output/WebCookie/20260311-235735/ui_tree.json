@@ -1,0 +1,553 @@
+{
+  "meta": {
+    "runId": "WebCookie_20260311-235735",
+    "generatedAt": "2026-03-11T15:58:51.325Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 18,
+      "edges": 16,
+      "pages": 2,
+      "elements": 16
+    }
+  },
+  "roots": [
+    "page:160cff6bd21e"
+  ],
+  "nodes": {
+    "page:d435fe8f6df1": {
+      "id": "page:d435fe8f6df1",
+      "category": "Page",
+      "name": "Verify",
+      "description": "验证页面",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 29,
+      "code": "export struct Verify {",
+      "context": {
+        "startLine": 24,
+        "lines": [
+          "",
+          "/**",
+          " * Page use to verify login free.",
+          " */",
+          "@Component",
+          "export struct Verify {",
+          "  pathStack: NavPathStack = new NavPathStack();",
+          "  fileAccess: boolean = true;",
+          "  controller: webview.WebviewController = new webview.WebviewController();",
+          "  isRedirect: boolean = false;",
+          ""
+        ]
+      }
+    },
+    "ui:11d4dd9b953c": {
+      "id": "ui:11d4dd9b953c",
+      "category": "Component",
+      "name": "build",
+      "description": "页面构建入口",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 39,
+      "code": "build() {",
+      "context": {
+        "startLine": 34,
+        "lines": [
+          "",
+          "  onPageShow(): void {",
+          "    this.isRedirect = false;",
+          "  }",
+          "",
+          "  build() {",
+          "    NavDestination() {",
+          "      Text($r('app.string.title_name'))",
+          "        .fontSize(CommonConstants.TITLE_SIZE)",
+          "        .fontWeight(CommonConstants.FONT_WEIGHT_DEEPER)",
+          "        .fontColor($r('app.color.title_black'))"
+        ]
+      }
+    },
+    "ui:d347685cb4fe": {
+      "id": "ui:d347685cb4fe",
+      "category": "Component",
+      "name": "NavDestination",
+      "description": "导航目标区域",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 40,
+      "code": "NavDestination() {",
+      "context": {
+        "startLine": 35,
+        "lines": [
+          "  onPageShow(): void {",
+          "    this.isRedirect = false;",
+          "  }",
+          "",
+          "  build() {",
+          "    NavDestination() {",
+          "      Text($r('app.string.title_name'))",
+          "        .fontSize(CommonConstants.TITLE_SIZE)",
+          "        .fontWeight(CommonConstants.FONT_WEIGHT_DEEPER)",
+          "        .fontColor($r('app.color.title_black'))",
+          "        .width(CommonConstants.PAGE_TITLE_WIDTH)"
+        ]
+      }
+    },
+    "ui:f198e308dfc3": {
+      "id": "ui:f198e308dfc3",
+      "category": "Display",
+      "name": "Text",
+      "description": "显示内容",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 41,
+      "code": "Text($r('app.string.title_name'))",
+      "context": {
+        "startLine": 36,
+        "lines": [
+          "    this.isRedirect = false;",
+          "  }",
+          "",
+          "  build() {",
+          "    NavDestination() {",
+          "      Text($r('app.string.title_name'))",
+          "        .fontSize(CommonConstants.TITLE_SIZE)",
+          "        .fontWeight(CommonConstants.FONT_WEIGHT_DEEPER)",
+          "        .fontColor($r('app.color.title_black'))",
+          "        .width(CommonConstants.PAGE_TITLE_WIDTH)",
+          "        .height(CommonConstants.PAGE_TITLE_HEIGHT)"
+        ]
+      }
+    },
+    "ui:eea2ff9f9003": {
+      "id": "ui:eea2ff9f9003",
+      "category": "Component",
+      "name": "Web",
+      "description": "Web视图容器",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 52,
+      "code": "Web({",
+      "context": {
+        "startLine": 47,
+        "lines": [
+          "        .margin({",
+          "          top: $r('app.float.page_title_margin_top'),",
+          "          bottom: $r('app.float.page_title_margin_bottom')",
+          "        })",
+          "",
+          "      Web({",
+          "        src: CommonConstants.USER_ABOUT_URL,",
+          "        controller: this.controller",
+          "      })",
+          "        .height(CommonConstants.WEB_HEIGHT)",
+          "        .width(CommonConstants.WEB_WIDTH)"
+        ]
+      }
+    },
+    "ui:ffdfa9da4b38": {
+      "id": "ui:ffdfa9da4b38",
+      "category": "Component",
+      "name": "try",
+      "description": "功能入口",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 61,
+      "code": "try {",
+      "context": {
+        "startLine": 56,
+        "lines": [
+          "        .height(CommonConstants.WEB_HEIGHT)",
+          "        .width(CommonConstants.WEB_WIDTH)",
+          "        .fileAccess(this.fileAccess)",
+          "        .javaScriptAccess(true)",
+          "        .onPageEnd(() => {",
+          "          try {",
+          "            let originCookie = webview.WebCookieManager.fetchCookieSync(CommonConstants.USER_ABOUT_URL);",
+          "            if (originCookie === '' || this.isRedirect) {",
+          "              return;",
+          "            }",
+          "            this.isRedirect = true;"
+        ]
+      }
+    },
+    "ui:104304831cf7": {
+      "id": "ui:104304831cf7",
+      "category": "Component",
+      "name": "showDialog",
+      "description": "显示加载失败提示",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 67,
+      "code": "showDialog(originCookie);",
+      "context": {
+        "startLine": 62,
+        "lines": [
+          "            let originCookie = webview.WebCookieManager.fetchCookieSync(CommonConstants.USER_ABOUT_URL);",
+          "            if (originCookie === '' || this.isRedirect) {",
+          "              return;",
+          "            }",
+          "            this.isRedirect = true;",
+          "            showDialog(originCookie);",
+          "          } catch (error) {",
+          "            showDialog('Failed to load the web page.' + JSON.stringify(error));",
+          "          }",
+          "        })",
+          "    }"
+        ]
+      }
+    },
+    "ui:8c573b863565": {
+      "id": "ui:8c573b863565",
+      "category": "Component",
+      "name": "showDialog",
+      "description": "显示网页加载失败",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/Verify.ets",
+      "line": 69,
+      "code": "showDialog('Failed to load the web page.' + JSON.stringify(error));",
+      "context": {
+        "startLine": 64,
+        "lines": [
+          "              return;",
+          "            }",
+          "            this.isRedirect = true;",
+          "            showDialog(originCookie);",
+          "          } catch (error) {",
+          "            showDialog('Failed to load the web page.' + JSON.stringify(error));",
+          "          }",
+          "        })",
+          "    }",
+          "    .backgroundColor($r('app.color.page_background_grey'))",
+          "    .width(CommonConstants.FULL_WIDTH)"
+        ]
+      }
+    },
+    "page:160cff6bd21e": {
+      "id": "page:160cff6bd21e",
+      "category": "Page",
+      "name": "WebIndex",
+      "description": "首页",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/WebIndex.ets",
+      "line": 26,
+      "code": "struct WebIndex {",
+      "context": {
+        "startLine": 21,
+        "lines": [
+          "/**",
+          " * Home page.",
+          " */",
+          "@Entry",
+          "@Component",
+          "struct WebIndex {",
+          "  controller: webview.WebviewController = new webview.WebviewController();",
+          "  pathStack: NavPathStack = new NavPathStack();",
+          "",
+          "  build() {",
+          "    Navigation(this.pathStack) {"
+        ]
+      }
+    },
+    "ui:74ce84af74a0": {
+      "id": "ui:74ce84af74a0",
+      "category": "Component",
+      "name": "build",
+      "description": "导航栏构建",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/WebIndex.ets",
+      "line": 30,
+      "code": "build() {",
+      "context": {
+        "startLine": 25,
+        "lines": [
+          "@Component",
+          "struct WebIndex {",
+          "  controller: webview.WebviewController = new webview.WebviewController();",
+          "  pathStack: NavPathStack = new NavPathStack();",
+          "",
+          "  build() {",
+          "    Navigation(this.pathStack) {",
+          "      Text($r('app.string.navigator_name'))",
+          "        .fontSize(CommonConstants.NAVIGATOR_SIZE)",
+          "        .fontWeight(CommonConstants.FONT_WEIGHT_DEEPER)",
+          "        .fontColor($r('app.color.navigator_black'))"
+        ]
+      }
+    },
+    "ui:f7056f539a5d": {
+      "id": "ui:f7056f539a5d",
+      "category": "Display",
+      "name": "Text",
+      "description": "Web组件",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/WebIndex.ets",
+      "line": 32,
+      "code": "Text($r('app.string.navigator_name'))",
+      "context": {
+        "startLine": 27,
+        "lines": [
+          "  controller: webview.WebviewController = new webview.WebviewController();",
+          "  pathStack: NavPathStack = new NavPathStack();",
+          "",
+          "  build() {",
+          "    Navigation(this.pathStack) {",
+          "      Text($r('app.string.navigator_name'))",
+          "        .fontSize(CommonConstants.NAVIGATOR_SIZE)",
+          "        .fontWeight(CommonConstants.FONT_WEIGHT_DEEPER)",
+          "        .fontColor($r('app.color.navigator_black'))",
+          "        .width(CommonConstants.FULL_WIDTH)",
+          "        .margin({"
+        ]
+      }
+    },
+    "ui:1186ef3d9b92": {
+      "id": "ui:1186ef3d9b92",
+      "category": "Display",
+      "name": "Text",
+      "description": "页面标题",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/WebIndex.ets",
+      "line": 42,
+      "code": "Text($r('app.string.title_name'))",
+      "context": {
+        "startLine": 37,
+        "lines": [
+          "        .margin({",
+          "          top: CommonConstants.APP_TITLE_MARGIN_TOP,",
+          "          left: CommonConstants.APP_TITLE_MARGIN_LEFT",
+          "        })",
+          "",
+          "      Text($r('app.string.title_name'))",
+          "        .fontSize(CommonConstants.TITLE_SIZE)",
+          "        .fontWeight(CommonConstants.FONT_WEIGHT_DEEPER)",
+          "        .fontColor($r('app.color.title_black'))",
+          "        .textAlign(TextAlign.Center)",
+          "        .width(CommonConstants.WEB_WIDTH)"
+        ]
+      }
+    },
+    "ui:af86ecfdec3e": {
+      "id": "ui:af86ecfdec3e",
+      "category": "Component",
+      "name": "Web",
+      "description": "Web视图容器",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/WebIndex.ets",
+      "line": 54,
+      "code": "Web({",
+      "context": {
+        "startLine": 49,
+        "lines": [
+          "        .margin({",
+          "          top: $r('app.float.page_title_margin_top'),",
+          "          bottom: $r('app.float.page_title_margin_bottom')",
+          "        })",
+          "",
+          "      Web({",
+          "        src: CommonConstants.USER_CENTER_URL,",
+          "        controller: this.controller",
+          "      })",
+          "        .domStorageAccess(true)",
+          "        .javaScriptAccess(true)"
+        ]
+      }
+    },
+    "ui:25391a4aa5e2": {
+      "id": "ui:25391a4aa5e2",
+      "category": "Component",
+      "name": "showDialog",
+      "description": "显示加载错误提示",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/WebIndex.ets",
+      "line": 66,
+      "code": "showDialog(message);",
+      "context": {
+        "startLine": 61,
+        "lines": [
+          "        .width(CommonConstants.WEB_WIDTH)",
+          "        .margin({ bottom: CommonConstants.WEB_MARGIN_BOTTOM })",
+          "        .onErrorReceive((event) => {",
+          "          if (event?.request.isMainFrame()) {",
+          "            let message = $r('app.string.load_error');",
+          "            showDialog(message);",
+          "          }",
+          "        })",
+          "",
+          "      Row() {",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[0], isNeedDivider: true })"
+        ]
+      }
+    },
+    "ui:42c9ceb42318": {
+      "id": "ui:42c9ceb42318",
+      "category": "Component",
+      "name": "LinkButton",
+      "description": "功能操作按钮",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/WebIndex.ets",
+      "line": 71,
+      "code": "LinkButton({ buttonType: CommonConstants.CookieOperation[0], isNeedDivider: true })",
+      "context": {
+        "startLine": 66,
+        "lines": [
+          "            showDialog(message);",
+          "          }",
+          "        })",
+          "",
+          "      Row() {",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[0], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[1], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[2], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[3], isNeedDivider: false, pathStack: this.pathStack })",
+          "      }",
+          "      .justifyContent(FlexAlign.SpaceBetween)"
+        ]
+      }
+    },
+    "ui:16127d036d23": {
+      "id": "ui:16127d036d23",
+      "category": "Component",
+      "name": "LinkButton",
+      "description": "功能操作按钮",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/WebIndex.ets",
+      "line": 72,
+      "code": "LinkButton({ buttonType: CommonConstants.CookieOperation[1], isNeedDivider: true })",
+      "context": {
+        "startLine": 67,
+        "lines": [
+          "          }",
+          "        })",
+          "",
+          "      Row() {",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[0], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[1], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[2], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[3], isNeedDivider: false, pathStack: this.pathStack })",
+          "      }",
+          "      .justifyContent(FlexAlign.SpaceBetween)",
+          "      .width(CommonConstants.WEB_WIDTH)"
+        ]
+      }
+    },
+    "ui:d5b7a5d4b58f": {
+      "id": "ui:d5b7a5d4b58f",
+      "category": "Component",
+      "name": "LinkButton",
+      "description": "功能操作按钮",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/WebIndex.ets",
+      "line": 73,
+      "code": "LinkButton({ buttonType: CommonConstants.CookieOperation[2], isNeedDivider: true })",
+      "context": {
+        "startLine": 68,
+        "lines": [
+          "        })",
+          "",
+          "      Row() {",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[0], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[1], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[2], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[3], isNeedDivider: false, pathStack: this.pathStack })",
+          "      }",
+          "      .justifyContent(FlexAlign.SpaceBetween)",
+          "      .width(CommonConstants.WEB_WIDTH)",
+          "    }"
+        ]
+      }
+    },
+    "ui:104e06d88f73": {
+      "id": "ui:104e06d88f73",
+      "category": "Component",
+      "name": "LinkButton",
+      "description": "返回按钮",
+      "filePath": "input/app/WebCookie/entry/src/main/ets/pages/WebIndex.ets",
+      "line": 74,
+      "code": "LinkButton({ buttonType: CommonConstants.CookieOperation[3], isNeedDivider: false, pathStack: this.pathStack })",
+      "context": {
+        "startLine": 69,
+        "lines": [
+          "",
+          "      Row() {",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[0], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[1], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[2], isNeedDivider: true })",
+          "        LinkButton({ buttonType: CommonConstants.CookieOperation[3], isNeedDivider: false, pathStack: this.pathStack })",
+          "      }",
+          "      .justifyContent(FlexAlign.SpaceBetween)",
+          "      .width(CommonConstants.WEB_WIDTH)",
+          "    }",
+          "    .backgroundColor($r('app.color.page_background_grey'))"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:11d4dd9b953c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:d347685cb4fe",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:f198e308dfc3",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:eea2ff9f9003",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:ffdfa9da4b38",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:104304831cf7",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d435fe8f6df1",
+      "to": "ui:8c573b863565",
+      "kind": "contains"
+    },
+    {
+      "from": "page:160cff6bd21e",
+      "to": "ui:74ce84af74a0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:160cff6bd21e",
+      "to": "ui:f7056f539a5d",
+      "kind": "contains"
+    },
+    {
+      "from": "page:160cff6bd21e",
+      "to": "ui:1186ef3d9b92",
+      "kind": "contains"
+    },
+    {
+      "from": "page:160cff6bd21e",
+      "to": "ui:af86ecfdec3e",
+      "kind": "contains"
+    },
+    {
+      "from": "page:160cff6bd21e",
+      "to": "ui:25391a4aa5e2",
+      "kind": "contains"
+    },
+    {
+      "from": "page:160cff6bd21e",
+      "to": "ui:42c9ceb42318",
+      "kind": "contains"
+    },
+    {
+      "from": "page:160cff6bd21e",
+      "to": "ui:16127d036d23",
+      "kind": "contains"
+    },
+    {
+      "from": "page:160cff6bd21e",
+      "to": "ui:d5b7a5d4b58f",
+      "kind": "contains"
+    },
+    {
+      "from": "page:160cff6bd21e",
+      "to": "ui:104e06d88f73",
+      "kind": "contains"
+    }
+  ]
+}

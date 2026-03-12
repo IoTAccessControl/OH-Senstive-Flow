@@ -1,0 +1,923 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260312-054801",
+    "generatedAt": "2026-03-11T22:26:47.743Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 3,
+      "nodes": 30,
+      "edges": 28,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "ChatPage",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+        "structName": "ChatPage",
+        "line": 99,
+        "description": "聊天界面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_ChatPage_e19e4bc985",
+      "kind": "ui",
+      "title": "语音输入"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p118",
+      "pathId": "p118",
+      "nodes": [
+        {
+          "id": "p118:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 330,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建聊天页面 UI 树，准备渲染数据。",
+          "context": {
+            "startLine": 325,
+            "lines": [
+              "    const TextChat = new ChatMessage(MessageType.text, this.voiceToText)",
+              "    //   插入到消息数组中",
+              "    this.chatList.push(TextChat)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Toolbar({ title: this.name })",
+              "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+              "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+              "          ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p118:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 331,
+          "code": "Column() {",
+          "description": "创建 Column 容器，作为聊天页面的主布局容器。",
+          "context": {
+            "startLine": 326,
+            "lines": [
+              "    //   插入到消息数组中",
+              "    this.chatList.push(TextChat)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Toolbar({ title: this.name })",
+              "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+              "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+              "          ListItem() {",
+              "            if (item.self) {"
+            ]
+          }
+        },
+        {
+          "id": "p118:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 332,
+          "code": "Toolbar({ title: this.name })",
+          "description": "渲染 Toolbar 组件，绑定并展示当前聊天对象的名称 (this.name)，涉及个人数据展示。",
+          "context": {
+            "startLine": 327,
+            "lines": [
+              "    this.chatList.push(TextChat)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Toolbar({ title: this.name })",
+              "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+              "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+              "          ListItem() {",
+              "            if (item.self) {",
+              "              ListChatContentRightItem({ data: item })"
+            ]
+          }
+        },
+        {
+          "id": "p118:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 333,
+          "code": "List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+          "description": "初始化 List 组件加载历史消息列表 (this.dataList)，涉及读取本地存储的聊天数据。",
+          "context": {
+            "startLine": 328,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Toolbar({ title: this.name })",
+              "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+              "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+              "          ListItem() {",
+              "            if (item.self) {",
+              "              ListChatContentRightItem({ data: item })",
+              "            } else {"
+            ]
+          }
+        },
+        {
+          "id": "p118:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 352,
+          "code": "Row() {",
+          "description": "创建底部输入区域 Row 容器，包含语音切换按钮，暗示可能触发麦克风权限需求。",
+          "context": {
+            "startLine": 347,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height(0)",
+              "      // .divider({ strokeWidth: 0.8, color: '#f0f0f0', startMargin: 90, endMargin: 0 }) // 每行之间的分界线",
+              "      .layoutWeight(1)",
+              "",
+              "      Row() {",
+              "",
+              "        if (this.inputType == WXInputType.keyboard) {",
+              "          Image($r(\"app.media.ic_use_voice\"))",
+              "            .width(33)",
+              "            .height(33)"
+            ]
+          }
+        },
+        {
+          "id": "p118:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 355,
+          "code": "Image($r(\"app.media.ic_use_voice\"))",
+          "description": "加载语音输入图标资源，若用户点击将触发语音录制流程，需检查麦克风权限。",
+          "context": {
+            "startLine": 350,
+            "lines": [
+              "      .layoutWeight(1)",
+              "",
+              "      Row() {",
+              "",
+              "        if (this.inputType == WXInputType.keyboard) {",
+              "          Image($r(\"app.media.ic_use_voice\"))",
+              "            .width(33)",
+              "            .height(33)",
+              "            .borderRadius(4)",
+              "            .margin({ left: 15, right: 15 })",
+              "            .objectFit(ImageFit.Cover)"
+            ]
+          }
+        },
+        {
+          "id": "p118:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 24,
+          "code": "static async request(permissions: Permissions[]): Promise<boolean> {",
+          "description": "定义静态异步方法 request，用于统一处理动态权限申请逻辑，接收权限字符串数组。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "    // 返回是否已授权结果",
+              "    return authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "  }",
+              "",
+              "  // 动态申请授权（首次弹窗申请）",
+              "  static async request(permissions: Permissions[]): Promise<boolean> {",
+              "    if (PermissionUtils.check(permissions)) {",
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();"
+            ]
+          }
+        },
+        {
+          "id": "p118:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 25,
+          "code": "if (PermissionUtils.check(permissions)) {",
+          "description": "调用 check 方法预检权限状态，避免重复弹窗，优化用户体验。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "    return authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "  }",
+              "",
+              "  // 动态申请授权（首次弹窗申请）",
+              "  static async request(permissions: Permissions[]): Promise<boolean> {",
+              "    if (PermissionUtils.check(permissions)) {",
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权"
+            ]
+          }
+        },
+        {
+          "id": "p118:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 29,
+          "code": "const atManager = abilityAccessCtrl.createAtManager();",
+          "description": "调用 abilityAccessCtrl.createAtManager() 获取访问控制管理器实例，为请求系统权限做准备。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  static async request(permissions: Permissions[]): Promise<boolean> {",
+              "    if (PermissionUtils.check(permissions)) {",
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权",
+              "    const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+              "    // 获取请求权限的结果",
+              "    const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "    // 返回 Promise 授权结果"
+            ]
+          }
+        },
+        {
+          "id": "p118:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 31,
+          "code": "const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+          "description": "调用 requestPermissionsFromUser 拉起系统授权弹窗，请求用户授予特定隐私权限（如麦克风、存储等）。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权",
+              "    const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+              "    // 获取请求权限的结果",
+              "    const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "    // 返回 Promise 授权结果",
+              "    return isAuth",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p118:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 325,
+          "code": "const TextChat = new ChatMessage(MessageType.text, this.voiceToText)",
+          "description": "构建文本消息对象 ChatMessage，封装用户输入的语音转文本内容 (this.voiceToText)，形成待发送数据项。",
+          "context": {
+            "startLine": 320,
+            "lines": [
+              "    })",
+              "  }",
+              "  // 生成文字消息",
+              "  postText = () => {",
+              "    //   生成消息文件",
+              "    const TextChat = new ChatMessage(MessageType.text, this.voiceToText)",
+              "    //   插入到消息数组中",
+              "    this.chatList.push(TextChat)",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p118:n12",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 327,
+          "code": "this.chatList.push(TextChat)",
+          "description": "将新生成的消息对象推入本地消息列表 (this.chatList)，完成数据的本地内存暂存。",
+          "context": {
+            "startLine": 322,
+            "lines": [
+              "  // 生成文字消息",
+              "  postText = () => {",
+              "    //   生成消息文件",
+              "    const TextChat = new ChatMessage(MessageType.text, this.voiceToText)",
+              "    //   插入到消息数组中",
+              "    this.chatList.push(TextChat)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Toolbar({ title: this.name })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p118:n1",
+          "to": "p118:n2"
+        },
+        {
+          "from": "p118:n2",
+          "to": "p118:n3"
+        },
+        {
+          "from": "p118:n3",
+          "to": "p118:n4"
+        },
+        {
+          "from": "p118:n4",
+          "to": "p118:n5"
+        },
+        {
+          "from": "p118:n5",
+          "to": "p118:n6"
+        },
+        {
+          "from": "p118:n6",
+          "to": "p118:n7"
+        },
+        {
+          "from": "p118:n7",
+          "to": "p118:n8"
+        },
+        {
+          "from": "p118:n8",
+          "to": "p118:n9"
+        },
+        {
+          "from": "p118:n9",
+          "to": "p118:n10"
+        },
+        {
+          "from": "p118:n6",
+          "to": "p118:n7"
+        },
+        {
+          "from": "p118:n11",
+          "to": "p118:n12"
+        },
+        {
+          "from": "p118:n5",
+          "to": "p118:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "语音输入内容 (voiceToText)",
+          "聊天消息列表 (chatList/dataList)",
+          "用户昵称 (name)",
+          "设备权限状态 (Permissions)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户发送消息)",
+          "UI 渲染时 (build 执行)",
+          "功能首次调用时 (权限检查)"
+        ],
+        "cloudUpload": [
+          "未在当前片段发现直接上传逻辑，但消息对象构建暗示后续可能同步"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (chatList 数组)",
+          "未在当前片段发现加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.MICROPHONE (推测，因涉及语音输入 ic_use_voice)",
+          "ohos.permission.WRITE_MEDIA (推测，因涉及消息文件生成)",
+          "动态权限申请通用流程 (abilityAccessCtrl)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p134",
+      "pathId": "p134",
+      "nodes": [
+        {
+          "id": "p134:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 330,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建聊天页面 UI 树，包含消息列表和底部操作栏。",
+          "context": {
+            "startLine": 325,
+            "lines": [
+              "    const TextChat = new ChatMessage(MessageType.text, this.voiceToText)",
+              "    //   插入到消息数组中",
+              "    this.chatList.push(TextChat)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Toolbar({ title: this.name })",
+              "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+              "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+              "          ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p134:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 352,
+          "code": "Row() {",
+          "description": "构建底部操作栏 Row 容器，根据 inputType 判断是否显示语音输入入口图标。",
+          "context": {
+            "startLine": 347,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height(0)",
+              "      // .divider({ strokeWidth: 0.8, color: '#f0f0f0', startMargin: 90, endMargin: 0 }) // 每行之间的分界线",
+              "      .layoutWeight(1)",
+              "",
+              "      Row() {",
+              "",
+              "        if (this.inputType == WXInputType.keyboard) {",
+              "          Image($r(\"app.media.ic_use_voice\"))",
+              "            .width(33)",
+              "            .height(33)"
+            ]
+          }
+        },
+        {
+          "id": "p134:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 355,
+          "code": "Image($r(\"app.media.ic_use_voice\"))",
+          "description": "渲染语音功能图标 (ic_use_voice)，用户点击此图标将触发语音录制流程，进而需要麦克风权限。",
+          "context": {
+            "startLine": 350,
+            "lines": [
+              "      .layoutWeight(1)",
+              "",
+              "      Row() {",
+              "",
+              "        if (this.inputType == WXInputType.keyboard) {",
+              "          Image($r(\"app.media.ic_use_voice\"))",
+              "            .width(33)",
+              "            .height(33)",
+              "            .borderRadius(4)",
+              "            .margin({ left: 15, right: 15 })",
+              "            .objectFit(ImageFit.Cover)"
+            ]
+          }
+        },
+        {
+          "id": "p134:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 24,
+          "code": "static async request(permissions: Permissions[]): Promise<boolean> {",
+          "description": "定义静态异步方法 request，用于统一处理权限动态申请逻辑，接收权限字符串数组作为参数。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "    // 返回是否已授权结果",
+              "    return authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "  }",
+              "",
+              "  // 动态申请授权（首次弹窗申请）",
+              "  static async request(permissions: Permissions[]): Promise<boolean> {",
+              "    if (PermissionUtils.check(permissions)) {",
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();"
+            ]
+          }
+        },
+        {
+          "id": "p134:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 25,
+          "code": "if (PermissionUtils.check(permissions)) {",
+          "description": "调用 check 方法预检权限状态，若已授权则直接返回 true，避免重复弹窗。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "    return authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "  }",
+              "",
+              "  // 动态申请授权（首次弹窗申请）",
+              "  static async request(permissions: Permissions[]): Promise<boolean> {",
+              "    if (PermissionUtils.check(permissions)) {",
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权"
+            ]
+          }
+        },
+        {
+          "id": "p134:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 29,
+          "code": "const atManager = abilityAccessCtrl.createAtManager();",
+          "description": "调用 abilityAccessCtrl.createAtManager() 获取 AccessTokenManager 实例，这是访问权限控制系统的入口点。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  static async request(permissions: Permissions[]): Promise<boolean> {",
+              "    if (PermissionUtils.check(permissions)) {",
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权",
+              "    const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+              "    // 获取请求权限的结果",
+              "    const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "    // 返回 Promise 授权结果"
+            ]
+          }
+        },
+        {
+          "id": "p134:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 31,
+          "code": "const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+          "description": "调用 requestPermissionsFromUser 拉起系统授权弹窗，请求用户授予传入的权限列表（如麦克风权限）。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权",
+              "    const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+              "    // 获取请求权限的结果",
+              "    const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "    // 返回 Promise 授权结果",
+              "    return isAuth",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p134:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 33,
+          "code": "const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+          "description": "遍历系统返回的授权结果数组，校验所有请求的权限是否均被授予 (PERMISSION_GRANTED)。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权",
+              "    const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+              "    // 获取请求权限的结果",
+              "    const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "    // 返回 Promise 授权结果",
+              "    return isAuth",
+              "  }",
+              "",
+              "  // 打开系统设置的权限管理页（处理授权结果）"
+            ]
+          }
+        },
+        {
+          "id": "p134:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 35,
+          "code": "return isAuth",
+          "description": "返回最终的布尔值结果，告知调用方（如语音功能模块）是否成功获取所需权限以继续执行数据采集。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    // 拉起弹框请求用户授权",
+              "    const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+              "    // 获取请求权限的结果",
+              "    const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "    // 返回 Promise 授权结果",
+              "    return isAuth",
+              "  }",
+              "",
+              "  // 打开系统设置的权限管理页（处理授权结果）",
+              "  static openPermissionSettingsPage() {",
+              "    // 获取上下文"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p134:n1",
+          "to": "p134:n2"
+        },
+        {
+          "from": "p134:n2",
+          "to": "p134:n3"
+        },
+        {
+          "from": "p134:n3",
+          "to": "p134:n4"
+        },
+        {
+          "from": "p134:n4",
+          "to": "p134:n5"
+        },
+        {
+          "from": "p134:n5",
+          "to": "p134:n6"
+        },
+        {
+          "from": "p134:n6",
+          "to": "p134:n7"
+        },
+        {
+          "from": "p134:n7",
+          "to": "p134:n8"
+        },
+        {
+          "from": "p134:n8",
+          "to": "p134:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "麦克风音频数据 (潜在)",
+          "用户授权状态"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 交互/功能调用)"
+        ],
+        "cloudUpload": [
+          "未在当前片段发现直接上传行为"
+        ],
+        "storageAndEncryption": [
+          "未在当前片段发现本地存储行为"
+        ],
+        "permissions": [
+          "ohos.permission.MICROPHONE (推断，基于语音图标上下文)",
+          "ohos.permission.REQUEST_FOUNDATION (系统隐式)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p135",
+      "pathId": "p135",
+      "nodes": [
+        {
+          "id": "p135:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 330,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建聊天页面 UI 布局，作为数据流的用户交互起点。",
+          "context": {
+            "startLine": 325,
+            "lines": [
+              "    const TextChat = new ChatMessage(MessageType.text, this.voiceToText)",
+              "    //   插入到消息数组中",
+              "    this.chatList.push(TextChat)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Toolbar({ title: this.name })",
+              "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+              "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+              "          ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p135:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 352,
+          "code": "Row() {",
+          "description": "构建底部操作栏 Row 容器，其中包含语音输入按钮，是触发隐私权限需求的 UI 上下文。",
+          "context": {
+            "startLine": 347,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height(0)",
+              "      // .divider({ strokeWidth: 0.8, color: '#f0f0f0', startMargin: 90, endMargin: 0 }) // 每行之间的分界线",
+              "      .layoutWeight(1)",
+              "",
+              "      Row() {",
+              "",
+              "        if (this.inputType == WXInputType.keyboard) {",
+              "          Image($r(\"app.media.ic_use_voice\"))",
+              "            .width(33)",
+              "            .height(33)"
+            ]
+          }
+        },
+        {
+          "id": "p135:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 355,
+          "code": "Image($r(\"app.media.ic_use_voice\"))",
+          "description": "渲染语音功能图标 (ic_use_voice)，暗示后续操作将涉及麦克风权限 (MICROPHONE) 的调用。",
+          "context": {
+            "startLine": 350,
+            "lines": [
+              "      .layoutWeight(1)",
+              "",
+              "      Row() {",
+              "",
+              "        if (this.inputType == WXInputType.keyboard) {",
+              "          Image($r(\"app.media.ic_use_voice\"))",
+              "            .width(33)",
+              "            .height(33)",
+              "            .borderRadius(4)",
+              "            .margin({ left: 15, right: 15 })",
+              "            .objectFit(ImageFit.Cover)"
+            ]
+          }
+        },
+        {
+          "id": "p135:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 24,
+          "code": "static async request(permissions: Permissions[]): Promise<boolean> {",
+          "description": "定义静态异步方法 request，作为统一入口处理敏感权限的动态申请逻辑。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "    // 返回是否已授权结果",
+              "    return authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "  }",
+              "",
+              "  // 动态申请授权（首次弹窗申请）",
+              "  static async request(permissions: Permissions[]): Promise<boolean> {",
+              "    if (PermissionUtils.check(permissions)) {",
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();"
+            ]
+          }
+        },
+        {
+          "id": "p135:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 25,
+          "code": "if (PermissionUtils.check(permissions)) {",
+          "description": "调用 check 方法预检权限状态，避免重复弹窗，优化用户体验。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "    return authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "  }",
+              "",
+              "  // 动态申请授权（首次弹窗申请）",
+              "  static async request(permissions: Permissions[]): Promise<boolean> {",
+              "    if (PermissionUtils.check(permissions)) {",
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权"
+            ]
+          }
+        },
+        {
+          "id": "p135:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 29,
+          "code": "const atManager = abilityAccessCtrl.createAtManager();",
+          "description": "创建 abilityAccessCtrl 管理实例 atManager，准备执行系统级的权限控制操作。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  static async request(permissions: Permissions[]): Promise<boolean> {",
+              "    if (PermissionUtils.check(permissions)) {",
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权",
+              "    const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+              "    // 获取请求权限的结果",
+              "    const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "    // 返回 Promise 授权结果"
+            ]
+          }
+        },
+        {
+          "id": "p135:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 31,
+          "code": "const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+          "description": "调用系统 API requestPermissionsFromUser 拉起授权弹窗，请求用户授予指定权限列表（如麦克风），这是隐私数据收集的关键卡点。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "      return true",
+              "    }",
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权",
+              "    const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+              "    // 获取请求权限的结果",
+              "    const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "    // 返回 Promise 授权结果",
+              "    return isAuth",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p135:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 33,
+          "code": "const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+          "description": "解析系统返回的 grantStatus，遍历 authResults 判断所有请求权限是否均被授予。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    // 程序访问控制管理",
+              "    const atManager = abilityAccessCtrl.createAtManager();",
+              "    // 拉起弹框请求用户授权",
+              "    const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+              "    // 获取请求权限的结果",
+              "    const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "    // 返回 Promise 授权结果",
+              "    return isAuth",
+              "  }",
+              "",
+              "  // 打开系统设置的权限管理页（处理授权结果）"
+            ]
+          }
+        },
+        {
+          "id": "p135:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/PermissionUtils.ets",
+          "line": 35,
+          "code": "return isAuth",
+          "description": "返回最终的布尔值授权结果，供调用方（如 ChatPage）决定是否执行录音等敏感操作。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    // 拉起弹框请求用户授权",
+              "    const grantStatus = await atManager.requestPermissionsFromUser(getContext(), permissions)",
+              "    // 获取请求权限的结果",
+              "    const isAuth = grantStatus.authResults.every(v => v === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED)",
+              "    // 返回 Promise 授权结果",
+              "    return isAuth",
+              "  }",
+              "",
+              "  // 打开系统设置的权限管理页（处理授权结果）",
+              "  static openPermissionSettingsPage() {",
+              "    // 获取上下文"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p135:n1",
+          "to": "p135:n2"
+        },
+        {
+          "from": "p135:n2",
+          "to": "p135:n3"
+        },
+        {
+          "from": "p135:n3",
+          "to": "p135:n4"
+        },
+        {
+          "from": "p135:n4",
+          "to": "p135:n5"
+        },
+        {
+          "from": "p135:n5",
+          "to": "p135:n6"
+        },
+        {
+          "from": "p135:n6",
+          "to": "p135:n7"
+        },
+        {
+          "from": "p135:n7",
+          "to": "p135:n8"
+        },
+        {
+          "from": "p135:n8",
+          "to": "p135:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "麦克风音频数据 (潜在)",
+          "用户授权状态"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 交互/功能调用时)"
+        ],
+        "cloudUpload": [
+          "未在当前片段发现直接上传行为"
+        ],
+        "storageAndEncryption": [
+          "未在当前片段发现本地存储行为",
+          "授权结果仅在内存中处理"
+        ],
+        "permissions": [
+          "ohos.permission.MICROPHONE (推断，基于语音图标上下文)",
+          "ohos.permission.REQUEST_SENSITIVE_INFO (隐含在动态申请流程中)"
+        ]
+      }
+    }
+  ]
+}

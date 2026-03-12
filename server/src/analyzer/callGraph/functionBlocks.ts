@@ -1,6 +1,6 @@
 import ts from 'typescript';
 
-import { scanTokens, type Token } from '../tokenScanner.js';
+import { buildLineStarts, findMatchingDelimiter, findNextNonWhitespace, lineNumberAt } from '../shared/textScan.js';
 
 export type FunctionBlock = {
   name: string;
@@ -11,161 +11,122 @@ export type FunctionBlock = {
   bodyEndPos: number; // position of matching "}"
 };
 
-function isMethodModifier(kind: ts.SyntaxKind): boolean {
-  return (
-    kind === ts.SyntaxKind.PublicKeyword ||
-    kind === ts.SyntaxKind.PrivateKeyword ||
-    kind === ts.SyntaxKind.ProtectedKeyword ||
-    kind === ts.SyntaxKind.AsyncKeyword ||
-    kind === ts.SyntaxKind.StaticKeyword ||
-    kind === ts.SyntaxKind.ReadonlyKeyword ||
-    kind === ts.SyntaxKind.AbstractKeyword ||
-    kind === ts.SyntaxKind.OverrideKeyword
-  );
-}
+const METHOD_NAME_BLACKLIST = new Set([
+  'if',
+  'for',
+  'while',
+  'switch',
+  'catch',
+  'return',
+  'typeof',
+  'instanceof',
+  'new',
+  'delete',
+]);
 
-function findMatchingParen(tokens: Token[], openParenIndex: number): number | null {
-  let depth = 0;
-  for (let i = openParenIndex; i < tokens.length; i += 1) {
-    const k = tokens[i]?.kind;
-    if (k === ts.SyntaxKind.OpenParenToken) depth += 1;
-    else if (k === ts.SyntaxKind.CloseParenToken) depth -= 1;
-    if (depth === 0) return i;
+type Candidate = {
+  name: string;
+  signaturePos: number;
+  openParenPos: number;
+  kind: 'function' | 'method' | 'arrowAssign';
+};
+
+function findFunctionBodyOpenBrace(text: string, afterCloseParenPos: number, kind: Candidate['kind']): number | null {
+  const significantStart = findNextNonWhitespace(text, afterCloseParenPos + 1);
+  if (significantStart === null) return null;
+  let pos = significantStart;
+  const significant = text.slice(pos, Math.min(text.length, pos + 400));
+
+  if (kind === 'arrowAssign') {
+    const arrowOffset = significant.indexOf('=>');
+    if (arrowOffset < 0) return null;
+    const afterArrow = findNextNonWhitespace(text, pos + arrowOffset + 2);
+    return afterArrow !== null && text[afterArrow] === '{' ? afterArrow : null;
   }
+
+  if (text[pos] === '{') return pos;
+  if (text[pos] !== ':') return null;
+
+  for (let i = pos + 1; i < text.length; i += 1) {
+    const ch = text[i] ?? '';
+    if (ch === '{') {
+      const typeClose = findMatchingDelimiter(text, i, '{', '}');
+      if (typeClose !== null) {
+        const nextBrace = findNextNonWhitespace(text, typeClose + 1);
+        if (nextBrace !== null && text[nextBrace] === '{') return nextBrace;
+      }
+      return i;
+    }
+    if (ch === ';' || ch === '=') return null;
+  }
+
   return null;
 }
 
-function findMatchingBrace(tokens: Token[], openBraceIndex: number): number | null {
-  let depth = 0;
-  for (let i = openBraceIndex; i < tokens.length; i += 1) {
-    const k = tokens[i]?.kind;
-    if (k === ts.SyntaxKind.OpenBraceToken) depth += 1;
-    else if (k === ts.SyntaxKind.CloseBraceToken) depth -= 1;
-    if (depth === 0) return i;
+function addCandidateFromRegex(matches: Candidate[], fileText: string, lineStarts: number[], regex: RegExp, kind: Candidate['kind']): void {
+  let match: RegExpExecArray | null = regex.exec(fileText);
+  while (match) {
+    const name = match[1] ?? '';
+    if (name && !METHOD_NAME_BLACKLIST.has(name)) {
+      const nameOffset = match[0].indexOf(name);
+      const signaturePos = (match.index ?? 0) + Math.max(0, nameOffset);
+      const openParenPos = fileText.indexOf('(', signaturePos + name.length);
+      if (openParenPos > signaturePos) {
+        const startLine = lineNumberAt(lineStarts, signaturePos);
+        const lineText = fileText.slice(lineStarts[startLine - 1] ?? 0, lineStarts[startLine] ?? fileText.length);
+        if (!lineText.trimStart().startsWith('//')) {
+          matches.push({ name, signaturePos, openParenPos, kind });
+        }
+      }
+    }
+    match = regex.exec(fileText);
   }
-  return null;
-}
-
-function tokenStartsModifierSequence(tokens: Token[], index: number): boolean {
-  const t = tokens[index];
-  if (!t) return false;
-  if (!isMethodModifier(t.kind)) return false;
-  const prev = tokens[index - 1];
-  return !prev || !isMethodModifier(prev.kind);
-}
-
-function tokenIsStandaloneNameCandidate(tokens: Token[], index: number): boolean {
-  const t = tokens[index];
-  if (!t) return false;
-  if (t.kind !== ts.SyntaxKind.Identifier && t.kind !== ts.SyntaxKind.ConstructorKeyword) return false;
-  const prev = tokens[index - 1];
-  return !prev || !isMethodModifier(prev.kind);
 }
 
 export function scanFunctionBlocks(fileText: string, sourceFile: ts.SourceFile): FunctionBlock[] {
-  const tokens = scanTokens(fileText);
+  const lineStarts = buildLineStarts(fileText);
+  const candidates: Candidate[] = [];
   const blocks: FunctionBlock[] = [];
 
-  for (let i = 0; i < tokens.length; i += 1) {
-    const t = tokens[i];
-    if (!t) continue;
+  addCandidateFromRegex(candidates, fileText, lineStarts, /^\s*function\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/gmu, 'function');
+  addCandidateFromRegex(
+    candidates,
+    fileText,
+    lineStarts,
+    /^\s*(?:const|let|var\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(?:async\s*)?\(/gmu,
+    'arrowAssign',
+  );
+  addCandidateFromRegex(
+    candidates,
+    fileText,
+    lineStarts,
+    /^\s*(?:(?:public|private|protected|async|static|readonly|abstract|override)\s+)*([A-Za-z_][A-Za-z0-9_]*|constructor)\s*(?:<[^>\n]+>)?\s*\(/gmu,
+    'method',
+  );
 
-    // function foo(...) { ... }
-    if (t.kind === ts.SyntaxKind.FunctionKeyword) {
-      const nameTok = tokens[i + 1];
-      const openParen = tokens[i + 2];
-      if (nameTok?.kind !== ts.SyntaxKind.Identifier) continue;
-      if (openParen?.kind !== ts.SyntaxKind.OpenParenToken) continue;
+  const seen = new Set<string>();
+  for (const candidate of candidates.sort((a, b) => a.signaturePos - b.signaturePos || a.name.localeCompare(b.name))) {
+    const closeParenPos = findMatchingDelimiter(fileText, candidate.openParenPos, '(', ')');
+    if (closeParenPos === null) continue;
+    const bodyStartPos = findFunctionBodyOpenBrace(fileText, closeParenPos, candidate.kind);
+    if (bodyStartPos === null || fileText[bodyStartPos] !== '{') continue;
+    const bodyEndPos = findMatchingDelimiter(fileText, bodyStartPos, '{', '}');
+    if (bodyEndPos === null) continue;
 
-      const closeParenIndex = findMatchingParen(tokens, i + 2);
-      if (closeParenIndex === null) continue;
-      const openBraceIndex = closeParenIndex + 1;
-      if (tokens[openBraceIndex]?.kind !== ts.SyntaxKind.OpenBraceToken) continue;
-      const closeBraceIndex = findMatchingBrace(tokens, openBraceIndex);
-      if (closeBraceIndex === null) continue;
-
-      const startLine = sourceFile.getLineAndCharacterOfPosition(nameTok.pos).line + 1;
-      const endLine = sourceFile.getLineAndCharacterOfPosition(tokens[closeBraceIndex]!.pos).line + 1;
-
-      blocks.push({
-        name: nameTok.text,
-        signaturePos: nameTok.pos,
-        startLine,
-        endLine,
-        bodyStartPos: tokens[openBraceIndex]!.pos,
-        bodyEndPos: tokens[closeBraceIndex]!.pos,
-      });
-      continue;
-    }
-
-    // foo = async (...) => { ... } / foo = (...) => { ... }
-    // (Used frequently in ArkTS/ArkUI event handlers: onPress = async (e) => { ... })
-    if (t.kind === ts.SyntaxKind.Identifier && tokens[i + 1]?.kind === ts.SyntaxKind.EqualsToken) {
-      const nameTok = t;
-      let j = i + 2;
-      if (tokens[j]?.kind === ts.SyntaxKind.AsyncKeyword) j += 1;
-      if (tokens[j]?.kind !== ts.SyntaxKind.OpenParenToken) continue;
-
-      const closeParenIndex = findMatchingParen(tokens, j);
-      if (closeParenIndex === null) continue;
-      const arrowIndex = closeParenIndex + 1;
-      if (tokens[arrowIndex]?.kind !== ts.SyntaxKind.EqualsGreaterThanToken) continue;
-      const openBraceIndex = arrowIndex + 1;
-      if (tokens[openBraceIndex]?.kind !== ts.SyntaxKind.OpenBraceToken) continue;
-
-      const closeBraceIndex = findMatchingBrace(tokens, openBraceIndex);
-      if (closeBraceIndex === null) continue;
-
-      const startLine = sourceFile.getLineAndCharacterOfPosition(nameTok.pos).line + 1;
-      const endLine = sourceFile.getLineAndCharacterOfPosition(tokens[closeBraceIndex]!.pos).line + 1;
-
-      blocks.push({
-        name: nameTok.text,
-        signaturePos: nameTok.pos,
-        startLine,
-        endLine,
-        bodyStartPos: tokens[openBraceIndex]!.pos,
-        bodyEndPos: tokens[closeBraceIndex]!.pos,
-      });
-
-      // Jump forward a bit to avoid duplicate detections on the same signature.
-      i = openBraceIndex;
-      continue;
-    }
-
-    // async foo(...) { ... } / public foo(...) { ... } / foo(...) { ... }
-    if (!tokenStartsModifierSequence(tokens, i) && !tokenIsStandaloneNameCandidate(tokens, i)) continue;
-
-    let j = i;
-    while (tokens[j] && isMethodModifier(tokens[j]!.kind)) j += 1;
-    const nameTok = tokens[j];
-    const openParen = tokens[j + 1];
-    if (!nameTok || !openParen) continue;
-    if (nameTok.kind !== ts.SyntaxKind.Identifier && nameTok.kind !== ts.SyntaxKind.ConstructorKeyword) continue;
-    if (openParen.kind !== ts.SyntaxKind.OpenParenToken) continue;
-
-    const closeParenIndex = findMatchingParen(tokens, j + 1);
-    if (closeParenIndex === null) continue;
-    const openBraceIndex = closeParenIndex + 1;
-    if (tokens[openBraceIndex]?.kind !== ts.SyntaxKind.OpenBraceToken) continue;
-    const closeBraceIndex = findMatchingBrace(tokens, openBraceIndex);
-    if (closeBraceIndex === null) continue;
-
-    const name = nameTok.kind === ts.SyntaxKind.ConstructorKeyword ? 'constructor' : nameTok.text;
-    const startLine = sourceFile.getLineAndCharacterOfPosition(nameTok.pos).line + 1;
-    const endLine = sourceFile.getLineAndCharacterOfPosition(tokens[closeBraceIndex]!.pos).line + 1;
+    const startLine = sourceFile.getLineAndCharacterOfPosition(candidate.signaturePos).line + 1;
+    const endLine = sourceFile.getLineAndCharacterOfPosition(bodyEndPos).line + 1;
+    const dedupeKey = `${candidate.name}:${startLine}:${bodyStartPos}`;
+    if (seen.has(dedupeKey)) continue;
+    seen.add(dedupeKey);
 
     blocks.push({
-      name,
-      signaturePos: nameTok.pos,
+      name: candidate.name,
+      signaturePos: candidate.signaturePos,
       startLine,
       endLine,
-      bodyStartPos: tokens[openBraceIndex]!.pos,
-      bodyEndPos: tokens[closeBraceIndex]!.pos,
+      bodyStartPos,
+      bodyEndPos,
     });
-
-    // Jump forward a bit to avoid duplicate detections on the same signature.
-    i = openBraceIndex;
   }
 
   return blocks;

@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "featureId": "ui_SearchPage_6cf242c69d",
+    "generatedAt": "2026-03-11T21:09:23.542Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户进入搜索页面时，应用从服务器获取热搜榜单数据并展示；当用户点击具体热搜词条或“完整榜单”入口时，将相关关键词或列表数据传递至下一个业务页面。",
+        "dataSources": [
+          "网络请求 (ApiManager.requestRanking)",
+          "页面路由参数"
+        ],
+        "dataItems": [
+          {
+            "name": "热搜榜单数据",
+            "refs": [
+              {
+                "flowId": "flow:p52",
+                "nodeId": "p52:n6"
+              },
+              {
+                "flowId": "flow:p53",
+                "nodeId": "p53:n2"
+              },
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n4"
+              },
+              {
+                "flowId": "flow:p55",
+                "nodeId": "p55:n2"
+              },
+              {
+                "flowId": "flow:p56",
+                "nodeId": "p56:n3"
+              }
+            ]
+          },
+          {
+            "name": "默认搜索关键词",
+            "refs": [
+              {
+                "flowId": "flow:p52",
+                "nodeId": "p52:n4"
+              },
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n2"
+              },
+              {
+                "flowId": "flow:p56",
+                "nodeId": "p56:n1"
+              }
+            ]
+          },
+          {
+            "name": "用户选中的搜索词",
+            "refs": [
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n13"
+              },
+              {
+                "flowId": "flow:p56",
+                "nodeId": "p56:n10"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "应用从网络接口获取数据后，将其缓存在内存状态变量中用于界面渲染；在用户交互（点击）时，将特定数据项作为参数通过页面路由机制传递给目标页面。",
+        "storageMethod": "数据仅临时存储于应用运行时的内存变量（如 this.rankings, this.defaultKeyword），未检测到本地持久化存储操作。",
+        "dataRecipients": [
+          {
+            "name": "SearchResult 页面",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n13"
+              },
+              {
+                "flowId": "flow:p56",
+                "nodeId": "p56:n10"
+              }
+            ]
+          },
+          {
+            "name": "TopSearch 页面",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p53",
+                "nodeId": "p53:n6"
+              },
+              {
+                "flowId": "flow:p55",
+                "nodeId": "p55:n7"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现基于热搜榜的个性化内容推荐与快速跳转，响应用户的浏览和选择意图。",
+        "privacyToggleUi": {
+          "where": "未在当前功能点发现显式的隐私授权开关 UI，数据流随页面加载自动触发。"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260311-230459",
+    "featureId": "ui_HomePage_38e3d13650",
+    "generatedAt": "2026-03-11T15:06:01.235Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "用户打开计步器首页时，应用会初始化并展示当前运动状态（如已走步数）及位置信息。当用户离开页面或隐藏应用时，系统会自动停止采集传感器数据以保护隐私。",
+        "dataSources": [
+          "设备传感器 (计步器)",
+          "本地存储 (Preferences)"
+        ],
+        "dataItems": [
+          {
+            "name": "计步器传感器数据",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n2"
+              }
+            ]
+          },
+          {
+            "name": "用户步数统计",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n4"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n4"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n3"
+              }
+            ]
+          },
+          {
+            "name": "起始位置信息",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n4"
+              }
+            ]
+          },
+          {
+            "name": "当前位置信息",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "应用通过监听页面生命周期（如页面隐藏）来动态启停传感器数据采集；在 UI 渲染时从内存或本地存储读取历史步数和位置数据进行展示。",
+        "storageMethod": "使用系统提供的 Preferences API 将步数、位置等键值对数据持久化存储在设备本地，代码片段中未显示显式加密操作。",
+        "dataRecipients": [],
+        "processingPurpose": "实时监测并记录用户的日常活动量（步数）及相关地理位置轨迹，用于健康管理和运动追踪。",
+        "privacyToggleUi": {
+          "where": "页面主布局区域包含控制计步开始/停止的按钮及状态展示组件。",
+          "refs": [
+            {
+              "uiNodeId": "ui:599a65fa9471"
+            },
+            {
+              "uiNodeId": "ui:b1ce3fc86be8"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCELEROMETER",
+        "businessScenario": "Unsubscribe to accelerometer sensor data.",
+        "permissionPurpose": "使用相关系统能力（由 SDK API 权限映射确定）",
+        "denyImpact": "拒绝授权可能导致对应功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n2"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.ACTIVITY_MOTION",
+        "businessScenario": "当应用需要访问计步器传感器以获取用户运动数据时触发。",
+        "permissionPurpose": "授权应用持续监听和收集用户的计步器传感器数据，用于计算每日步数。",
+        "denyImpact": "如果拒绝此权限，应用将无法获取用户的运动步数，导致计步功能不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n2"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.LOCATION",
+        "businessScenario": "当应用尝试获取用户的起始位置和实时位置信息时触发。",
+        "permissionPurpose": "授权应用访问设备的地理位置信息，用于记录运动轨迹或特定地点的活动情况。",
+        "denyImpact": "如果拒绝此权限，应用无法获取用户的地理位置坐标，导致基于位置的统计功能失效。",
+        "refs": [
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n5"
+          }
+        ]
+      }
+    ]
+  }
+}

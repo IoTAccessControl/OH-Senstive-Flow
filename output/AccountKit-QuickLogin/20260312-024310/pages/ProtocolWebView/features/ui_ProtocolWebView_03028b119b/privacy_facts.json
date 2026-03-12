@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260312-024310",
+    "featureId": "ui_ProtocolWebView_03028b119b",
+    "generatedAt": "2026-03-11T19:23:04.386Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "dataItems(设备屏幕物理宽度) 的 refs 包含无效引用：p89/p89:n3",
+      "dataItems(设备屏幕物理宽度) 的 refs 包含无效引用：p90/p90:n4",
+      "dataItems(设备屏幕物理宽度) 的 refs 包含无效引用：p91/p91:n4",
+      "dataItems(Web 页面加载进度) 的 refs 包含无效引用：p88/p88:n7",
+      "dataItems(Web 页面加载进度) 的 refs 包含无效引用：p90/p90:n9",
+      "dataItems(组件标识符 (domainId, logTag)) 的 refs 包含无效引用：p88/p88:n6",
+      "dataItems(组件标识符 (domainId, logTag)) 的 refs 包含无效引用：p90/p90:n8",
+      "dataItems(错误码与错误消息) 的 refs 包含无效引用：p89/p89:n9",
+      "dataItems(错误码与错误消息) 的 refs 包含无效引用：p91/p91:n9",
+      "permissionPractices(ohos.permission.ACCESS_DISPLAY) 的 refs 包含无效引用：p89/p89:n3",
+      "permissionPractices(ohos.permission.ACCESS_DISPLAY) 的 refs 包含无效引用：p90/p90:n4",
+      "permissionPractices(ohos.permission.ACCESS_DISPLAY) 的 refs 包含无效引用：p91/p91:n4",
+      "权限 ohos.permission.ACCESS_DISPLAY 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "AccountKit-QuickLogin",
+        "businessScenario": "加载并展示用户协议与隐私政策网页内容时，收集设备屏幕尺寸以适配布局，并在页面加载过程中记录进度及潜在错误信息。",
+        "dataSources": [
+          "系统显示服务 (display.getDefaultDisplaySync)",
+          "WebView 组件内部状态"
+        ],
+        "dataItems": [
+          {
+            "name": "设备屏幕物理宽度",
+            "refs": []
+          },
+          {
+            "name": "Web 页面加载进度",
+            "refs": []
+          },
+          {
+            "name": "组件标识符 (domainId, logTag)",
+            "refs": []
+          },
+          {
+            "name": "错误码与错误消息",
+            "refs": []
+          }
+        ],
+        "processingMethod": "在内存中计算 UI 布局参数（如百分比宽度），并将加载进度、错误详情及调试标签通过 hilog 模块输出至系统日志缓冲区。",
+        "storageMethod": "数据主要存储于应用运行时的内存变量（如 this.progress）及操作系统的系统日志服务中，未检测到本地持久化存储或加密措施。",
+        "dataRecipients": [],
+        "processingPurpose": "实现响应式 UI 布局适配，监控资源加载状态，并在发生异常时生成诊断日志以便问题排查。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

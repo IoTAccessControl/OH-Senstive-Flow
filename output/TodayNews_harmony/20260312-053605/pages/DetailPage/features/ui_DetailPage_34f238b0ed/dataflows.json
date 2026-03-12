@@ -1,0 +1,188 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260312-053605",
+    "generatedAt": "2026-03-11T21:44:43.659Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 5,
+      "edges": 4,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "DetailPage",
+      "entry": {
+        "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+        "structName": "DetailPage",
+        "line": 11,
+        "description": "详情页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_DetailPage_34f238b0ed",
+      "kind": "ui",
+      "title": "详情页内容"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p13",
+      "pathId": "p13",
+      "nodes": [
+        {
+          "id": "p13:n1",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 18,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 开始执行，标志着详情页组件即将显示，是数据初始化的入口点。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State article: DataModel = new DataModel();",
+              "  @State pageState: PageState = PageState.Loading;",
+              "  @State mediaInfo: MediaInfo = new MediaInfo();",
+              "  controller: webview.WebviewController = new webview.WebviewController()",
+              "",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as DataModel;",
+              "    this.article = params;",
+              "",
+              "    this.mediaInfo = this.article.media_info;",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p13:n2",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 19,
+          "code": "const params = router.getParams() as DataModel;",
+          "description": "调用 router.getParams() 获取从上一页传递过来的路由参数，并将其强制转换为 DataModel 类型，这是外部数据进入当前页面的关键步骤。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  @State pageState: PageState = PageState.Loading;",
+              "  @State mediaInfo: MediaInfo = new MediaInfo();",
+              "  controller: webview.WebviewController = new webview.WebviewController()",
+              "",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as DataModel;",
+              "    this.article = params;",
+              "",
+              "    this.mediaInfo = this.article.media_info;",
+              "",
+              "    // this.getHtmlData();"
+            ]
+          }
+        },
+        {
+          "id": "p13:n3",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 20,
+          "code": "this.article = params;",
+          "description": "将获取到的路由参数赋值给组件的状态变量 this.article，触发 UI 状态更新，数据此时驻留在应用内存中。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "  @State mediaInfo: MediaInfo = new MediaInfo();",
+              "  controller: webview.WebviewController = new webview.WebviewController()",
+              "",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as DataModel;",
+              "    this.article = params;",
+              "",
+              "    this.mediaInfo = this.article.media_info;",
+              "",
+              "    // this.getHtmlData();",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p13:n4",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 22,
+          "code": "this.mediaInfo = this.article.media_info;",
+          "description": "从 article 对象中提取 media_info 字段并赋值给 this.mediaInfo，进一步细化数据处理，准备用于展示媒体相关内容。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as DataModel;",
+              "    this.article = params;",
+              "",
+              "    this.mediaInfo = this.article.media_info;",
+              "",
+              "    // this.getHtmlData();",
+              "",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p13:n5",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 26,
+          "code": "}",
+          "description": "aboutToAppear 函数执行结束，数据流初始化完成，等待后续渲染或用户交互。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "",
+              "    this.mediaInfo = this.article.media_info;",
+              "",
+              "    // this.getHtmlData();",
+              "",
+              "  }",
+              "",
+              "  getHtmlData() {",
+              "",
+              "    return new Promise<string>((resolve, reject) => {",
+              "      NewsDataViewModel.getArticleHtmlData(this.article.tag_id)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p13:n1",
+          "to": "p13:n2"
+        },
+        {
+          "from": "p13:n2",
+          "to": "p13:n3"
+        },
+        {
+          "from": "p13:n3",
+          "to": "p13:n4"
+        },
+        {
+          "from": "p13:n4",
+          "to": "p13:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Page Route Params)",
+          "文章数据模型 (Article DataModel)",
+          "媒体信息 (MediaInfo)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面加载时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存存储 (@State 状态管理)",
+          "未检测到加密操作"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

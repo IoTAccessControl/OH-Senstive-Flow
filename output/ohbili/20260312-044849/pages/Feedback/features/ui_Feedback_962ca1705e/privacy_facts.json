@@ -1,0 +1,116 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "featureId": "ui_Feedback_962ca1705e",
+    "generatedAt": "2026-03-11T21:08:14.474Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户在反馈页面查看日志文件列表并选择特定日志进行详情跳转或上传。",
+        "dataSources": [
+          "本地文件系统"
+        ],
+        "dataItems": [
+          {
+            "name": "本地日志文件路径 (logFilePath)",
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n9"
+              },
+              {
+                "flowId": "flow:p38",
+                "nodeId": "p38:n6"
+              }
+            ]
+          },
+          {
+            "name": "日志文件名 (logName)",
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n6"
+              },
+              {
+                "flowId": "flow:p38",
+                "nodeId": "p38:n4"
+              }
+            ]
+          },
+          {
+            "name": "应用唯一标识 (appUuid)",
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n10"
+              }
+            ]
+          },
+          {
+            "name": "用户反馈文本内容",
+            "refs": []
+          }
+        ],
+        "processingMethod": "遍历本地日志数组渲染列表，响应用户点击事件获取文件路径参数，并通过 HTTP POST 请求将日志内容上传至远程代码托管平台（Gitee）。",
+        "storageMethod": "日志文件原始数据存储在设备本地文件系统；应用内通过路由参数在页面间传递文件路径。",
+        "dataRecipients": [
+          {
+            "name": "Gitee API (gistClient.post)",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n10"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "收集设备运行日志以辅助问题定位和软件调试。",
+        "privacyToggleUi": {
+          "where": "Feedback 页面包含“关闭Debug日志”开关及日志列表项。",
+          "refs": [
+            {
+              "uiNodeId": "ui:47097712e5bf"
+            },
+            {
+              "uiNodeId": "ui:b202b241df14"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "将选定的日志文件内容上传至远程服务器。",
+        "permissionPurpose": "建立网络连接以执行 Gist API 的 POST 请求。",
+        "denyImpact": "若拒绝此权限，日志文件将无法上传至云端，导致问题反馈流程中断。",
+        "refs": [
+          {
+            "flowId": "flow:p27",
+            "nodeId": "p27:n10"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "读取本地存储中的日志文件内容以展示列表及上传。",
+        "permissionPurpose": "访问设备上的日志文件以生成列表供用户选择。",
+        "denyImpact": "若拒绝此权限，应用可能无法扫描或读取本地日志文件，导致列表为空或功能不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p27",
+            "nodeId": "p27:n5"
+          }
+        ]
+      }
+    ]
+  }
+}

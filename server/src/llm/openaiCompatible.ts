@@ -22,6 +22,12 @@ function asErrorText(e: unknown): string {
   return e instanceof Error ? e.message : String(e);
 }
 
+function resolveTimeoutMs(): number {
+  const raw = Number(process.env.CX_OH_LLM_TIMEOUT_MS ?? 300000);
+  if (!Number.isFinite(raw) || raw <= 0) return 300000;
+  return Math.max(1000, Math.floor(raw));
+}
+
 export class LlmNetworkError extends Error {
   constructor(message: string) {
     super(message);
@@ -43,6 +49,7 @@ export class LlmHttpError extends Error {
 
 export async function openAiCompatibleChat(request: LlmChatRequest): Promise<LlmChatResponse> {
   const url = joinUrl(request.baseUrl, '/chat/completions');
+  const timeoutMs = resolveTimeoutMs();
 
   const body: Record<string, unknown> = {
     model: request.model,
@@ -55,6 +62,9 @@ export async function openAiCompatibleChat(request: LlmChatRequest): Promise<Llm
   if (shouldDisableThinking(request.baseUrl)) body.enable_thinking = false;
 
   let res: Response;
+  let text = '';
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
   try {
     res = await fetch(url, {
       method: 'POST',
@@ -63,12 +73,17 @@ export async function openAiCompatibleChat(request: LlmChatRequest): Promise<Llm
         Authorization: `Bearer ${request.apiKey}`,
       },
       body: JSON.stringify(body),
+      signal: controller.signal,
     });
+    text = await res.text();
   } catch (e) {
+    if ((e as any)?.name === 'AbortError') {
+      throw new LlmNetworkError(`LLM 请求失败（超时 ${timeoutMs}ms）`);
+    }
     throw new LlmNetworkError(`LLM 请求失败（网络错误）：${asErrorText(e)}`);
+  } finally {
+    clearTimeout(timeoutId);
   }
-
-  const text = await res.text();
   if (!res.ok) {
     throw new LlmHttpError(res.status, text);
   }

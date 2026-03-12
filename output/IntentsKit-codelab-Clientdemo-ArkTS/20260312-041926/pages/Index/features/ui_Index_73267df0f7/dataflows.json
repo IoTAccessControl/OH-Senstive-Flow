@@ -1,0 +1,1083 @@
+{
+  "meta": {
+    "runId": "IntentsKit-codelab-Clientdemo-ArkTS_20260312-041926",
+    "generatedAt": "2026-03-11T20:39:52.193Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 4,
+      "nodes": 35,
+      "edges": 31,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "Index",
+      "entry": {
+        "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+        "structName": "Index",
+        "line": 9,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Index_73267df0f7",
+      "kind": "ui",
+      "title": "获取insightIntents"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p40",
+      "pathId": "p40",
+      "nodes": [
+        {
+          "id": "p40:n1",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 14,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化页面组件树",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "struct Index {",
+              "  @LocalStorageProp('result') want: string = 'wait result';",
+              "  @State result: string = this.want;",
+              "  @State input: string = '';",
+              "",
+              "  build() {",
+              "    Flex({",
+              "      direction: FlexDirection.Column,",
+              "      justifyContent: FlexAlign.SpaceBetween,",
+              "      alignItems: ItemAlign.Center",
+              "    }) {"
+            ]
+          }
+        },
+        {
+          "id": "p40:n2",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 15,
+          "code": "Flex({",
+          "description": "创建 Flex 布局容器，用于排列子组件",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  @LocalStorageProp('result') want: string = 'wait result';",
+              "  @State result: string = this.want;",
+              "  @State input: string = '';",
+              "",
+              "  build() {",
+              "    Flex({",
+              "      direction: FlexDirection.Column,",
+              "      justifyContent: FlexAlign.SpaceBetween,",
+              "      alignItems: ItemAlign.Center",
+              "    }) {",
+              "      Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p40:n3",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 42,
+          "code": "Row() {",
+          "description": "创建 Row 布局容器，内部包含触发分享操作的按钮组件",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "        .height('45%')",
+              "        .border({",
+              "          radius: '4vp'",
+              "        })",
+              "",
+              "      Row() {",
+              "        Button() {",
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)"
+            ]
+          }
+        },
+        {
+          "id": "p40:n4",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 43,
+          "code": "Button() {",
+          "description": "定义 Button 组件，用户点击此按钮将触发分享逻辑（隐含 onClick 事件绑定）",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "        .border({",
+              "          radius: '4vp'",
+              "        })",
+              "",
+              "      Row() {",
+              "        Button() {",
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)",
+              "            .minFontSize(9)"
+            ]
+          }
+        },
+        {
+          "id": "p40:n5",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 31,
+          "code": "static async shareIntent(context: Context, input: string): Promise<string> {",
+          "description": "定义静态异步方法 shareIntent，接收上下文和输入字符串，作为数据处理的核心入口",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "      Logger.error(TAG, `refresh share intent message failed: ${JSON.stringify(error)}`);",
+              "      return 'invalid share intent message';",
+              "    }",
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';"
+            ]
+          }
+        },
+        {
+          "id": "p40:n6",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 33,
+          "code": "let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+          "description": "将用户输入的字符串数据解析为 InsightIntent 对象数组，完成数据格式化",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p40:n7",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 34,
+          "code": "if (!insightIntents || insightIntents.length === 0){",
+          "description": "校验解析后的意图数据是否有效，防止空数据进入后续流程",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+              "      Logger.info(TAG, 'shareIntent succeed');"
+            ]
+          }
+        },
+        {
+          "id": "p40:n8",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 38,
+          "code": "return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+          "description": "调用系统能力 insightIntent.shareIntent，将意图数据传递给系统或其他应用，此为数据流出点 (Sink)",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+              "      Logger.info(TAG, 'shareIntent succeed');",
+              "      return 'share intent succeed';",
+              "    }, (err: BusinessError) => {",
+              "      Logger.error(TAG, `shareIntent error message: ${JSON.stringify(err)}`);",
+              "      return `shareIntent error message: ${JSON.stringify(err)}`;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p40:n1",
+          "to": "p40:n2"
+        },
+        {
+          "from": "p40:n2",
+          "to": "p40:n3"
+        },
+        {
+          "from": "p40:n3",
+          "to": "p40:n4"
+        },
+        {
+          "from": "p40:n4",
+          "to": "p40:n5"
+        },
+        {
+          "from": "p40:n5",
+          "to": "p40:n6"
+        },
+        {
+          "from": "p40:n6",
+          "to": "p40:n7"
+        },
+        {
+          "from": "p40:n7",
+          "to": "p40:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户输入的文本数据",
+          "InsightIntent 结构化意图数据",
+          "应用上下文信息 (Context)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "未明确直接上传，但 shareIntent API 可能将意图数据分发给其他应用或系统服务"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (JSON 解析)",
+          "未检测到本地持久化存储",
+          "未检测到加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.INTENT_SEND (隐含在 IntentsKit 使用中，需 manifest 配置)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p42",
+      "pathId": "p42",
+      "nodes": [
+        {
+          "id": "p42:n1",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 14,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化界面组件树。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "struct Index {",
+              "  @LocalStorageProp('result') want: string = 'wait result';",
+              "  @State result: string = this.want;",
+              "  @State input: string = '';",
+              "",
+              "  build() {",
+              "    Flex({",
+              "      direction: FlexDirection.Column,",
+              "      justifyContent: FlexAlign.SpaceBetween,",
+              "      alignItems: ItemAlign.Center",
+              "    }) {"
+            ]
+          }
+        },
+        {
+          "id": "p42:n2",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 15,
+          "code": "Flex({",
+          "description": "创建 Flex 布局容器，作为页面主要结构，准备承载子组件。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  @LocalStorageProp('result') want: string = 'wait result';",
+              "  @State result: string = this.want;",
+              "  @State input: string = '';",
+              "",
+              "  build() {",
+              "    Flex({",
+              "      direction: FlexDirection.Column,",
+              "      justifyContent: FlexAlign.SpaceBetween,",
+              "      alignItems: ItemAlign.Center",
+              "    }) {",
+              "      Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p42:n3",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 42,
+          "code": "Row() {",
+          "description": "创建 Row 布局容器，内部包含触发数据分享的按钮组件。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "        .height('45%')",
+              "        .border({",
+              "          radius: '4vp'",
+              "        })",
+              "",
+              "      Row() {",
+              "        Button() {",
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)"
+            ]
+          }
+        },
+        {
+          "id": "p42:n4",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 43,
+          "code": "Button() {",
+          "description": "定义按钮组件，用户点击后将触发获取或分享 InsightIntent 的逻辑（隐含事件绑定）。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "        .border({",
+              "          radius: '4vp'",
+              "        })",
+              "",
+              "      Row() {",
+              "        Button() {",
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)",
+              "            .minFontSize(9)"
+            ]
+          }
+        },
+        {
+          "id": "p42:n5",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 31,
+          "code": "static async shareIntent(context: Context, input: string): Promise<string> {",
+          "description": "定义 shareIntent 异步函数，接收上下文 context 和用户输入的字符串 input 作为数据源。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "      Logger.error(TAG, `refresh share intent message failed: ${JSON.stringify(error)}`);",
+              "      return 'invalid share intent message';",
+              "    }",
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';"
+            ]
+          }
+        },
+        {
+          "id": "p42:n6",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 33,
+          "code": "let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+          "description": "将输入的字符串 input 解析为 JSON 格式的 InsightIntent 数组，进行数据格式化。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p42:n7",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 35,
+          "code": "Logger.error(TAG, 'shareIntent: json invalid.');",
+          "description": "当数据解析失败时，调用 Logger.error 记录错误信息，此时输入数据被转换为错误描述。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+              "      Logger.info(TAG, 'shareIntent succeed');",
+              "      return 'share intent succeed';"
+            ]
+          }
+        },
+        {
+          "id": "p42:n8",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 38,
+          "code": "return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+          "description": "调用系统能力 insightIntent.shareIntent 发送处理后的意图数据，完成核心业务逻辑。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+              "      Logger.info(TAG, 'shareIntent succeed');",
+              "      return 'share intent succeed';",
+              "    }, (err: BusinessError) => {",
+              "      Logger.error(TAG, `shareIntent error message: ${JSON.stringify(err)}`);",
+              "      return `shareIntent error message: ${JSON.stringify(err)}`;"
+            ]
+          }
+        },
+        {
+          "id": "p42:n9",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 19,
+          "code": "public static error(logTag: string, messageFormat: string, ...args: Object[]): void {",
+          "description": "定义静态 error 方法，作为日志记录的封装层，接收标签和格式化消息。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "",
+              "  public static warn(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.warn(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static error(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.error(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static fatal(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.fatal(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);"
+            ]
+          }
+        },
+        {
+          "id": "p42:n10",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 20,
+          "code": "hilog.error(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+          "description": "调用系统 hilog.error API 将包含敏感数据片段（如错误详情）的日志写入系统日志缓冲区。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "  public static warn(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.warn(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static error(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.error(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static fatal(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.fatal(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p42:n1",
+          "to": "p42:n2"
+        },
+        {
+          "from": "p42:n2",
+          "to": "p42:n3"
+        },
+        {
+          "from": "p42:n3",
+          "to": "p42:n4"
+        },
+        {
+          "from": "p42:n4",
+          "to": "p42:n5"
+        },
+        {
+          "from": "p42:n5",
+          "to": "p42:n6"
+        },
+        {
+          "from": "p42:n6",
+          "to": "p42:n7"
+        },
+        {
+          "from": "p42:n7",
+          "to": "p42:n9"
+        },
+        {
+          "from": "p42:n6",
+          "to": "p42:n8"
+        },
+        {
+          "from": "p42:n9",
+          "to": "p42:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户输入的文本数据 (input string)",
+          "InsightIntent 结构化数据",
+          "错误日志信息 (包含输入数据片段)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传 (数据通过系统 API shareIntent 分发，可能由系统处理)",
+          "日志输出至系统日志缓冲区 (hilog)，非网络发送"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (State 变量)",
+          "本地文件读取 (shareIntent.json)",
+          "无显式加密操作",
+          "日志未加密存储于系统日志区"
+        ],
+        "permissions": [
+          "ohos.permission.INTENT_SEND (隐含在 insightIntent.shareIntent 调用中)",
+          "ohos.permission.READ_STORAGE (隐含在 FileReader.readJson 中，若访问外部存储)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p61",
+      "pathId": "p61",
+      "nodes": [
+        {
+          "id": "p61:n1",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 14,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build()，初始化页面布局结构，准备渲染用户交互组件。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "struct Index {",
+              "  @LocalStorageProp('result') want: string = 'wait result';",
+              "  @State result: string = this.want;",
+              "  @State input: string = '';",
+              "",
+              "  build() {",
+              "    Flex({",
+              "      direction: FlexDirection.Column,",
+              "      justifyContent: FlexAlign.SpaceBetween,",
+              "      alignItems: ItemAlign.Center",
+              "    }) {"
+            ]
+          }
+        },
+        {
+          "id": "p61:n2",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 42,
+          "code": "Row() {",
+          "description": "定义 Row 布局容器，内部包含触发数据流的关键交互组件（按钮）。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "        .height('45%')",
+              "        .border({",
+              "          radius: '4vp'",
+              "        })",
+              "",
+              "      Row() {",
+              "        Button() {",
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)"
+            ]
+          }
+        },
+        {
+          "id": "p61:n3",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 43,
+          "code": "Button() {",
+          "description": "实例化 Button 组件，作为用户触发 '获取 insightIntents' 操作的物理入口。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "        .border({",
+              "          radius: '4vp'",
+              "        })",
+              "",
+              "      Row() {",
+              "        Button() {",
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)",
+              "            .minFontSize(9)"
+            ]
+          }
+        },
+        {
+          "id": "p61:n4",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 44,
+          "code": "Text('获取insightIntents')",
+          "description": "设置按钮显示文本，提示用户该操作用于获取或分享 InsightIntent 数据。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "          radius: '4vp'",
+              "        })",
+              "",
+              "      Row() {",
+              "        Button() {",
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)",
+              "            .minFontSize(9)",
+              "        }.type(ButtonType.Capsule)"
+            ]
+          }
+        },
+        {
+          "id": "p61:n5",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 31,
+          "code": "static async shareIntent(context: Context, input: string): Promise<string> {",
+          "description": "定义静态异步方法 shareIntent，接收上下文和输入字符串，作为数据处理逻辑的起点。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "      Logger.error(TAG, `refresh share intent message failed: ${JSON.stringify(error)}`);",
+              "      return 'invalid share intent message';",
+              "    }",
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';"
+            ]
+          }
+        },
+        {
+          "id": "p61:n6",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 33,
+          "code": "let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+          "description": "将输入的 JSON 字符串解析为 InsightIntent 对象数组，完成从原始文本到结构化隐私数据的转换。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p61:n7",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 34,
+          "code": "if (!insightIntents || insightIntents.length === 0){",
+          "description": "校验解析后的数据有效性，防止空数据或格式错误导致后续隐私泄露或系统异常。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+              "      Logger.info(TAG, 'shareIntent succeed');"
+            ]
+          }
+        },
+        {
+          "id": "p61:n8",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 38,
+          "code": "return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+          "description": "调用系统 SDK 方法 insightIntent.shareIntent，将结构化意图数据提交给系统进行分发或处理，是数据流出应用的关键汇点。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+              "      Logger.info(TAG, 'shareIntent succeed');",
+              "      return 'share intent succeed';",
+              "    }, (err: BusinessError) => {",
+              "      Logger.error(TAG, `shareIntent error message: ${JSON.stringify(err)}`);",
+              "      return `shareIntent error message: ${JSON.stringify(err)}`;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p61:n1",
+          "to": "p61:n2"
+        },
+        {
+          "from": "p61:n2",
+          "to": "p61:n3"
+        },
+        {
+          "from": "p61:n3",
+          "to": "p61:n4"
+        },
+        {
+          "from": "p61:n4",
+          "to": "p61:n5"
+        },
+        {
+          "from": "p61:n5",
+          "to": "p61:n6"
+        },
+        {
+          "from": "p61:n6",
+          "to": "p61:n7"
+        },
+        {
+          "from": "p61:n7",
+          "to": "p61:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户输入的文本字符串 (input)",
+          "解析后的 InsightIntent 对象数组 (insightIntents)",
+          "应用上下文 (Context)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "通过 insightIntent.shareIntent API 发送至系统意图分发服务 (可能涉及跨应用或云端处理，取决于具体 Intent 定义)"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (未持久化到本地文件)",
+          "无显式加密操作 (依赖底层 API 安全性)"
+        ],
+        "permissions": [
+          "ohos.permission.INTENT_SEND (隐含，用于发送意图)",
+          "ohos.permission.ACCESS_NETWORK (若 Intent 涉及网络传输)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p62",
+      "pathId": "p62",
+      "nodes": [
+        {
+          "id": "p62:n1",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 14,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化界面组件，准备接收用户交互。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "struct Index {",
+              "  @LocalStorageProp('result') want: string = 'wait result';",
+              "  @State result: string = this.want;",
+              "  @State input: string = '';",
+              "",
+              "  build() {",
+              "    Flex({",
+              "      direction: FlexDirection.Column,",
+              "      justifyContent: FlexAlign.SpaceBetween,",
+              "      alignItems: ItemAlign.Center",
+              "    }) {"
+            ]
+          }
+        },
+        {
+          "id": "p62:n2",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 42,
+          "code": "Row() {",
+          "description": "渲染 Row 布局容器，其中包含触发数据分享操作的按钮组件。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "        .height('45%')",
+              "        .border({",
+              "          radius: '4vp'",
+              "        })",
+              "",
+              "      Row() {",
+              "        Button() {",
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)"
+            ]
+          }
+        },
+        {
+          "id": "p62:n3",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 43,
+          "code": "Button() {",
+          "description": "定义 Button 组件，用户点击此按钮将触发获取或分享 InsightIntent 的逻辑（隐含调用 shareIntent）。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "        .border({",
+              "          radius: '4vp'",
+              "        })",
+              "",
+              "      Row() {",
+              "        Button() {",
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)",
+              "            .minFontSize(9)"
+            ]
+          }
+        },
+        {
+          "id": "p62:n4",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 31,
+          "code": "static async shareIntent(context: Context, input: string): Promise<string> {",
+          "description": "定义 shareIntent 异步函数，接收上下文 context 和用户输入的字符串 input 作为数据源。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "      Logger.error(TAG, `refresh share intent message failed: ${JSON.stringify(error)}`);",
+              "      return 'invalid share intent message';",
+              "    }",
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';"
+            ]
+          }
+        },
+        {
+          "id": "p62:n5",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 32,
+          "code": "Logger.debug(TAG, 'shareIntent');",
+          "description": "调用 Logger.debug 记录函数进入日志，此时数据流开始进入日志记录环节。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "      return 'invalid share intent message';",
+              "    }",
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p62:n6",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 33,
+          "code": "let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+          "description": "将输入的字符串 input 解析为 JSON 对象，提取具体的 InsightIntent 数据项，这是核心业务数据处理节点。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  static async shareIntent(context: Context, input: string): Promise<string> {",
+              "    Logger.debug(TAG, 'shareIntent');",
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p62:n7",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 38,
+          "code": "return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+          "description": "调用系统 API insightIntent.shareIntent 执行实际的数据分享操作，数据离开当前应用作用域。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+              "    if (!insightIntents || insightIntents.length === 0){",
+              "      Logger.error(TAG, 'shareIntent: json invalid.');",
+              "      return 'shareIntent: json invalid.';",
+              "    }",
+              "    return await insightIntent.shareIntent(context, insightIntents).then(() => {",
+              "      Logger.info(TAG, 'shareIntent succeed');",
+              "      return 'share intent succeed';",
+              "    }, (err: BusinessError) => {",
+              "      Logger.error(TAG, `shareIntent error message: ${JSON.stringify(err)}`);",
+              "      return `shareIntent error message: ${JSON.stringify(err)}`;"
+            ]
+          }
+        },
+        {
+          "id": "p62:n8",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 7,
+          "code": "public static debug(logTag: string, messageFormat: string, ...args: Object[]): void {",
+          "description": "Logger 类的 debug 静态方法被调用，准备格式化日志消息。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "",
+              "export class Logger {",
+              "  private static readonly DOMAIN: number = 0x0000;",
+              "  private static readonly TAG: string = 'com.example.insightintentdemo';",
+              "",
+              "  public static debug(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.debug(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);"
+            ]
+          }
+        },
+        {
+          "id": "p62:n9",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 8,
+          "code": "hilog.debug(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+          "description": "调用 hilog.debug 系统接口，将包含 logTag 和 messageFormat 的调试信息写入系统日志缓冲区，此为数据流终点 (Sink)。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "export class Logger {",
+              "  private static readonly DOMAIN: number = 0x0000;",
+              "  private static readonly TAG: string = 'com.example.insightintentdemo';",
+              "",
+              "  public static debug(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.debug(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p62:n1",
+          "to": "p62:n2"
+        },
+        {
+          "from": "p62:n2",
+          "to": "p62:n3"
+        },
+        {
+          "from": "p62:n3",
+          "to": "p62:n4"
+        },
+        {
+          "from": "p62:n4",
+          "to": "p62:n5"
+        },
+        {
+          "from": "p62:n5",
+          "to": "p62:n6"
+        },
+        {
+          "from": "p62:n6",
+          "to": "p62:n7"
+        },
+        {
+          "from": "p62:n5",
+          "to": "p62:n8"
+        },
+        {
+          "from": "p62:n8",
+          "to": "p62:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户输入的文本内容 (input string)",
+          "InsightIntent 结构化数据 (JSON)",
+          "应用调试日志 (Debug Logs)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为",
+          "日志输出至系统日志缓冲区 (hilog)，可能由具备日志权限的其他应用或调试工具读取"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (变量 input, insightIntents)",
+          "未涉及本地持久化存储",
+          "未涉及加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.ACCESS_LOG (隐式，用于写入 hilog)",
+          "无敏感隐私权限 (如位置、联系人等) 在此路径中被请求或使用"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "runId": "map-kit_-codelab_20260311-225137",
+    "generatedAt": "2026-03-11T14:52:57.160Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "BasicMapDemo",
+      "entry": {
+        "filePath": "input/app/map-kit_-codelab/entry/src/main/ets/pages/BasicMapDemo.ets",
+        "structName": "BasicMapDemo",
+        "line": 10,
+        "description": "BasicMapDemo页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_BasicMapDemo_8803d5ae46",
+      "kind": "ui",
+      "title": "页面构建逻辑"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/map-kit_-codelab/entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 46,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，准备渲染页面组件树",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "        await this.mapController?.addMarker(markerOptions);",
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack() {",
+              "      // Call the MapComponent component to initialize the map.",
+              "      MapComponent({ mapOptions: this.mapOptions, mapCallback: this.callback }).width('100%').height('100%');",
+              "    }.height('100%')",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/map-kit_-codelab/entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 47,
+          "code": "Stack() {",
+          "description": "创建 Stack 容器组件，作为地图组件的父布局容器",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack() {",
+              "      // Call the MapComponent component to initialize the map.",
+              "      MapComponent({ mapOptions: this.mapOptions, mapCallback: this.callback }).width('100%').height('100%');",
+              "    }.height('100%')",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/map-kit_-codelab/entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 49,
+          "code": "MapComponent({ mapOptions: this.mapOptions, mapCallback: this.callback }).width('100%').height('100%');",
+          "description": "实例化 MapComponent 组件，传入 mapOptions 配置对象（含初始中心点、缩放级别等位置相关数据）和 callback 回调对象，触发地图引擎初始化并开始请求地理位置权限及网络资源",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Stack() {",
+              "      // Call the MapComponent component to initialize the map.",
+              "      MapComponent({ mapOptions: this.mapOptions, mapCallback: this.callback }).width('100%').height('100%');",
+              "    }.height('100%')",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户地理位置信息 (Latitude/Longitude)",
+          "设备网络状态 (用于加载地图瓦片)",
+          "地图交互事件数据 (点击、缩放、平移)"
+        ],
+        "collectionFrequency": [
+          "持续性收集 (地图渲染期间实时获取)",
+          "事件触发 (用户交互时)"
+        ],
+        "cloudUpload": [
+          "间接上传：MapComponent 内部机制会向地图服务提供商请求瓦片数据，隐含发送当前视口位置信息",
+          "取决于 mapCallback 的具体实现，可能将交互事件上报至应用服务器"
+        ],
+        "storageAndEncryption": [
+          "本地缓存：地图 SDK 通常会自动缓存瓦片数据以提升性能",
+          "加密情况：依赖底层 MapKit SDK 实现，源码片段未显示显式加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.LOCATION (必需，用于获取用户位置并在地图上显示)",
+          "ohos.permission.INTERNET (必需，用于下载地图数据)"
+        ]
+      }
+    }
+  ]
+}

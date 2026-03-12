@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "featureId": "src_AppLifecycle_onWindowStageCreate_42_0ae998a3",
+    "generatedAt": "2026-03-11T21:07:50.445Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACCESS_NETWORK_STATE 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.GET_BUNDLE_INFO 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "应用启动初始化时",
+        "dataSources": [
+          "系统日志接口",
+          "全局内存变量",
+          "应用级存储 (AppStorage)",
+          "本地文件系统路径"
+        ],
+        "dataItems": [
+          {
+            "name": "应用文件目录路径",
+            "refs": [
+              {
+                "flowId": "flow:p73",
+                "nodeId": "p73:n4"
+              },
+              {
+                "flowId": "flow:p74",
+                "nodeId": "p74:n4"
+              },
+              {
+                "flowId": "flow:p75",
+                "nodeId": "p75:n4"
+              },
+              {
+                "flowId": "flow:p76",
+                "nodeId": "p76:n2"
+              }
+            ]
+          },
+          {
+            "name": "窗口阶段对象引用",
+            "refs": [
+              {
+                "flowId": "flow:p73",
+                "nodeId": "p73:n3"
+              },
+              {
+                "flowId": "flow:p74",
+                "nodeId": "p74:n3"
+              },
+              {
+                "flowId": "flow:p75",
+                "nodeId": "p75:n3"
+              }
+            ]
+          },
+          {
+            "name": "网络连接状态标志",
+            "refs": [
+              {
+                "flowId": "flow:p73",
+                "nodeId": "p73:n6"
+              },
+              {
+                "flowId": "flow:p74",
+                "nodeId": "p74:n6"
+              },
+              {
+                "flowId": "flow:p75",
+                "nodeId": "p75:n6"
+              },
+              {
+                "flowId": "flow:p76",
+                "nodeId": "p76:n4"
+              },
+              {
+                "flowId": "flow:p76",
+                "nodeId": "p76:n13"
+              },
+              {
+                "flowId": "flow:p76",
+                "nodeId": "p76:n15"
+              }
+            ]
+          },
+          {
+            "name": "网络标识符 (netId)",
+            "refs": [
+              {
+                "flowId": "flow:p76",
+                "nodeId": "p76:n12"
+              }
+            ]
+          },
+          {
+            "name": "应用包名",
+            "refs": [
+              {
+                "flowId": "flow:p77",
+                "nodeId": "p77:n7"
+              }
+            ]
+          },
+          {
+            "name": "应用版本号",
+            "refs": [
+              {
+                "flowId": "flow:p77",
+                "nodeId": "p77:n8"
+              }
+            ]
+          },
+          {
+            "name": "应用目标版本",
+            "refs": [
+              {
+                "flowId": "flow:p77",
+                "nodeId": "p77:n6"
+              }
+            ]
+          },
+          {
+            "name": "应用厂商信息",
+            "refs": [
+              {
+                "flowId": "flow:p77",
+                "nodeId": "p77:n9"
+              }
+            ]
+          },
+          {
+            "name": "页面加载错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p74",
+                "nodeId": "p74:n12"
+              },
+              {
+                "flowId": "flow:p75",
+                "nodeId": "p75:n10"
+              }
+            ]
+          },
+          {
+            "name": "页面加载回调数据",
+            "refs": [
+              {
+                "flowId": "flow:p75",
+                "nodeId": "p75:n11"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在应用启动时一次性收集，部分数据（如网络状态）随事件触发更新；数据被序列化后写入系统日志或本地日志模块。",
+        "storageMethod": "数据主要存储于应用内存（globalThis 全局对象、AppStorage 应用级存储），部分日志信息输出至系统日志缓冲区。",
+        "dataRecipients": [],
+        "processingPurpose": "用于初始化应用运行环境、配置日志存储路径、监控网络连接状态以及获取应用自身版本信息以进行兼容性检查。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "应用启动初始化时",
+        "permissionPurpose": "用于创建网络连接并注册监听器，以检测设备的互联网连接状态。",
+        "denyImpact": "若拒绝该权限，应用可能无法正确初始化网络连接监听，导致网络状态判断失效或相关功能不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p73",
+            "nodeId": "p73:n7"
+          },
+          {
+            "flowId": "flow:p76",
+            "nodeId": "p76:n10"
+          }
+        ]
+      }
+    ]
+  }
+}

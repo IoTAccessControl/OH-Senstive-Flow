@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "runId": "NewsData_20260312-044754",
+    "generatedAt": "2026-03-11T20:47:56.472Z",
+    "counts": {
+      "nodes": 6,
+      "edges": 5,
+      "sources": 1,
+      "sinkCalls": 2,
+      "functions": 3
+    }
+  },
+  "nodes": [
+    {
+      "id": "fn:input/app/NewsData/entry/src/main/ets/viewmodel/NewsViewModel.ets:58:getNewsList",
+      "type": "function",
+      "filePath": "input/app/NewsData/entry/src/main/ets/viewmodel/NewsViewModel.ets",
+      "line": 58,
+      "code": "getNewsList(currentPage: number, pageSize: number, path: string): Promise<NewsData[]> {",
+      "name": "getNewsList",
+      "description": "根据页码和页数发起网络请求，获取指定路径下的新闻列表数据。"
+    },
+    {
+      "id": "fn:input/app/NewsData/entry/src/main/ets/view/NewsList.ets:39:changeCategory",
+      "type": "function",
+      "filePath": "input/app/NewsData/entry/src/main/ets/view/NewsList.ets",
+      "line": 39,
+      "code": "changeCategory() {",
+      "name": "changeCategory",
+      "description": "切换新闻分类时重置页码并重新加载列表数据，根据结果更新分页状态或显示错误提示。"
+    },
+    {
+      "id": "fn:input/app/NewsData/entry/src/main/ets/view/NewsList.ets:61:aboutToAppear",
+      "type": "source",
+      "filePath": "input/app/NewsData/entry/src/main/ets/view/NewsList.ets",
+      "line": 61,
+      "code": "aboutToAppear() {",
+      "name": "aboutToAppear",
+      "description": "组件即将显示时触发的生命周期函数"
+    },
+    {
+      "id": "fn:input/app/NewsData/entry/src/main/ets/common/utils/Logger.ets:51:error",
+      "type": "function",
+      "filePath": "input/app/NewsData/entry/src/main/ets/common/utils/Logger.ets",
+      "line": 51,
+      "code": "error(...args: string[]): void {",
+      "name": "error",
+      "description": "调用系统日志接口记录错误级别日志信息。"
+    },
+    {
+      "id": "sink:input/app/NewsData/entry/src/main/ets/view/NewsList.ets:53",
+      "type": "sinkCall",
+      "filePath": "input/app/NewsData/entry/src/main/ets/view/NewsList.ets",
+      "line": 53,
+      "code": "promptAction.showToast({",
+      "name": "@ohos.promptAction.showToast",
+      "description": "Displays the notification text."
+    },
+    {
+      "id": "sink:input/app/NewsData/entry/src/main/ets/common/utils/Logger.ets:52",
+      "type": "sinkCall",
+      "filePath": "input/app/NewsData/entry/src/main/ets/common/utils/Logger.ets",
+      "line": 52,
+      "code": "hilog.error(this.domain, this.prefix, this.format, args);",
+      "name": "@ohos.hilog.error",
+      "description": "Outputs error-level logs."
+    }
+  ],
+  "edges": [
+    {
+      "from": "fn:input/app/NewsData/entry/src/main/ets/viewmodel/NewsViewModel.ets:58:getNewsList",
+      "to": "fn:input/app/NewsData/entry/src/main/ets/common/utils/Logger.ets:51:error",
+      "kind": "calls"
+    },
+    {
+      "from": "fn:input/app/NewsData/entry/src/main/ets/view/NewsList.ets:39:changeCategory",
+      "to": "fn:input/app/NewsData/entry/src/main/ets/viewmodel/NewsViewModel.ets:58:getNewsList",
+      "kind": "calls"
+    },
+    {
+      "from": "fn:input/app/NewsData/entry/src/main/ets/view/NewsList.ets:61:aboutToAppear",
+      "to": "fn:input/app/NewsData/entry/src/main/ets/view/NewsList.ets:39:changeCategory",
+      "kind": "calls"
+    },
+    {
+      "from": "fn:input/app/NewsData/entry/src/main/ets/view/NewsList.ets:39:changeCategory",
+      "to": "sink:input/app/NewsData/entry/src/main/ets/view/NewsList.ets:53",
+      "kind": "containsSink"
+    },
+    {
+      "from": "fn:input/app/NewsData/entry/src/main/ets/common/utils/Logger.ets:51:error",
+      "to": "sink:input/app/NewsData/entry/src/main/ets/common/utils/Logger.ets:52",
+      "kind": "containsSink"
+    }
+  ]
+}

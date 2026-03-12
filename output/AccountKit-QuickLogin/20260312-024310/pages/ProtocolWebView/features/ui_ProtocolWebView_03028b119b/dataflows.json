@@ -1,0 +1,1128 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260312-024310",
+    "generatedAt": "2026-03-11T19:21:34.430Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 4,
+      "nodes": 37,
+      "edges": 33,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "ProtocolWebView",
+      "entry": {
+        "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+        "structName": "ProtocolWebView",
+        "line": 10,
+        "description": "协议条款页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_ProtocolWebView_03028b119b",
+      "kind": "ui",
+      "title": "返回"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p88",
+      "pathId": "p88",
+      "nodes": [
+        {
+          "id": "p88:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 36,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口 build()，初始化协议 WebView 页面的 UI 结构。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "    const UI_PAGE_MARGIN = 16;",
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Button({ type: ButtonType.Normal }) {",
+              "          Image($r('app.media.hwid_next_ic_appback'))",
+              "            .backgroundColor(Color.Transparent)"
+            ]
+          }
+        },
+        {
+          "id": "p88:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 38,
+          "code": "Column() {",
+          "description": "定义垂直布局容器 Column()，作为页面内容的父节点。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Button({ type: ButtonType.Normal }) {",
+              "          Image($r('app.media.hwid_next_ic_appback'))",
+              "            .backgroundColor(Color.Transparent)",
+              "            .borderRadius(20)",
+              "            .width(40)"
+            ]
+          }
+        },
+        {
+          "id": "p88:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 72,
+          "code": "Web({ src: this.url, controller: this.controller })",
+          "description": "实例化 Web 组件，绑定 URL 数据源和控制器，准备加载隐私协议网页。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "",
+              "        Progress({ value: this.progress, type: ProgressType.Linear })",
+              "          .width('100%')",
+              "          .visibility(this.progress <= 99 ? Visibility.Visible : Visibility.None)",
+              "",
+              "        Web({ src: this.url, controller: this.controller })",
+              "          .javaScriptAccess(true)",
+              "          .geolocationAccess(false)",
+              "          .fileAccess(false)",
+              "          .width(this.webViewWidth)",
+              "          .margin({ bottom: 60 })"
+            ]
+          }
+        },
+        {
+          "id": "p88:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 74,
+          "code": ".geolocationAccess(false)",
+          "description": "显式禁用地理定位访问 (geolocationAccess(false))，防止网页获取用户位置隐私。",
+          "context": {
+            "startLine": 69,
+            "lines": [
+              "          .width('100%')",
+              "          .visibility(this.progress <= 99 ? Visibility.Visible : Visibility.None)",
+              "",
+              "        Web({ src: this.url, controller: this.controller })",
+              "          .javaScriptAccess(true)",
+              "          .geolocationAccess(false)",
+              "          .fileAccess(false)",
+              "          .width(this.webViewWidth)",
+              "          .margin({ bottom: 60 })",
+              "          .backgroundColor(Color.Transparent)",
+              "          .onProgressChange((event) => {"
+            ]
+          }
+        },
+        {
+          "id": "p88:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 79,
+          "code": ".onProgressChange((event) => {",
+          "description": "注册 onProgressChange 事件监听器，用于捕获网页加载进度的变化事件。",
+          "context": {
+            "startLine": 74,
+            "lines": [
+              "          .geolocationAccess(false)",
+              "          .fileAccess(false)",
+              "          .width(this.webViewWidth)",
+              "          .margin({ bottom: 60 })",
+              "          .backgroundColor(Color.Transparent)",
+              "          .onProgressChange((event) => {",
+              "            hilog.info(this.domainId, this.logTag,",
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {"
+            ]
+          }
+        },
+        {
+          "id": "p88:n6",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 80,
+          "code": "hilog.info(this.domainId, this.logTag,",
+          "description": "调用 hilog.info 输出日志，记录当前组件 ID、标签及网页加载进度数据。",
+          "context": {
+            "startLine": 75,
+            "lines": [
+              "          .fileAccess(false)",
+              "          .width(this.webViewWidth)",
+              "          .margin({ bottom: 60 })",
+              "          .backgroundColor(Color.Transparent)",
+              "          .onProgressChange((event) => {",
+              "            hilog.info(this.domainId, this.logTag,",
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {"
+            ]
+          }
+        },
+        {
+          "id": "p88:n7",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 81,
+          "code": "'onProgressChange: ', (event ? event.newProgress : -1));",
+          "description": "从 event 对象中提取 newProgress 字段，作为具体的进度数值参与日志记录。",
+          "context": {
+            "startLine": 76,
+            "lines": [
+              "          .width(this.webViewWidth)",
+              "          .margin({ bottom: 60 })",
+              "          .backgroundColor(Color.Transparent)",
+              "          .onProgressChange((event) => {",
+              "            hilog.info(this.domainId, this.logTag,",
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);"
+            ]
+          }
+        },
+        {
+          "id": "p88:n8",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 82,
+          "code": "this.progress = event ? event.newProgress : 0;",
+          "description": "将获取到的最新进度值赋值给成员变量 this.progress，在组件内存中暂存状态。",
+          "context": {
+            "startLine": 77,
+            "lines": [
+              "          .margin({ bottom: 60 })",
+              "          .backgroundColor(Color.Transparent)",
+              "          .onProgressChange((event) => {",
+              "            hilog.info(this.domainId, this.logTag,",
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p88:n1",
+          "to": "p88:n2"
+        },
+        {
+          "from": "p88:n2",
+          "to": "p88:n3"
+        },
+        {
+          "from": "p88:n3",
+          "to": "p88:n4"
+        },
+        {
+          "from": "p88:n4",
+          "to": "p88:n5"
+        },
+        {
+          "from": "p88:n5",
+          "to": "p88:n6"
+        },
+        {
+          "from": "p88:n6",
+          "to": "p88:n7"
+        },
+        {
+          "from": "p88:n7",
+          "to": "p88:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "Web 页面加载进度 (newProgress)",
+          "组件标识符 (domainId, logTag)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (onProgressChange 回调)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存临时存储 (this.progress)",
+          "本地日志输出 (hilog.info)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p89",
+      "pathId": "p89",
+      "nodes": [
+        {
+          "id": "p89:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 36,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建协议 WebView 页面结构",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "    const UI_PAGE_MARGIN = 16;",
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Button({ type: ButtonType.Normal }) {",
+              "          Image($r('app.media.hwid_next_ic_appback'))",
+              "            .backgroundColor(Color.Transparent)"
+            ]
+          }
+        },
+        {
+          "id": "p89:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 38,
+          "code": "Column() {",
+          "description": "创建 Column 容器，作为页面主要布局容器",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Button({ type: ButtonType.Normal }) {",
+              "          Image($r('app.media.hwid_next_ic_appback'))",
+              "            .backgroundColor(Color.Transparent)",
+              "            .borderRadius(20)",
+              "            .width(40)"
+            ]
+          }
+        },
+        {
+          "id": "p89:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 32,
+          "code": "const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+          "description": "调用 display.getDefaultDisplaySync().width 获取设备屏幕物理宽度，涉及显示隐私数据",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "",
+              "  // Obtains the page width.",
+              "  getWebviewWidth() {",
+              "    const WEB_PAGE_MARGIN = 32;",
+              "    const UI_PAGE_MARGIN = 16;",
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {"
+            ]
+          }
+        },
+        {
+          "id": "p89:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 33,
+          "code": "return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+          "description": "基于屏幕宽度计算 WebView 的百分比宽度，数据仅在内存中用于布局计算",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  // Obtains the page width.",
+              "  getWebviewWidth() {",
+              "    const WEB_PAGE_MARGIN = 32;",
+              "    const UI_PAGE_MARGIN = 16;",
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p89:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 84,
+          "code": ".onAppear(async () => {",
+          "description": "注册 onAppear 生命周期回调，当页面出现时尝试加载 URL",
+          "context": {
+            "startLine": 79,
+            "lines": [
+              "          .onProgressChange((event) => {",
+              "            hilog.info(this.domainId, this.logTag,",
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {",
+              "              hilog.error(this.domainId, this.logTag,",
+              "                `Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);"
+            ]
+          }
+        },
+        {
+          "id": "p89:n6",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 86,
+          "code": "this.controller.loadUrl(this.url);",
+          "description": "执行 controller.loadUrl(this.url) 加载网络资源，可能触发网络请求",
+          "context": {
+            "startLine": 81,
+            "lines": [
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {",
+              "              hilog.error(this.domainId, this.logTag,",
+              "                `Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "              showToast(error);",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p89:n7",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 87,
+          "code": "} catch (error) {",
+          "description": "捕获 loadUrl 过程中抛出的异常对象，准备提取错误详情",
+          "context": {
+            "startLine": 82,
+            "lines": [
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {",
+              "              hilog.error(this.domainId, this.logTag,",
+              "                `Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "              showToast(error);",
+              "            }",
+              "          })"
+            ]
+          }
+        },
+        {
+          "id": "p89:n8",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 88,
+          "code": "hilog.error(this.domainId, this.logTag,",
+          "description": "调用 hilog.error 输出错误日志，将错误码、错误消息及组件标识写入系统日志缓冲区",
+          "context": {
+            "startLine": 83,
+            "lines": [
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {",
+              "              hilog.error(this.domainId, this.logTag,",
+              "                `Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "              showToast(error);",
+              "            }",
+              "          })",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p89:n9",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 89,
+          "code": "`Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);",
+          "description": "拼接具体的错误描述字符串，包含动态变量 error.code 和 error.message",
+          "context": {
+            "startLine": 84,
+            "lines": [
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {",
+              "              hilog.error(this.domainId, this.logTag,",
+              "                `Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "              showToast(error);",
+              "            }",
+              "          })",
+              "      }",
+              "      .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p89:n10",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 90,
+          "code": "showToast(error);",
+          "description": "调用 showToast 向用户展示错误提示，完成异常处理流程",
+          "context": {
+            "startLine": 85,
+            "lines": [
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {",
+              "              hilog.error(this.domainId, this.logTag,",
+              "                `Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "              showToast(error);",
+              "            }",
+              "          })",
+              "      }",
+              "      .width('100%')",
+              "      .height('100%')"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p89:n1",
+          "to": "p89:n2"
+        },
+        {
+          "from": "p89:n2",
+          "to": "p89:n3"
+        },
+        {
+          "from": "p89:n3",
+          "to": "p89:n4"
+        },
+        {
+          "from": "p89:n4",
+          "to": "p89:n5"
+        },
+        {
+          "from": "p89:n5",
+          "to": "p89:n6"
+        },
+        {
+          "from": "p89:n6",
+          "to": "p89:n7"
+        },
+        {
+          "from": "p89:n7",
+          "to": "p89:n8"
+        },
+        {
+          "from": "p89:n8",
+          "to": "p89:n9"
+        },
+        {
+          "from": "p89:n9",
+          "to": "p89:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "屏幕宽度 (displayWidth)",
+          "错误码 (error.code)",
+          "错误消息 (error.message)",
+          "日志域 ID (domainId)",
+          "日志标签 (logTag)",
+          "URL 加载状态"
+        ],
+        "collectionFrequency": [
+          "一次性 (UI 构建时获取屏幕宽度)",
+          "事件触发 (Web 加载失败时捕获错误)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存临时存储 (用于 UI 计算和日志输出)",
+          "未检测到本地持久化存储",
+          "未检测到加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.ACCESS_DISPLAY (隐式，通过 display.getDefaultDisplaySync 获取屏幕信息)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p90",
+      "pathId": "p90",
+      "nodes": [
+        {
+          "id": "p90:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 36,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建协议 WebView 页面 UI",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "    const UI_PAGE_MARGIN = 16;",
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Button({ type: ButtonType.Normal }) {",
+              "          Image($r('app.media.hwid_next_ic_appback'))",
+              "            .backgroundColor(Color.Transparent)"
+            ]
+          }
+        },
+        {
+          "id": "p90:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 37,
+          "code": "NavDestination() {",
+          "description": "创建导航目标容器 NavDestination，包裹页面内容",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Button({ type: ButtonType.Normal }) {",
+              "          Image($r('app.media.hwid_next_ic_appback'))",
+              "            .backgroundColor(Color.Transparent)",
+              "            .borderRadius(20)"
+            ]
+          }
+        },
+        {
+          "id": "p90:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 38,
+          "code": "Column() {",
+          "description": "创建垂直布局 Column，作为页面主体容器",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Button({ type: ButtonType.Normal }) {",
+              "          Image($r('app.media.hwid_next_ic_appback'))",
+              "            .backgroundColor(Color.Transparent)",
+              "            .borderRadius(20)",
+              "            .width(40)"
+            ]
+          }
+        },
+        {
+          "id": "p90:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 32,
+          "code": "const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+          "description": "调用 display.getDefaultDisplaySync().width 获取设备屏幕物理宽度像素值，涉及设备显示信息采集",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "",
+              "  // Obtains the page width.",
+              "  getWebviewWidth() {",
+              "    const WEB_PAGE_MARGIN = 32;",
+              "    const UI_PAGE_MARGIN = 16;",
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {"
+            ]
+          }
+        },
+        {
+          "id": "p90:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 33,
+          "code": "return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+          "description": "基于屏幕宽度计算 WebView 组件的百分比宽度字符串，用于后续 UI 渲染",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  // Obtains the page width.",
+              "  getWebviewWidth() {",
+              "    const WEB_PAGE_MARGIN = 32;",
+              "    const UI_PAGE_MARGIN = 16;",
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p90:n6",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 72,
+          "code": "Web({ src: this.url, controller: this.controller })",
+          "description": "实例化 Web 组件，绑定 URL 源和控制器，准备加载隐私协议网页",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "",
+              "        Progress({ value: this.progress, type: ProgressType.Linear })",
+              "          .width('100%')",
+              "          .visibility(this.progress <= 99 ? Visibility.Visible : Visibility.None)",
+              "",
+              "        Web({ src: this.url, controller: this.controller })",
+              "          .javaScriptAccess(true)",
+              "          .geolocationAccess(false)",
+              "          .fileAccess(false)",
+              "          .width(this.webViewWidth)",
+              "          .margin({ bottom: 60 })"
+            ]
+          }
+        },
+        {
+          "id": "p90:n7",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 79,
+          "code": ".onProgressChange((event) => {",
+          "description": "注册 onProgressChange 回调监听器，用于捕获 WebView 页面加载进度的变化事件",
+          "context": {
+            "startLine": 74,
+            "lines": [
+              "          .geolocationAccess(false)",
+              "          .fileAccess(false)",
+              "          .width(this.webViewWidth)",
+              "          .margin({ bottom: 60 })",
+              "          .backgroundColor(Color.Transparent)",
+              "          .onProgressChange((event) => {",
+              "            hilog.info(this.domainId, this.logTag,",
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {"
+            ]
+          }
+        },
+        {
+          "id": "p90:n8",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 80,
+          "code": "hilog.info(this.domainId, this.logTag,",
+          "description": "调用 hilog.info 将域名 ID、日志标签及当前加载进度写入系统日志，构成数据流出点 (Sink)",
+          "context": {
+            "startLine": 75,
+            "lines": [
+              "          .fileAccess(false)",
+              "          .width(this.webViewWidth)",
+              "          .margin({ bottom: 60 })",
+              "          .backgroundColor(Color.Transparent)",
+              "          .onProgressChange((event) => {",
+              "            hilog.info(this.domainId, this.logTag,",
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {"
+            ]
+          }
+        },
+        {
+          "id": "p90:n9",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 81,
+          "code": "'onProgressChange: ', (event ? event.newProgress : -1));",
+          "description": "拼接具体的进度数值到日志消息中，完成日志内容的格式化",
+          "context": {
+            "startLine": 76,
+            "lines": [
+              "          .width(this.webViewWidth)",
+              "          .margin({ bottom: 60 })",
+              "          .backgroundColor(Color.Transparent)",
+              "          .onProgressChange((event) => {",
+              "            hilog.info(this.domainId, this.logTag,",
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);"
+            ]
+          }
+        },
+        {
+          "id": "p90:n10",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 82,
+          "code": "this.progress = event ? event.newProgress : 0;",
+          "description": "将获取到的最新加载进度值更新到组件内部状态变量 progress 中",
+          "context": {
+            "startLine": 77,
+            "lines": [
+              "          .margin({ bottom: 60 })",
+              "          .backgroundColor(Color.Transparent)",
+              "          .onProgressChange((event) => {",
+              "            hilog.info(this.domainId, this.logTag,",
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p90:n1",
+          "to": "p90:n2"
+        },
+        {
+          "from": "p90:n2",
+          "to": "p90:n3"
+        },
+        {
+          "from": "p90:n3",
+          "to": "p90:n4"
+        },
+        {
+          "from": "p90:n4",
+          "to": "p90:n5"
+        },
+        {
+          "from": "p90:n5",
+          "to": "p90:n6"
+        },
+        {
+          "from": "p90:n6",
+          "to": "p90:n7"
+        },
+        {
+          "from": "p90:n7",
+          "to": "p90:n8"
+        },
+        {
+          "from": "p90:n8",
+          "to": "p90:n9"
+        },
+        {
+          "from": "p90:n9",
+          "to": "p90:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "屏幕宽度 (displayWidth)",
+          "WebView 加载进度 (newProgress)",
+          "日志域标识 (domainId)",
+          "日志标签 (logTag)"
+        ],
+        "collectionFrequency": [
+          "一次性 (屏幕宽度在 UI 构建时获取)",
+          "事件触发 (WebView 进度变化时触发)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅存在于内存及系统日志缓冲区"
+        ],
+        "permissions": [
+          "ohos.permission.ACCESS_SCREEN (隐式，通过 display 模块获取屏幕信息)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p91",
+      "pathId": "p91",
+      "nodes": [
+        {
+          "id": "p91:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 36,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建协议 WebView 页面 UI",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "    const UI_PAGE_MARGIN = 16;",
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Button({ type: ButtonType.Normal }) {",
+              "          Image($r('app.media.hwid_next_ic_appback'))",
+              "            .backgroundColor(Color.Transparent)"
+            ]
+          }
+        },
+        {
+          "id": "p91:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 37,
+          "code": "NavDestination() {",
+          "description": "创建导航目标容器 NavDestination，定义页面路由结构",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Button({ type: ButtonType.Normal }) {",
+              "          Image($r('app.media.hwid_next_ic_appback'))",
+              "            .backgroundColor(Color.Transparent)",
+              "            .borderRadius(20)"
+            ]
+          }
+        },
+        {
+          "id": "p91:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 38,
+          "code": "Column() {",
+          "description": "创建垂直布局 Column，作为页面主要内容容器",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Button({ type: ButtonType.Normal }) {",
+              "          Image($r('app.media.hwid_next_ic_appback'))",
+              "            .backgroundColor(Color.Transparent)",
+              "            .borderRadius(20)",
+              "            .width(40)"
+            ]
+          }
+        },
+        {
+          "id": "p91:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 32,
+          "code": "const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+          "description": "调用 display.getDefaultDisplaySync().width 获取设备屏幕物理宽度，涉及显示尺寸隐私数据",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "",
+              "  // Obtains the page width.",
+              "  getWebviewWidth() {",
+              "    const WEB_PAGE_MARGIN = 32;",
+              "    const UI_PAGE_MARGIN = 16;",
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {"
+            ]
+          }
+        },
+        {
+          "id": "p91:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 33,
+          "code": "return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+          "description": "基于屏幕宽度计算 WebView 百分比宽度，数据仅在本地内存用于 UI 渲染",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  // Obtains the page width.",
+              "  getWebviewWidth() {",
+              "    const WEB_PAGE_MARGIN = 32;",
+              "    const UI_PAGE_MARGIN = 16;",
+              "    const displayWidth: number = px2vp(display.getDefaultDisplaySync().width);",
+              "    return ((displayWidth + (WEB_PAGE_MARGIN - UI_PAGE_MARGIN) * 2) * 100 / displayWidth).toFixed(2) + '%';",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p91:n6",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 84,
+          "code": ".onAppear(async () => {",
+          "description": "注册 onAppear 生命周期回调，当页面显示时触发 Web 资源加载逻辑",
+          "context": {
+            "startLine": 79,
+            "lines": [
+              "          .onProgressChange((event) => {",
+              "            hilog.info(this.domainId, this.logTag,",
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {",
+              "              hilog.error(this.domainId, this.logTag,",
+              "                `Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);"
+            ]
+          }
+        },
+        {
+          "id": "p91:n7",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 86,
+          "code": "this.controller.loadUrl(this.url);",
+          "description": "执行 controller.loadUrl(this.url) 尝试加载隐私协议 URL，可能触发网络请求",
+          "context": {
+            "startLine": 81,
+            "lines": [
+              "              'onProgressChange: ', (event ? event.newProgress : -1));",
+              "            this.progress = event ? event.newProgress : 0;",
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {",
+              "              hilog.error(this.domainId, this.logTag,",
+              "                `Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "              showToast(error);",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p91:n8",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 88,
+          "code": "hilog.error(this.domainId, this.logTag,",
+          "description": "捕获加载异常并调用 hilog.error 记录错误日志，包含错误码和错误消息等敏感调试信息",
+          "context": {
+            "startLine": 83,
+            "lines": [
+              "          })",
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {",
+              "              hilog.error(this.domainId, this.logTag,",
+              "                `Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "              showToast(error);",
+              "            }",
+              "          })",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p91:n9",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/ProtocolWebView.ets",
+          "line": 89,
+          "code": "`Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);",
+          "description": "拼接具体的错误详情字符串，作为日志内容的一部分输出到系统日志缓冲区",
+          "context": {
+            "startLine": 84,
+            "lines": [
+              "          .onAppear(async () => {",
+              "            try {",
+              "              this.controller.loadUrl(this.url);",
+              "            } catch (error) {",
+              "              hilog.error(this.domainId, this.logTag,",
+              "                `Failed to load ProtocolWebView. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "              showToast(error);",
+              "            }",
+              "          })",
+              "      }",
+              "      .width('100%')"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p91:n1",
+          "to": "p91:n2"
+        },
+        {
+          "from": "p91:n2",
+          "to": "p91:n3"
+        },
+        {
+          "from": "p91:n3",
+          "to": "p91:n4"
+        },
+        {
+          "from": "p91:n4",
+          "to": "p91:n5"
+        },
+        {
+          "from": "p91:n3",
+          "to": "p91:n6"
+        },
+        {
+          "from": "p91:n6",
+          "to": "p91:n7"
+        },
+        {
+          "from": "p91:n7",
+          "to": "p91:n8"
+        },
+        {
+          "from": "p91:n8",
+          "to": "p91:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "屏幕宽度 (displayWidth)",
+          "错误日志信息 (error code, error message)",
+          "组件标识 (domainId, logTag)"
+        ],
+        "collectionFrequency": [
+          "一次性 (UI 构建时获取屏幕宽度)",
+          "事件触发 (Web 加载失败时记录日志)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地内存临时存储 (displayWidth 变量)",
+          "系统日志服务存储 (hilog.error 输出，未加密)"
+        ],
+        "permissions": [
+          "ohos.permission.ACCESS_SCREEN_SIZE (隐式依赖，用于获取 display.getDefaultDisplaySync().width)"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260312-053605",
+    "generatedAt": "2026-03-11T21:44:43.659Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "RefreshPullView",
+      "entry": {
+        "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+        "structName": "RefreshPullView",
+        "line": 8,
+        "description": "下拉刷新页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_RefreshPullView_8abfe98687",
+      "kind": "ui",
+      "title": "下拉刷新"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p25",
+      "pathId": "p25",
+      "nodes": [
+        {
+          "id": "p25:n1",
+          "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+          "line": 72,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，当组件即将显示时触发，开始执行数据获取逻辑。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "  private canvasSetting?: RenderingContextSettings = new RenderingContextSettings(true);",
+              "  private canvasRefresh?: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.canvasSetting);",
+              "  private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Up | PanDirection.Down })",
+              "",
+              "",
+              "  aboutToAppear() {",
+              "    // 获取屏幕宽度",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "    this.screenWidth = px2vp(displayClass.width);",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p25:n2",
+          "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+          "line": 74,
+          "code": "let displayClass = display.getDefaultDisplaySync();",
+          "description": "调用 display.getDefaultDisplaySync() 获取默认显示对象实例，作为获取屏幕物理属性的源点。",
+          "context": {
+            "startLine": 69,
+            "lines": [
+              "  private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Up | PanDirection.Down })",
+              "",
+              "",
+              "  aboutToAppear() {",
+              "    // 获取屏幕宽度",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "    this.screenWidth = px2vp(displayClass.width);",
+              "  }",
+              "",
+              "  // 初始化画布",
+              "  private initCanvas(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p25:n3",
+          "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+          "line": 75,
+          "code": "this.screenWidth = px2vp(displayClass.width);",
+          "description": "从显示对象中提取 width 属性（屏幕宽度像素值），并通过 px2vp 转换为虚拟像素单位。",
+          "context": {
+            "startLine": 70,
+            "lines": [
+              "",
+              "",
+              "  aboutToAppear() {",
+              "    // 获取屏幕宽度",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "    this.screenWidth = px2vp(displayClass.width);",
+              "  }",
+              "",
+              "  // 初始化画布",
+              "  private initCanvas(): void {",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p25:n4",
+          "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+          "line": 75,
+          "code": "this.screenWidth = px2vp(displayClass.width);",
+          "description": "将转换后的屏幕宽度赋值给组件成员变量 this.screenWidth，完成数据在本地内存中的暂存，用于后续 UI 渲染计算。",
+          "context": {
+            "startLine": 70,
+            "lines": [
+              "",
+              "",
+              "  aboutToAppear() {",
+              "    // 获取屏幕宽度",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "    this.screenWidth = px2vp(displayClass.width);",
+              "  }",
+              "",
+              "  // 初始化画布",
+              "  private initCanvas(): void {",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p25:n1",
+          "to": "p25:n2"
+        },
+        {
+          "from": "p25:n2",
+          "to": "p25:n3"
+        },
+        {
+          "from": "p25:n3",
+          "to": "p25:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "屏幕分辨率/尺寸信息"
+        ],
+        "collectionFrequency": [
+          "一次性（组件初始化时）"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅存储在组件内存变量中 (this.screenWidth)，未持久化，未加密"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

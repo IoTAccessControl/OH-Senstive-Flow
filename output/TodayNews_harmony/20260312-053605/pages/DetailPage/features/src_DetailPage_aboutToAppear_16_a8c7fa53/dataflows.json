@@ -1,0 +1,164 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260312-053605",
+    "generatedAt": "2026-03-11T21:44:43.659Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "DetailPage",
+      "entry": {
+        "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+        "structName": "DetailPage",
+        "line": 11,
+        "description": "详情页面"
+      }
+    },
+    "feature": {
+      "featureId": "src_DetailPage_aboutToAppear_16_a8c7fa53",
+      "kind": "source",
+      "title": "详情页面进入时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/CategoryTabbar.ets",
+          "line": 16,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，当组件即将显示时触发，启动数据收集流程。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  @State currentIndex: number = 0;",
+              "  @State displayWidth: number = 0;",
+              "  @Link needChange: boolean;",
+              "",
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "",
+              "    this.displayWidth = px2vp(displayClass.width);",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/CategoryTabbar.ets",
+          "line": 18,
+          "code": "let displayClass = display.getDefaultDisplaySync();",
+          "description": "调用 display.getDefaultDisplaySync() 获取默认显示对象句柄，作为读取屏幕物理属性的源点。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @Link needChange: boolean;",
+              "",
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "",
+              "    this.displayWidth = px2vp(displayClass.width);",
+              "",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/CategoryTabbar.ets",
+          "line": 20,
+          "code": "this.displayWidth = px2vp(displayClass.width);",
+          "description": "从显示对象中提取 width 属性（屏幕宽度像素值），并通过 px2vp 转换为逻辑单位。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "",
+              "    this.displayWidth = px2vp(displayClass.width);",
+              "",
+              "  }",
+              "",
+              "  @Builder",
+              "  newsListView(index: number) {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/CategoryTabbar.ets",
+          "line": 12,
+          "code": "@State displayWidth: number = 0;",
+          "description": "将处理后的屏幕宽度数据赋值给 @State 装饰的 displayWidth 成员变量，存入组件本地状态以便 UI 渲染使用。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "",
+              "@Component",
+              "export default struct CategoryTabBar {",
+              "  @State tabBarArray: string[] = categoryTitleViewModel.getDefaultCategoryList();",
+              "  @State currentIndex: number = 0;",
+              "  @State displayWidth: number = 0;",
+              "  @Link needChange: boolean;",
+              "",
+              "",
+              "  aboutToAppear() {",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "屏幕分辨率/宽度",
+          "设备显示属性"
+        ],
+        "collectionFrequency": [
+          "一次性（组件初始化时）"
+        ],
+        "cloudUpload": [
+          "未检测到直接上传行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储（@State 状态变量）",
+          "未加密（仅用于 UI 布局计算）"
+        ],
+        "permissions": [
+          "ohos.permission.ACCESS_SCREEN_INFO (隐式需要，获取显示信息)"
+        ]
+      }
+    }
+  ]
+}

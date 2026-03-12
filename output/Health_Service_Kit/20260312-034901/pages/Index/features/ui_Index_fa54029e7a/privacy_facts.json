@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "runId": "Health_Service_Kit_20260312-034901",
+    "featureId": "ui_Index_fa54029e7a",
+    "generatedAt": "2026-03-11T20:18:48.172Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Health_Service_Kit",
+        "businessScenario": "用户在授权管理首页点击“申请授权”按钮，请求访问健康数据权限。",
+        "dataSources": [
+          "用户交互（点击按钮）",
+          "系统健康服务（HealthStore）"
+        ],
+        "dataItems": [
+          {
+            "name": "运动序列数据 (exerciseSequence)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n6"
+              }
+            ]
+          },
+          {
+            "name": "用户授权状态 (AuthorizationResponse)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n8"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n8"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n8"
+              }
+            ]
+          },
+          {
+            "name": "已授予的读写数据类型列表",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n10"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n9"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n9"
+              }
+            ]
+          },
+          {
+            "name": "错误代码与消息",
+            "refs": [
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n12"
+              },
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n8"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "应用接收用户点击事件后，构造授权请求参数并调用系统 API 发起权限申请；获取系统返回的授权结果（成功或失败），遍历已授予的数据类型列表，并将结果信息拼接为字符串或记录到系统日志中。",
+        "storageMethod": "数据仅在内存中临时存储（如 result 变量、authorizationResponse 对象），部分授权详情和错误信息通过 hilog 输出至系统日志，未检测到本地持久化存储行为。",
+        "dataRecipients": [],
+        "processingPurpose": "获取用户对运动序列数据的读取和写入权限，以便后续进行健康数据相关的业务处理。",
+        "privacyToggleUi": {
+          "where": "授权管理首页（AuthIndex.ets）中的“申请授权”按钮",
+          "refs": [
+            {
+              "uiNodeId": "ui:ed77496a726e"
+            },
+            {
+              "uiNodeId": "ui:4b9b836e8f1c"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCESS_HEALTH_DATA",
+        "businessScenario": "用户在授权管理首页点击“申请授权”按钮时触发。",
+        "permissionPurpose": "申请访问用户的运动序列健康数据（包括读取和写入权限）。",
+        "denyImpact": "若用户拒绝授权，应用将无法读取或写入用户的运动序列数据，相关健康功能将不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n8"
+          },
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n8"
+          },
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n8"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n8"
+          },
+          {
+            "flowId": "flow:p5",
+            "nodeId": "p5:n8"
+          },
+          {
+            "flowId": "flow:p6",
+            "nodeId": "p6:n9"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n9"
+          },
+          {
+            "flowId": "flow:p8",
+            "nodeId": "p8:n9"
+          },
+          {
+            "flowId": "flow:p9",
+            "nodeId": "p9:n9"
+          },
+          {
+            "flowId": "flow:p10",
+            "nodeId": "p10:n7"
+          },
+          {
+            "flowId": "flow:p11",
+            "nodeId": "p11:n10"
+          },
+          {
+            "flowId": "flow:p12",
+            "nodeId": "p12:n10"
+          }
+        ]
+      }
+    ]
+  }
+}

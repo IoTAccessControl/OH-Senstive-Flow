@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "runId": "WebCookie_20260312-054620",
+    "generatedAt": "2026-03-11T21:47:36.856Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_25_db3453c9",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/WebCookie/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 25,
+          "code": "onDestroy() {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时由系统自动触发。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/WebCookie/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 26,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onDestroy' 和标签 'testTag' 格式化后写入系统日志，此处 '%{public}s' 表示日志内容公开可见，不涉及敏感隐私数据的收集或传输。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  onCreate() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "日志标签 (testTag)",
+          "固定日志消息 (Ability onDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "存储方式：系统日志缓冲区 (hilog)",
+          "加密状态：未加密 (明文日志，标记为%{public}s)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

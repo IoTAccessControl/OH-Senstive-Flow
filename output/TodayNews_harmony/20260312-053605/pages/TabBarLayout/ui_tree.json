@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260312-053605",
+    "generatedAt": "2026-03-11T21:44:43.721Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 5,
+      "edges": 4,
+      "pages": 1,
+      "elements": 4
+    }
+  },
+  "roots": [
+    "page:b4daa0515412"
+  ],
+  "nodes": {
+    "page:b4daa0515412": {
+      "id": "page:b4daa0515412",
+      "category": "Page",
+      "name": "TabBarLayout",
+      "description": "底部导航栏页面",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/TabBarLayout.ets",
+      "line": 7,
+      "code": "export struct TabBarLayout {",
+      "context": {
+        "startLine": 2,
+        "lines": [
+          "import display from '@ohos.display';",
+          "import { ResManager } from '../constants/ResManager';",
+          "import { TabBarDataSource } from '../utils/TabBarDataSource';",
+          "",
+          "@Component",
+          "export struct TabBarLayout {",
+          "",
+          "  // // 模型数据",
+          "  @State private  tabDataArr: TabBarDataSource = new TabBarDataSource();",
+          "  // 顶部tabBar滚动控制器",
+          "  private tabBarScroller: Scroller = new Scroller()"
+        ]
+      }
+    },
+    "ui:48f125c2609e": {
+      "id": "ui:48f125c2609e",
+      "category": "Component",
+      "name": "build",
+      "description": "底部导航布局",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/TabBarLayout.ets",
+      "line": 184,
+      "code": "build() {",
+      "context": {
+        "startLine": 179,
+        "lines": [
+          "",
+          "    }).catch((err) => {",
+          "    });",
+          "  }",
+          "",
+          "  build() {",
+          "",
+          "    Column() {",
+          "      // ----顶部tabBar内容开始------",
+          "      Stack({ alignContent: Alignment.End }) {",
+          ""
+        ]
+      }
+    },
+    "ui:b702c5615328": {
+      "id": "ui:b702c5615328",
+      "category": "Component",
+      "name": "ForEach",
+      "description": "底部标签栏",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/TabBarLayout.ets",
+      "line": 200,
+      "code": "ForEach(this.tabDataArr.getDataArr(), (item: TabModel, index: number) => {",
+      "context": {
+        "startLine": 195,
+        "lines": [
+          "        Scroll(this.tabBarScroller) {",
+          "          Flex({ direction: FlexDirection.Column, justifyContent: FlexAlign.Start }) {",
+          "",
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "",
+          "              ForEach(this.tabDataArr.getDataArr(), (item: TabModel, index: number) => {",
+          "                Flex({",
+          "                  direction: FlexDirection.Row,",
+          "                  justifyContent: FlexAlign.Center,",
+          "                  alignItems: ItemAlign.Center",
+          "                }) {"
+        ]
+      }
+    },
+    "ui:282404322705": {
+      "id": "ui:282404322705",
+      "category": "Button",
+      "name": "Text",
+      "description": "底部导航标题",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/TabBarLayout.ets",
+      "line": 207,
+      "code": "Text(item.content)",
+      "context": {
+        "startLine": 202,
+        "lines": [
+          "                  direction: FlexDirection.Row,",
+          "                  justifyContent: FlexAlign.Center,",
+          "                  alignItems: ItemAlign.Center",
+          "                }) {",
+          "                  // 标题",
+          "                  Text(item.content)",
+          "                    .fontSize(this.fontSizeNormal)",
+          "                    .fontColor(this.currentIndex == item.index ? (this.changeAllColor ? this.fontChangeSelectedColor : this.fontDefaultSelectedColor) : (this.changeAllColor ? this.fontChangeNormalColor : this.fontDefaultNormalColor))",
+          "                    .fontWeight(FontWeight.Normal)",
+          "                    .textAlign(TextAlign.Center)",
+          "                    .height(20)"
+        ]
+      }
+    },
+    "ui:cfb46fdbc3c0": {
+      "id": "ui:cfb46fdbc3c0",
+      "category": "Component",
+      "name": "LazyForEach",
+      "description": "标签栏列表",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/TabBarLayout.ets",
+      "line": 251,
+      "code": "LazyForEach(this.tabDataArr, (item: TabModel, index: number) => {",
+      "context": {
+        "startLine": 246,
+        "lines": [
+          "      // ----内容部分 开始------",
+          "      if (this.customList !== undefined) {",
+          "        Scroll(this.contentScroller) {",
+          "          // 横向滚动的List",
+          "          List() {",
+          "            LazyForEach(this.tabDataArr, (item: TabModel, index: number) => {",
+          "              ListItem() {",
+          "                Scroll() {",
+          "                  Column() {",
+          "                    this.customList({ index: index })",
+          "                  }"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:b4daa0515412",
+      "to": "ui:48f125c2609e",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b4daa0515412",
+      "to": "ui:b702c5615328",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b4daa0515412",
+      "to": "ui:282404322705",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b4daa0515412",
+      "to": "ui:cfb46fdbc3c0",
+      "kind": "contains"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import ts from 'typescript';
 import { describe, expect, it } from 'vitest';
 
 import { buildSdkModuleIndex } from '../src/analyzer/sdkIndexer.js';
@@ -9,8 +10,10 @@ import { resolveKitExportBinding } from '../src/analyzer/kitResolver.js';
 import { analyzeSinks } from '../src/analyzer/sinkAnalyzer.js';
 import { analyzeSources } from '../src/analyzer/sourceAnalyzer.js';
 import { buildCallGraph } from '../src/analyzer/callGraph/buildCallGraph.js';
+import { scanFunctionBlocks } from '../src/analyzer/callGraph/functionBlocks.js';
 import { extractPaths } from '../src/analyzer/callGraph/extractPaths.js';
 import { buildDataflows } from '../src/analyzer/dataflow/buildDataflows.js';
+import { scanAppArkTsFiles } from '../src/analyzer/appScanner.js';
 
 const REPO_ROOT = path.resolve(process.cwd(), '..');
 const SDK_ROOT = path.join(REPO_ROOT, 'input/sdk/default/openharmony/ets');
@@ -177,5 +180,164 @@ describe('callgraph + paths', () => {
 
     expect(result.meta.skipped).toBe(true);
     expect(result.flows.length).toBe(0);
+  });
+
+  it('detects struct methods below template strings and class methods with return types', async () => {
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-blocks-'));
+    const filePath = path.join(tmpDir, 'sample.ets');
+    const code = [
+      '@Entry',
+      '@Component',
+      'struct Index {',
+      '  requestPaymentCallBack() {',
+      '    console.error(`failed to pay, error.code: ${error.code}, error.message: ${error.message}`);',
+      '  }',
+      '',
+      '  build() {',
+      "    Button('go').onClick(() => {",
+      '      this.requestPaymentCallBack();',
+      '    })',
+      '  }',
+      '}',
+      '',
+      'class Helper {',
+      '  static async shareIntent(context: unknown): Promise<string> {',
+      "    return 'ok';",
+      '  }',
+      '}',
+      '',
+    ].join('\n');
+    await fs.writeFile(filePath, code, 'utf8');
+
+    const sf = ts.createSourceFile(filePath, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+    const blocks = scanFunctionBlocks(code, sf);
+
+    expect(blocks.some((b) => b.name === 'build')).toBe(true);
+    expect(blocks.some((b) => b.name === 'requestPaymentCallBack')).toBe(true);
+    expect(blocks.some((b) => b.name === 'shareIntent')).toBe(true);
+  });
+
+  it('builds a path through onClick callback to an instance method sink', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-repo-'));
+    const filePath = path.join(repoRoot, 'pay.ets');
+    const code = [
+      "import { prompt } from '@kit.ArkUI';",
+      '',
+      '@Entry',
+      '@Component',
+      'struct Index {',
+      '  pay() {',
+      '    console.error(`failed to pay, error.code: ${error.code}, error.message: ${error.message}`);',
+      "    prompt.showToast({ message: 'ok' });",
+      '  }',
+      '',
+      '  build() {',
+      "    Button('go').onClick(() => {",
+      '      this.pay();',
+      '    })',
+      '  }',
+      '}',
+      '',
+    ].join('\n');
+    await fs.writeFile(filePath, code, 'utf8');
+
+    const appFiles = [filePath];
+    const sources = await analyzeSources(repoRoot, appFiles);
+    const sinks = [
+      {
+        App源码文件路径: 'pay.ets',
+        导入行号: 1,
+        导入代码: "import { prompt } from '@kit.ArkUI';",
+        调用行号: 8,
+        调用代码: "prompt.showToast({ message: 'ok' });",
+        API功能描述: 'toast',
+        __apiKey: '@ohos.prompt.showToast',
+        __module: '@ohos.prompt',
+      },
+    ];
+
+    const callGraph = await buildCallGraph({ repoRoot, runId: 'test', appFiles, sinks: sinks as any, sources });
+    const paths = extractPaths({ callGraph, maxPaths: 5 });
+
+    expect(callGraph.nodes.some((n) => n.type === 'source' && n.name === 'build')).toBe(true);
+    expect(callGraph.nodes.some((n) => n.type === 'function' && n.name === 'pay')).toBe(true);
+    expect(callGraph.nodes.some((n) => n.type === 'sinkCall')).toBe(true);
+    expect(paths.length).toBeGreaterThan(0);
+  });
+
+  it('builds a path through static helper methods with return type annotations', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-repo-'));
+    const filePath = path.join(repoRoot, 'helper.ets');
+    const code = [
+      "import router from '@ohos.router';",
+      '',
+      'class Helper {',
+      '  static async shareIntent(): Promise<string> {',
+      "    router.pushUrl({ url: 'pages/a' });",
+      "    return 'ok';",
+      '  }',
+      '}',
+      '',
+      '@Entry',
+      '@Component',
+      'struct Index {',
+      '  build() {',
+      "    Button('go').onClick(async () => {",
+      '      await Helper.shareIntent();',
+      '    })',
+      '  }',
+      '}',
+      '',
+    ].join('\n');
+    await fs.writeFile(filePath, code, 'utf8');
+
+    const appFiles = [filePath];
+    const sources = await analyzeSources(repoRoot, appFiles);
+    const sinks = [
+      {
+        App源码文件路径: 'helper.ets',
+        导入行号: 1,
+        导入代码: "import router from '@ohos.router';",
+        调用行号: 5,
+        调用代码: "router.pushUrl({ url: 'pages/a' });",
+        API功能描述: 'test sink',
+        __apiKey: '@ohos.router.pushUrl',
+        __module: '@ohos.router',
+      },
+    ];
+
+    const callGraph = await buildCallGraph({ repoRoot, runId: 'test', appFiles, sinks: sinks as any, sources });
+    const paths = extractPaths({ callGraph, maxPaths: 5 });
+
+    expect(callGraph.nodes.some((n) => n.type === 'function' && n.name === 'shareIntent')).toBe(true);
+    expect(paths.length).toBeGreaterThan(0);
+  });
+});
+
+describe('app scanner fallbacks', () => {
+  it('falls back to generated build cache files when src/main/ets is missing', async () => {
+    const appRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-app-'));
+    const generatedFile = path.join(
+      appRoot,
+      'entry',
+      'build',
+      'default',
+      'cache',
+      'default',
+      'default@CompileArkTS',
+      'esmodule',
+      'debug',
+      'entry',
+      'src',
+      'main',
+      'ets',
+      'pages',
+      'Index.ts',
+    );
+    await fs.mkdir(path.dirname(generatedFile), { recursive: true });
+    await fs.writeFile(generatedFile, 'export default function demo() {}', 'utf8');
+
+    const files = await scanAppArkTsFiles(appRoot);
+    expect(files).toContain(generatedFile);
   });
 });

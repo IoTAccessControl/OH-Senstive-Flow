@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "runId": "map-kit_-codelab_20260311-225137",
+    "featureId": "ui_BasicMapDemo_8803d5ae46",
+    "generatedAt": "2026-03-11T14:53:41.179Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.LOCATION 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "map-kit_-codelab",
+        "businessScenario": "在 BasicMapDemo 页面加载时初始化地图组件，展示地图界面并支持用户交互（如缩放、平移）。",
+        "dataSources": [
+          "系统定位服务",
+          "网络请求"
+        ],
+        "dataItems": [
+          {
+            "name": "用户地理位置信息 (Latitude/Longitude)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n3"
+              }
+            ]
+          },
+          {
+            "name": "设备网络状态 (用于加载地图瓦片)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n3"
+              }
+            ]
+          },
+          {
+            "name": "地图交互事件数据 (点击、缩放、平移)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "持续性收集与事件触发：在地图渲染期间实时获取位置信息以更新视图，并在用户操作时捕获交互事件。",
+        "storageMethod": "本地缓存：地图 SDK 通常会自动缓存瓦片数据以提升性能；加密情况依赖底层 MapKit SDK 实现。",
+        "dataRecipients": [
+          {
+            "name": "地图服务提供商",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n3"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "为了在应用内正确渲染地图界面，根据用户当前位置或指定坐标加载对应的地理空间数据及瓦片图层。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "在 BasicMapDemo 页面加载地图瓦片数据时需要联网下载最新的地图资源。",
+        "permissionPurpose": "从远程服务器拉取地图瓦片图片及基础地理数据。",
+        "denyImpact": "如果拒绝此权限，地图将无法加载任何背景底图，导致地图区域为空白或仅显示已缓存的旧数据。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n3"
+          }
+        ]
+      }
+    ]
+  }
+}

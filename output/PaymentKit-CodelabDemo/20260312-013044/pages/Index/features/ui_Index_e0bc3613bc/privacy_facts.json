@@ -1,0 +1,306 @@
+{
+  "meta": {
+    "runId": "PaymentKit-CodelabDemo_20260312-013044",
+    "featureId": "ui_Index_e0bc3613bc",
+    "generatedAt": "2026-03-11T17:33:36.162Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "PaymentKit-CodelabDemo",
+        "businessScenario": "用户点击页面上的支付或签约按钮时，应用会收集并发送包含订单详情、商户信息、交易会话标识及签名的敏感支付数据至第三方支付服务提供方以完成交易验证与处理。",
+        "dataSources": [
+          "用户交互事件（点击按钮）"
+        ],
+        "dataItems": [
+          {
+            "name": "支付订单信息 (orderStr)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n7"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n6"
+              }
+            ]
+          },
+          {
+            "name": "应用标识 (app_id/appId)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n5"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n5"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n6"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n6"
+              }
+            ]
+          },
+          {
+            "name": "商户编号 (merc_no)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n7"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n6"
+              }
+            ]
+          },
+          {
+            "name": "预支付交易会话标识 (prepay_id/preSignNo)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n5"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n5"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n6"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n6"
+              }
+            ]
+          },
+          {
+            "name": "时间戳 (timestamp)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n7"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n6"
+              }
+            ]
+          },
+          {
+            "name": "随机字符串 (noncestr)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n7"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n6"
+              }
+            ]
+          },
+          {
+            "name": "签名数据 (sign)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n7"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n6"
+              }
+            ]
+          },
+          {
+            "name": "授权标识 (auth_id)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n7"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "通过 paymentService.requestPayment 和 paymentService.requestContract 接口将构造好的 JSON 格式订单或合约数据发送至云端支付服务提供商进行处理。",
+        "storageMethod": "代码中未显式展示本地持久化存储操作；敏感数据在内存中以硬编码字符串形式构建后直接通过网络传输。",
+        "dataRecipients": [
+          {
+            "name": "支付服务提供方",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n7"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n6"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n6"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n8"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n7"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n7"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n7"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "执行用户的支付请求或支付协议签约流程，验证交易合法性并完成资金结算。",
+        "privacyToggleUi": {
+          "where": "首页功能入口区域",
+          "refs": [
+            {
+              "uiNodeId": "ui:02b418479a69"
+            },
+            {
+              "uiNodeId": "ui:80697baab8a1"
+            },
+            {
+              "uiNodeId": "ui:636cc119dc80"
+            },
+            {
+              "uiNodeId": "ui:78a63bfc994f"
+            },
+            {
+              "uiNodeId": "ui:e0e996f3ba5c"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "当用户触发支付或签约操作时，应用需要访问网络以连接远程支付网关。",
+        "permissionPurpose": "建立与应用外部的网络连接，以便将支付请求数据上传至服务器。",
+        "denyImpact": "如果拒绝此权限，应用将无法发起任何支付请求，导致支付功能完全不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n7"
+          },
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n6"
+          },
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n6"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n6"
+          },
+          {
+            "flowId": "flow:p5",
+            "nodeId": "p5:n8"
+          },
+          {
+            "flowId": "flow:p6",
+            "nodeId": "p6:n7"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n7"
+          },
+          {
+            "flowId": "flow:p8",
+            "nodeId": "p8:n7"
+          }
+        ]
+      }
+    ]
+  }
+}

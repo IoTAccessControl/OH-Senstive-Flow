@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260312-053605",
+    "featureId": "src_DetailPage_build_136_5402795c",
+    "generatedAt": "2026-03-11T21:45:28.079Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "TodayNews_harmony",
+        "businessScenario": "用户在详情页面滚动加载或刷新新闻列表时",
+        "dataSources": [
+          "系统时间戳 (System Timestamp)"
+        ],
+        "dataItems": [
+          {
+            "name": "系统时间戳 (System Timestamp)",
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n4"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "将获取的毫秒级系统时间戳转换为秒级整数，并作为请求参数传递给后端服务。",
+        "storageMethod": "临时存储在组件成员变量 this.timeStamp 中，未观察到本地持久化存储或加密操作。",
+        "dataRecipients": [
+          {
+            "name": "云端新闻服务器",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n6"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于向服务器发起请求以获取最新的新闻列表数据。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

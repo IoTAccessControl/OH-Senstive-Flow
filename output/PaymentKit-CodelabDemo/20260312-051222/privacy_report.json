@@ -1,0 +1,194 @@
+{
+  "meta": {
+    "runId": "PaymentKit-CodelabDemo_20260312-051222",
+    "generatedAt": "2026-03-11T21:14:45.787Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "counts": {
+      "features": 1
+    }
+  },
+  "sections": {
+    "collectionAndUse": [
+      {
+        "featureId": "ui_Index_e1c028e01d",
+        "tokens": [
+          {
+            "text": "在“用户点击首页按钮发起支付请求或签约请求时，应用收集订单信息、商户编号、预支付标识及签名等数据，并发送至支付服务网关进行处理”场景中，"
+          },
+          {
+            "text": "我们会从用户交互（点击按钮）、应用内部构造的订单/合同字符串收集"
+          },
+          {
+            "text": "支付订单信息 (orderStr)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n5"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "应用标识 (app_id/appId)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n5"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "商户编号 (merc_no)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n5"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "预支付交易会话标识 (prepay_id)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n5"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "时间戳 (timestamp)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n5"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "随机字符串 (noncestr)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n5"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "签名信息 (sign)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n5"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "授权标识 (auth_id)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n5"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "支付合同字符串 (contractStr)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p3",
+              "nodeId": "p3:n5"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "预签约编号 (preSignNo)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p3",
+              "nodeId": "p3:n5"
+            }
+          },
+          {
+            "text": "和"
+          },
+          {
+            "text": "UIAbilityContext (上下文环境)",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n6"
+            }
+          },
+          {
+            "text": "，用于完成用户的支付交易或支付签约流程，验证交易合法性并处理资金流转。"
+          }
+        ]
+      }
+    ],
+    "permissions": [
+      {
+        "featureId": "ui_Index_e1c028e01d",
+        "tokens": [
+          {
+            "text": "在“在发起支付或签约请求前，应用可能需要检查当前网络状态以确保连接可用”场景中，我们会调用"
+          },
+          {
+            "text": "ohos.permission.ACCESS_NETWORK_STATE",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n6"
+            }
+          },
+          {
+            "text": "权限，用于获取设备网络状态信息，判断是否具备联网条件。"
+          },
+          {
+            "text": "若您拒绝授权，可能无法准确判断网络状态，导致在网络不可用时尝试发起请求而失败。"
+          },
+          {
+            "text": "此外，"
+          },
+          {
+            "text": "在“用户点击支付或签约按钮后，应用需要将订单或合同数据发送至远程支付服务器”场景中，我们会调用"
+          },
+          {
+            "text": "ohos.permission.INTERNET",
+            "jumpTo": {
+              "featureId": "ui_Index_e1c028e01d",
+              "flowId": "flow:p1",
+              "nodeId": "p1:n6"
+            }
+          },
+          {
+            "text": "权限，用于建立网络连接以传输支付相关数据至云端服务。"
+          },
+          {
+            "text": "若您拒绝授权，无法发起支付或签约请求，导致交易失败。"
+          }
+        ]
+      }
+    ]
+  }
+}

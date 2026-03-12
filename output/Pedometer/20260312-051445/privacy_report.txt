@@ -1,0 +1,13 @@
+1 我们如何收集和使用您的个人信息
+
+在“计步数据追踪与位置服务”场景中，我们会从用户授权状态、计步器传感器 (PEDOMETER)、地理位置信息 (Location)、本地存储配置收集计步器传感器数据 (PEDOMETER)、地理位置名称 (placeName)、用户设定的步数目标 (stepGoal)和错误日志信息 (Error Log Messages)，用于记录用户步数、提供运动状态反馈及基于位置的上下文展示。
+
+在“用户点击开始/停止按钮控制计步服务启停时，应用会收集用户的实时位置信息和运动步数数据，用于界面展示和后台持续追踪”场景中，我们会从设备传感器（计步器）、GPS/定位服务收集当前步数 (currentSteps)、起始位置 (startPosition)和当前位置 (currentLocation)，用于在首页展示用户当前的运动步数和地理位置信息，支持用户手动开启或关闭后台计步任务。
+
+2 设备权限调用
+
+在“Subscribe to accelerometer sensor data.”场景中，我们会调用ohos.permission.ACCELEROMETER权限，用于使用相关系统能力（由 SDK API 权限映射确定）。若您拒绝授权，拒绝授权可能导致对应功能无法正常使用。此外，在“计步功能初始化时申请访问计步器传感器”场景中，我们会调用ohos.permission.ACTIVITY_MOTION权限，用于获取用户的实时步数和运动状态。若您拒绝授权，若拒绝，应用无法启动计步计数，导致核心计步功能不可用。此外，在“Subscribe location changed.”场景中，我们会调用ohos.permission.APPROXIMATELY_LOCATION权限，用于使用相关系统能力（由 SDK API 权限映射确定）。若您拒绝授权，拒绝授权可能导致对应功能无法正常使用。此外，在“Service ability uses this method to request start running in…”场景中，我们会调用ohos.permission.KEEP_BACKGROUND_RUNNING权限，用于使用相关系统能力（由 SDK API 权限映射确定）。若您拒绝授权，拒绝授权可能导致对应功能无法正常使用。此外，在“页面加载时申请获取用户地理位置”场景中，我们会调用ohos.permission.LOCATION权限，用于获取当前位置名称并显示在界面上。若您拒绝授权，若拒绝，应用无法显示当前所在地点名称，可能影响基于位置的运动轨迹记录。
+
+在“当用户允许应用访问身体传感器时，应用可以读取加速度计等传感器数据来识别用户的行走动作”场景中，我们会调用ohos.permission.ACTIVITY_MOTION权限，用于采集用户的肢体运动数据（步数、步频等），是计步器核心功能的基础。若您拒绝授权，如果拒绝此权限，应用将无法统计用户的步数，导致核心功能失效。此外，在“Service ability uses this method to request start running in…”场景中，我们会调用ohos.permission.KEEP_BACKGROUND_RUNNING权限，用于使用相关系统能力（由 SDK API 权限映射确定）。若您拒绝授权，拒绝授权可能导致对应功能无法正常使用。此外，在“当用户启动计步功能时，应用需要获取用户的精确或大致地理位置以计算移动轨迹和距离”场景中，我们会调用ohos.permission.LOCATION权限，用于获取用户起始位置和实时位置信息，用于计步算法校准及地图轨迹记录。若您拒绝授权，如果拒绝此权限，应用可能无法准确计算基于位移的步数，或者无法显示用户的实时地理位置信息。
+
+当前已在应用源码/配置扫描或 SDK API 权限映射中识别到以下权限：ohos.permission.LOCATION_IN_BACKGROUND；但尚未定位到可回溯的功能点数据流，因此本章节暂不生成具体权限声明。

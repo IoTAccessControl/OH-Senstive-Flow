@@ -1,0 +1,1113 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "generatedAt": "2026-03-11T21:06:30.122Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 5,
+      "nodes": 36,
+      "edges": 31,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "TopSearchPage",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+        "structName": "TopSearchPage",
+        "line": 23,
+        "description": "热搜页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_TopSearchPage_ca6176eb01",
+      "kind": "ui",
+      "title": "返回按钮"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p66",
+      "pathId": "p66",
+      "nodes": [
+        {
+          "id": "p66:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 26,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 开始执行，标志着组件即将显示，是数据初始化的入口点。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct TopSearchPage {",
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p66:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 27,
+          "code": "const params = router.getParams() as TopSearchParams;",
+          "description": "调用 router.getParams() 获取从上一个页面传递过来的路由参数对象，并强制转换为 TopSearchParams 类型。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "@Component",
+              "struct TopSearchPage {",
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p66:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 28,
+          "code": "if (params && params.rankings) {",
+          "description": "校验获取到的 params 对象是否存在，且其中包含 rankings 字段，防止空指针异常。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "struct TopSearchPage {",
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p66:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 29,
+          "code": "this.rankings = params.rankings;",
+          "description": "将路由参数中的 rankings 数据赋值给当前组件的私有成员变量 this.rankings，完成数据在组件内部的持久化（内存级）。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p66:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 30,
+          "code": "}",
+          "description": "条件判断块结束，数据流转过程完成，后续将在 build 函数中用于 UI 渲染。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p66:n1",
+          "to": "p66:n2"
+        },
+        {
+          "from": "p66:n2",
+          "to": "p66:n3"
+        },
+        {
+          "from": "p66:n3",
+          "to": "p66:n4"
+        },
+        {
+          "from": "p66:n4",
+          "to": "p66:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (TopSearchParams)",
+          "排行榜数据列表 (rankings)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地内存传递)"
+        ],
+        "storageAndEncryption": [
+          "临时存储于组件成员变量 (未加密，生命周期随组件销毁)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p67",
+      "pathId": "p67",
+      "nodes": [
+        {
+          "id": "p67:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 27,
+          "code": "const params = router.getParams() as TopSearchParams;",
+          "description": "调用 router.getParams() 从路由栈中获取上一页传递的参数对象，可能包含敏感的业务数据（如 rankings）。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "@Component",
+              "struct TopSearchPage {",
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p67:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 28,
+          "code": "if (params && params.rankings) {",
+          "description": "判断获取到的参数对象及其中的 rankings 字段是否存在，进行空值检查。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "struct TopSearchPage {",
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p67:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 29,
+          "code": "this.rankings = params.rankings;",
+          "description": "将外部传入的 rankings 数据赋值给当前组件的状态变量 this.rankings，完成数据在内存中的暂存。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p67:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 33,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数开始执行，构建页面 UI 结构。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)"
+            ]
+          }
+        },
+        {
+          "id": "p67:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 35,
+          "code": "Row() {",
+          "description": "创建 Row 容器组件，用于横向排列返回按钮和标题文本。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)",
+              "          .height(18)",
+              "          .margin({ left: 16 })"
+            ]
+          }
+        },
+        {
+          "id": "p67:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 41,
+          "code": ".onClick(() => {",
+          "description": "为返回图标 Image 组件注册 onClick 点击事件监听器，准备响应用户的交互操作。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)",
+              "          .height(18)",
+              "          .margin({ left: 16 })",
+              "          .onClick(() => {",
+              "            router.back();",
+              "          })",
+              "        Text(\"bilibili热搜\")",
+              "          .fontSize(32)",
+              "          .fontWeight(FontWeight.Bold)"
+            ]
+          }
+        },
+        {
+          "id": "p67:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 42,
+          "code": "router.back();",
+          "description": "执行 router.back() 方法，触发页面返回操作，销毁当前页面并恢复上一页状态，结束当前数据流上下文。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)",
+              "          .height(18)",
+              "          .margin({ left: 16 })",
+              "          .onClick(() => {",
+              "            router.back();",
+              "          })",
+              "        Text(\"bilibili热搜\")",
+              "          .fontSize(32)",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .fontColor(\"#1698CE\")"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p67:n1",
+          "to": "p67:n2"
+        },
+        {
+          "from": "p67:n2",
+          "to": "p67:n3"
+        },
+        {
+          "from": "p67:n3",
+          "to": "p67:n4"
+        },
+        {
+          "from": "p67:n4",
+          "to": "p67:n5"
+        },
+        {
+          "from": "p67:n5",
+          "to": "p67:n6"
+        },
+        {
+          "from": "p67:n6",
+          "to": "p67:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (TopSearchParams)",
+          "热搜榜单数据 (rankings)",
+          "用户交互事件 (点击返回)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面加载时获取参数)",
+          "事件触发 (用户点击返回按钮)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "临时内存存储 (组件状态 this.rankings)",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p68",
+      "pathId": "p68",
+      "nodes": [
+        {
+          "id": "p68:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 27,
+          "code": "const params = router.getParams() as TopSearchParams;",
+          "description": "从路由获取传入的参数对象，包含 rankings 数据源，作为列表渲染的基础数据",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "@Component",
+              "struct TopSearchPage {",
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p68:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 29,
+          "code": "this.rankings = params.rankings;",
+          "description": "将获取到的 rankings 数据赋值给组件状态变量，完成数据在内存中的暂存",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p68:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 33,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染包含搜索排行榜的界面结构",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)"
+            ]
+          }
+        },
+        {
+          "id": "p68:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 57,
+          "code": "List() {",
+          "description": "创建 List 容器组件，准备遍历 rankings 数组以展示多个搜索热词条目",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "          .margin({ right: 16 })",
+              "      }.margin({ top: 12, bottom: 24 })",
+              "",
+              "      Flex().width('100%').height(1)",
+              "        .backgroundColor('#ffeeeeee')",
+              "      List() {",
+              "        ForEach(this.rankings, (item: RankingItem) => {",
+              "          ListItem() {",
+              "            Flex({ direction: FlexDirection.Row }) {",
+              "              Text(item.position + \"\")",
+              "                .maxLines(1)"
+            ]
+          }
+        },
+        {
+          "id": "p68:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 58,
+          "code": "ForEach(this.rankings, (item: RankingItem) => {",
+          "description": "遍历 rankings 数据源，为每个 RankingItem 生成列表项，提取 item.keyword 和 item.position",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "      }.margin({ top: 12, bottom: 24 })",
+              "",
+              "      Flex().width('100%').height(1)",
+              "        .backgroundColor('#ffeeeeee')",
+              "      List() {",
+              "        ForEach(this.rankings, (item: RankingItem) => {",
+              "          ListItem() {",
+              "            Flex({ direction: FlexDirection.Row }) {",
+              "              Text(item.position + \"\")",
+              "                .maxLines(1)",
+              "                .fontSize(16)"
+            ]
+          }
+        },
+        {
+          "id": "p68:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 61,
+          "code": "Text(item.position + \"\")",
+          "description": "在 UI 上渲染排行榜位置信息 (item.position)，属于敏感数据的界面展示环节",
+          "context": {
+            "startLine": 56,
+            "lines": [
+              "        .backgroundColor('#ffeeeeee')",
+              "      List() {",
+              "        ForEach(this.rankings, (item: RankingItem) => {",
+              "          ListItem() {",
+              "            Flex({ direction: FlexDirection.Row }) {",
+              "              Text(item.position + \"\")",
+              "                .maxLines(1)",
+              "                .fontSize(16)",
+              "                .fontWeight(FontWeight.Bold)",
+              "                .fontColor(Color.Gray)",
+              "                .width(30)"
+            ]
+          }
+        },
+        {
+          "id": "p68:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 82,
+          "code": "}.onClick(() => {",
+          "description": "为列表项绑定点击事件监听器，当用户点击特定搜索词时触发数据流转",
+          "context": {
+            "startLine": 77,
+            "lines": [
+              "                .objectFit(ImageFit.Auto)",
+              "                .width(18)",
+              "                .height(18)",
+              "                .margin({ left: 16 })",
+              "            }.width('100%').padding({ top: 12, bottom: 12 })",
+              "          }.onClick(() => {",
+              "            router.pushUrl({ url: \"pages/SearchResult\", params: { keyword: item.keyword } })",
+              "          })",
+              "        }, (item: RankingItem) => item.keyword)",
+              "      }",
+              "      .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p68:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 83,
+          "code": "router.pushUrl({ url: \"pages/SearchResult\", params: { keyword: item.keyword } })",
+          "description": "调用 router.pushUrl 导航至搜索结果页，将用户选中的 keyword 作为敏感参数传递到下一页面",
+          "context": {
+            "startLine": 78,
+            "lines": [
+              "                .width(18)",
+              "                .height(18)",
+              "                .margin({ left: 16 })",
+              "            }.width('100%').padding({ top: 12, bottom: 12 })",
+              "          }.onClick(() => {",
+              "            router.pushUrl({ url: \"pages/SearchResult\", params: { keyword: item.keyword } })",
+              "          })",
+              "        }, (item: RankingItem) => item.keyword)",
+              "      }",
+              "      .width('100%')",
+              "      .padding({ left: 20, right: 20 })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p68:n1",
+          "to": "p68:n2"
+        },
+        {
+          "from": "p68:n2",
+          "to": "p68:n3"
+        },
+        {
+          "from": "p68:n3",
+          "to": "p68:n4"
+        },
+        {
+          "from": "p68:n4",
+          "to": "p68:n5"
+        },
+        {
+          "from": "p68:n5",
+          "to": "p68:n6"
+        },
+        {
+          "from": "p68:n6",
+          "to": "p68:n7"
+        },
+        {
+          "from": "p68:n7",
+          "to": "p68:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "搜索关键词 (keyword)",
+          "排行榜位置 (position)",
+          "页面路由参数 (route params)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)"
+        ],
+        "cloudUpload": [
+          "未在当前片段发现直接网络发送，数据通过路由参数传递至 SearchResult 页面，可能由目标页面发起网络请求"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (rankings 数组)",
+          "未发现在当前片段进行本地持久化存储",
+          "未发现加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p69",
+      "pathId": "p69",
+      "nodes": [
+        {
+          "id": "p69:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 33,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化页面视图结构。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)"
+            ]
+          }
+        },
+        {
+          "id": "p69:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 34,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为页面的垂直布局主干。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)",
+              "          .height(18)"
+            ]
+          }
+        },
+        {
+          "id": "p69:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 35,
+          "code": "Row() {",
+          "description": "在 Column 内创建 Row 容器组件，用于横向排列顶部导航栏元素。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)",
+              "          .height(18)",
+              "          .margin({ left: 16 })"
+            ]
+          }
+        },
+        {
+          "id": "p69:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 27,
+          "code": "const params = router.getParams() as TopSearchParams;",
+          "description": "【数据源】在 aboutToAppear 生命周期中调用 router.getParams() 获取上游页面传递的 TopSearchParams 对象，包含热搜榜单数据。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "@Component",
+              "struct TopSearchPage {",
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p69:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 29,
+          "code": "this.rankings = params.rankings;",
+          "description": "【数据存储】将获取到的 rankings 数据赋值给组件成员变量 this.rankings，暂存于内存中供 UI 渲染使用。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p69:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 41,
+          "code": ".onClick(() => {",
+          "description": "【事件监听】为返回图标 Image 组件注册 onClick 点击事件回调函数，等待用户交互。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)",
+              "          .height(18)",
+              "          .margin({ left: 16 })",
+              "          .onClick(() => {",
+              "            router.back();",
+              "          })",
+              "        Text(\"bilibili热搜\")",
+              "          .fontSize(32)",
+              "          .fontWeight(FontWeight.Bold)"
+            ]
+          }
+        },
+        {
+          "id": "p69:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 42,
+          "code": "router.back();",
+          "description": "【隐私汇点】用户触发点击后执行 router.back()，结束当前页面并返回上一级，不涉及敏感数据上传或权限调用。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)",
+              "          .height(18)",
+              "          .margin({ left: 16 })",
+              "          .onClick(() => {",
+              "            router.back();",
+              "          })",
+              "        Text(\"bilibili热搜\")",
+              "          .fontSize(32)",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .fontColor(\"#1698CE\")"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p69:n1",
+          "to": "p69:n2"
+        },
+        {
+          "from": "p69:n2",
+          "to": "p69:n3"
+        },
+        {
+          "from": "p69:n3",
+          "to": "p69:n4"
+        },
+        {
+          "from": "p69:n4",
+          "to": "p69:n5"
+        },
+        {
+          "from": "p69:n5",
+          "to": "p69:n6"
+        },
+        {
+          "from": "p69:n6",
+          "to": "p69:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面跳转参数 (TopSearchParams)",
+          "热搜榜单数据 (rankings)",
+          "用户交互事件 (点击返回)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面加载时获取参数)",
+          "事件触发 (用户点击返回按钮)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "临时内存存储 (组件实例变量 this.rankings)",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p70",
+      "pathId": "p70",
+      "nodes": [
+        {
+          "id": "p70:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 27,
+          "code": "const params = router.getParams() as TopSearchParams;",
+          "description": "从路由参数中获取传入的排行榜数据 (rankings)，作为数据流的初始输入源。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "@Component",
+              "struct TopSearchPage {",
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p70:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 29,
+          "code": "this.rankings = params.rankings;",
+          "description": "将获取到的排行榜数据赋值给组件状态变量 this.rankings，完成数据的本地内存暂存。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p70:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 33,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染包含排行榜列表的用户界面。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)"
+            ]
+          }
+        },
+        {
+          "id": "p70:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 34,
+          "code": "Column() {",
+          "description": "创建垂直布局容器 Column，作为页面主要内容区域的父节点。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)",
+              "          .height(18)"
+            ]
+          }
+        },
+        {
+          "id": "p70:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 57,
+          "code": "List() {",
+          "description": "创建 List 组件，准备遍历并渲染存储在 this.rankings 中的排行榜数据列表。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "          .margin({ right: 16 })",
+              "      }.margin({ top: 12, bottom: 24 })",
+              "",
+              "      Flex().width('100%').height(1)",
+              "        .backgroundColor('#ffeeeeee')",
+              "      List() {",
+              "        ForEach(this.rankings, (item: RankingItem) => {",
+              "          ListItem() {",
+              "            Flex({ direction: FlexDirection.Row }) {",
+              "              Text(item.position + \"\")",
+              "                .maxLines(1)"
+            ]
+          }
+        },
+        {
+          "id": "p70:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 58,
+          "code": "ForEach(this.rankings, (item: RankingItem) => {",
+          "description": "使用 ForEach 循环遍历排行榜数据，提取每个项的 keyword 和 position 等敏感数据项用于 UI 展示。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "      }.margin({ top: 12, bottom: 24 })",
+              "",
+              "      Flex().width('100%').height(1)",
+              "        .backgroundColor('#ffeeeeee')",
+              "      List() {",
+              "        ForEach(this.rankings, (item: RankingItem) => {",
+              "          ListItem() {",
+              "            Flex({ direction: FlexDirection.Row }) {",
+              "              Text(item.position + \"\")",
+              "                .maxLines(1)",
+              "                .fontSize(16)"
+            ]
+          }
+        },
+        {
+          "id": "p70:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 61,
+          "code": "Text(item.position + \"\")",
+          "description": "在 UI 上渲染物品的排名位置 (position)，涉及个人化或统计数据的展示。",
+          "context": {
+            "startLine": 56,
+            "lines": [
+              "        .backgroundColor('#ffeeeeee')",
+              "      List() {",
+              "        ForEach(this.rankings, (item: RankingItem) => {",
+              "          ListItem() {",
+              "            Flex({ direction: FlexDirection.Row }) {",
+              "              Text(item.position + \"\")",
+              "                .maxLines(1)",
+              "                .fontSize(16)",
+              "                .fontWeight(FontWeight.Bold)",
+              "                .fontColor(Color.Gray)",
+              "                .width(30)"
+            ]
+          }
+        },
+        {
+          "id": "p70:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 82,
+          "code": "}.onClick(() => {",
+          "description": "为列表项绑定点击事件监听器，当用户交互时触发数据流转。",
+          "context": {
+            "startLine": 77,
+            "lines": [
+              "                .objectFit(ImageFit.Auto)",
+              "                .width(18)",
+              "                .height(18)",
+              "                .margin({ left: 16 })",
+              "            }.width('100%').padding({ top: 12, bottom: 12 })",
+              "          }.onClick(() => {",
+              "            router.pushUrl({ url: \"pages/SearchResult\", params: { keyword: item.keyword } })",
+              "          })",
+              "        }, (item: RankingItem) => item.keyword)",
+              "      }",
+              "      .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p70:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 83,
+          "code": "router.pushUrl({ url: \"pages/SearchResult\", params: { keyword: item.keyword } })",
+          "description": "调用 router.pushUrl 进行页面跳转，并将当前选中的搜索关键词 (keyword) 作为参数明文传递至 SearchResult 页面，构成数据汇点。",
+          "context": {
+            "startLine": 78,
+            "lines": [
+              "                .width(18)",
+              "                .height(18)",
+              "                .margin({ left: 16 })",
+              "            }.width('100%').padding({ top: 12, bottom: 12 })",
+              "          }.onClick(() => {",
+              "            router.pushUrl({ url: \"pages/SearchResult\", params: { keyword: item.keyword } })",
+              "          })",
+              "        }, (item: RankingItem) => item.keyword)",
+              "      }",
+              "      .width('100%')",
+              "      .padding({ left: 20, right: 20 })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p70:n1",
+          "to": "p70:n2"
+        },
+        {
+          "from": "p70:n2",
+          "to": "p70:n3"
+        },
+        {
+          "from": "p70:n3",
+          "to": "p70:n4"
+        },
+        {
+          "from": "p70:n4",
+          "to": "p70:n5"
+        },
+        {
+          "from": "p70:n5",
+          "to": "p70:n6"
+        },
+        {
+          "from": "p70:n6",
+          "to": "p70:n7"
+        },
+        {
+          "from": "p70:n6",
+          "to": "p70:n8"
+        },
+        {
+          "from": "p70:n8",
+          "to": "p70:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "搜索关键词 (keyword)",
+          "排行榜数据 (rankings)",
+          "排名位置 (position)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项)",
+          "一次性 (页面加载时接收参数)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存临时存储 (组件状态 this.rankings)",
+          "未加密 (明文传递)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

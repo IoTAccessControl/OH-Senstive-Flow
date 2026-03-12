@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "featureId": "ui_LogDetail_32955deab5",
+    "generatedAt": "2026-03-11T21:08:50.877Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.FILEIO_WRITE 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户查看日志详情页面时，应用加载并展示本地存储的日志文件内容。",
+        "dataSources": [
+          "本地文件系统"
+        ],
+        "dataItems": [
+          {
+            "name": "本地日志文件内容",
+            "refs": [
+              {
+                "flowId": "flow:p50",
+                "nodeId": "p50:n5"
+              }
+            ]
+          },
+          {
+            "name": "路由传递参数 (logFilePath)",
+            "refs": [
+              {
+                "flowId": "flow:p50",
+                "nodeId": "p50:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "从本地文件系统读取纯文本内容到内存变量中。",
+        "storageMethod": "数据暂存于应用进程内存中的状态变量（@State），未检测到持久化加密操作。",
+        "dataRecipients": [],
+        "processingPurpose": "在界面上渲染并展示日志文本供用户阅读。",
+        "privacyToggleUi": {
+          "where": "LogDetail 页面的 Text 组件区域",
+          "refs": [
+            {
+              "uiNodeId": "ui:fb1b01f8eaa0"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "当需要访问位于媒体库目录下的日志文件时申请。",
+        "permissionPurpose": "获取读取外部存储或特定媒体目录的权限以加载日志文件。",
+        "denyImpact": "如果拒绝此权限，应用可能无法读取存储在受保护目录下的日志文件，导致页面内容为空或显示错误。",
+        "refs": []
+      }
+    ]
+  }
+}

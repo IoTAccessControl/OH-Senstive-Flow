@@ -1,0 +1,725 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260311-214131",
+    "generatedAt": "2026-03-11T13:42:15.118Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 4,
+      "nodes": 23,
+      "edges": 18,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/HomePage.ets",
+          "line": 13,
+          "code": "logTag: string = 'HomePage';",
+          "description": "定义静态日志标签字符串 'HomePage'，作为后续日志输出的标识符数据源。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "import { PrepareLoginPage } from './PrepareLoginPage';",
+              "",
+              "@Entry()",
+              "@Component",
+              "struct HomePage {",
+              "  logTag: string = 'HomePage';",
+              "  domainId: number = 0x0000;",
+              "  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack();",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/HomePage.ets",
+          "line": 14,
+          "code": "domainId: number = 0x0000;",
+          "description": "定义日志域 ID 为 0x0000，用于分类日志消息，此处为硬编码的非敏感常量。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "@Entry()",
+              "@Component",
+              "struct HomePage {",
+              "  logTag: string = 'HomePage';",
+              "  domainId: number = 0x0000;",
+              "  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack();",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/HomePage.ets",
+          "line": 17,
+          "code": "aboutToAppear() {",
+          "description": "生命周期回调函数 aboutToAppear 入口，当 HomePage 组件即将显示时自动触发，启动数据流。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "struct HomePage {",
+              "  logTag: string = 'HomePage';",
+              "  domainId: number = 0x0000;",
+              "  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack();",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  @Builder",
+              "  PageMap(name: string, params: Record<string, Object>) {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/HomePage.ets",
+          "line": 18,
+          "code": "hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+          "description": "调用 hilog.info 接口，将组件名称、域 ID 及生命周期状态拼接成日志字符串并输出到系统日志缓冲区。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  logTag: string = 'HomePage';",
+              "  domainId: number = 0x0000;",
+              "  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack();",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  @Builder",
+              "  PageMap(name: string, params: Record<string, Object>) {",
+              "    if (name === 'PrepareLoginPage') {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "日志标签 (logTag)",
+          "日志域 ID (domainId)",
+          "组件生命周期状态"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "系统日志缓冲区 (未加密，依赖系统日志配置)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 12,
+          "code": "@StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+          "description": "定义匿名手机号变量 anonymousPhone，使用 @StorageProp 装饰器将其与本地存储键 'quickLoginAnonymousPhone' 绑定，默认值为脱敏显示的字符串。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "@Component",
+              "export struct PersonalInfoPage {",
+              "  logTag: string = 'PersonalInfoPage';",
+              "  domainId: number = 0x0000;",
+              "  // This is only a sample display. The mobile number is displayed by default.",
+              "  @StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 9,
+          "code": "logTag: string = 'PersonalInfoPage';",
+          "description": "初始化日志标签 logTag 为 'PersonalInfoPage'，用于标识日志来源组件。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "import { common } from '@kit.AbilityKit';",
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "",
+              "@Component",
+              "export struct PersonalInfoPage {",
+              "  logTag: string = 'PersonalInfoPage';",
+              "  domainId: number = 0x0000;",
+              "  // This is only a sample display. The mobile number is displayed by default.",
+              "  @StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 10,
+          "code": "domainId: number = 0x0000;",
+          "description": "初始化域 ID domainId 为 0x0000，作为日志输出的域标识参数。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "",
+              "@Component",
+              "export struct PersonalInfoPage {",
+              "  logTag: string = 'PersonalInfoPage';",
+              "  domainId: number = 0x0000;",
+              "  // This is only a sample display. The mobile number is displayed by default.",
+              "  @StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 15,
+          "code": "aboutToAppear() {",
+          "description": "定义 aboutToAppear 生命周期回调函数，当组件即将出现在屏幕上时被系统自动调用。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  domainId: number = 0x0000;",
+              "  // This is only a sample display. The mobile number is displayed by default.",
+              "  @StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Sign out.",
+              "  logOut() {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 16,
+          "code": "hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+          "description": "调用 hilog.info 接口，将组件名称、域 ID 及'aboutToAppear'状态信息写入系统日志，用于调试或行为追踪。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  // This is only a sample display. The mobile number is displayed by default.",
+              "  @StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Sign out.",
+              "  logOut() {",
+              "    this.pageInfos?.pushPathByName('PrepareLoginPage', null, true);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        },
+        {
+          "from": "p2:n4",
+          "to": "p2:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "组件生命周期状态",
+          "日志标签 (logTag)",
+          "域 ID (domainId)",
+          "匿名化手机号 (anonymousPhone)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面即将显示时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "anonymousPhone 通过 @StorageProp 持久化存储于本地",
+          "日志数据输出至系统日志缓冲区 (hilog)",
+          "未观察到显式加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 12,
+          "code": "logTag: string = 'PrepareLoginPage';",
+          "description": "定义日志标签常量 'PrepareLoginPage'，用于标识日志来源，该字符串将被写入系统日志。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "import { BusinessError } from '@kit.BasicServicesKit';",
+              "import { showToast } from '../common/ShowToast';",
+              "import { ErrorCode } from '../common/Constants';",
+              "@Component",
+              "export struct PrepareLoginPage {",
+              "  logTag: string = 'PrepareLoginPage';",
+              "  domainId: number = 0x0000;",
+              "  @State isLogin: boolean = false;",
+              "  @Consume('pageInfos') pageInfos: NavPathStack;",
+              "",
+              "  aboutToAppear() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 13,
+          "code": "domainId: number = 0x0000;",
+          "description": "定义日志域 ID (domainId) 为 0x0000，作为 hilog 输出的分类标识。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "import { showToast } from '../common/ShowToast';",
+              "import { ErrorCode } from '../common/Constants';",
+              "@Component",
+              "export struct PrepareLoginPage {",
+              "  logTag: string = 'PrepareLoginPage';",
+              "  domainId: number = 0x0000;",
+              "  @State isLogin: boolean = false;",
+              "  @Consume('pageInfos') pageInfos: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 15,
+          "code": "@Consume('pageInfos') pageInfos: NavPathStack;",
+          "description": "声明 @Consume 装饰的 pageInfos 变量，用于接收跨组件共享的导航栈数据，可能包含页面跳转参数。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "@Component",
+              "export struct PrepareLoginPage {",
+              "  logTag: string = 'PrepareLoginPage';",
+              "  domainId: number = 0x0000;",
+              "  @State isLogin: boolean = false;",
+              "  @Consume('pageInfos') pageInfos: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 17,
+          "code": "aboutToAppear() {",
+          "description": "aboutToAppear 生命周期函数入口，当组件即将显示时自动触发，标志着数据流开始。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  logTag: string = 'PrepareLoginPage';",
+              "  domainId: number = 0x0000;",
+              "  @State isLogin: boolean = false;",
+              "  @Consume('pageInfos') pageInfos: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Redirect to another page.",
+              "  private jumpLoginPage(quickLoginAnonymousPhone: string) {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 18,
+          "code": "hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+          "description": "调用 hilog.info 将组件名称和生命周期状态拼接成字符串并输出到系统日志，存在潜在的信息泄露风险（虽非敏感隐私但暴露应用内部结构）。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  domainId: number = 0x0000;",
+              "  @State isLogin: boolean = false;",
+              "  @Consume('pageInfos') pageInfos: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Redirect to another page.",
+              "  private jumpLoginPage(quickLoginAnonymousPhone: string) {",
+              "    if (quickLoginAnonymousPhone) {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n6",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 22,
+          "code": "private jumpLoginPage(quickLoginAnonymousPhone: string) {",
+          "description": "定义 jumpLoginPage 私有方法，接收 quickLoginAnonymousPhone 参数，该参数为匿名化处理的手机号码，属于个人敏感信息。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Redirect to another page.",
+              "  private jumpLoginPage(quickLoginAnonymousPhone: string) {",
+              "    if (quickLoginAnonymousPhone) {",
+              "      // Obtain the anonymous mobile number, pass it, and redirect to the one-tap sign-in screen.",
+              "      const params: Record<string, Object> = { 'anonymousPhone': quickLoginAnonymousPhone };",
+              "      this.pageInfos?.pushPathByName('QuickLoginPage', params, true);",
+              "    } else {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n7",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 23,
+          "code": "if (quickLoginAnonymousPhone) {",
+          "description": "校验传入的匿名手机号是否为空，确保后续数据处理的有效性。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Redirect to another page.",
+              "  private jumpLoginPage(quickLoginAnonymousPhone: string) {",
+              "    if (quickLoginAnonymousPhone) {",
+              "      // Obtain the anonymous mobile number, pass it, and redirect to the one-tap sign-in screen.",
+              "      const params: Record<string, Object> = { 'anonymousPhone': quickLoginAnonymousPhone };",
+              "      this.pageInfos?.pushPathByName('QuickLoginPage', params, true);",
+              "    } else {",
+              "      // If the anonymous mobile number cannot be obtained, an error message is displayed."
+            ]
+          }
+        },
+        {
+          "id": "p3:n8",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 25,
+          "code": "const params: Record<string, Object> = { 'anonymousPhone': quickLoginAnonymousPhone };",
+          "description": "构建路由参数对象 params，将匿名手机号以 'anonymousPhone' 键名存入，准备进行页面间传递。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "",
+              "  // Redirect to another page.",
+              "  private jumpLoginPage(quickLoginAnonymousPhone: string) {",
+              "    if (quickLoginAnonymousPhone) {",
+              "      // Obtain the anonymous mobile number, pass it, and redirect to the one-tap sign-in screen.",
+              "      const params: Record<string, Object> = { 'anonymousPhone': quickLoginAnonymousPhone };",
+              "      this.pageInfos?.pushPathByName('QuickLoginPage', params, true);",
+              "    } else {",
+              "      // If the anonymous mobile number cannot be obtained, an error message is displayed.",
+              "      const hint: string = getContext().resourceManager.getStringSync($r('app.string.get_mobile_number_error'));",
+              "      showToast(hint);"
+            ]
+          }
+        },
+        {
+          "id": "p3:n9",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 26,
+          "code": "this.pageInfos?.pushPathByName('QuickLoginPage', params, true);",
+          "description": "调用 pushPathByName 方法将包含匿名手机号的参数压入导航栈，触发页面跳转至 QuickLoginPage，完成敏感数据在应用内部的流转。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  // Redirect to another page.",
+              "  private jumpLoginPage(quickLoginAnonymousPhone: string) {",
+              "    if (quickLoginAnonymousPhone) {",
+              "      // Obtain the anonymous mobile number, pass it, and redirect to the one-tap sign-in screen.",
+              "      const params: Record<string, Object> = { 'anonymousPhone': quickLoginAnonymousPhone };",
+              "      this.pageInfos?.pushPathByName('QuickLoginPage', params, true);",
+              "    } else {",
+              "      // If the anonymous mobile number cannot be obtained, an error message is displayed.",
+              "      const hint: string = getContext().resourceManager.getStringSync($r('app.string.get_mobile_number_error'));",
+              "      showToast(hint);",
+              "    }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n9"
+        },
+        {
+          "from": "p3:n4",
+          "to": "p3:n5"
+        },
+        {
+          "from": "p3:n6",
+          "to": "p3:n7"
+        },
+        {
+          "from": "p3:n7",
+          "to": "p3:n8"
+        },
+        {
+          "from": "p3:n8",
+          "to": "p3:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "组件生命周期状态",
+          "日志标签 (logTag)",
+          "匿名手机号 (anonymousPhone)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面加载时)",
+          "事件触发 (登录跳转时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存临时存储 (State/Consume)",
+          "未加密日志输出"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 67,
+          "code": "@Consume('pageInfos') pageInfos?: NavPathStack;",
+          "description": "声明页面导航参数 pageInfos，用于接收上游传递的页面栈信息",
+          "context": {
+            "startLine": 62,
+            "lines": [
+              "  @State isSelected: boolean = false;",
+              "  // Specify whether to display a message asking the user to accept the agreements.",
+              "  @State showPopUp: boolean = false;",
+              "  // Variable that determines whether the agreement and checkbox are unavailable for tapping during the sign-in process.",
+              "  @State enableStatus: boolean = true;",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+              "    // Obtain the passed parameter object.",
+              "    if (this.params && this.params !== null) {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 69,
+          "code": "aboutToAppear() {",
+          "description": "定义 aboutToAppear 生命周期回调函数，在组件即将显示时自动触发",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "  @State showPopUp: boolean = false;",
+              "  // Variable that determines whether the agreement and checkbox are unavailable for tapping during the sign-in process.",
+              "  @State enableStatus: boolean = true;",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+              "    // Obtain the passed parameter object.",
+              "    if (this.params && this.params !== null) {",
+              "      this.quickLoginAnonymousPhone = (this.params['anonymousPhone'] ?? '') as string;",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 70,
+          "code": "hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+          "description": "调用 hilog.info 记录日志，将 domainId 和 logTag 作为上下文信息输出到系统日志",
+          "context": {
+            "startLine": 65,
+            "lines": [
+              "  // Variable that determines whether the agreement and checkbox are unavailable for tapping during the sign-in process.",
+              "  @State enableStatus: boolean = true;",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+              "    // Obtain the passed parameter object.",
+              "    if (this.params && this.params !== null) {",
+              "      this.quickLoginAnonymousPhone = (this.params['anonymousPhone'] ?? '') as string;",
+              "    }",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p4:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 72,
+          "code": "if (this.params && this.params !== null) {",
+          "description": "检查传入的参数对象 params 是否存在且非空",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+              "    // Obtain the passed parameter object.",
+              "    if (this.params && this.params !== null) {",
+              "      this.quickLoginAnonymousPhone = (this.params['anonymousPhone'] ?? '') as string;",
+              "    }",
+              "  }",
+              "",
+              "  // Processing logic returned after a gesture operation is executed."
+            ]
+          }
+        },
+        {
+          "id": "p4:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 73,
+          "code": "this.quickLoginAnonymousPhone = (this.params['anonymousPhone'] ?? '') as string;",
+          "description": "从 params 中提取 anonymousPhone 字段（匿名手机号），并赋值给本地状态变量 quickLoginAnonymousPhone",
+          "context": {
+            "startLine": 68,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+              "    // Obtain the passed parameter object.",
+              "    if (this.params && this.params !== null) {",
+              "      this.quickLoginAnonymousPhone = (this.params['anonymousPhone'] ?? '') as string;",
+              "    }",
+              "  }",
+              "",
+              "  // Processing logic returned after a gesture operation is executed.",
+              "  onBackPress(): boolean | void {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        },
+        {
+          "from": "p4:n3",
+          "to": "p4:n4"
+        },
+        {
+          "from": "p4:n4",
+          "to": "p4:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "domainId",
+          "logTag",
+          "anonymousPhone",
+          "pageInfos"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件加载时)"
+        ],
+        "cloudUpload": [
+          "无直接网络发送行为 (仅本地日志记录)"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (@State 状态变量)",
+          "未加密 (明文日志输出)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

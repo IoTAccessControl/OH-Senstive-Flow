@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260312-024310",
+    "generatedAt": "2026-03-11T19:21:34.483Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 5,
+      "edges": 4,
+      "pages": 1,
+      "elements": 4
+    }
+  },
+  "roots": [
+    "page:752092da4969"
+  ],
+  "nodes": {
+    "page:752092da4969": {
+      "id": "page:752092da4969",
+      "category": "Page",
+      "name": "PrepareLoginPage",
+      "description": "登录准备页",
+      "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+      "line": 11,
+      "code": "export struct PrepareLoginPage {",
+      "context": {
+        "startLine": 6,
+        "lines": [
+          "import { hilog } from '@kit.PerformanceAnalysisKit';",
+          "import { BusinessError } from '@kit.BasicServicesKit';",
+          "import { showToast } from '../common/ShowToast';",
+          "import { ErrorCode } from '../common/Constants';",
+          "@Component",
+          "export struct PrepareLoginPage {",
+          "  logTag: string = 'PrepareLoginPage';",
+          "  domainId: number = 0x0000;",
+          "  @State isLogin: boolean = false;",
+          "  @Consume('pageInfos') pageInfos: NavPathStack;",
+          ""
+        ]
+      }
+    },
+    "ui:c2124800ded0": {
+      "id": "ui:c2124800ded0",
+      "category": "Button",
+      "name": "build",
+      "description": "登录",
+      "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+      "line": 84,
+      "code": "build() {",
+      "context": {
+        "startLine": 79,
+        "lines": [
+          "    } else {",
+          "      // Sign-in failed. Try another sign-in option.",
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "    NavDestination() {",
+          "      Column() {",
+          "        Text($r('app.string.login'))",
+          "          .fontSize(30)",
+          "          .fontWeight(FontWeight.Medium)"
+        ]
+      }
+    },
+    "ui:ece38ced48b7": {
+      "id": "ui:ece38ced48b7",
+      "category": "Button",
+      "name": "NavDestination",
+      "description": "登录",
+      "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+      "line": 85,
+      "code": "NavDestination() {",
+      "context": {
+        "startLine": 80,
+        "lines": [
+          "      // Sign-in failed. Try another sign-in option.",
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "    NavDestination() {",
+          "      Column() {",
+          "        Text($r('app.string.login'))",
+          "          .fontSize(30)",
+          "          .fontWeight(FontWeight.Medium)",
+          "          .textAlign(TextAlign.Center)"
+        ]
+      }
+    },
+    "ui:c0cac04a3931": {
+      "id": "ui:c0cac04a3931",
+      "category": "Button",
+      "name": "Text",
+      "description": "登录",
+      "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+      "line": 87,
+      "code": "Text($r('app.string.login'))",
+      "context": {
+        "startLine": 82,
+        "lines": [
+          "  }",
+          "",
+          "  build() {",
+          "    NavDestination() {",
+          "      Column() {",
+          "        Text($r('app.string.login'))",
+          "          .fontSize(30)",
+          "          .fontWeight(FontWeight.Medium)",
+          "          .textAlign(TextAlign.Center)",
+          "          .id('loginText')",
+          "          .onClick(() => {"
+        ]
+      }
+    },
+    "ui:ba5dc935c7eb": {
+      "id": "ui:ba5dc935c7eb",
+      "category": "Component",
+      "name": "try",
+      "description": "准备登录页返回",
+      "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+      "line": 105,
+      "code": "try {",
+      "context": {
+        "startLine": 100,
+        "lines": [
+          "    .backgroundColor('#F1F3F5')",
+          "    .hideTitleBar(true)",
+          "    .onBackPressed(() => {",
+          "      // Directly exit the app using a gesture.",
+          "      hilog.info(this.domainId, this.logTag, 'PrepareLoginPage onBackPressed');",
+          "      try {",
+          "        (getContext() as common.UIAbilityContext).terminateSelf();",
+          "      } catch (error) {",
+          "        hilog.error(this.domainId, this.logTag,",
+          "          `Failed to terminateSelf. errCode is ${error.code}, errMessage is ${error.message}`);",
+          "      }"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:752092da4969",
+      "to": "ui:c2124800ded0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:752092da4969",
+      "to": "ui:ece38ced48b7",
+      "kind": "contains"
+    },
+    {
+      "from": "page:752092da4969",
+      "to": "ui:c0cac04a3931",
+      "kind": "contains"
+    },
+    {
+      "from": "page:752092da4969",
+      "to": "ui:ba5dc935c7eb",
+      "kind": "contains"
+    }
+  ]
+}

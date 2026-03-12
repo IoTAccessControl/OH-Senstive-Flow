@@ -1,0 +1,258 @@
+{
+  "meta": {
+    "runId": "Health_Service_Kit_20260312-034901",
+    "featureId": "ui_Index_bf98c8bd_f7bf0ff6a1",
+    "generatedAt": "2026-03-11T20:19:26.350Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Health_Service_Kit",
+        "businessScenario": "用户在运动序列首页点击“保存数据”按钮，应用将构造包含时间戳、海拔高度及运动轨迹的运动序列数据，并写入系统健康服务数据库；若数据源未初始化，则先读取或创建设备标识与数据源信息。",
+        "dataSources": [
+          "用户输入（硬编码测试数据）",
+          "系统健康服务 (HealthServiceKit)"
+        ],
+        "dataItems": [
+          {
+            "name": "运动序列数据 (Exercise Sequence)",
+            "refs": [
+              {
+                "flowId": "flow:p21",
+                "nodeId": "p21:n9"
+              },
+              {
+                "flowId": "flow:p22",
+                "nodeId": "p22:n9"
+              },
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n7"
+              }
+            ]
+          },
+          {
+            "name": "时间戳 (Start Time, End Time)",
+            "refs": [
+              {
+                "flowId": "flow:p21",
+                "nodeId": "p21:n6"
+              },
+              {
+                "flowId": "flow:p21",
+                "nodeId": "p21:n7"
+              },
+              {
+                "flowId": "flow:p22",
+                "nodeId": "p22:n7"
+              },
+              {
+                "flowId": "flow:p22",
+                "nodeId": "p22:n8"
+              }
+            ]
+          },
+          {
+            "name": "海拔高度 (Altitude)",
+            "refs": [
+              {
+                "flowId": "flow:p21",
+                "nodeId": "p21:n8"
+              },
+              {
+                "flowId": "flow:p22",
+                "nodeId": "p22:n9"
+              }
+            ]
+          },
+          {
+            "name": "设备唯一标识 (deviceUniqueId)",
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n9"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n9"
+              },
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n9"
+              }
+            ]
+          },
+          {
+            "name": "数据源 ID (dataSourceId)",
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n11"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n11"
+              },
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n11"
+              }
+            ]
+          },
+          {
+            "name": "设备 MAC 地址 (mac)",
+            "refs": [
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n12"
+              }
+            ]
+          },
+          {
+            "name": "设备序列号 (sn)",
+            "refs": [
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n13"
+              }
+            ]
+          },
+          {
+            "name": "硬件/软件/固件版本信息",
+            "refs": [
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n14"
+              },
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n15"
+              },
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n16"
+              }
+            ]
+          },
+          {
+            "name": "运动摘要统计 (Summaries/Stats)",
+            "refs": [
+              {
+                "flowId": "flow:p29",
+                "nodeId": "p29:n13"
+              },
+              {
+                "flowId": "flow:p30",
+                "nodeId": "p30:n15"
+              },
+              {
+                "flowId": "flow:p31",
+                "nodeId": "p31:n13"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中组装后，通过 HealthServiceKit API 写入系统健康数据库；部分敏感数据（如时间戳、ID）被明文记录到系统日志 (hilog)。",
+        "storageMethod": "本地存储于系统健康服务 (HealthStore) 数据库；临时缓存于应用内存静态变量；部分数据明文存储于系统日志文件。",
+        "dataRecipients": [
+          {
+            "name": "系统健康服务 (HealthServiceKit)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p21",
+                "nodeId": "p21:n10"
+              },
+              {
+                "flowId": "flow:p22",
+                "nodeId": "p22:n10"
+              },
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n17"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "保存和读取用户的运动序列数据（如跑步轨迹、时间、海拔），以便进行健康数据分析与管理。",
+        "privacyToggleUi": {
+          "where": "运动序列首页",
+          "refs": [
+            {
+              "uiNodeId": "ui:ed9c45ea4859"
+            },
+            {
+              "uiNodeId": "ui:1c93880ab2a3"
+            },
+            {
+              "uiNodeId": "ui:c8de196c8b6a"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.DEVICE_UNIQUE_IDENTIFICATION",
+        "businessScenario": "应用初始化数据源时，使用设备唯一标识符查询或注册健康数据源。",
+        "permissionPurpose": "用于关联特定设备的健康数据源，确保数据归属正确。",
+        "denyImpact": "可能无法正确识别设备或创建新的数据源，影响多设备场景下的数据管理。",
+        "refs": [
+          {
+            "flowId": "flow:p24",
+            "nodeId": "p24:n9"
+          },
+          {
+            "flowId": "flow:p25",
+            "nodeId": "p25:n9"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.HEALTHKIT_DATA_READ",
+        "businessScenario": "用户点击“读取数据”按钮或初始化数据源时，应用从系统健康服务查询运动记录或数据源信息。",
+        "permissionPurpose": "允许应用读取已存储的运动序列数据及设备数据源标识，用于展示或业务逻辑处理。",
+        "denyImpact": "无法读取历史运动数据或获取数据源 ID，导致数据展示失败或初始化流程中断。",
+        "refs": [
+          {
+            "flowId": "flow:p24",
+            "nodeId": "p24:n10"
+          },
+          {
+            "flowId": "flow:p29",
+            "nodeId": "p29:n9"
+          },
+          {
+            "flowId": "flow:p30",
+            "nodeId": "p30:n9"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.HEALTHKIT_WRITE",
+        "businessScenario": "用户点击“保存数据”按钮时，应用向系统健康服务写入运动序列数据。",
+        "permissionPurpose": "允许应用将用户的运动数据（如时间、海拔、轨迹）写入系统健康数据库。",
+        "denyImpact": "无法保存新的运动数据到健康服务，导致数据丢失或功能不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p21",
+            "nodeId": "p21:n10"
+          },
+          {
+            "flowId": "flow:p22",
+            "nodeId": "p22:n10"
+          },
+          {
+            "flowId": "flow:p26",
+            "nodeId": "p26:n17"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "meta": {
+    "runId": "device-security-kit_20260312-034311",
+    "featureId": "ui_Index_3f48fa7f05",
+    "generatedAt": "2026-03-11T19:49:01.051Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "device-security-kit",
+        "businessScenario": "用户在首页查看设备安全信息时，应用获取并展示设备的唯一证书令牌。",
+        "dataSources": [
+          "系统安全服务 (DeviceSecurityKit)"
+        ],
+        "dataItems": [
+          {
+            "name": "设备证书令牌 (Device Token)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n7"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n6"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n7"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n4"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n6"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n4"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n5"
+              },
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n5"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n5"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "从系统安全接口异步获取令牌字符串，并在内存中进行临时存储和日志记录（存在明文输出风险）。",
+        "storageMethod": "临时存储在应用内存变量中，未检测到本地持久化存储或加密处理；部分数据通过日志接口输出。",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务 (HiLog)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n9"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n11"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n5"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n7"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n5"
+              },
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n8"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n6"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n6"
+              }
+            ]
+          },
+          {
+            "name": "用户界面 (UI Display)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n8"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n8"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n10"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n11"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n13"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n7"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n9"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n7"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n9"
+              },
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n10"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n8"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n8"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "验证设备身份并向用户展示设备唯一的证书令牌信息。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCESS_DEVICE_CERTIFICATE",
+        "businessScenario": "用户在首页查看设备安全信息时，应用获取并展示设备的唯一证书令牌。",
+        "permissionPurpose": "访问系统设备安全套件以获取设备证书令牌。",
+        "denyImpact": "无法获取设备证书令牌，导致相关功能无法展示设备身份信息。",
+        "refs": [
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n6"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n6"
+          },
+          {
+            "flowId": "flow:p5",
+            "nodeId": "p5:n7"
+          },
+          {
+            "flowId": "flow:p6",
+            "nodeId": "p6:n4"
+          },
+          {
+            "flowId": "flow:p9",
+            "nodeId": "p9:n5"
+          },
+          {
+            "flowId": "flow:p10",
+            "nodeId": "p10:n5"
+          },
+          {
+            "flowId": "flow:p11",
+            "nodeId": "p11:n5"
+          },
+          {
+            "flowId": "flow:p12",
+            "nodeId": "p12:n5"
+          }
+        ]
+      }
+    ]
+  }
+}

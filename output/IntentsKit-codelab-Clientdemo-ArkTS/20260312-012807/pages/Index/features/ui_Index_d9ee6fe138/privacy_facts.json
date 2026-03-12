@@ -1,0 +1,232 @@
+{
+  "meta": {
+    "runId": "IntentsKit-codelab-Clientdemo-ArkTS_20260312-012807",
+    "featureId": "ui_Index_d9ee6fe138",
+    "generatedAt": "2026-03-11T17:30:43.645Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "IntentsKit-codelab-Clientdemo-ArkTS",
+        "businessScenario": "用户在首页输入框中输入意图数据（JSON 格式），点击按钮触发系统意图分享或删除操作，应用记录相关调试日志。",
+        "dataSources": [
+          "用户输入",
+          "本地状态变量"
+        ],
+        "dataItems": [
+          {
+            "name": "用户输入的意图数据 (InsightIntent JSON)",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n2"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n4"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n5"
+              }
+            ]
+          },
+          {
+            "name": "意图名称与标识符 (用于删除操作)",
+            "refs": [
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n3"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n4"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n3"
+              }
+            ]
+          },
+          {
+            "name": "应用标识符 (TAG) 与日志消息",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n4"
+              },
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n7"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n6"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n10"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n7"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n6"
+              }
+            ]
+          },
+          {
+            "name": "UI 组件状态数据 (result, input)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n1"
+              },
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "将用户输入的字符串解析为 JSON 对象，校验有效性后调用系统 API 进行分发或处理；同时生成包含标签和消息的调试日志。",
+        "storageMethod": "数据在内存中临时存储；日志输出至系统日志缓冲区 (hilog)，未检测到应用层加密或持久化文件存储。",
+        "dataRecipients": [
+          {
+            "name": "系统意图服务 (System Intent Service)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n5"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n7"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n5"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n5"
+              }
+            ]
+          },
+          {
+            "name": "系统日志服务 (System Log Service)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n7"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n6"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n10"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n7"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现意图数据的分享、删除等交互功能，并记录操作过程以便调试。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTENT_SEND",
+        "businessScenario": "用户点击按钮触发意图分享或删除操作时",
+        "permissionPurpose": "允许应用向系统发送意图数据以执行分享或删除逻辑",
+        "denyImpact": "无法执行意图分享或删除操作",
+        "refs": [
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n6"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n5"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.LOG",
+        "businessScenario": "应用执行任何业务逻辑或发生错误时",
+        "permissionPurpose": "允许应用写入系统日志以记录调试信息和错误堆栈",
+        "denyImpact": "无法记录调试日志，可能影响问题排查",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n6"
+          },
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n7"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n6"
+          },
+          {
+            "flowId": "flow:p5",
+            "nodeId": "p5:n10"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n7"
+          },
+          {
+            "flowId": "flow:p8",
+            "nodeId": "p8:n6"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.START_ABILITY_FROM_BACKGROUND",
+        "businessScenario": "用户触发意图分享操作时",
+        "permissionPurpose": "若涉及后台启动其他应用或服务，需此权限",
+        "denyImpact": "可能无法在后台成功启动目标能力",
+        "refs": [
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n6"
+          }
+        ]
+      }
+    ]
+  }
+}

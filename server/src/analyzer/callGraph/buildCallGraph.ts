@@ -2,7 +2,6 @@ import fs from 'node:fs/promises';
 import ts from 'typescript';
 
 import { toWorkspaceRelativePath } from '../pathUtils.js';
-import { scanTokens } from '../tokenScanner.js';
 import type { SinkRecord, SourceRecord } from '../types.js';
 import { resolveLlmBaseUrls } from '../../llm/provider.js';
 import { LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/openaiCompatible.js';
@@ -77,15 +76,26 @@ function pickCalleeNode(
   return null;
 }
 
-function lowerBoundTokenPos(tokens: { pos: number }[], pos: number): number {
-  let lo = 0;
-  let hi = tokens.length;
-  while (lo < hi) {
-    const mid = Math.floor((lo + hi) / 2);
-    if (tokens[mid]!.pos < pos) lo = mid + 1;
-    else hi = mid;
+function callTargetName(expr: ts.LeftHandSideExpression): string | null {
+  if (ts.isIdentifier(expr)) return expr.text;
+  if (ts.isPropertyAccessExpression(expr)) return expr.name.text;
+  if (ts.isElementAccessExpression(expr) && ts.isIdentifier(expr.argumentExpression)) return expr.argumentExpression.text;
+  return null;
+}
+
+function collectCallSites(sourceFile: ts.SourceFile): Array<{ pos: number; end: number; calleeName: string }> {
+  const out: Array<{ pos: number; end: number; calleeName: string }> = [];
+
+  function visit(node: ts.Node): void {
+    if (ts.isCallExpression(node)) {
+      const calleeName = callTargetName(node.expression);
+      if (calleeName) out.push({ pos: node.getStart(sourceFile), end: node.getEnd(), calleeName });
+    }
+    ts.forEachChild(node, visit);
   }
-  return lo;
+
+  visit(sourceFile);
+  return out;
 }
 
 function safeJsonParse(text: string): unknown {
@@ -297,6 +307,7 @@ export async function buildCallGraph(options: BuildCallGraphOptions): Promise<Ca
   }
 
   const fileTextByAbs = new Map<string, string>();
+  const callSitesByAbs = new Map<string, Array<{ pos: number; end: number; calleeName: string }>>();
   const nodeById = new Map<string, CallGraphNode>();
   const functionInfos: FunctionNodeInfo[] = [];
   const functionInfoById = new Map<string, FunctionNodeInfo>();
@@ -306,6 +317,7 @@ export async function buildCallGraph(options: BuildCallGraphOptions): Promise<Ca
     fileTextByAbs.set(fileAbs, fileText);
     const fileRel = toWorkspaceRelativePath(options.repoRoot, fileAbs);
     const sf = ts.createSourceFile(fileAbs, fileText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+    callSitesByAbs.set(fileAbs, collectCallSites(sf));
 
     const blocks = scanFunctionBlocks(fileText, sf);
     for (const block of blocks) {
@@ -332,62 +344,23 @@ export async function buildCallGraph(options: BuildCallGraphOptions): Promise<Ca
     functionsByName.set(info.block.name, list);
   }
 
+  const edgeSet = new Set<string>();
   const edges: CallGraphEdge[] = [];
+  const pushEdge = (edge: CallGraphEdge): void => {
+    const key = `${edge.from}|${edge.to}|${edge.kind}`;
+    if (edgeSet.has(key)) return;
+    edgeSet.add(key);
+    edges.push(edge);
+  };
 
   // Build call edges between function nodes (best-effort).
   for (const info of functionInfos) {
-    const fileText = fileTextByAbs.get(info.fileAbs) ?? (await fs.readFile(info.fileAbs, 'utf8'));
-    const tokens = scanTokens(fileText);
-
-    // Skip scanning nested function bodies to avoid attributing inner calls to outer functions.
-    const nestedBlocks = functionInfos
-      .filter(
-        (other) =>
-          other.fileAbs === info.fileAbs &&
-          other.block.bodyStartPos > info.block.bodyStartPos &&
-          other.block.bodyEndPos < info.block.bodyEndPos,
-      )
-      .map((n) => ({ start: n.block.bodyStartPos, end: n.block.bodyEndPos }))
-      .sort((a, b) => a.start - b.start);
-
-    let skipIdx = 0;
-    let skip = nestedBlocks[skipIdx];
-
-    const startIdx = lowerBoundTokenPos(tokens, info.block.bodyStartPos);
-    const endIdx = lowerBoundTokenPos(tokens, info.block.bodyEndPos + 1);
-
-    for (let i = startIdx; i < endIdx; i += 1) {
-      const t = tokens[i];
-      if (!t) continue;
-
-      while (skip && t.pos > skip.end) {
-        skipIdx += 1;
-        skip = nestedBlocks[skipIdx];
-      }
-      if (skip && t.pos >= skip.start && t.pos <= skip.end) continue;
-
-      // direct call: foo(...)
-      if (t.kind === ts.SyntaxKind.Identifier && tokens[i + 1]?.kind === ts.SyntaxKind.OpenParenToken) {
-        const calleeName = t.text;
-        const callee = pickCalleeNode(info, calleeName, functionsByName);
-        if (!callee) continue;
-        edges.push({ from: info.node.id, to: callee.node.id, kind: 'calls' });
-        continue;
-      }
-
-      // this.method(...)
-      if (t.kind === ts.SyntaxKind.ThisKeyword) {
-        const dot = tokens[i + 1];
-        const name = tokens[i + 2];
-        const paren = tokens[i + 3];
-        if (!dot || !name || !paren) continue;
-        if (dot.kind !== ts.SyntaxKind.DotToken && dot.kind !== ts.SyntaxKind.QuestionDotToken) continue;
-        if (name.kind !== ts.SyntaxKind.Identifier) continue;
-        if (paren.kind !== ts.SyntaxKind.OpenParenToken) continue;
-        const callee = pickCalleeNode(info, name.text, functionsByName);
-        if (!callee) continue;
-        edges.push({ from: info.node.id, to: callee.node.id, kind: 'calls' });
-      }
+    const callSites = callSitesByAbs.get(info.fileAbs) ?? [];
+    for (const callSite of callSites) {
+      if (callSite.pos < info.block.bodyStartPos || callSite.end > info.block.bodyEndPos + 1) continue;
+      const callee = pickCalleeNode(info, callSite.calleeName, functionsByName);
+      if (!callee || callee.node.id === info.node.id) continue;
+      pushEdge({ from: info.node.id, to: callee.node.id, kind: 'calls' });
     }
   }
 
@@ -455,7 +428,7 @@ export async function buildCallGraph(options: BuildCallGraphOptions): Promise<Ca
       .filter((f) => f.fileRel === fileRel && f.block.startLine <= line && line <= f.block.endLine)
       .sort((a, b) => (a.block.endLine - a.block.startLine) - (b.block.endLine - b.block.startLine));
     const container = candidates[0];
-    if (container) edges.push({ from: container.node.id, to: sinkId, kind: 'containsSink' });
+    if (container) pushEdge({ from: container.node.id, to: sinkId, kind: 'containsSink' });
   }
 
   // Mark sources.

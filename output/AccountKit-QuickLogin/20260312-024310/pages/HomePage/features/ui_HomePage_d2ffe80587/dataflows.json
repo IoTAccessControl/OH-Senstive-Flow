@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260312-024310",
+    "generatedAt": "2026-03-11T19:21:34.430Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "HomePage",
+      "entry": {
+        "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/HomePage.ets",
+        "structName": "HomePage",
+        "line": 12,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_HomePage_d2ffe80587",
+      "kind": "ui",
+      "title": "功能入口"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/HomePage.ets",
+          "line": 13,
+          "code": "logTag: string = 'HomePage';",
+          "description": "定义静态日志标签字符串 'HomePage'，作为后续日志输出的标识符数据源。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "import { PrepareLoginPage } from './PrepareLoginPage';",
+              "",
+              "@Entry()",
+              "@Component",
+              "struct HomePage {",
+              "  logTag: string = 'HomePage';",
+              "  domainId: number = 0x0000;",
+              "  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack();",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/HomePage.ets",
+          "line": 14,
+          "code": "domainId: number = 0x0000;",
+          "description": "定义日志域 ID 为 0x0000，用于分类日志来源，此处为硬编码常量。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "@Entry()",
+              "@Component",
+              "struct HomePage {",
+              "  logTag: string = 'HomePage';",
+              "  domainId: number = 0x0000;",
+              "  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack();",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/HomePage.ets",
+          "line": 17,
+          "code": "aboutToAppear() {",
+          "description": "生命周期回调函数 aboutToAppear 入口，当 HomePage 组件即将显示时自动触发，启动数据流。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "struct HomePage {",
+              "  logTag: string = 'HomePage';",
+              "  domainId: number = 0x0000;",
+              "  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack();",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  @Builder",
+              "  PageMap(name: string, params: Record<string, Object>) {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/HomePage.ets",
+          "line": 18,
+          "code": "hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+          "description": "调用 hilog.info 接口，将组件名称、域 ID 及生命周期状态拼接成日志消息并输出到系统日志缓冲区。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  logTag: string = 'HomePage';",
+              "  domainId: number = 0x0000;",
+              "  @Provide('pageInfos') pageInfos: NavPathStack = new NavPathStack();",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  @Builder",
+              "  PageMap(name: string, params: Record<string, Object>) {",
+              "    if (name === 'PrepareLoginPage') {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "日志标签 (logTag)",
+          "日志域 ID (domainId)",
+          "组件生命周期状态"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "系统日志缓冲区存储 (未加密，依赖系统日志权限控制)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

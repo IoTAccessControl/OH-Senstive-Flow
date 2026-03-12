@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "featureId": "ui_TopSearchPage_ca6176eb01",
+    "generatedAt": "2026-03-11T21:10:00.706Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "dataRecipients(SearchResult 页面) 的 refs 包含无效引用：flow:p68/p68:n9"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "热搜页面加载与展示：当用户进入热搜页面时，应用从上一页接收并临时存储热搜榜单数据，用于在界面上渲染热搜关键词及排名列表。",
+        "dataSources": [
+          "上游页面传递的路由参数"
+        ],
+        "dataItems": [
+          {
+            "name": "热搜榜单数据 (rankings)",
+            "refs": [
+              {
+                "flowId": "flow:p66",
+                "nodeId": "p66:n2"
+              },
+              {
+                "flowId": "flow:p67",
+                "nodeId": "p67:n1"
+              },
+              {
+                "flowId": "flow:p68",
+                "nodeId": "p68:n1"
+              }
+            ]
+          },
+          {
+            "name": "搜索关键词 (keyword)",
+            "refs": [
+              {
+                "flowId": "flow:p68",
+                "nodeId": "p68:n5"
+              },
+              {
+                "flowId": "flow:p70",
+                "nodeId": "p70:n6"
+              }
+            ]
+          },
+          {
+            "name": "排名位置 (position)",
+            "refs": [
+              {
+                "flowId": "flow:p68",
+                "nodeId": "p68:n6"
+              },
+              {
+                "flowId": "flow:p70",
+                "nodeId": "p70:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "内存中读取路由参数并赋值给组件状态变量，随后遍历数据源进行 UI 渲染展示。",
+        "storageMethod": "数据仅临时存储于组件成员变量（this.rankings）中，随组件销毁而释放，未检测到本地持久化存储或加密操作。",
+        "dataRecipients": [
+          {
+            "name": "SearchResult 页面",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p70",
+                "nodeId": "p70:n9"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "获取并展示当前热门搜索内容，响应用户浏览和选择热搜词条的交互需求。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

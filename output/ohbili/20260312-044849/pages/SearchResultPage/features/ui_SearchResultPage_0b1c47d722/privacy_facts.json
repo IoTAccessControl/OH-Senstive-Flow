@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "runId": "ohbili_20260312-044849",
+    "featureId": "ui_SearchResultPage_0b1c47d722",
+    "generatedAt": "2026-03-11T21:09:34.181Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户在应用内执行搜索操作并查看结果时",
+        "dataSources": [
+          "用户输入的搜索关键词",
+          "页面跳转携带的路由参数"
+        ],
+        "dataItems": [
+          {
+            "name": "搜索关键词 (keyword)",
+            "refs": [
+              {
+                "flowId": "flow:p57",
+                "nodeId": "p57:n4"
+              },
+              {
+                "flowId": "flow:p57",
+                "nodeId": "p57:n5"
+              }
+            ]
+          },
+          {
+            "name": "页面路由参数 (router params)",
+            "refs": [
+              {
+                "flowId": "flow:p57",
+                "nodeId": "p57:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "从上游页面获取路由参数，提取搜索关键词后，通过 ApiManager.requestSearch 方法发送至远程服务器进行处理。",
+        "storageMethod": "临时存储于组件内部状态变量 (this.keyword)，未观察到本地持久化存储或显式加密处理。",
+        "dataRecipients": [
+          {
+            "name": "远程搜索服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p57",
+                "nodeId": "p57:n7"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "响应用户的搜索请求，从服务器检索并返回相关搜索结果。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

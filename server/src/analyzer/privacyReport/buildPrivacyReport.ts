@@ -191,6 +191,18 @@ function ensurePermissionsSectionTokens(args: {
     if (merged.length > 0) merged.push({ text: '此外，' });
     for (const token of tokens) merged.push(token);
   }
+
+  if (merged.length === 0 && args.featureId === '__app_permissions') {
+    const names = practices.map((p) => p.permissionName).filter(Boolean);
+    if (names.length > 0) {
+      return [
+        {
+          text: `当前已在应用源码/配置扫描或 SDK API 权限映射中识别到以下权限：${uniq(names).join('、')}；但尚未定位到可回溯的功能点数据流，因此本章节暂不生成具体权限声明。`,
+        },
+      ];
+    }
+  }
+
   return merged;
 }
 
