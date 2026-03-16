@@ -1,0 +1,1924 @@
+[
+  {
+    "input": {
+      "id": "FLOW_ANONYMOUS_PHONE_ACQUISITION",
+      "data_type": "Anonymous Mobile Number (Masked)",
+      "description": "The application requests the user's anonymous mobile number (masked) for quick login purposes and displays it for verification.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "PrepareLoginPage.struct.build.Column.Text.onClick",
+          "file": "entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 93,
+          "code": "this.getQuickLoginAnonymousPhone();",
+          "details": "User clicks the 'Login' (登录) text button, initiating the quick login flow."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "PrepareLoginPage.getQuickLoginAnonymousPhone",
+          "file": "entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 44,
+          "code": "controller.executeRequest(authRequest).then((response: _) => { ... }",
+          "details": "Application executes an authorization request with 'quickLoginAnonymousPhone' scope via the Huawei ID Provider."
+        },
+        {
+          "step": "Data Processing",
+          "function": "PrepareLoginPage.getQuickLoginAnonymousPhone",
+          "file": "entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 48,
+          "code": "const quickLoginAnonymousPhone = response.data?.extraInfo?.quickLoginAnonymousPhone as string;",
+          "details": "The masked anonymous phone number is extracted from the 'extraInfo' of the authorization response."
+        },
+        {
+          "step": "Storage",
+          "function": "PrepareLoginPage.getQuickLoginAnonymousPhone",
+          "file": "entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 49,
+          "code": "AppStorage.setOrCreate('quickLoginAnonymousPhone', quickLoginAnonymousPhone)",
+          "details": "The retrieved phone number is stored in the global AppStorage for access across pages."
+        },
+        {
+          "step": "Data Transmission",
+          "function": "PrepareLoginPage.jumpLoginPage",
+          "file": "entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 26,
+          "code": "this.pageInfos?.pushPathByName('QuickLoginPage', params, true);",
+          "details": "The phone number is packaged into parameters and passed to the 'QuickLoginPage' enabling the new page to display it without re-fetching."
+        }
+      ]
+    },
+    "output": "账号登录与身份认证 为了向您提供快捷登录及正式的账号认证服务，确保您的账户安全并建立会话，我们需要收集您的身份标识信息。场景描述：当您点击“登录”按钮或“华为账号一键登录”按钮时。收集信息：若您选择快捷登录，我们将通过调用华为账号 Kit (Account Kit) 获取您的 匿名手机号（脱敏）；若您选择正式登录，我们将通过调用华为账号 Kit (Account Kit) 获取您的 OpenID、UnionID 及 ID Token。必要性说明：上述 OpenID、UnionID 及 匿名手机号 属于敏感个人信息，是识别用户唯一身份、保障账号安全及防止欺诈的必要依据。若不收集这些信息，我们将无法为您创建或登录账户，导致您无法使用需要登录的核心功能。处理方式与安全措施：上述数据主要通过第三方 SDK（华为 Account Kit）在本地进行安全回调获取。对于获取的 匿名手机号，我们会将其加密存储于您设备的本地存储空间（AppStorage）中，仅在您访问个人信息页面时读取并展示，用于供您核对身份，不会直接上传至我们的云端服务器。对于 OpenID、UnionID 等凭证，我们仅在本地内存中进行处理以建立当前会话，确保数据传输过程中的加密安全。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HUAWEI_ID_LOGIN_CREDENTIALS",
+      "data_type": "User Credentials (OpenID, UnionID, Token)",
+      "description": "User performs a formal login using the Huawei ID Button, and the app retrieves sensitive identity tokens.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "QuickLoginPage.struct.build.Column.LoginWithHuaweiIDButton",
+          "file": "entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 268,
+          "code": "LoginWithHuaweiIDButton({ ... }).id('login_with_huaweiId_button')",
+          "details": "User clicks the standard 'One-Click Login' button provided by the Account Kit."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "QuickLoginPage.struct.LoginWithHuaweiIDButton.onClickLoginWithHuaweiIDButton",
+          "file": "entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 53,
+          "code": ".onClickLoginWithHuaweiIDButton((error: BusinessError, response: loginComponentManager.HuaweiIDCredential) => {",
+          "details": "The SDK handles the authentication and returns the 'HuaweiIDCredential' object containing sensitive tokens in the callback."
+        },
+        {
+          "step": "Data Processing",
+          "function": "QuickLoginPage.handleLoginWithHuaweiIDButton",
+          "file": "entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 105,
+          "code": "const openID = response.openID;\nconst unionID = response.unionID;\nconst idToken = response.idToken;",
+          "details": "Critical user identifiers (OpenID, UnionID) and the ID Token are extracted from the credential response."
+        }
+      ]
+    },
+    "output": "账号登录与身份认证 为了向您提供快捷登录及正式的账号认证服务，确保您的账户安全并建立会话，我们需要收集您的身份标识信息。场景描述：当您点击“登录”按钮或“华为账号一键登录”按钮时。收集信息：若您选择快捷登录，我们将通过调用华为账号 Kit (Account Kit) 获取您的 匿名手机号（脱敏）；若您选择正式登录，我们将通过调用华为账号 Kit (Account Kit) 获取您的 OpenID、UnionID 及 ID Token。必要性说明：上述 OpenID、UnionID 及 匿名手机号 属于敏感个人信息，是识别用户唯一身份、保障账号安全及防止欺诈的必要依据。若不收集这些信息，我们将无法为您创建或登录账户，导致您无法使用需要登录的核心功能。处理方式与安全措施：上述数据主要通过第三方 SDK（华为 Account Kit）在本地进行安全回调获取。对于获取的 匿名手机号，我们会将其加密存储于您设备的本地存储空间（AppStorage）中，仅在您访问个人信息页面时读取并展示，用于供您核对身份，不会直接上传至我们的云端服务器。对于 OpenID、UnionID 等凭证，我们仅在本地内存中进行处理以建立当前会话，确保数据传输过程中的加密安全。"
+  },
+  {
+    "input": {
+      "id": "FLOW_USER_INFO_UI_DISPLAY",
+      "data_type": "Anonymous Mobile Number",
+      "description": "The application reads the stored anonymous phone number and displays it on the Personal Information page.",
+      "flow_steps": [
+        {
+          "step": "Source (Storage)",
+          "function": "PersonalInfoPage.struct",
+          "file": "entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 12,
+          "code": "@StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+          "details": "The PersonalInfoPage retrieves the phone number from AppStorage using the @StorageProp decorator."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "PersonalInfoPage.struct.build.Column.Row.Text",
+          "file": "entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 42,
+          "code": "Text(this.anonymousPhone)",
+          "details": "The sensitive data (phone number) is rendered on the UI for user review."
+        }
+      ]
+    },
+    "output": "个人信息展示 为了方便您查看和管理当前的登录状态。场景描述：当您进入“个人信息”页面时。收集信息：我们会读取之前已存储在设备本地的 匿名手机号（脱敏）。必要性说明：该信息仅用于界面展示，帮助您确认当前登录的账号身份。处理方式与安全措施：该过程仅为本地读取与展示，不涉及新的数据收集或网络传输。"
+  },
+  {
+    "input": {
+      "id": "FLOW_APP_TRACKING_PERMISSION_REQUEST",
+      "data_type": "App Tracking Consent (OAID Access)",
+      "description": "The application requests user permission to track activity (OAID) for advertising purposes.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "LoadAd.struct.aboutToAppear",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 67,
+          "code": "this.requestOAIDTrackingConsentPermissions(this.context);",
+          "details": "Permission request is initiated automatically when the page appears."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "LoadAd.requestOAIDTrackingConsentPermissions",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 133,
+          "code": "atManager.requestPermissionsFromUser(context, ['ohos.permission.APP_TRACKING_CONSENT'])",
+          "details": "System API is called to show the permission dialog to the user."
+        },
+        {
+          "step": "Data Processing",
+          "function": "LoadAd.requestOAIDTrackingConsentPermissions",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 134,
+          "code": "if (data.authResults[0] === 0) { ... identifier.getOAID() ... }",
+          "details": "The application checks if the user granted the permission."
+        }
+      ]
+    },
+    "output": "个性化广告展示与追踪 为了向您展示与您兴趣更相关的广告内容，并衡量广告投放效果，我们需要在获得您明确同意的前提下，收集您的设备标识信息。场景描述：当您首次打开应用首页或进入包含广告的页面时。收集信息：我们会通过系统接口获取您的 开放匿名设备标识符（OAID）。我们会记录您对广告的 交互行为日志（包括点击、关闭、浏览时长等）。必要性说明：OAID 属于敏感个人信息，是广告联盟用于识别设备、进行用户画像分析及投放精准广告的唯一依据。若不收集该信息，我们将无法向您提供个性化的广告推荐，您看到的广告将仅为随机展示的通用广告。同时，收集 交互行为日志 是为了优化广告策略，提升广告内容的相关性。处理方式与安全措施：授权前置：在收集 OAID 之前，我们会通过弹窗形式明确征求您的同意（即“广告追踪同意”）。只有在您点击“同意”后，我们才会调用系统接口获取该标识符；若您拒绝，我们将不会收集此信息，也不会进行个性化广告推荐。第三方SDK处理：上述数据的获取与广告请求是通过集成 华为广告 Kit (Ads Kit) 或相关第三方广告SDK完成的。数据传输：在您授权后，OAID 将被加密传输至广告服务器以匹配广告内容。本地处理：广告的交互行为日志主要在本地进行监听和处理，用于实时反馈广告状态，部分脱敏后的统计结果可能会上传以优化投放模型。"
+  },
+  {
+    "input": {
+      "id": "FLOW_OAID_ACQUISITION_AND_AD_REQUEST",
+      "data_type": "OAID (Open Anonymous Device Identifier)",
+      "description": "The application retrieves the OAID and sends it to the advertising platform to request targeted ads.",
+      "flow_steps": [
+        {
+          "step": "Source (Device Info)",
+          "function": "LoadAd.requestOAIDTrackingConsentPermissions",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 136,
+          "code": "identifier.getOAID().then((data: string) => { this.oaid = data; ... }",
+          "details": "Strictly sensitive OAID is retrieved from the system identifier service."
+        },
+        {
+          "step": "Data Processing",
+          "function": "LoadAd.requestAd",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 99,
+          "code": "adReqParams.oaid = this.oaid;",
+          "details": "The retrieved OAID is attached to the advertising request parameters."
+        },
+        {
+          "step": "Data Transmission",
+          "function": "LoadAd.requestAd",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 126,
+          "code": "load.loadAd(adReqParams, adOptions, adLoaderListener);",
+          "details": "OAID is transmitted to the Ad Server via the AdLoader API to fetch relevant ads."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "adLoaderListener.onAdLoadSuccess",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 119,
+          "code": "advertising.showAd(ads[0], this.adDisplayOptions, this.context);",
+          "details": "The returned ad content is displayed on the user's screen."
+        }
+      ]
+    },
+    "output": "个性化广告展示与追踪 为了向您展示与您兴趣更相关的广告内容，并衡量广告投放效果，我们需要在获得您明确同意的前提下，收集您的设备标识信息。场景描述：当您首次打开应用首页或进入包含广告的页面时。收集信息：我们会通过系统接口获取您的 开放匿名设备标识符（OAID）。我们会记录您对广告的 交互行为日志（包括点击、关闭、浏览时长等）。必要性说明：OAID 属于敏感个人信息，是广告联盟用于识别设备、进行用户画像分析及投放精准广告的唯一依据。若不收集该信息，我们将无法向您提供个性化的广告推荐，您看到的广告将仅为随机展示的通用广告。同时，收集 交互行为日志 是为了优化广告策略，提升广告内容的相关性。处理方式与安全措施：授权前置：在收集 OAID 之前，我们会通过弹窗形式明确征求您的同意（即“广告追踪同意”）。只有在您点击“同意”后，我们才会调用系统接口获取该标识符；若您拒绝，我们将不会收集此信息，也不会进行个性化广告推荐。第三方SDK处理：上述数据的获取与广告请求是通过集成 华为广告 Kit (Ads Kit) 或相关第三方广告SDK完成的。数据传输：在您授权后，OAID 将被加密传输至广告服务器以匹配广告内容。本地处理：广告的交互行为日志主要在本地进行监听和处理，用于实时反馈广告状态，部分脱敏后的统计结果可能会上传以优化投放模型。"
+  },
+  {
+    "input": {
+      "id": "FLOW_AD_INTERACTION_MONITORING",
+      "data_type": "Ad Interaction Events (Click/Close/View)",
+      "description": "The application listens for system-wide events regarding the status of the displayed interstitial ad.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "adLoaderListener.onAdLoadSuccess",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 117,
+          "code": "new InterstitialAdStatusHandler().registerPPSReceiver();",
+          "details": "Event listener is registered specifically when an ad is successfully loaded."
+        },
+        {
+          "step": "Sensitive Operation (Event Subscription)",
+          "function": "InterstitialAdStatusHandler.registerPPSReceiver",
+          "file": "entry/src/main/ets/event/InterstitialAdStatusHandler.ets",
+          "line": 39,
+          "code": "commonEventManager.createSubscriber(subscribeInfo, ...)",
+          "details": "Application creates a subscriber for 'com.huawei.hms.pps.action.PPS_INTERSTITIAL_STATUS_CHANGED'."
+        },
+        {
+          "step": "Sink (Data Processing)",
+          "function": "InterstitialAdStatusHandler.registerPPSReceiver.subscribe",
+          "file": "entry/src/main/ets/event/InterstitialAdStatusHandler.ets",
+          "line": 60,
+          "code": "const status: string = commonEventData?.parameters?.[KEY_INTERSTITIAL_STATUS];",
+          "details": "Application receives and processes user interaction data (Click, Close, Open) from the ad service."
+        }
+      ]
+    },
+    "output": "个性化广告展示与追踪 为了向您展示与您兴趣更相关的广告内容，并衡量广告投放效果，我们需要在获得您明确同意的前提下，收集您的设备标识信息。场景描述：当您首次打开应用首页或进入包含广告的页面时。收集信息：我们会通过系统接口获取您的 开放匿名设备标识符（OAID）。我们会记录您对广告的 交互行为日志（包括点击、关闭、浏览时长等）。必要性说明：OAID 属于敏感个人信息，是广告联盟用于识别设备、进行用户画像分析及投放精准广告的唯一依据。若不收集该信息，我们将无法向您提供个性化的广告推荐，您看到的广告将仅为随机展示的通用广告。同时，收集 交互行为日志 是为了优化广告策略，提升广告内容的相关性。处理方式与安全措施：授权前置：在收集 OAID 之前，我们会通过弹窗形式明确征求您的同意（即“广告追踪同意”）。只有在您点击“同意”后，我们才会调用系统接口获取该标识符；若您拒绝，我们将不会收集此信息，也不会进行个性化广告推荐。第三方SDK处理：上述数据的获取与广告请求是通过集成 华为广告 Kit (Ads Kit) 或相关第三方广告SDK完成的。数据传输：在您授权后，OAID 将被加密传输至广告服务器以匹配广告内容。本地处理：广告的交互行为日志主要在本地进行监听和处理，用于实时反馈广告状态，部分脱敏后的统计结果可能会上传以优化投放模型。"
+  },
+  {
+    "input": {
+      "id": "FLOW_DEVICE_BRAND_ACCESS",
+      "data_type": "Device Information (Brand)",
+      "description": "The application synchronously accesses the device brand information via the Atomic Service API and displays it on the UI.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 29,
+          "code": "onClick(() => { ... })",
+          "details": "User clicks the second button to request device brand information."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 31,
+          "code": "let result = atomicService.getSystemInfoSync(arr);",
+          "details": "Application calls atomicService.getSystemInfoSync to retrieve device metadata."
+        },
+        {
+          "step": "Data Processing",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 32,
+          "code": "this.systemInfoSync = String(result.brand);",
+          "details": "The 'brand' field is extracted from the result object and converted to a string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "FunctionalAPIPage.struct.build.Column.Button",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 24,
+          "code": "Button(this.systemInfoSync)",
+          "details": "The device brand is rendered as the label of the button."
+        }
+      ]
+    },
+    "output": "设备基础信息与系统状态展示 为了向您展示当前设备的运行环境信息（如品牌、屏幕窗口配置、方向设置等），以便您了解应用当前的适配状态或进行故障排查，我们需要读取设备的部分基础系统信息。场景描述：当您在功能页面点击对应的“查看设备品牌”、“查看窗口信息”或“查看系统设置”按钮时。收集信息：设备品牌信息（例如：HUAWEI）；系统窗口配置信息（例如：窗口宽度）；设备方向设置（例如：横屏/竖屏状态）。必要性说明：上述信息属于一般个人信息，是应用识别当前设备型号、适配屏幕布局及确认系统设置状态的必要依据。若不收集这些信息，应用将无法准确判断当前的显示环境，可能导致界面展示异常或无法提供针对性的设备状态反馈。处理方式与安全措施：仅本地处理与展示：我们通过调用 HarmonyOS 系统原子服务接口（Atomic Service API）在本地直接获取上述信息。无存储与上传：获取的数据仅用于即时渲染并在界面上展示给您查看，不会存储到本地数据库或文件中，也不会上传至云端服务器或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并立即销毁，不涉及持久化存储风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_SYSTEM_WINDOW_INFO_ACCESS",
+      "data_type": "System Information (Window Width)",
+      "description": "The application asynchronously accesses the system window configuration.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 17,
+          "code": "onClick(() => { ... })",
+          "details": "User clicks the first button to request window information."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "atomicService.getSystemInfo(arr).then((result) => { ... })",
+          "details": "Application calls atomicService.getSystemInfo to asynchronously retrieve system info."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "FunctionalAPIPage.struct.build.Column.Button",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 12,
+          "code": "Button(this.systemInfo)",
+          "details": "The retrieved window width is displayed on the UI."
+        }
+      ]
+    },
+    "output": "设备基础信息与系统状态展示 为了向您展示当前设备的运行环境信息（如品牌、屏幕窗口配置、方向设置等），以便您了解应用当前的适配状态或进行故障排查，我们需要读取设备的部分基础系统信息。场景描述：当您在功能页面点击对应的“查看设备品牌”、“查看窗口信息”或“查看系统设置”按钮时。收集信息：设备品牌信息（例如：HUAWEI）；系统窗口配置信息（例如：窗口宽度）；设备方向设置（例如：横屏/竖屏状态）。必要性说明：上述信息属于一般个人信息，是应用识别当前设备型号、适配屏幕布局及确认系统设置状态的必要依据。若不收集这些信息，应用将无法准确判断当前的显示环境，可能导致界面展示异常或无法提供针对性的设备状态反馈。处理方式与安全措施：仅本地处理与展示：我们通过调用 HarmonyOS 系统原子服务接口（Atomic Service API）在本地直接获取上述信息。无存储与上传：获取的数据仅用于即时渲染并在界面上展示给您查看，不会存储到本地数据库或文件中，也不会上传至云端服务器或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并立即销毁，不涉及持久化存储风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_SYSTEM_SETTING_ACCESS",
+      "data_type": "System Setting (Device Orientation)",
+      "description": "The application accesses the current device orientation setting.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 40,
+          "code": "onClick(() => { ... })",
+          "details": "User clicks the third button to request system settings."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 42,
+          "code": "let result = atomicService.getSystemSetting(arr);",
+          "details": "Application calls atomicService.getSystemSetting to retrieve configuration data."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "FunctionalAPIPage.struct.build.Column.Button",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 35,
+          "code": "Button(this.systemSettings)",
+          "details": "The device orientation status is displayed on the button label."
+        }
+      ]
+    },
+    "output": "设备基础信息与系统状态展示 为了向您展示当前设备的运行环境信息（如品牌、屏幕窗口配置、方向设置等），以便您了解应用当前的适配状态或进行故障排查，我们需要读取设备的部分基础系统信息。场景描述：当您在功能页面点击对应的“查看设备品牌”、“查看窗口信息”或“查看系统设置”按钮时。收集信息：设备品牌信息（例如：HUAWEI）；系统窗口配置信息（例如：窗口宽度）；设备方向设置（例如：横屏/竖屏状态）。必要性说明：上述信息属于一般个人信息，是应用识别当前设备型号、适配屏幕布局及确认系统设置状态的必要依据。若不收集这些信息，应用将无法准确判断当前的显示环境，可能导致界面展示异常或无法提供针对性的设备状态反馈。处理方式与安全措施：仅本地处理与展示：我们通过调用 HarmonyOS 系统原子服务接口（Atomic Service API）在本地直接获取上述信息。无存储与上传：获取的数据仅用于即时渲染并在界面上展示给您查看，不会存储到本地数据库或文件中，也不会上传至云端服务器或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并立即销毁，不涉及持久化存储风险。"
+  },
+  {
+    "input": {
+      "permission_type": "无危险权限调用",
+      "description": "The application does not apply for any dangerous permissions (e.g., location, camera, microphone, contacts, SMS, storage) defined by Android/HarmonyOS in the device information display function.",
+      "supplementary_note": "This function relies on the system's basic capabilities and can access non-sensitive system attributes such as device brand, window configuration, and orientation settings without additional user authorization."
+    },
+    "output": "设备权限调用说明 本应用在运行过程中，严格遵循权限最小化原则。针对您提供的业务场景，说明如下：权限/能力名称：无危险权限调用；触发场景与时机：本应用在“设备信息展示”功能中，未申请任何安卓/HarmonyOS定义的“危险权限”（如位置、相机、麦克风、通讯录、短信、存储等）；用途说明：不适用；拒绝授权的后果：不适用；补充说明：本功能依赖系统基础能力，无需用户额外授权即可正常访问设备品牌、窗口配置及方向设置等非敏感系统属性。"
+  },
+  [
+  {
+    "input": {
+      "id": "FLOW_PERMISSION_REQUEST_TO_UI_DISPLAY",
+      "data_type": "Health Data Permissions (Read/Write)",
+      "description": "User authorizes health data access, and the permission status is displayed on the UI.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "AuthIndex.struct.Index.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/AuthIndex.ets",
+          "line": 19,
+          "code": "this.log = await AuthManagement.auth(...);",
+          "details": "User initiates authorization request via UI button."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "AuthManagement.auth",
+          "file": "entry/src/main/ets/common/bean/AuthManagement.ets",
+          "line": 18,
+          "code": "await healthStore.requestAuthorizations(context, authorizationParameter);",
+          "details": "Application invokes Health Kit API to request permissions."
+        },
+        {
+          "step": "Data Processing",
+          "function": "AuthManagement.auth",
+          "file": "entry/src/main/ets/common/bean/AuthManagement.ets",
+          "line": 22,
+          "code": "result += `grantedWriteDataType is : ${dataType.name}` ...",
+          "details": "Permission results are formatted into a string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "AuthIndex.struct.Index.build",
+          "file": "entry/src/main/ets/pages/AuthIndex.ets",
+          "line": 28,
+          "code": "Text(this.log)",
+          "details": "The formatted permission status string is rendered on the screen."
+        }
+      ]
+    },
+    "output": "运动健康数据管理 为了向您提供专业的运动记录、分析及历史查询服务，我们需要在获得您明确授权后，收集和处理您的核心健康数据。场景描述：授权阶段：当您首次使用运动功能或进入授权页面点击“同意/授权”按钮时。记录阶段：当您进行运动训练或手动点击“保存数据”按钮时。查看阶段：当您点击“查看历史记录”按钮时。收集信息：心率数据：用于监测运动强度及心脏负荷。移动速度：用于计算配速及运动效率。运动距离：用于统计运动总量。设备唯一标识符（Device ID）：用于在健康数据库中注册数据来源，区分不同设备产生的数据。健康数据读写授权状态：用于确认您是否允许应用访问健康数据。必要性说明：心率、速度和距离属于敏感个人信息，是运动健康类应用的核心功能数据。若不收集这些信息，我们将无法为您生成运动报告、分析运动效果或提供个性化的健康建议。设备唯一标识符是确保数据准确归属到您当前设备的必要标识，防止数据混淆。处理方式与安全措施：第三方SDK/Kit说明：上述所有数据的读取、写入及权限申请均通过调用 华为 Health Kit (健康服务) 接口完成。本地加密存储：您的心率、速度、距离及设备唯一标识符将直接加密存储在您设备本地的 Health Store（健康数据库） 中。我们不会将这些原始敏感数据上传至云端服务器，也不会发送给任何第三方广告商。本地读取与展示：当您查看历史记录时，应用仅从本地健康数据库中读取数据并在屏幕上进行格式化展示，数据处理过程完全在本地完成。权限前置：在收集任何健康数据之前，我们会通过系统弹窗明确征求您的同意。只有在您授权后，应用才能执行数据的写入或读取操作。"
+  },
+  {
+    "input": {
+      "id": "FLOW_GENERATED_EXERCISE_DATA_TO_HEALTH_STORE",
+      "data_type": "Health Data (Heart Rate, Speed, Distance)",
+      "description": "Simulated exercise data is generated by the app and securely stored in the Health Store.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "ExerciseSequenceIndex.struct.Index.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/ExerciseSequenceIndex.ets",
+          "line": 18,
+          "code": "await ExerciseSequenceManagement.saveData();",
+          "details": "User initiates data save operation."
+        },
+        {
+          "step": "Data Generation",
+          "function": "ExerciseSequenceManagement.saveData",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 21,
+          "code": "const runningSequence: healthStore.exerciseSequenceHelper.running.Model = { ... }",
+          "details": "Sensitive running data (heart rate, speed, location) is constructed/simulated in memory."
+        },
+        {
+          "step": "Sink (Persistent Storage)",
+          "function": "ExerciseSequenceManagement.saveData",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 78,
+          "code": "await healthStore.saveData(runningSequence);",
+          "details": "Constructed data is written to the persistent Health Store via Health Kit API."
+        }
+      ]
+    },
+    "output": "运动健康数据管理 为了向您提供专业的运动记录、分析及历史查询服务，我们需要在获得您明确授权后，收集和处理您的核心健康数据。场景描述：授权阶段：当您首次使用运动功能或进入授权页面点击“同意/授权”按钮时。记录阶段：当您进行运动训练或手动点击“保存数据”按钮时。查看阶段：当您点击“查看历史记录”按钮时。收集信息：心率数据：用于监测运动强度及心脏负荷。移动速度：用于计算配速及运动效率。运动距离：用于统计运动总量。设备唯一标识符（Device ID）：用于在健康数据库中注册数据来源，区分不同设备产生的数据。健康数据读写授权状态：用于确认您是否允许应用访问健康数据。必要性说明：心率、速度和距离属于敏感个人信息，是运动健康类应用的核心功能数据。若不收集这些信息，我们将无法为您生成运动报告、分析运动效果或提供个性化的健康建议。设备唯一标识符是确保数据准确归属到您当前设备的必要标识，防止数据混淆。处理方式与安全措施：第三方SDK/Kit说明：上述所有数据的读取、写入及权限申请均通过调用 华为 Health Kit (健康服务) 接口完成。本地加密存储：您的心率、速度、距离及设备唯一标识符将直接加密存储在您设备本地的 Health Store（健康数据库） 中。我们不会将这些原始敏感数据上传至云端服务器，也不会发送给任何第三方广告商。本地读取与展示：当您查看历史记录时，应用仅从本地健康数据库中读取数据并在屏幕上进行格式化展示，数据处理过程完全在本地完成。权限前置：在收集任何健康数据之前，我们会通过系统弹窗明确征求您的同意。只有在您授权后，应用才能执行数据的写入或读取操作。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HEALTH_STORE_TO_UI_DISPLAY",
+      "data_type": "Health Data (Heart Rate, Speed, Distance)",
+      "description": "Historical exercise data is read from the Health Store and displayed to the user.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "ExerciseSequenceIndex.struct.Index.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/ExerciseSequenceIndex.ets",
+          "line": 21,
+          "code": "await ExerciseSequenceManagement.readData();",
+          "details": "User initiates data read operation."
+        },
+        {
+          "step": "Source (Persistent Storage)",
+          "function": "ExerciseSequenceManagement.readData",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 102,
+          "code": "await healthStore.readData<healthStore.exerciseSequenceHelper.running.Model>(sequenceReadRequest);",
+          "details": "Sensitive data is queried from the Health Store."
+        },
+        {
+          "step": "Data Processing",
+          "function": "ExerciseSequenceManagement.readData",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 108,
+          "code": "result += `the start time is ${runningSequence.startTime}.` ...",
+          "details": "Retrieved data objects are iterated and formatted into a summary string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "ExerciseSequenceIndex.struct.Index.build",
+          "file": "entry/src/main/ets/pages/ExerciseSequenceIndex.ets",
+          "line": 40,
+          "code": "Text(this.log)",
+          "details": "The summary string containing sensitive health details is displayed on the UI."
+        }
+      ]
+    },
+    "output": "运动健康数据管理 为了向您提供专业的运动记录、分析及历史查询服务，我们需要在获得您明确授权后，收集和处理您的核心健康数据。场景描述：授权阶段：当您首次使用运动功能或进入授权页面点击“同意/授权”按钮时。记录阶段：当您进行运动训练或手动点击“保存数据”按钮时。查看阶段：当您点击“查看历史记录”按钮时。收集信息：心率数据：用于监测运动强度及心脏负荷。移动速度：用于计算配速及运动效率。运动距离：用于统计运动总量。设备唯一标识符（Device ID）：用于在健康数据库中注册数据来源，区分不同设备产生的数据。健康数据读写授权状态：用于确认您是否允许应用访问健康数据。必要性说明：心率、速度和距离属于敏感个人信息，是运动健康类应用的核心功能数据。若不收集这些信息，我们将无法为您生成运动报告、分析运动效果或提供个性化的健康建议。设备唯一标识符是确保数据准确归属到您当前设备的必要标识，防止数据混淆。处理方式与安全措施：第三方SDK/Kit说明：上述所有数据的读取、写入及权限申请均通过调用 华为 Health Kit (健康服务) 接口完成。本地加密存储：您的心率、速度、距离及设备唯一标识符将直接加密存储在您设备本地的 Health Store（健康数据库） 中。我们不会将这些原始敏感数据上传至云端服务器，也不会发送给任何第三方广告商。本地读取与展示：当您查看历史记录时，应用仅从本地健康数据库中读取数据并在屏幕上进行格式化展示，数据处理过程完全在本地完成。权限前置：在收集任何健康数据之前，我们会通过系统弹窗明确征求您的同意。只有在您授权后，应用才能执行数据的写入或读取操作。"
+  },
+  {
+    "input": {
+      "id": "FLOW_DEVICE_ID_TO_HEALTH_STORE_METADATA",
+      "data_type": "Device Unique Identifier",
+      "description": "Device Unique ID is used to create a Data Source registry in the Health Store.",
+      "flow_steps": [
+        {
+          "step": "Trigger (Internal)",
+          "function": "ExerciseSequenceManagement.saveData",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 15,
+          "code": "await ExerciseSequenceManagement.initDataSourceId();",
+          "details": "Data source initialization is triggered before saving data."
+        },
+        {
+          "step": "Source (Device Info)",
+          "function": "ExerciseSequenceManagement.initDataSourceId",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 196,
+          "code": "uniqueId: 'deviceUuid_test'",
+          "details": "Device Unique ID (simulated hardcoded value here, usually from system) is accessed."
+        },
+        {
+          "step": "Sink (Persistent Metadata)",
+          "function": "ExerciseSequenceManagement.initDataSourceId",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 210,
+          "code": "let res: string = await healthStore.insertDataSource(dataSource);",
+          "details": "Device ID is registered as part of the Data Source information in the Health Store via insertDataSource API."
+        }
+      ]
+    },
+    "output": "运动健康数据管理 为了向您提供专业的运动记录、分析及历史查询服务，我们需要在获得您明确授权后，收集和处理您的核心健康数据。场景描述：授权阶段：当您首次使用运动功能或进入授权页面点击“同意/授权”按钮时。记录阶段：当您进行运动训练或手动点击“保存数据”按钮时。查看阶段：当您点击“查看历史记录”按钮时。收集信息：心率数据：用于监测运动强度及心脏负荷。移动速度：用于计算配速及运动效率。运动距离：用于统计运动总量。设备唯一标识符（Device ID）：用于在健康数据库中注册数据来源，区分不同设备产生的数据。健康数据读写授权状态：用于确认您是否允许应用访问健康数据。必要性说明：心率、速度和距离属于敏感个人信息，是运动健康类应用的核心功能数据。若不收集这些信息，我们将无法为您生成运动报告、分析运动效果或提供个性化的健康建议。设备唯一标识符是确保数据准确归属到您当前设备的必要标识，防止数据混淆。处理方式与安全措施：第三方SDK/Kit说明：上述所有数据的读取、写入及权限申请均通过调用 华为 Health Kit (健康服务) 接口完成。本地加密存储：您的心率、速度、距离及设备唯一标识符将直接加密存储在您设备本地的 Health Store（健康数据库） 中。我们不会将这些原始敏感数据上传至云端服务器，也不会发送给任何第三方广告商。本地读取与展示：当您查看历史记录时，应用仅从本地健康数据库中读取数据并在屏幕上进行格式化展示，数据处理过程完全在本地完成。权限前置：在收集任何健康数据之前，我们会通过系统弹窗明确征求您的同意。只有在您授权后，应用才能执行数据的写入或读取操作。"
+  },
+  {
+    "input": {
+      "permission_type": "健康数据权限(Read/Write Health Data)",
+      "description": "The application requests access to Huawei Health Kit permissions for reading/writing health data and registering data sources.",
+      "supplementary_note": "The application does not apply for other dangerous permissions such as location, camera, microphone, contacts, SMS in health business; exercise distance and speed data are provided by Health Kit based on sensor algorithms, and the application does not directly apply for background location permission."
+    },
+    "output": "设备权限调用说明 本应用在运行过程中，可能会调用以下系统权限或依赖系统级授权能力。请您放心，我们仅在特定场景下触发相关请求，并严格遵循您的授权意愿。权限/能力名称：健康数据权限(Read/Write Health Data)；触发场景与时机：当您进入运动授权页面并点击“同意/授权”按钮时；用途说明：本应用将请求访问华为 Health Kit 的权限，以便：1. 将您的心率、速度、距离等运动数据写入系统健康数据库；2. 从数据库中读取历史运动记录供您查看；3. 注册当前设备为数据源；拒绝授权的后果：若您拒绝授权：1. 应用将无法记录您的本次运动数据；2. 应用将无法显示您的历史运动健康报告；3. 不影响您使用应用的其他非健康类基础功能（如设置、关于我们等）；权限/能力名称：无其他危险权限；触发场景与时机：本版本应用在健康业务中，未申请位置（GPS）、相机、麦克风、通讯录、短信等其他安卓定义的“危险权限”。(注：运动距离与速度数据由Health Kit基于传感器算法提供，本应用未直接申请后台定位权限)；用途说明：不适用；拒绝授权的后果：不适用。"
+  }
+],
+[
+  {
+    "input": {
+      "id": "FLOW_PEDOMETER_SENSOR_TO_UI_AND_STORAGE",
+      "data_type": "Pedometer Data (Step Count)",
+      "description": "Real-time step count data is collected from the device sensor, displayed to the user, and persisted to local storage.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HomePage.struct.requestPermissions",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 155,
+          "code": "sensor.on(sensor.SensorId.PEDOMETER, this.sensorCallback, { interval: CommonConstants.SENSOR_INTERVAL });",
+          "details": "The app subscribes to the pedometer sensor when the page is shown and permissions are granted."
+        },
+        {
+          "step": "Data Processing",
+          "function": "HomePage.struct.sensorCallback",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 55,
+          "code": "this.currentSteps = (data.steps - NumberUtil._parseInt(this.oldSteps, 10)).toString();",
+          "details": "Raw sensor data is processed to calculate the current session's step count relative to the start."
+        },
+        {
+          "step": "Sink (Persistent Storage)",
+          "function": "HomePage.struct.sensorCallback",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 53,
+          "code": "StepsUtil.putStorageValue(CommonConstants.CURRENT_STEPS, this.currentSteps);",
+          "details": "The calculated step count is saved to local preferences via StepsUtil."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "CurrentSituation.struct.build",
+          "file": "entry/src/main/ets/view/CurrentSituation.ets",
+          "line": 57,
+          "code": "Text($r('app.string.step', this.currentSteps))",
+          "details": "The current step count is updated and displayed on the UI."
+        }
+      ]
+    },
+    "output": "实时计步与运动监测 为了向您提供实时的步数统计、运动量计算及目标达成分析服务，我们需要在获得您授权后，持续采集设备的传感器数据。场景描述：当您进入应用首页且授权通过后，应用将在后台持续监听计步传感器，实时计算您当前的步数增量，并将结果同步展示在界面上。收集信息：实时步数：用于统计您的运动量及计算卡路里消耗。必要性说明：实时步数属于敏感个人信息（健康生理信息），是计步类应用的核心功能数据。若不收集该数据，应用将无法记录您的运动进度，也无法判断您是否完成了设定的每日目标。处理方式与安全措施：本地处理与存储：我们通过调用系统传感器接口获取原始数据，在本地内存中计算当前会话的步数增量。计算结果仅保存至您设备本地的偏好设置（Preferences）中，用于界面刷新和历史记录查询。数据安全：所有步数数据均仅存储在您的设备本地，不会上传至云端服务器，也不会发送给任何第三方。"
+  },
+  {
+    "input": {
+      "id": "FLOW_LOCATION_SENSOR_TO_UI_AND_STORAGE",
+      "data_type": "Location Data (GPS & Address)",
+      "description": "GPS coordinates are converted to a physical address (reverse geocoding) and displayed/stored as the starting position.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HomePage.struct.requestPermissions",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 161,
+          "code": "LocationUtil.geolocationOn(this.getGeolocation);",
+          "details": "The app requests location updates."
+        },
+        {
+          "step": "Source (Sensor Access)",
+          "function": "LocationUtil.geolocationOn",
+          "file": "entry/src/main/ets/common/utils/LocationUtil.ets",
+          "line": 28,
+          "code": "geoLocationManager.on('locationChange', requestInfo, locationChange);",
+          "details": "The underlying utility subscribes to the system location manager."
+        },
+        {
+          "step": "Data Processing (Geocoding)",
+          "function": "HomePage.struct.getGeolocation",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 84,
+          "code": "geoLocationManager.getAddressesFromLocation(reverseGeocodeRequest).then(data => { ... this.currentLocation = data[0].placeName; ... }",
+          "details": "Coordinates are converted into a readable address (Place Name)."
+        },
+        {
+          "step": "Sink (Persistent Storage)",
+          "function": "HomePage.struct.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 203,
+          "code": "StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);",
+          "details": "Upon clicking 'Start', the current location is saved as the starting position."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "CurrentSituation.struct.build",
+          "file": "entry/src/main/ets/view/CurrentSituation.ets",
+          "line": 89,
+          "code": "Text(this.startPosition)",
+          "details": "The captured starting location address is displayed on the screen."
+        }
+      ]
+    },
+    "output": "运动起点定位与地址解析 为了记录您的运动起始位置，帮助您回顾运动轨迹的起点，我们需要在获得您授权后，获取您的地理位置信息并进行逆地理编码处理。场景描述：当您开启定位功能或点击“开始运动”按钮时，应用将获取当前的GPS坐标，并调用系统服务将其转换为具体的地址名称（如街道、地标建筑），随后将该地址展示在界面上并保存。收集信息：地理位置信息（GPS坐标）：用于确定您的精确起始点。详细地址信息（逆地理编码结果）：用于以可读形式展示您的位置（例如：“xx路xx号”）。必要性说明：地理位置信息和详细地址信息属于敏感个人信息（行踪轨迹）。若不收集这些信息，应用将无法记录您的运动起点，导致无法提供完整的运动轨迹回顾服务。处理方式与安全措施：本地处理与存储：我们调用系统定位服务获取坐标，并在本地进行逆地理编码转换。转换后的地址信息仅保存至您设备本地的偏好设置（Preferences）中。数据安全：所有位置数据均仅存储在您的设备本地，不会上传至云端服务器，也不会用于用户画像或广告推送。"
+  },
+  {
+    "input": {
+      "id": "FLOW_USER_INPUT_TO_STORAGE",
+      "data_type": "User Health Goal",
+      "description": "The user manually inputs their step goal, which is stored locally.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "CompletionStatus.struct.build.Button.onClick",
+          "file": "entry/src/main/ets/view/CompletionStatus.ets",
+          "line": 82,
+          "code": "this.inputDialogController.open();",
+          "details": "User opens the dialog to set a target."
+        },
+        {
+          "step": "Data Collection & Sink",
+          "function": "CompletionStatus.struct.inputDialogConfirm",
+          "file": "entry/src/main/ets/view/CompletionStatus.ets",
+          "line": 47,
+          "code": "StepsUtil.putStorageValue(CommonConstants.STEP_GOAL, this.stepGoal);",
+          "details": "The user's input is validated and saved to local storage."
+        }
+      ]
+    },
+    "output": "个人运动目标设置 为了为您提供个性化的运动指导和达成率分析，我们需要收集您手动设定的运动目标。场景描述：当您点击设置按钮并输入每日步数目标时，应用将保存该数值。收集信息：用户设定的运动目标（一般个人信息）：用于计算您的运动完成度。处理方式与安全措施：本地存储：该数据由您主动输入，仅保存至设备本地的偏好设置（Preferences）中，不涉及网络传输。"
+  },
+  {
+    "input": {
+      "permission_type": "身体传感器权限(Body Sensors / Pedometer) + 位置信息权限(Location - Fine/Coarse)",
+      "description": "The application requests body sensor permission for pedometer data and location permission for GPS/address data, no other dangerous permissions are applied.",
+      "supplementary_note": "The application only requests necessary permissions for core functions, and does not apply for other permissions such as camera, microphone, contacts, SMS."
+    },
+    "output": "设备权限调用说明 本应用在运行过程中，可能会调用以下系统权限。请您放心，我们仅在特定场景下触发相关请求，并严格遵循您的授权意愿。权限/能力名称：身体传感器权限(Body Sensors / Pedometer)；触发场景与时机：当您进入应用首页时；用途说明：本应用将请求访问计步传感器权限，以便：1. 实时读取您的步数数据；2. 计算运动消耗及目标达成率；拒绝授权的后果：若您拒绝授权：1. 应用将无法记录您的步数；2. 无法使用计步、运动统计及目标达成等核心功能；3. 不影响您使用应用的其他非计步类功能（如目标设置、查看帮助等）；权限/能力名称：位置信息权限(Location - Fine/Coarse)；触发场景与时机：当您点击“开始运动”按钮或主动开启定位功能时；用途说明：本应用将请求访问位置权限，以便：1. 获取您当前的GPS坐标；2. 通过逆地理编码解析出具体的起始地址并记录；拒绝授权的后果：若您拒绝授权：1. 应用将无法记录您的运动起始位置；2. 无法显示运动起点的详细地址；3. 不影响您继续使用计步功能或其他无需定位的功能。"
+  }
+],
+[
+  {
+    "input": {
+      "id": "FLOW_STATIC_MAP_CAMERA_INIT",
+      "data_type": "Geographical Coordinates (Static/Hardcoded)",
+      "description": "The application initializes the map camera focus using pre-defined static latitude and longitude coordinates.",
+      "flow_steps": [
+        {
+          "step": "Source (Hardcoded)",
+          "function": "BasicMapDemo.struct.aboutToAppear",
+          "file": "entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 17,
+          "code": "let target: mapCommon.LatLng = { latitude: 39.9181, longitude: 116.3970193 };",
+          "details": "Static coordinate data is defined directly in the code."
+        },
+        {
+          "step": "Data Processing",
+          "function": "BasicMapDemo.struct.aboutToAppear",
+          "file": "entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 25,
+          "code": "this.mapOptions = { position: cameraPosition };",
+          "details": "Coordinates are encapsulated into MapOptions for component configuration."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "BasicMapDemo.struct.build.Stack.MapComponent",
+          "file": "entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 49,
+          "code": "MapComponent({ mapOptions: this.mapOptions, mapCallback: this.callback })",
+          "details": "The MapComponent consumes the options to render the map at the specific location."
+        }
+      ]
+    },
+    "output": "关于地图展示功能的特别说明 本应用提供地图展示功能，用于向您显示特定的地理位置信息（如公司总部、服务网点或演示示例）。场景描述：当您进入地图页面时，应用会自动加载并展示地图视图。数据收集情况：未收集个人位置信息：在此过程中，应用仅使用代码中预设的固定地理坐标（硬编码数据）来初始化地图视角和添加标记点。无敏感信息采集：我们不会在此环节调用系统的GPS、基站或Wi-Fi定位服务，不会获取您的实时地理位置、行踪轨迹或设备唯一标识符。数据处理方式：所有展示的坐标数据均来源于应用安装包内部，仅在本地内存中进行渲染展示，不涉及任何个人信息的采集、存储、上传或向第三方共享。必要性说明：该功能旨在为用户提供可视化的地点参考。由于使用的是公开固定的预设坐标，无需收集您的个人隐私数据即可实现该功能，完全符合“最小必要”原则。(注：如果您在其他功能模块（如“开始运动”、“记录轨迹”）中主动使用了定位服务，请参考隐私政策中其他关于“位置信息”的条款。本条目仅针对“静态地图展示”功能。)"
+  },
+  {
+    "input": {
+      "id": "FLOW_MAP_MARKER_ADDITION",
+      "data_type": "Marker Position Data (Static)",
+      "description": "The application programmatically adds a visual marker to the map interface.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "BasicMapDemo.struct.aboutToAppear.callback",
+          "file": "entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 30,
+          "code": "this.callback = async (err, mapController) => { ... }",
+          "details": "The map initialization callback is triggered when the MapComponent is ready."
+        },
+        {
+          "step": "Sensitive Operation (Map Control)",
+          "function": "BasicMapDemo.struct.aboutToAppear.callback",
+          "file": "entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 41,
+          "code": "await this.mapController?.addMarker(markerOptions);",
+          "details": "The application invokes the MapComponentController to modify the map content (adding a marker)."
+        }
+      ]
+    },
+    "output": "关于地图展示功能的特别说明 本应用提供地图展示功能，用于向您显示特定的地理位置信息（如公司总部、服务网点或演示示例）。场景描述：当您进入地图页面时，应用会自动加载并展示地图视图。数据收集情况：未收集个人位置信息：在此过程中，应用仅使用代码中预设的固定地理坐标（硬编码数据）来初始化地图视角和添加标记点。无敏感信息采集：我们不会在此环节调用系统的GPS、基站或Wi-Fi定位服务，不会获取您的实时地理位置、行踪轨迹或设备唯一标识符。数据处理方式：所有展示的坐标数据均来源于应用安装包内部，仅在本地内存中进行渲染展示，不涉及任何个人信息的采集、存储、上传或向第三方共享。必要性说明：该功能旨在为用户提供可视化的地点参考。由于使用的是公开固定的预设坐标，无需收集您的个人隐私数据即可实现该功能，完全符合“最小必要”原则。(注：如果您在其他功能模块（如“开始运动”、“记录轨迹”）中主动使用了定位服务，请参考隐私政策中其他关于“位置信息”的条款。本条目仅针对“静态地图展示”功能。)"
+  },
+  {
+    "input": {
+      "permission_type": "位置权限（Location Permissions）",
+      "description": "The application does not apply for or use any location permissions (ACCESS_FINE_LOCATION/ACCESS_COARSE_LOCATION) in the static map display function.",
+      "supplementary_note": "The map displays pre-set fixed coordinates, no real-time location acquisition is required, so no system permission authorization pop-up will be triggered."
+    },
+    "output": "设备权限调用说明 关于地图功能的权限声明：位置权限（Location Permissions）：当前状态：在本应用的静态地图展示功能中，未申请也未使用任何位置权限（包括 ACCESS_FINE_LOCATION 或 ACCESS_COARSE_LOCATION）。说明：由于地图显示的坐标是预设的固定值，不需要获取您的实时位置，因此不会触发系统的权限授权弹窗。拒绝后果：不适用（因为未发起请求）。"
+  }
+],
+[
+  {
+    "input": {
+      "id": "FLOW_COOKIE_READ_MANUAL",
+      "data_type": "Web Cookies (Read)",
+      "description": "User manually triggers a read operation to fetch cookies for the current User Center URL and displays them.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "LinkButton.struct.build.Row.Text.onClick",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 37,
+          "code": "this.operationMethod();",
+          "details": "User clicks the 'Get Cookie' button."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "LinkButton.operationMethod",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 52,
+          "code": "let originCookie = webview.WebCookieManager.fetchCookieSync(CommonConstants.USER_CENTER_URL);",
+          "details": "Application synchronously fetches cookies for the specified URL from the WebCookieManager."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "LinkButton.operationMethod",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 53,
+          "code": "showDialog(originCookie);",
+          "details": "The retrieved cookie string is displayed to the user in a dialog box."
+        }
+      ]
+    },
+    "output": "Web页面交互与Cookie管理 为了保障您在应用内嵌网页（WebView）中的登录状态、身份验证及个性化服务体验，我们需要对Web Cookie进行必要的读取、写入和管理。场景一：手动查看Cookie信息 触发方式：当您主动点击界面上的“获取Cookie”按钮时。收集信息：我们会读取指定用户中心URL的Web Cookie信息（可能包含会话标识、登录凭证等敏感信息）。目的与必要性：该功能主要用于帮助您核对当前的网页会话状态或进行故障排查。若不读取Cookie，您将无法在界面上看到当前的认证凭据，导致无法确认登录有效性。处理方式：数据仅从系统Web组件（WebCookieManager）中临时读取，并立即在内存中渲染至弹窗供您查看。我们不会将此信息存储到本地数据库，也不会上传至云端或发送给第三方。场景二：登录状态自动验证 触发方式：当您进入“验证页面”且内部网页加载完成时。收集信息：应用会自动后台读取指定URL的Web Cookie信息/登录凭证（属于敏感个人信息）。目的与必要性：这是为了自动判断您是否已登录，以便决定是展示个人内容还是跳转至登录页。若不获取此Cookie，应用将无法识别您的身份，导致每次访问都需要重新手动登录，严重影响使用体验。处理方式：数据仅在页面加载瞬间读取并用于逻辑判断（及调试展示），处理过程完全在本地内存中进行，不进行持久化存储或网络传输。场景三：Cookie写入与清除 触发方式：当您点击“设置Cookie”进行测试，或点击“删除Cookie”以保护隐私时。操作说明：写入：我们可能会向特定测试URL写入硬编码的配置数据（一般信息），用于功能验证。清除：当您选择清除时，我们将调用系统接口永久删除应用内所有已存储的Web Cookie数据，以保障您的隐私安全或重置登录状态。数据安全：对于涉及敏感的Cookie数据，我们严格遵循“最小必要”原则，仅在本地临时处理，且提供一键清除功能，确保您能随时掌控自己的数据。"
+  },
+  {
+    "input": {
+      "id": "FLOW_COOKIE_WRITE",
+      "data_type": "Web Cookies (Write)",
+      "description": "User manually triggers a write operation to set a specific test cookie for the User About URL.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "LinkButton.struct.build.Row.Text.onClick",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 37,
+          "code": "this.operationMethod();",
+          "details": "User clicks the 'Set Cookie' button."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "LinkButton.operationMethod",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 55,
+          "code": "webview.WebCookieManager.configCookieSync(CommonConstants.USER_ABOUT_URL, 'info=测试cookie写入');",
+          "details": "Application writes a hardcoded cookie string to the WebCookieManager for the target URL."
+        },
+        {
+          "step": "Sink (Confirmation)",
+          "function": "LinkButton.operationMethod",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 56,
+          "code": "showDialog($r('app.string.write_success'));",
+          "details": "User is notified of the successful operation via a dialog."
+        }
+      ]
+    },
+    "output": "Web页面交互与Cookie管理 为了保障您在应用内嵌网页（WebView）中的登录状态、身份验证及个性化服务体验，我们需要对Web Cookie进行必要的读取、写入和管理。场景一：手动查看Cookie信息 触发方式：当您主动点击界面上的“获取Cookie”按钮时。收集信息：我们会读取指定用户中心URL的Web Cookie信息（可能包含会话标识、登录凭证等敏感信息）。目的与必要性：该功能主要用于帮助您核对当前的网页会话状态或进行故障排查。若不读取Cookie，您将无法在界面上看到当前的认证凭据，导致无法确认登录有效性。处理方式：数据仅从系统Web组件（WebCookieManager）中临时读取，并立即在内存中渲染至弹窗供您查看。我们不会将此信息存储到本地数据库，也不会上传至云端或发送给第三方。场景二：登录状态自动验证 触发方式：当您进入“验证页面”且内部网页加载完成时。收集信息：应用会自动后台读取指定URL的Web Cookie信息/登录凭证（属于敏感个人信息）。目的与必要性：这是为了自动判断您是否已登录，以便决定是展示个人内容还是跳转至登录页。若不获取此Cookie，应用将无法识别您的身份，导致每次访问都需要重新手动登录，严重影响使用体验。处理方式：数据仅在页面加载瞬间读取并用于逻辑判断（及调试展示），处理过程完全在本地内存中进行，不进行持久化存储或网络传输。场景三：Cookie写入与清除 触发方式：当您点击“设置Cookie”进行测试，或点击“删除Cookie”以保护隐私时。操作说明：写入：我们可能会向特定测试URL写入硬编码的配置数据（一般信息），用于功能验证。清除：当您选择清除时，我们将调用系统接口永久删除应用内所有已存储的Web Cookie数据，以保障您的隐私安全或重置登录状态。数据安全：对于涉及敏感的Cookie数据，我们严格遵循“最小必要”原则，仅在本地临时处理，且提供一键清除功能，确保您能随时掌控自己的数据。"
+  },
+  {
+    "input": {
+      "id": "FLOW_COOKIE_READ_AUTOMATIC_VERIFY",
+      "data_type": "Web Cookies (Read)",
+      "description": "When the Verify page loads, the application automatically reads cookies for the User About URL to verify login status.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Verify.struct.build.NavDestination.Web.onPageEnd",
+          "file": "entry/src/main/ets/pages/Verify.ets",
+          "line": 35,
+          "code": ".onPageEnd(() => { ... })",
+          "details": "The Web component finishes loading the page, extracting the cookie automatically."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "Verify.struct.build.NavDestination.Web.onPageEnd",
+          "file": "entry/src/main/ets/pages/Verify.ets",
+          "line": 62,
+          "code": "let originCookie = webview.WebCookieManager.fetchCookieSync(CommonConstants.USER_ABOUT_URL);",
+          "details": "Application synchronously fetches cookies for the 'About' URL from the WebCookieManager."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "Verify.struct.build.NavDestination.Web.onPageEnd",
+          "file": "entry/src/main/ets/pages/Verify.ets",
+          "line": 67,       
+          "code": "showDialog(originCookie);",
+          "details": "The retrieved cookie string is displayed in a dialog."
+        }
+      ]
+    },
+    "output": "Web页面交互与Cookie管理 为了保障您在应用内嵌网页（WebView）中的登录状态、身份验证及个性化服务体验，我们需要对Web Cookie进行必要的读取、写入和管理。场景一：手动查看Cookie信息 触发方式：当您主动点击界面上的“获取Cookie”按钮时。收集信息：我们会读取指定用户中心URL的Web Cookie信息（可能包含会话标识、登录凭证等敏感信息）。目的与必要性：该功能主要用于帮助您核对当前的网页会话状态或进行故障排查。若不读取Cookie，您将无法在界面上看到当前的认证凭据，导致无法确认登录有效性。处理方式：数据仅从系统Web组件（WebCookieManager）中临时读取，并立即在内存中渲染至弹窗供您查看。我们不会将此信息存储到本地数据库，也不会上传至云端或发送给第三方。场景二：登录状态自动验证 触发方式：当您进入“验证页面”且内部网页加载完成时。收集信息：应用会自动后台读取指定URL的Web Cookie信息/登录凭证（属于敏感个人信息）。目的与必要性：这是为了自动判断您是否已登录，以便决定是展示个人内容还是跳转至登录页。若不获取此Cookie，应用将无法识别您的身份，导致每次访问都需要重新手动登录，严重影响使用体验。处理方式：数据仅在页面加载瞬间读取并用于逻辑判断（及调试展示），处理过程完全在本地内存中进行，不进行持久化存储或网络传输。场景三：Cookie写入与清除 触发方式：当您点击“设置Cookie”进行测试，或点击“删除Cookie”以保护隐私时。操作说明：写入：我们可能会向特定测试URL写入硬编码的配置数据（一般信息），用于功能验证。清除：当您选择清除时，我们将调用系统接口永久删除应用内所有已存储的Web Cookie数据，以保障您的隐私安全或重置登录状态。数据安全：对于涉及敏感的Cookie数据，我们严格遵循“最小必要”原则，仅在本地临时处理，且提供一键清除功能，确保您能随时掌控自己的数据。"
+  },
+  {
+    "input": {
+      "id": "FLOW_COOKIE_CLEAR",
+      "data_type": "Web Cookies (Delete)",
+      "description": "User can clear all stored cookies globally for the application.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "LinkButton.struct.build.Row.Text.onClick",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 37,
+          "code": "this.operationMethod();",
+          "details": "User clicks the 'Delete Cookie' button."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "LinkButton.operationMethod",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 58,
+          "code": "webview.WebCookieManager.clearAllCookiesSync();",
+          "details": "Application clears all cookies from the WebCookieManager."
+        }
+      ]
+    },
+    "output": "Web页面交互与Cookie管理 为了保障您在应用内嵌网页（WebView）中的登录状态、身份验证及个性化服务体验，我们需要对Web Cookie进行必要的读取、写入和管理。场景一：手动查看Cookie信息 触发方式：当您主动点击界面上的“获取Cookie”按钮时。收集信息：我们会读取指定用户中心URL的Web Cookie信息（可能包含会话标识、登录凭证等敏感信息）。目的与必要性：该功能主要用于帮助您核对当前的网页会话状态或进行故障排查。若不读取Cookie，您将无法在界面上看到当前的认证凭据，导致无法确认登录有效性。处理方式：数据仅从系统Web组件（WebCookieManager）中临时读取，并立即在内存中渲染至弹窗供您查看。我们不会将此信息存储到本地数据库，也不会上传至云端或发送给第三方。场景二：登录状态自动验证 触发方式：当您进入“验证页面”且内部网页加载完成时。收集信息：应用会自动后台读取指定URL的Web Cookie信息/登录凭证（属于敏感个人信息）。目的与必要性：这是为了自动判断您是否已登录，以便决定是展示个人内容还是跳转至登录页。若不获取此Cookie，应用将无法识别您的身份，导致每次访问都需要重新手动登录，严重影响使用体验。处理方式：数据仅在页面加载瞬间读取并用于逻辑判断（及调试展示），处理过程完全在本地内存中进行，不进行持久化存储或网络传输。场景三：Cookie写入与清除 触发方式：当您点击“设置Cookie”进行测试，或点击“删除Cookie”以保护隐私时。操作说明：写入：我们可能会向特定测试URL写入硬编码的配置数据（一般信息），用于功能验证。清除：当您选择清除时，我们将调用系统接口永久删除应用内所有已存储的Web Cookie数据，以保障您的隐私安全或重置登录状态。数据安全：对于涉及敏感的Cookie数据，我们严格遵循“最小必要”原则，仅在本地临时处理，且提供一键清除功能，确保您能随时掌控自己的数据。"
+  },
+  {
+    "input": {
+      "permission_type": "Web Cookie管理相关权限",
+      "description": "Cookie read/write/clear operations are implemented via system WebCookieManager interface, no dangerous permissions are applied.",
+      "supplementary_note": "The app can only access cookies under its own domain, complying with sandbox security mechanism; disabling storage basic capability may affect cookie function."
+    },
+    "output": "设备权限调用说明 关于Web Cookie管理的权限声明：系统权限调用情况：无需申请危险权限：本应用中涉及的Cookie读取、写入及清除操作，均是通过调用鸿蒙/安卓系统自带的Web组件标准接口（WebCookieManager）实现的。非敏感权限范畴：这些操作不属于系统定义的“危险权限”（如位置、相机、麦克风、通讯录、短信等），因此不会触发系统的权限授权弹窗，也无需您手动授予额外权限。访问控制：应用仅能访问自身域名下的Cookie，无法访问其他应用或浏览器中的Cookie，符合沙箱安全机制。拒绝后果说明：由于该功能不依赖用户授予的“危险权限”，因此不存在“拒绝授权”的场景。功能影响提示：如果您通过系统设置禁用了应用的“存储”相关基础能力（极少见情况），可能会导致Cookie无法读写，进而导致应用内网页无法保持登录状态或无法自动验证身份，您可能需要每次访问时重新输入账号密码。"
+  }
+]，
+[
+  {
+    "input": {
+      "id": "FLOW_DEVICE_TOKEN_ACQUISITION",
+      "data_type": "Device Security Token (Device Identifier)",
+      "description": "The application requests a device security token (Device Token) and displays it on the UI for verification.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Index.struct.build.Row.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 57,
+          "code": "devCertMangerModel.displayDeviceToken((result: string) => { ... })",
+          "details": "User clicks the 'GetDeviceToken' button to initiate the request."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "deviceTokenPromise",
+          "file": "entry/src/main/ets/model/DevCertManagerModel.ts",
+          "line": 10,
+          "code": "deviceCertificate.getDeviceToken().then((token) => { ... })",
+          "details": "The application calls the DeviceSecurityKit API 'getDeviceToken' to retrieve the sensitive device token."
+        },
+        {
+          "step": "Data Processing",
+          "function": "DevCertManagerModel.displayDeviceToken",
+          "file": "entry/src/main/ets/model/DevCertManagerModel.ts",
+          "line": 36,
+          "code": "callback(this.dispalyText);",
+          "details": "The retrieved token string is stored in memory and passed back to the UI component via a callback."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "Index.struct.build.Column.Column.Scroll.Text",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 30,
+          "code": "Text(this.devCertInfo)",
+          "details": "The sensitive Device Token is rendered directly on the screen for the user to see."
+        }
+      ]
+    },
+    "output": "设备安全凭证查询（Device Token） 为了帮助您验证设备的安全状态或进行设备身份核对，我们提供设备安全凭证（Device Token）的查询与展示功能。场景描述：当您点击界面上的“获取设备Token”按钮时，应用将调用系统底层的设备安全服务（DeviceSecurityKit），生成并获取当前设备的唯一安全凭证，随后立即在屏幕上向您展示该字符串。收集信息：设备安全凭证（Device Token）：这是基于您设备硬件特征生成的唯一标识符，属于敏感个人信息（个人设备识别信息）。必要性说明：设备安全凭证是识别特定设备身份的关键依据。若不获取该数据，应用将无法向您展示当前设备的唯一标识，导致您无法完成设备核验、安全审计或故障排查等操作。该功能完全依赖于获取此特定标识符才能运行。处理方式与安全措施：本地处理与展示：我们通过调用华为系统提供的DeviceSecurityKit接口获取该凭证。数据仅在应用内存中短暂暂存，用于即时渲染展示在您的屏幕上。数据存储与传输：该凭证仅用于本地展示，应用不会将其保存至本地数据库或偏好设置中，不会上传至云端服务器，也不会发送给任何第三方合作伙伴。一旦您关闭页面或退出应用，内存中的该数据将被系统自动回收。"
+  },
+  {
+    "input": {
+      "permission_type": "设备安全凭证（Device Token）相关权限",
+      "description": "Device Token acquisition is implemented via DeviceSecurityKit, no standard dangerous permissions are applied, and the operation is controlled by system security policies.",
+      "supplementary_note": "The function is only triggered when the user actively clicks the button, no background silent acquisition of device identification information."
+    },
+    "output": "设备权限调用说明 关于设备安全凭证功能的权限声明：系统权限调用情况：本功能通过调用鸿蒙系统底层的设备安全能力（DeviceSecurityKit）实现。无需申请危险权限：该操作不涉及安卓/鸿蒙定义的标准“危险权限”（如位置、相机、麦克风、通讯录等），因此不会触发系统的权限授权弹窗。访问控制：虽然无需用户手动授权，但该能力的调用受系统安全策略管控，仅允许合法合规的应用在用户主动触发（点击按钮）时访问。拒绝后果说明：由于该功能不依赖用户授予的“危险权限”，因此不存在“拒绝授权”的场景。若您不希望查看或披露您的设备安全凭证，请不要点击界面上的“获取设备Token”按钮。只要不触发该操作，应用绝不会后台静默获取或处理您的设备标识信息。"
+  }
+],
+[
+  {
+    "input": {
+      "id": "FLOW_INSIGHT_INTENT_SHARING",
+      "data_type": "User Intent Data (Behavior/Preferences)",
+      "description": "The application reads simulated user intent data and shares it with the system's Insight Intent framework context.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Index.struct.build.Row.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 79,
+          "code": "this.result = await InsightIntentSharer.shareIntent(getContext(), this.input);",
+          "details": "User clicks the 'shareIntent' button to initiate the data sharing process."
+        },
+        {
+          "step": "Data Preparation",
+          "function": "InsightIntentSharer.shareIntent",
+          "file": "entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 33,
+          "code": "let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+          "details": "The application parses the input string into InsightIntent objects containing user behavior data."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "InsightIntentSharer.shareIntent",
+          "file": "entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 38,
+          "code": "return await insightIntent.shareIntent(context, insightIntents)",
+          "details": "The application invokes the system API 'insightIntent.shareIntent' to transmit user data to the system."
+        }
+      ]
+    },
+    "output": "智能意图服务与会话管理 为了为您提供更精准的系统级智能推荐服务（如场景化建议、个性化内容推送）以及保障应用会话的安全性与可追溯性，我们会涉及以下数据的处理：场景一：用户意图数据共享（智能推荐） 触发方式：当您主动点击界面上的“分享意图”按钮时。收集信息：我们会收集您输入或选择的用户行为偏好数据（例如：听歌习惯、当前使用场景、操作意图等），这属于敏感个人信息。目的与必要性：该数据用于构建标准的意图模型，并通过系统接口传递给鸿蒙系统的意图框架（Insight Intent Kit）。若不收集并共享此数据，系统将无法识别您的当前需求，导致无法为您提供上下文相关的智能服务联动或个性化推荐，该功能将无法运行。处理方式与SDK说明：我们通过调用华为系统提供的Insight Intent Kit接口进行处理。本地处理与端侧共享：数据在应用本地解析为标准格式后，直接传递给设备本地的系统意图服务，用于端侧智能计算。我们不会将此数据上传至云端服务器，也不会发送给任何第三方商业合作伙伴。安全措施：数据传输过程遵循系统安全通道，确保仅在设备内部可信环境中流转。场景二：会话标识符（Session ID）获取与展示 触发方式：当您主动点击“获取Session ID”按钮时（通常用于调试或身份核对）。收集信息：我们会获取当前应用会话的唯一标识符——会话标识符 (Session ID)，这属于敏感个人信息（个人设备/会话识别信息）。目的与必要性：该标识符是维持您当前操作会话连续性及进行故障排查的关键依据。若不获取此ID，应用将无法向您展示当前的会话状态，导致您无法完成会话验证或技术支持所需的日志核对。处理方式与安全措施：仅本地展示：我们通过调用系统API获取该标识符后，仅在内存中短暂暂存并立即渲染至屏幕供您查看。不存储不上传：该数据不会被持久化存储到本地数据库，不会上传至云端，也不会用于除当前展示外的任何其他用途。一旦页面关闭，内存中的数据即被清除。"
+  },
+  {
+    "input": {
+      "id": "FLOW_SESSION_ID_ACQUISITION",
+      "data_type": "Session ID (System Identifier)",
+      "description": "The application retrieves a session identifier (SID) from the system and displays it on the UI.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Index.struct.build.Row.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 173,
+          "code": "this.result = await InsightIntentSharer.getSid(getContext());",
+          "details": "User clicks the 'getSid' button."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "InsightIntentSharer.getSid",
+          "file": "entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 111,
+          "code": "return `SID: ${await insightIntent.getSid(context, false)}`;",
+          "details": "The application calls 'insightIntent.getSid' to access the sensitive session identifier."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "Index.struct.build.Column.Text",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 235,
+          "code": "Text(this.result)",
+          "details": "The retrieved Session ID is displayed directly on the screen."
+        }
+      ]
+    },
+    "output": "智能意图服务与会话管理 为了为您提供更精准的系统级智能推荐服务（如场景化建议、个性化内容推送）以及保障应用会话的安全性与可追溯性，我们会涉及以下数据的处理：场景一：用户意图数据共享（智能推荐） 触发方式：当您主动点击界面上的“分享意图”按钮时。收集信息：我们会收集您输入或选择的用户行为偏好数据（例如：听歌习惯、当前使用场景、操作意图等），这属于敏感个人信息。目的与必要性：该数据用于构建标准的意图模型，并通过系统接口传递给鸿蒙系统的意图框架（Insight Intent Kit）。若不收集并共享此数据，系统将无法识别您的当前需求，导致无法为您提供上下文相关的智能服务联动或个性化推荐，该功能将无法运行。处理方式与SDK说明：我们通过调用华为系统提供的Insight Intent Kit接口进行处理。本地处理与端侧共享：数据在应用本地解析为标准格式后，直接传递给设备本地的系统意图服务，用于端侧智能计算。我们不会将此数据上传至云端服务器，也不会发送给任何第三方商业合作伙伴。安全措施：数据传输过程遵循系统安全通道，确保仅在设备内部可信环境中流转。场景二：会话标识符（Session ID）获取与展示 触发方式：当您主动点击“获取Session ID”按钮时（通常用于调试或身份核对）。收集信息：我们会获取当前应用会话的唯一标识符——会话标识符 (Session ID)，这属于敏感个人信息（个人设备/会话识别信息）。目的与必要性：该标识符是维持您当前操作会话连续性及进行故障排查的关键依据。若不获取此ID，应用将无法向您展示当前的会话状态，导致您无法完成会话验证或技术支持所需的日志核对。处理方式与安全措施：仅本地展示：我们通过调用系统API获取该标识符后，仅在内存中短暂暂存并立即渲染至屏幕供您查看。不存储不上传：该数据不会被持久化存储到本地数据库，不会上传至云端，也不会用于除当前展示外的任何其他用途。一旦页面关闭，内存中的数据即被清除。"
+  },
+  {
+    "input": {
+      "permission_type": "智能意图与会话管理相关权限",
+      "description": "User intent sharing and Session ID acquisition are implemented via system capability/Kit interfaces, no standard dangerous permissions are applied, and may depend on system-level smart service switches.",
+      "supplementary_note": "The functions are only triggered by user active clicks, no background silent data collection."
+    },
+    "output": "设备权限调用说明 关于智能意图与会话管理的权限声明：系统权限调用情况：无需申请危险权限：本应用中涉及的“用户意图共享”及“Session ID获取”功能，均是通过调用鸿蒙系统底层的系统能力接口（System Capability / Kit）实现的。非危险权限范畴：这些操作不涉及安卓/鸿蒙定义的标准“危险权限”（如位置、相机、麦克风、通讯录、短信等），因此不会触发系统的权限授权弹窗，也无需您手动授予额外权限。依赖条件：虽然无需显式授权，但“用户意图共享”功能可能需要您在设备的系统设置中开启相关的“智能服务”或“个性化推荐”开关。若系统级开关关闭，该功能可能无法生效。拒绝后果说明：由于该功能不依赖用户授予的“危险权限”，因此不存在传统意义上的“拒绝授权”场景。功能影响提示：若您不点击“分享意图”按钮，应用绝不会后台静默收集您的行为偏好数据，但您将无法使用基于当前场景的智能推荐服务。若您不点击“获取Session ID”按钮，应用不会获取您的会话标识符，但这不影响应用的正常核心功能，仅导致您无法查看当前的会话调试信息。"
+  }
+],
+[
+  {
+    "input": {
+      "id": "FLOW_PAYMENT_REQUEST",
+      "data_type": "Financial Transaction Data (Order Info)",
+      "description": "The application constructs a payment order containing sensitive merchant and transaction details and transmits it to the Payment Service to initiate a transaction.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Index.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 76,
+          "code": "this.requestPaymentPromise();",
+          "details": "User clicks the 'requestPaymentPromise' button."
+        },
+        {
+          "step": "Data Preparation",
+          "function": "Index.requestPaymentPromise",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 15,
+          "code": "const orderStr = '{\"app_id\":\"***\",\"merc_no\":\"***\",\"prepay_id\":\"xxx\"...}';",
+          "details": "Application prepares the sensitive order string (in a real app, this is fetched from a secure backend)."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "Index.requestPaymentPromise",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 16,
+          "code": "paymentService.requestPayment(this.context, orderStr)",
+          "details": "The application invokes the system Payment Kit API, passing the order details to the system-level payment UI."
+        }
+      ]
+    },
+    "output": "支付服务与协议签约 为了向您提供安全的商品购买、资金结算及自动扣款服务，我们需要处理相关的金融交易数据。请您放心，我们不会直接收集或存储您的银行卡号、支付密码等核心敏感信息，所有敏感操作均通过系统级安全组件完成。场景一：在线支付交易 触发方式：当您在购物或服务页面点击“发起支付”或“立即付款”按钮时。收集信息：为了完成订单结算，我们会构建并处理包含订单信息、商户编号及预支付ID的数据。上述信息属于敏感个人信息（金融交易数据）。目的与必要性：收集上述数据是发起支付请求的必要前提。若不传递这些信息，支付系统将无法识别交易主体和金额，导致无法拉起收银台界面，您将无法完成购买。处理方式与SDK说明：我们通过调用华为系统提供的Payment Kit（支付服务）接口进行处理。本地处理并传递至系统安全组件：应用仅在本地组装必要的订单参数，随后通过加密通道将数据传递给系统级的支付UI（如华为钱包或已安装的支付应用）。数据安全：后续的支付密码输入、指纹/人脸验证及资金划转过程完全由系统接管，应用本身不接触、不记录、不上传您的支付密码或完整的银行卡信息。场景二：免密支付/代扣协议签约 触发方式：当您开通自动续费、免密支付或代扣服务并点击“签订协议”按钮时。收集信息：为了建立授权关系，我们会构建并处理包含合约签约信息及预签约号的数据。上述信息属于敏感个人信息。目的与必要性：这是为了确立您与应用之间的自动扣款授权。若不获取预签约号并传递给系统，无法生成合法的电子协议，导致您无法享受便捷的免密支付服务。处理方式与安全措施：本地处理并传递至系统安全组件：应用将签约参数传递给系统级签约界面。身份验证：最终的协议签署必须由您本人在系统界面中通过生物识别（指纹/人脸）或支付密码进行二次确认。不存储密钥：应用不会存储任何敏感的签约密钥或令牌，仅保留由系统返回的非敏感业务状态标识。"
+  },
+  {
+    "input": {
+      "id": "FLOW_CONTRACT_SIGNING_REQUEST",
+      "data_type": "Financial Contract Data (Sign Info)",
+      "description": "The application constructs a contract signing request and transmits it to the Payment Service to initiate an automatic payment agreement.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Index.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 90,
+          "code": "this.requestContractPromise();",
+          "details": "User clicks the 'requestContractPromise' button."
+        },
+        {
+          "step": "Data Preparation",
+          "function": "Index.requestContractPromise",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 43,
+          "code": "const contractStr = '{\"appId\":\"***\",\"preSignNo\":\"***\"}';",
+          "details": "Application prepares the sensitive contract string containing the pre-sign number."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "Index.requestContractPromise",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 44,
+          "code": "paymentService.requestContract(this.context, contractStr)",
+          "details": "The application invokes the system Payment Kit API to open the contract signing interface."
+        }
+      ]
+    },
+    "output": "支付服务与协议签约 为了向您提供安全的商品购买、资金结算及自动扣款服务，我们需要处理相关的金融交易数据。请您放心，我们不会直接收集或存储您的银行卡号、支付密码等核心敏感信息，所有敏感操作均通过系统级安全组件完成。场景一：在线支付交易 触发方式：当您在购物或服务页面点击“发起支付”或“立即付款”按钮时。收集信息：为了完成订单结算，我们会构建并处理包含订单信息、商户编号及预支付ID的数据。上述信息属于敏感个人信息（金融交易数据）。目的与必要性：收集上述数据是发起支付请求的必要前提。若不传递这些信息，支付系统将无法识别交易主体和金额，导致无法拉起收银台界面，您将无法完成购买。处理方式与SDK说明：我们通过调用华为系统提供的Payment Kit（支付服务）接口进行处理。本地处理并传递至系统安全组件：应用仅在本地组装必要的订单参数，随后通过加密通道将数据传递给系统级的支付UI（如华为钱包或已安装的支付应用）。数据安全：后续的支付密码输入、指纹/人脸验证及资金划转过程完全由系统接管，应用本身不接触、不记录、不上传您的支付密码或完整的银行卡信息。场景二：免密支付/代扣协议签约 触发方式：当您开通自动续费、免密支付或代扣服务并点击“签订协议”按钮时。收集信息：为了建立授权关系，我们会构建并处理包含合约签约信息及预签约号的数据。上述信息属于敏感个人信息。目的与必要性：这是为了确立您与应用之间的自动扣款授权。若不获取预签约号并传递给系统，无法生成合法的电子协议，导致您无法享受便捷的免密支付服务。处理方式与安全措施：本地处理并传递至系统安全组件：应用将签约参数传递给系统级签约界面。身份验证：最终的协议签署必须由您本人在系统界面中通过生物识别（指纹/人脸）或支付密码进行二次确认。不存储密钥：应用不会存储任何敏感的签约密钥或令牌，仅保留由系统返回的非敏感业务状态标识。"
+  },
+  {
+    "input": {
+      "permission_type": "支付功能相关权限",
+      "description": "Payment and contract signing functions are implemented via system Payment Kit interface, no standard dangerous permissions are applied, and depend on installed system payment services.",
+      "supplementary_note": "The final payment/contract confirmation is completed in the system interface, and the app does not touch core sensitive payment information."
+    },
+    "output": "设备权限调用说明 关于支付功能的权限声明：系统权限调用情况：无需申请危险权限：本应用中涉及的“在线支付”及“协议签约”功能，均是通过调用鸿蒙系统底层的Payment Kit（支付服务）标准接口实现的。非危险权限范畴：这些操作不涉及安卓/鸿蒙定义的标准“危险权限”（如位置、相机、麦克风、通讯录、短信等），因此不会触发系统的权限授权弹窗，也无需您手动授予额外权限。依赖条件：该功能依赖于设备上已安装并正常运行的系统支付服务（如华为钱包）或第三方支付应用。拒绝后果说明：由于该功能不依赖用户授予的“危险权限”，因此不存在传统意义上的“拒绝授权”场景。功能影响提示：若您未安装系统支付组件或关闭了相关支付服务，当您点击支付按钮时，可能无法拉起支付界面，导致无法完成付款或签约操作。若在系统支付界面中，您拒绝进行生物识别或密码验证（即取消支付），则当次交易或签约将立即终止，但这不会影响您使用应用内的其他非支付功能（如浏览商品、查看订单历史等）。"
+  }
+],
+[
+  {
+    "input": {
+      "id": "FLOW_APP_UUID_GENERATION",
+      "data_type": "Persistent Identifier (App UUID)",
+      "description": "A random UUID is generated on the first launch to uniquely identify the application instance and stored in persistent storage.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Splash.struct.Splash.aboutToAppear",
+          "file": "entry/src/main/ets/pages/Splash.ets",
+          "line": 37,
+          "code": "if (this.appUuid == 'undefined')",
+          "details": "Checks if the appUuid is already defined in persistent storage."
+        },
+        {
+          "step": "Source (Generation)",
+          "function": "Splash.struct.Splash.aboutToAppear",
+          "file": "entry/src/main/ets/pages/Splash.ets",
+          "line": 38,
+          "code": "this.appUuid = util.generateRandomUUID();",
+          "details": "Generates a random UUID using the system utility."
+        },
+        {
+          "step": "Sink (Persistent Storage)",
+          "function": "PersistentStorage.PersistProp",
+          "file": "entry/src/main/ets/pages/Splash.ets",
+          "line": 120,
+          "code": "PersistentStorage.PersistProp('appUuid', 'undefined');",
+          "details": "The generated UUID is saved to persistent storage, making it available across sessions."
+        }
+      ]
+    },
+    "output": "为了向您提供稳定的视频搜索服务、故障排查支持及应用基础运行功能，我们会收集和使用以下信息：（1）应用实例标识与故障分析 场景描述：当您首次启动应用或触发“日志反馈”功能时。收集信息：为了唯一识别您的设备上的本应用实例以便进行统计分析或故障定位，我们会生成并存储一个随机的应用实例唯一标识符 (App UUID)，这属于敏感个人信息。同时，在您主动选择上传日志时，我们会收集应用运行日志。目的与必要性：App UUID是区分不同用户会话、追踪特定设备故障问题的关键标识。若不生成该标识，我们将无法将错误日志与特定实例关联，导致无法有效排查崩溃或异常问题。处理方式与第三方说明：本地存储：App UUID在本地生成后，通过加密方式存储在设备的持久化存储区（PersistentStorage），仅在应用内部使用。云端上传（仅当您主动反馈时）：当您点击“反馈”按钮时，我们会将当前的运行日志与上述App UUID打包，上传至第三方代码托管平台（Gitee Gist）供开发者分析。除此之外，我们不会主动上传您的日志信息。"
+  },
+  {
+    "input": {
+      "id": "FLOW_NETWORK_STATE_MONITORING",
+      "data_type": "Network Connection Status/Type",
+      "description": "The application consistently monitors the device's network connection status (WiFi/Cellular) and updates the app state.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "EntryAbility.onWindowStageCreate",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 50,
+          "code": "this.netConnRegister();",
+          "details": "Registers the network connection listener when the window stage is created."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "EntryAbility.netConnRegister",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 89,
+          "code": "this.netConn = connection.createNetConnection(netSpec, timeout);",
+          "details": "Creates a connection listener for Cellular and WiFi bearers."
+        },
+        {
+          "step": "Sink (State Update/Log)",
+          "function": "EntryAbility.netConnRegister",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 92,
+          "code": "AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+          "details": "Updates global AppStorage with network availability status."
+        }
+      ]
+    },
+    "output": "为了向您提供稳定的视频搜索服务、故障排查支持及应用基础运行功能，我们会收集和使用以下信息：（3）应用基础运行与环境监测 场景描述：应用启动及运行过程中。收集信息：网络连接状态：为了优化视频加载策略（如在WiFi下自动高清播放），我们会实时监测您的网络连接类型（WiFi/蜂窝数据）及连通性。应用版本信息：为了进行版本兼容性检查及展示“关于页面”，我们会读取当前的应用版本号、应用名称及厂商信息。目的与必要性：网络状态监测是保障视频流畅播放的前提；版本信息是确保应用功能正常运行的基础。处理方式：仅本地处理：上述数据仅在应用内存中实时处理（写入AppStorage），用于调整应用内部逻辑，不会上传至云端，也不会持久化存储。"
+  },
+  {
+    "input": {
+      "id": "FLOW_APP_BUNDLE_INFO",
+      "data_type": "Installed App Information (Version/Name)",
+      "description": "The application retrieves its own bundle information (version, vendor, name) from the system.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "EntryAbility.onWindowStageCreate",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 51,
+          "code": "this.getAppBundleInfo();",
+          "details": "Initiates retrieval of app bundle info on startup."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "EntryAbility.getAppBundleInfo",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 107,
+          "code": "bundleManager.getBundleInfoForSelf(0).then(info => {",
+          "details": "Calls 'bundleManager.getBundleInfoForSelf' to get details about the current application."
+        },
+        {
+          "step": "Sink (State Update)",
+          "function": "EntryAbility.getAppBundleInfo",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 111,
+          "code": "AppStorage.SetOrCreate(\"appVersionName\", info.versionName);",
+          "details": "Stores the app version name in AppStorage."
+        }
+      ]
+    },
+    "output": "为了向您提供稳定的视频搜索服务、故障排查支持及应用基础运行功能，我们会收集和使用以下信息：（3）应用基础运行与环境监测 场景描述：应用启动及运行过程中。收集信息：网络连接状态：为了优化视频加载策略（如在WiFi下自动高清播放），我们会实时监测您的网络连接类型（WiFi/蜂窝数据）及连通性。应用版本信息：为了进行版本兼容性检查及展示“关于页面”，我们会读取当前的应用版本号、应用名称及厂商信息。目的与必要性：网络状态监测是保障视频流畅播放的前提；版本信息是确保应用功能正常运行的基础。处理方式：仅本地处理：上述数据仅在应用内存中实时处理（写入AppStorage），用于调整应用内部逻辑，不会上传至云端，也不会持久化存储。"
+  },
+  {
+    "input": {
+      "id": "FLOW_SEARCH_KEYWORD_NETWORK",
+      "data_type": "User Input (Search Keyword)",
+      "description": "The user's search keyword is captured from the UI and sent to the Bilibili API via a network request.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "SearchResultPage.struct.SearchResultPage.aboutToAppear",
+          "file": "entry/src/main/ets/pages/SearchResult.ets",
+          "line": 39,
+          "code": "this.keyword = params.keyword;",
+          "details": "Retrieves the search keyword passed from the previous page via router parameters."
+        },
+        {
+          "step": "Processing (API Call)",
+          "function": "ApiManager.requestSearch",
+          "file": "entry/src/main/ets/network/ApiManager.ets",
+          "line": 174,
+          "code": "TaskManager.getInstance().requestSearch(cookies, \"video\", encoded, pn)",
+          "details": "Passes the keyword to the TaskManager for network request execution."
+        },
+        {
+          "step": "Sink (Network Transmission)",
+          "function": "TaskManager.requestSearchTask",
+          "file": "entry/src/main/ets/network/TaskManager.ts",
+          "code": "dataService.getSearch(cookies, type, keyword, pn)",
+          "details": "Sends the search keyword to 'https://api.bilibili.com' via an HTTP GET request."
+        }
+      ]
+    },
+    "output": "为了向您提供稳定的视频搜索服务、故障排查支持及应用基础运行功能，我们会收集和使用以下信息：（2）视频内容搜索服务 场景描述：当您在搜索框输入内容并点击搜索按钮时。收集信息：为了向您展示相关的视频结果，我们会收集您输入的搜索关键词。目的与必要性：搜索关键词是获取搜索结果的核心依据。若不收集该信息，系统无法向服务器发起查询请求，您将无法获得任何视频列表。处理方式与第三方说明：上传云端：我们将您的搜索关键词通过加密网络通道发送至第三方服务提供商（哔哩哔哩 Bilibili API，域名：api.bilibili.com）以获取数据。该过程遵循第三方的隐私政策。"
+  },
+  {
+    "input": {
+      "id": "FLOW_DEVICE_LOGS_DISPLAY",
+      "data_type": "Device/App Logs (File System)",
+      "description": "The application reads debug logs potentially containing sensitive runtime information from the file system and displays them on the screen.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "LogDetail.struct.LogDetail.aboutToAppear",
+          "file": "entry/src/main/ets/pages/LogDetail.ets",
+          "code": "this.logFilePath = params.logFilePath;",
+          "details": "Receives the path to a specific log file."
+        },
+        {
+          "step": "Source (File System)",
+          "function": "LogDetail.struct.LogDetail.aboutToAppear",
+          "file": "entry/src/main/ets/pages/LogDetail.ets",
+          "code": "this.logStr = fs.readTextSync(this.logFilePath)",
+          "details": "Reads the raw content of the log file from the device's internal storage."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "LogDetail.struct.LogDetail.build",
+          "file": "entry/src/main/ets/pages/LogDetail.ets",
+          "code": "Text(this.logStr)",
+          "details": "Displays the raw log content directly on the user interface."
+        }
+      ]
+    },
+    "output": "为了向您提供稳定的视频搜索服务、故障排查支持及应用基础运行功能，我们会收集和使用以下信息：（4）本地日志查看 场景描述：当您进入“日志详情”页面时。收集信息：应用会读取存储在设备内部的应用运行日志。处理方式：仅本地展示：数据直接从本地文件系统读取并渲染至屏幕供您查看，不进行任何网络传输或云端存储。"
+  },
+  {
+    "input": {
+      "id": "FLOW_GIST_UPLOAD_POTENTIAL",
+      "data_type": "Device/App Logs & AppUUID",
+      "description": "Feature to update/upload local app log files to a Gitee Gist repository (functionality present in code).",
+      "flow_steps": [
+        {
+          "step": "Trigger (Defined Function)",
+          "function": "Feedback.struct.Feedback.updateFile",
+          "file": "entry/src/main/ets/pages/Feedback.ets",
+          "code": "let logName = StringUtil.dateFormat(new Date(), \"HHmmss.fff\");",
+          "details": "Prepares the log name and content for upload."
+        },
+        {
+          "step": "Source (Log Content)",
+          "function": "Feedback.struct.Feedback.updateFile",
+          "file": "entry/src/main/ets/pages/Feedback.ets",
+          "code": "message: `update file ${logName}.txt \n by uuid: ${this.appUuid}`,",
+          "details": "Bundles the log content and the user's App UUID."
+        },
+        {
+          "step": "Sink (Network Transmission)",
+          "function": "GistClient.post",
+          "file": "entry/src/main/ets/network/GistClient.ts",
+          "code": "return this.request({ ...config, method: 'post', url, data })",
+          "details": "Sends the data to Gitee API."
+        }
+      ]
+    },
+    "output": "为了向您提供稳定的视频搜索服务、故障排查支持及应用基础运行功能，我们会收集和使用以下信息：（1）应用实例标识与故障分析 场景描述：当您首次启动应用或触发“日志反馈”功能时。收集信息：为了唯一识别您的设备上的本应用实例以便进行统计分析或故障定位，我们会生成并存储一个随机的应用实例唯一标识符 (App UUID)，这属于敏感个人信息。同时，在您主动选择上传日志时，我们会收集应用运行日志。目的与必要性：App UUID是区分不同用户会话、追踪特定设备故障问题的关键标识。若不生成该标识，我们将无法将错误日志与特定实例关联，导致无法有效排查崩溃或异常问题。处理方式与第三方说明：本地存储：App UUID在本地生成后，通过加密方式存储在设备的持久化存储区（PersistentStorage），仅在应用内部使用。云端上传（仅当您主动反馈时）：当您点击“反馈”按钮时，我们会将当前的运行日志与上述App UUID打包，上传至第三方代码托管平台（Gitee Gist）供开发者分析。除此之外，我们不会主动上传您的日志信息。"
+  },
+  {
+    "input": {
+      "permission_type": "基础功能与数据处理相关权限",
+      "description": "All functions are implemented via system basic capability interfaces or app sandbox file access, no dangerous permissions are required.",
+      "supplementary_note": "Network-dependent functions require network access (basic device capability), log upload is optional and user-initiated."
+    },
+    "output": "设备权限调用说明 关于基础功能与数据处理的权限声明：系统权限调用情况：无需申请危险权限：本应用中涉及的“应用标识生成”、“网络状态监测”、“版本信息获取”、“本地日志读取”及“搜索功能”，均是通过调用鸿蒙系统的基础能力接口或访问应用沙箱内文件实现的。非危险权限范畴：上述操作不涉及安卓/鸿蒙定义的标准“危险权限”（如位置、相机、麦克风、通讯录、短信、存储空间等），因此不会触发系统的权限授权弹窗。网络基础能力：搜索与日志上传功能依赖设备的网络连接能力，这是智能终端的基础功能，无需单独申请权限，但需要您在系统设置中保持网络开启。拒绝后果说明：由于本应用的核心功能不依赖用户授予的“危险权限”，因此不存在因拒绝授权而导致应用无法使用的情况。功能影响提示：若您在系统层面关闭了网络连接，您将无法使用视频搜索功能，也无法上传日志反馈，但这不影响您查看本地已缓存的内容或使用其他离线功能。若您选择不参与“日志反馈”，仅意味着开发者可能难以定位您遇到的特定故障，不影响应用的正常使用。"
+  }
+],
+[
+  {
+    "input": {
+      "id": "FLOW_USER_LOGIN_STATUS_STORAGE",
+      "data_type": "User Authentication Status",
+      "description": "User login status is stored locally and checked before network requests.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "TestPage.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/test/TestPage.ets",
+          "code": "StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+          "details": "User triggers a simulated login action which stores the login status."
+        },
+        {
+          "step": "Data Storage",
+          "function": "StorageUtils.put",
+          "file": "entry/src/main/ets/utils/StorageUtils.ets",
+          "code": "await preferences.put(key, value)",
+          "details": "Login status is persisted to local preferences."
+        },
+        {
+          "step": "Data Access",
+          "function": "axiosClient.interceptorHooks.requestInterceptor",
+          "file": "entry/src/main/ets/http/AxiosRequest.ets",
+          "code": "let hasLogin = await StorageUtils.get(StorageKeys.USER_LOGIN, false)",
+          "details": "Network client retrieves login status to validate authentication state."
+        },
+        {
+          "step": "Sink (Log)",
+          "function": "axiosClient.interceptorHooks.requestInterceptor",
+          "file": "entry/src/main/ets/http/AxiosRequest.ets",
+          "code": "LogUtils.debug('网络请求Request 登录状态校验>>>', `${hasLogin.toString()}`);",
+          "details": "The sensitive authentication status is written to the system log."
+        }
+      ]
+    },
+    "output": "为了向您提供账号登录状态保持、个性化展示及基础网络服务，我们会收集和使用以下信息：（1）用户登录状态管理 场景描述：当您执行登录操作（含模拟登录测试）或再次打开应用时。收集信息：为了识别您的登录身份并维持会话状态，我们会收集您的登录状态标识。该信息属于一般个人信息。目的与必要性：登录状态是判断您是否已授权访问受限内容（如个人中心、特定新闻）的唯一依据。若不保存此状态，您每次打开应用都需重新登录，严重影响使用体验。处理方式说明：本地加密存储：我们将您的登录状态标识通过鸿蒙系统的 Preferences（偏好设置） 组件加密存储在您的设备本地。安全承诺：该数据仅用于本地身份校验，不会明文记录在系统日志中，也不会直接上传至云端服务器（仅在校验通过后由服务端下发新的Token）。"
+  },
+  {
+    "input": {
+      "id": "FLOW_USER_INFO_STORAGE_AND_DISPLAY",
+      "data_type": "User Personal Information",
+      "description": "User information is stored locally and retrieved for display/debugging.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "TestPage.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/test/TestPage.ets",
+          "code": "StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+          "details": "User triggers an action that stores user profile information."
+        },
+        {
+          "step": "Data Storage",
+          "function": "StorageUtils.put",
+          "file": "entry/src/main/ets/utils/StorageUtils.ets",
+          "code": "await preferences.put(key, value)",
+          "details": "User info is persisted to local preferences."
+        },
+        {
+          "step": "Data Access",
+          "function": "MinePage.itemBuilder.onClick",
+          "file": "entry/src/main/ets/pages/mine/MinePage.ets",
+          "code": "StorageUtils.get(StorageKeys.USER_INFO_KEY, \"\").then(result => {",
+          "details": "Application retrieves user info from storage."
+        },
+        {
+          "step": "Sink (Log)",
+          "function": "MinePage.itemBuilder.onClick",
+          "file": "entry/src/main/ets/pages/mine/MinePage.ets",
+          "code": "LogUtils.debug(`测试Storage>>>>>>${result}`)",
+          "details": "User information is written to the system log for debugging purposes."
+        }
+      ]
+    },
+    "output": "为了向您提供账号登录状态保持、个性化展示及基础网络服务，我们会收集和使用以下信息：（2）用户个人信息展示（昵称等） 场景描述：当您进入“我的”页面或进行个人资料设置时。收集信息：为了向您展示个性化的欢迎语或头像，我们会收集您设置或输入的用户昵称。该信息属于一般个人信息。目的与必要性：昵称是区分不同用户、提供个性化服务的基础信息。若不收集，应用无法在界面上显示您的专属身份标识。处理方式说明：本地加密存储：您的昵称信息将通过 Preferences 组件加密存储在设备本地，仅在您主动点击查看时读取并展示。数据安全：我们承诺不将您的昵称等个人敏感信息明文输出到系统调试日志（HiLog）中，防止被其他应用恶意读取。所有本地存储数据均受到系统沙箱机制的保护。"
+  },
+  {
+    "input": {
+      "id": "FLOW_NETWORK_DATA_LOGGING",
+      "data_type": "Network Request/Response Data (Potentially Sensitive)",
+      "description": "Full network request payloads and responses are logged, effectively leaking any sensitive data transmitted.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Any API Call",
+          "file": "entry/src/main/ets/http/apiService.ets",
+          "code": "return axiosClient.get<HomeModel>(...",
+          "details": "Application initiates a network request (e.g., fetching home list)."
+        },
+        {
+          "step": "Data Processing",
+          "function": "axiosClient.interceptorHooks.requestInterceptor",
+          "file": "entry/src/main/ets/http/AxiosRequest.ets",
+          "code": "LogUtils.debug('网络请求Request Data:', `${JsonUtils.stringify(config.data)}`);",
+          "details": "Request payload (which may contain sensitive info) is stringified."
+        },
+        {
+          "step": "Sink (Log - Request)",
+          "function": "LogUtils.debug",
+          "file": "entry/src/main/ets/utils/LogUtils.ts",
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "details": "Request data is written to the system hiLog."
+        },
+        {
+          "step": "Data Processing",
+          "function": "axiosClient.interceptorHooks.responseInterceptor",
+          "file": "entry/src/main/ets/http/AxiosRequest.ets",
+          "code": "LogUtils.debug('网络请求响应Response:', `\\n${JsonUtils.stringify(response.data)}`);",
+          "details": "Response payload (which may contain user data) is stringified."
+        },
+        {
+          "step": "Sink (Log - Response)",
+          "function": "LogUtils.debug",
+          "file": "entry/src/main/ets/utils/LogUtils.ts",
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "details": "Response data is written to the system hiLog."
+        }
+      ]
+    },
+    "output": "为了向您提供账号登录状态保持、个性化展示及基础网络服务，我们会收集和使用以下信息：（3）网络通信数据处理 场景描述：当您使用需要联网的功能（如刷新列表、提交表单）时。收集信息：为了完成业务请求，应用会处理必要的网络请求参数及响应数据。若其中包含您的个人敏感信息（如身份证号、金融账号等），我们将对其进行严格保护。目的与必要性：网络数据交互是实现应用核心功能（如获取新闻、同步状态）的基础。处理方式与安全措施：传输加密：所有网络数据均通过 HTTPS 加密通道传输，防止被窃听或篡改。最小化日志记录：为了保障您的数据安全，我们严格禁止在系统日志中记录完整的网络请求载荷（Payload）和响应内容（Response），特别是涉及个人敏感信息的字段。仅在发生错误时记录脱敏后的错误码，确保您的隐私数据不被泄露。"
+  },
+  {
+    "input": {
+      "permission_type": "本地存储与网络功能相关权限",
+      "description": "All functions rely on system Preferences interface and Network Kit, no dangerous permissions are required.",
+      "supplementary_note": "Local data is protected by sandbox mechanism, network data is transmitted via HTTPS encryption."
+    },
+    "output": "设备权限调用说明 关于本地存储与网络功能的权限声明：系统权限调用情况：无需申请危险权限：本应用中涉及的“登录状态保存”、“用户信息存储”及“网络通信”功能，主要依赖鸿蒙系统的 Preferences（首选项） 接口和 Network Kit（网络能力）。非危险权限范畴：上述操作属于应用内部数据存储和基础网络通信，不涉及安卓/鸿蒙定义的标准“危险权限”（如位置、相机、麦克风、通讯录、短信、读写外部存储空间等）。因此，不会触发系统的权限授权弹窗。沙箱机制：所有本地存储的数据（Preferences）均保存在应用的私有沙箱目录中，其他应用无法访问，无需额外权限控制。拒绝后果说明：由于本功能不依赖用户授予的“危险权限”，因此不存在因拒绝授权而导致功能不可用的情况。功能影响提示：若您在系统设置中关闭了网络连接，您将无法进行登录验证，也无法同步或更新用户信息，但已本地缓存的登录状态和昵称仍可正常显示。若应用内部存储出现异常（如沙箱损坏），可能导致登录状态丢失，需重新登录，但这与系统权限无关。"
+  }
+],
+[
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_MARKET_NAME",
+      "data_type": "Device Hardware Info (Market Name)",
+      "description": "Retrieval of the device's market name for display on the hardware information page.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.onPageShow",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.getDeviceInfo()",
+          "details": "Page lifecycle event triggers device information gathering."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.marketName = deviceInfo.marketName",
+          "details": "Application calls 'deviceInfo.marketName' to get the device marketing name."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text(this.marketName)",
+          "details": "The device market name is displayed on the screen."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_OS_VERSION",
+      "data_type": "Device System Info (OS Version)",
+      "description": "Retrieval of the operating system full name for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "details": "Application accesses 'deviceInfo.osFullName' to get the OS version string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text('系统版本：' + this.osFullName)",
+          "details": "The OS version is rendered in the UI."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_SDK_VERSION",
+      "data_type": "Device System Info (SDK API Version)",
+      "description": "Retrieval of the SDK API version for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "details": "Application accesses 'deviceInfo.sdkApiVersion'."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text('API 版本：' + this.sdkApiVersion)",
+          "details": "The SDK version is rendered in the UI."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_DEVICE_TYPE",
+      "data_type": "Device Hardware Info (Device Type)",
+      "description": "Retrieval of the device type (e.g., phone, tablet) for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "details": "Application accesses 'deviceInfo.deviceType'."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text('设备类型：' + this.deviceType)",
+          "details": "The device type is displayed on the screen."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_UPTIME",
+      "data_type": "System Status (Uptime)",
+      "description": "Retrieval of the system uptime for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.uptime = process.uptime()",
+          "details": "Application calls 'process.uptime()' to get system running time."
+        },
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "dayjs.duration(this.uptime, 'seconds').format('D天H时mm分')",
+          "details": "Uptime seconds are formatted into a human-readable duration string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '运行时间', value: ... })",
+          "details": "Formatted uptime is displayed in a list row."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_NETWORK_TYPE",
+      "data_type": "Network Information (Connection Type)",
+      "description": "Detection of the active network connection type (Wifi/Cellular/Ethernet).",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionNetBearType",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.getConnectionNetBearType()",
+          "details": "Called during page initialization to check network status."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionNetBearType",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "const netCapabilities = connection.getNetCapabilitiesSync(defaultNet)",
+          "details": "Retrieves network capabilities to determine bearer type."
+        },
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionNetBearType",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "if (...includes(connection.NetBearType.BEARER_WIFI)) { this.netBearType = 'WIFI网络' }",
+          "details": "Raw bearer type is mapped to a user-friendly string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '网络类型', value: this.netBearType })",
+          "details": "Network type is displayed on the UI."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_IP_ADDRESS",
+      "data_type": "Network Information (IP Address)",
+      "description": "Retrieval and display of the device's local IP address.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionProperties",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.getConnectionProperties()",
+          "details": "Called during page initialization."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionProperties",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "const connectionProperties = connection.getConnectionPropertiesSync(defaultNet)",
+          "details": "Retrieves connection properties including link addresses."
+        },
+        {
+          "step": "Sensitive Access",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionProperties",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.IPAddress = linkAddress.address.address",
+          "details": "Extracts the IP address string from the link address object."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: 'IP地址', value: this.IPAddress })",
+          "details": "Local IP address is displayed to the user."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_SUBNET_MASK",
+      "data_type": "Network Information (Subnet Mask)",
+      "description": "Calculation and display of the network subnet mask.",
+      "flow_steps": [
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.calculateSubnetMask",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.subnetMask = this.calculateSubnetMask(linkAddress.prefixLength)",
+          "details": "Calculates subnet mask string from the network prefix length."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '子网掩码', value: this.subnetMask })",
+          "details": "Subnet mask is displayed on the UI."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_BROADCAST_ADDRESS",
+      "data_type": "Network Information (Broadcast Address)",
+      "description": "Calculation and display of the network broadcast address.",
+      "flow_steps": [
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.calculateBroadcastAddress",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.broadcastAddress = this.calculateBroadcastAddress(this.IPAddress, this.subnetMask)",
+          "details": "Derives broadcast address from IP address and subnet mask."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '广播地址', value: this.broadcastAddress })",
+          "details": "Broadcast address is displayed on the UI."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_SCREEN_METRICS",
+      "data_type": "Device Hardware Info (Screen Configuration)",
+      "description": "Retrieval of screen metrics (resolution, refresh rate, density).",
+      "flow_steps": [
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getScreenInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "const ScreenInfo = display.getDefaultDisplaySync()",
+          "details": "Retrieves default display attributes."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '屏幕分辨率（像素）', value: `${this.displayHeight}x${this.displayWidth}` })",
+          "details": "Screen resolution is displayed."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '屏幕刷新率（Hz）', value: this.displayRefreshRate })",
+          "details": "Refresh rate is displayed."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_HARDWARE_INFO_SENSOR_LIST",
+      "data_type": "Device Hardware Info (Sensors)",
+      "description": "Retrieving the list of all sensors available on the device.",
+      "flow_steps": [
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getSenorIdArr",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "let SensorList = await sensor.getSensorList()",
+          "details": "Calls Sensor Service Kit to get list of supported sensors."
+        },
+        {
+          "step": "Intermediate (Memory)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getSenorIdArr",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.supportSensorIds = SensorList.map<number>(item => item.sensorId)",
+          "details": "Maps full sensor objects to a list of IDs stored in memory state."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（1）设备硬件与网络状态展示 场景描述：当您进入“设备信息”页面时。收集信息：为了向您展示当前设备的运行状态，我们会读取您的设备市场名称、系统版本、屏幕参数、传感器列表以及网络连接类型。同时，为了显示详细的网络配置，我们会获取您的本地IP地址、子网掩码和广播地址。其中，本地IP地址属于敏感个人信息。目的与必要性：这些信息是诊断设备状态、确认网络环境的基础。若不读取这些数据，应用无法向您展示准确的设备详情和网络配置信息。处理方式说明：仅本地展示：所有上述信息均直接从系统底层接口读取并渲染在屏幕上，不进行存储，也不上传至云端或发送给任何第三方。数据安全：由于数据仅在内存中短暂存在并用于界面渲染，不存在泄露风险。"
+  },
+  {
+    "input": {
+      "id": "FLOW_CHAT_VOICE_RECORDING",
+      "data_type": "Health/Biometric Data (Voice Recording)",
+      "description": "Capturing user voice input via microphone, saving to disk, and displaying it as a chat message.",
+      "flow_steps": [
+        {
+          "step": "Trigger (User Input)",
+          "function": "ChatPage.struct.ChatPage.onPressTalk",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.onStartRecord()",
+          "details": "User interaction (TouchType.Down) triggers recording start."
+        },
+        {
+          "step": "Source (Microphone)",
+          "function": "AudioCaptureManager.startRecord",
+          "file": "entry/src/main/ets/utils/AudioCapturerManager.ets",
+          "code": "AudioCaptureManager.audioCapturer?.start();",
+          "details": "AudioCapturer API is invoked to begin capturing audio data."
+        },
+        {
+          "step": "Data Persistence (File Write)",
+          "function": "AudioCaptureManager.startRecord.readDataCallback",
+          "file": "entry/src/main/ets/utils/AudioCapturerManager.ets",
+          "code": "fs.writeSync(file.fd, buffer, options);",
+          "details": "Audio buffer data is written synchronously to a WAV file in the app fs."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "ChatPage.struct.ChatPage.postVoice",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.chatList.push(voiceChat)",
+          "details": "The created audio file is referenced in a chat bubble in the UI list."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（2）语音聊天与录音功能 场景描述：当您在聊天界面长按“说话”按钮发送语音消息时。收集信息：为了实现语音沟通，我们会通过麦克风收集您的语音录音。该信息包含您的声纹特征，属于敏感个人信息。目的与必要性：语音数据是实现语音消息功能的唯一内容来源。若不收集，您将无法发送语音消息。处理方式说明：本地加密存储：录制的音频数据将被保存为WAV格式文件，存储在您设备的应用沙箱目录中。我们不会将该录音文件上传至服务器，仅限您在本地聊天历史中查看和播放。安全措施：文件存储在受系统保护的私有目录，其他应用无法访问。"
+  },
+  {
+    "input": {
+      "id": "FLOW_CHAT_SPEECH_RECOGNITION",
+      "data_type": "Biometric Data (Voice to Text)",
+      "description": "Real-time processing of user voice input into text using the Speech Recognizer Manager.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "ChatPage.struct.ChatPage.onPressTalk",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.onStartSpeechRecognize()",
+          "details": "Speech recognition is initialized simultaneously with recording."
+        },
+        {
+          "step": "Source (Speech Engine)",
+          "function": "SpeechRecognizerManager.init",
+          "file": "entry/src/main/ets/utils/SpeechRecognizerManager.ets",
+          "code": "SpeechRecognizerManager.asrEngine = await speechRecognizer.createEngine(...)",
+          "details": "Initializes the ASR (Automatic Speech Recognition) engine."
+        },
+        {
+          "step": "Data Processing",
+          "function": "ChatPage.struct.ChatPage.onStartSpeechRecognize",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.voiceToText = sentence + res.result",
+          "details": "The recognized text string is updated in real-time to the component state."
+        },
+        {
+          "step": "Sink (UI Preview)",
+          "function": "ChatPage.struct.ChatPage.buildRecordVoiceView",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "Text(this.voiceToText)",
+          "details": "Draft text is displayed to the user during the recording process."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（3）语音转文字识别（ASR） 场景描述：当您使用语音输入功能时，应用会实时将您的语音转换为文本草稿供您确认。收集信息：在此过程中，我们会处理您的语音生物特征及转换后的文本内容。这些均属于敏感个人信息。目的与必要性：实时转换是为了让您在发送前确认语音识别的准确性，提升输入体验。处理方式说明：本地处理：我们调用鸿蒙系统自带的语音识别引擎（System ASR Kit）在设备本地完成识别过程。您的语音数据和识别结果不会离开您的设备，也不会被上传至云端进行分析。"
+  },
+  {
+    "input": {
+      "id": "FLOW_CHAT_TEXT_INPUT",
+      "data_type": "User Input (Chat Message)",
+      "description": "Handling user text input in the chat interface.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "ChatPage.struct.ChatPage.build.Row.TextArea.onChange",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "TextArea({ text: $$this.chatText ... })",
+          "details": "Two-way binding updates the state variable as the user types."
+        },
+        {
+          "step": "Intermediate (Memory Buffer)",
+          "function": "ChatPage.struct.ChatPage.sendTextMsg",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.dataList.push({ ... msg: this.chatText })",
+          "details": "User text is moved from input buffer to the chat history list in memory."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "ListChatContentRightItem.struct.ListChatContentRightItem.build",
+          "file": "entry/src/main/ets/component/ListChatContentRightItem.ets",
+          "code": "Text(this.data?.msg)",
+          "details": "The user's message is rendered in a chat bubble."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（5）文本聊天与搜索 场景描述：当您在聊天框输入文字或在搜索框输入关键词时。收集信息：我们会暂存您输入的聊天文本内容和搜索关键词。这些属于一般个人信息。目的与必要性：这是实现即时通讯和搜索反馈功能的基础。处理方式说明：仅本地展示/内存暂存：文本数据仅存在于应用运行内存中用于界面渲染，或作为本地聊天列表的一部分展示。当前版本不涉及云端同步或日志记录。"
+  },
+  {
+    "input": {
+      "id": "FLOW_PROFILE_IMAGE_GALLERY_ACCESS",
+      "data_type": "User Content (Photos)",
+      "description": "User selects a photo from the system gallery for their profile.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Mine.struct.Mine.build.Column.Row.Image.onClick",
+          "file": "entry/src/main/ets/pages/mine/Mine.ets",
+          "code": "PhotoPickerUtils.openGallery(...)",
+          "details": "User taps their avatar request to change it."
+        },
+        {
+          "step": "Permissions Check",
+          "function": "PhotoPickerUtils.openGallery",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+          "details": "App requests read/write access to media files."
+        },
+        {
+          "step": "Source (System Picker)",
+          "function": "PhotoPickerUtils.openGallery",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "photoPicker.select(PhotoSelectOptions)",
+          "details": "Invokes the system PhotoViewPicker."
+        },
+        {
+          "step": "Data Persistence (Sandbox Copy)",
+          "function": "PhotoPickerUtils.copyFileToCache",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "await fs.copyFile(file.fd, newPath)",
+          "details": "Detailed file content is copied from the public URI to the app's cache directory."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "Mine.struct.Mine.build",
+          "file": "entry/src/main/ets/pages/mine/Mine.ets",
+          "code": "Image(this.imgPath ? this.imgPath : ...)",
+          "details": "The selected image is displayed in the profile view."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（4）个人头像设置（相册选择） 场景描述：当您点击“我的”页面头像区域并选择从相册更换图片时。收集信息：为了设置您的个性化头像，我们会读取并复制您选择的用户照片。该信息属于敏感个人信息。目的与必要性：照片是设置头像的必要素材。若不访问相册，您无法选择图片作为头像。处理方式说明：本地加密存储：您选中的图片会被复制到应用的本地缓存目录中供界面显示。原图仍保留在您的相册中，应用仅持有副本，且不上传该图片至任何服务器。"
+  },
+  {
+    "input": {
+      "id": "FLOW_SEARCH_QUERY_HANDLING",
+      "data_type": "User Input (Search Keywords)",
+      "description": "Processing of search queries entered by the user.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "SearchPage.struct.SearchPage.build.TextInput.onChange",
+          "file": "entry/src/main/ets/pages/search/SearchPage.ets",   
+          "code": "this.searchText = value",
+          "details": "Input text is captured into state."
+        },
+        {
+          "step": "Sink (Toast Feedback)",
+          "function": "SearchPage.struct.SearchPage.build.TextInput.onSubmit",
+          "file": "entry/src/main/ets/pages/search/SearchPage.ets",
+          "code": "prompt.showToast({ message: this.searchText })",
+          "details": "Search query is echoed back to the user (simulation of search action)."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（5）文本聊天与搜索 场景描述：当您在聊天框输入文字或在搜索框输入关键词时。收集信息：我们会暂存您输入的聊天文本内容和搜索关键词。这些属于一般个人信息。目的与必要性：这是实现即时通讯和搜索反馈功能的基础。处理方式说明：仅本地展示/内存暂存：文本数据仅存在于应用运行内存中用于界面渲染，或作为本地聊天列表的一部分展示。当前版本不涉及云端同步或日志记录。"
+  },
+  {
+    "input": {
+      "id": "FLOW_CAMERA_PHOTO_CAPTURE_POTENTIAL",
+      "data_type": "User Content (Photos via Camera)",
+      "description": "Logic implemented to capture photos using the system camera. (Note: This function is fully implemented but currently NOT wired to any UI button in the app).",
+      "flow_steps": [
+        {
+          "step": "Trigger (Potential)",
+          "function": "PhotoPickerUtils.openCamera",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "static async openCamera(onSuccess: (uri: string) => void, onFailed: (error: string) => void)",
+          "details": "The static method entry point for camera operations."
+        },
+        {
+          "step": "Permissions Check",
+          "function": "PhotoPickerUtils.openCamera",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "const granted = await PermissionUtils.request(['ohos.permission.CAMERA'])",
+          "details": "Applicaton explicitly requests 'ohos.permission.CAMERA' authorization from the user."
+        },
+        {
+          "step": "Source (System Camera)",
+          "function": "PhotoPickerUtils.openCamera",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "await cameraPicker.pick(getContext(), [cameraPicker.PickerMediaType.PHOTO, ...], pickerProfile)",
+          "details": "Invokes the HarmonyOS system camera picker interface to capture content."
+        },
+        {
+          "step": "Sink (Callback Return)",
+          "function": "PhotoPickerUtils.openCamera",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "onSuccess(pickerResult.resultUri)",
+          "details": "The URI of the captured photo is returned to the caller via callback."
+        }
+      ]
+    },
+    "output": "为了向您提供设备信息查询、即时通讯、语音交互及个性化头像设置服务，我们会收集和使用以下信息：（6）相机拍照功能（预留） 场景描述：若未来启用相机拍照入口，当您触发拍照时。收集信息：我们将调用相机拍摄照片。该信息属于敏感个人信息。处理方式说明：本地处理：拍摄的照片将通过系统相机接口获取，仅用于本地展示或头像设置，默认不上传。"
+  },
+  {
+    "input": {
+      "permission_type": "设备信息与即时通讯功能相关权限",
+      "description": "App requests microphone, media read/write, and camera permissions (reserved) as needed, all follow the principle of least privilege.",
+      "supplementary_note": "All permissions are requested only when the corresponding function is triggered, and refusal does not affect core functions."
+    },
+    "output": "设备权限调用说明 本应用在提供上述功能时，可能会请求以下系统权限。我们严格遵守“最小必要”原则，仅在特定场景下申请，且您有权拒绝。（1）麦克风权限（ohos.permission.MICROPHONE）触发时机：当您进入聊天页面并长按“说话”按钮准备发送语音消息，或使用语音转文字功能时。用途：用于录制您的语音声音，以便生成语音消息文件或进行本地语音识别。拒绝后果：若您拒绝授权，您将无法使用语音聊天和语音转文字功能，但您仍然可以正常使用文本聊天、浏览设备信息等其他所有功能。（2）媒体读写权限（ohos.permission.READ_MEDIA / ohos.permission.WRITE_MEDIA）触发时机：当您点击“我的”页面头像，并选择从系统相册中选择图片作为新头像时。用途：用于读取您选中的照片文件，并将其复制到应用本地缓存中以进行展示。拒绝后果：若您拒绝授权，您将无法从相册选择图片来更换头像，但您可以继续使用默认头像或使用文本功能，不影响应用的其他核心功能。（3）相机权限（ohos.permission.CAMERA）触发时机：当前版本暂未在界面绑定入口。若未来您主动触发“拍照”功能时，应用将申请此权限。用途：用于调用系统相机拍摄照片。拒绝后果：若您拒绝授权，您将无法使用拍照功能，但不影响应用的其他功能。"
+  }
+]
+
+
+
+]
