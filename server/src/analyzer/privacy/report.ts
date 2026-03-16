@@ -23,6 +23,13 @@ import type {
 } from './types.js';
 
 type LlmConfig = { provider: string; apiKey: string; model: string };
+type ReportFeatureInput = {
+  featureId: string;
+  featureTitle?: string;
+  pageTitle?: string;
+  facts: FeaturePrivacyFactsContent;
+  dataflows: DataflowsResult;
+};
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return Boolean(v) && typeof v === 'object' && !Array.isArray(v);
@@ -48,6 +55,111 @@ function uniq(arr: string[]): string[] {
     out.push(item);
   }
   return out;
+}
+
+function hasCjk(text: string): boolean {
+  return /[\u4e00-\u9fff]/u.test(text);
+}
+
+function normalizeScenarioKey(text: string): string {
+  return cleanText(text).replaceAll(/[“”"'`、，,。.!！？?；;：:\-_\s]+/gu, '').toLowerCase();
+}
+
+function isGenericScenarioText(text: string): boolean {
+  const key = normalizeScenarioKey(text);
+  if (!key) return true;
+  return new Set([
+    '功能入口',
+    '页面主布局容器',
+    '页面展示与交互',
+    '组件展示与交互',
+    '页面展示时',
+    '组件展示时',
+    '相关功能处理过程中',
+    '相关功能处理时',
+    '相关操作时',
+  ]).has(key);
+}
+
+function isFrameworkishScenario(text: string): boolean {
+  return /(ArkUI|UIAbility|WindowStage|生命周期函数|\bbuild\b|\bonDestroy\b|\bonForeground\b|\bonBackground\b|\bonWindowStage)/u.test(text);
+}
+
+function isEnglishLikeScenario(text: string): boolean {
+  const cleaned = cleanText(text);
+  if (!cleaned) return false;
+  if (!hasCjk(cleaned) && /[A-Za-z]/u.test(cleaned)) return true;
+
+  const englishWords = cleaned.match(/[A-Za-z][A-Za-z0-9-]*/gu) ?? [];
+  const cjkChars = cleaned.match(/[\u4e00-\u9fff]/gu) ?? [];
+  return englishWords.length >= 4 && cjkChars.length <= 2;
+}
+
+function isLowQualityScenario(text: string): boolean {
+  const cleaned = cleanText(text);
+  if (!cleaned) return true;
+  if (isFrameworkishScenario(cleaned)) return true;
+  if (isGenericScenarioText(cleaned)) return true;
+  if (isEnglishLikeScenario(cleaned)) return true;
+  return false;
+}
+
+function inferChineseActionFromApi(args: { apiKey?: string; description?: string }): string {
+  const apiKey = cleanText(args.apiKey).toLowerCase();
+  const desc = cleanText(args.description).toLowerCase();
+
+  if (apiKey.includes('hasdefaultnet') || desc.includes('default data network')) return '检查网络连接状态';
+  if (apiKey.includes('startbackgroundrunning') || desc.includes('start running in background')) return '请求后台持续运行';
+  if (apiKey.includes('stopbackgroundrunning') || desc.includes('stop running in background')) return '停止后台持续运行';
+  if (apiKey.includes('requestpermissionsfromuser') || desc.includes('permissions from the user')) return '请求系统权限';
+  if (desc.includes('location changed')) return '监听位置变化';
+  if (apiKey.includes('@ohos.sensor.on') || desc.includes('accelerometer') || desc.includes('sensor data')) return '监听传感器数据';
+  if (apiKey.includes('pushurl') || apiKey.includes('replaceurl') || desc.includes('页面跳转') || desc.includes('jump page'))
+    return '页面跳转';
+  if (desc.includes('location')) return '获取或监听位置信息';
+  if (desc.includes('network')) return '检查网络状态';
+  if (/^subscribe\b/u.test(desc)) return '订阅系统事件';
+  if (/^unsubscribe\b/u.test(desc)) return '取消订阅系统事件';
+  if (/^check(?:s)?\b/u.test(desc)) return '检查系统状态';
+  if (/^load(?:s)?\b/u.test(desc)) return '加载相关内容';
+  if (/^start(?:s)?\b/u.test(desc)) return '启动相关功能';
+  if (/^stop(?:s)?\b/u.test(desc)) return '停止相关功能';
+  return '';
+}
+
+function buildChineseScenarioFromContext(args: {
+  featureId: string;
+  featureTitle?: string;
+  pageTitle?: string;
+  apiKey?: string;
+  description?: string;
+}): string {
+  const featureTitle = cleanText(args.featureTitle);
+  if (featureTitle && !isLowQualityScenario(featureTitle)) return featureTitle;
+
+  const pageTitle = cleanText(args.pageTitle);
+  const action = inferChineseActionFromApi({ apiKey: args.apiKey, description: args.description });
+
+  if (pageTitle && !isLowQualityScenario(pageTitle)) {
+    if (action) return `${pageTitle}${action}时`;
+    return `${pageTitle}相关功能处理时`;
+  }
+  if (action) return `${action}时`;
+  return '相关功能处理过程中';
+}
+
+function normalizeScenarioForReport(raw: unknown, feature: { featureId: string; featureTitle?: string; pageTitle?: string }): string {
+  const scenario = cleanText(raw);
+  if (scenario && !isLowQualityScenario(scenario)) return scenario;
+  return buildChineseScenarioFromContext(feature);
+}
+
+function shouldReplaceScenario(current: unknown, next: unknown): boolean {
+  const currentText = cleanText(current);
+  const nextText = cleanText(next);
+  if (!nextText || isUnknownText(nextText)) return false;
+  if (!currentText || isUnknownText(currentText)) return true;
+  return isLowQualityScenario(currentText) && !isLowQualityScenario(nextText);
 }
 
 function asPagesIndex(raw: unknown): PagesIndex {
@@ -242,6 +354,7 @@ function inferBusinessScenarioFromSinkDescription(desc: string): string {
 function derivePermissionPracticesFromCsv(args: {
   featureId: string;
   featureTitle: string;
+  pageTitle?: string;
   dataflows: DataflowsResult;
   sinksByCallsite: Map<string, SinkRecord[]>;
   csvPermissions: Map<string, string[]>;
@@ -276,7 +389,14 @@ function derivePermissionPracticesFromCsv(args: {
         if (perms.length === 0) continue;
 
         const desc = cleanText((s as any)['API功能描述']);
-        const scenario = inferBusinessScenarioFromSinkDescription(desc);
+        const rawScenario = inferBusinessScenarioFromSinkDescription(desc);
+        const scenario = buildChineseScenarioFromContext({
+          featureId: args.featureId,
+          featureTitle: args.featureTitle,
+          pageTitle: args.pageTitle,
+          apiKey,
+          description: rawScenario || desc,
+        });
 
         for (const permNameRaw of perms) {
           const permissionName = normalizePermissionName(permNameRaw);
@@ -302,7 +422,13 @@ function derivePermissionPracticesFromCsv(args: {
     if (refs.length === 0) continue;
 
     const scenario = Array.from(item.scenarios)[0] ?? '';
-    const businessScenario = scenario || args.featureTitle || args.featureId;
+    const businessScenario =
+      scenario ||
+      buildChineseScenarioFromContext({
+        featureId: args.featureId,
+        featureTitle: args.featureTitle,
+        pageTitle: args.pageTitle,
+      });
     out.push({
       permissionName: item.permissionName,
       businessScenario,
@@ -347,7 +473,7 @@ function mergePermissionPractices(base: PrivacyPermissionPractice[], extra: Priv
     }
 
     existing.refs = uniqRefs([...(existing.refs ?? []), ...refs]);
-    if (isUnknownText(existing.businessScenario) && !isUnknownText(p.businessScenario)) existing.businessScenario = cleanText(p.businessScenario);
+    if (shouldReplaceScenario(existing.businessScenario, p.businessScenario)) existing.businessScenario = cleanText(p.businessScenario);
     if (isUnknownText(existing.permissionPurpose) && !isUnknownText(p.permissionPurpose)) existing.permissionPurpose = cleanText(p.permissionPurpose);
     if (isUnknownText(existing.denyImpact) && !isUnknownText(p.denyImpact)) existing.denyImpact = cleanText(p.denyImpact);
     byName.set(name, existing);
@@ -452,7 +578,7 @@ export async function generatePrivacyReportArtifacts(args: {
     const knownAppPermissions = new Set<string>([...declaredAppPermissions, ...inferredAppPermissions]);
     const emittedPermissions = new Set<string>();
 
-    const featuresForReport: Array<{ featureId: string; facts: FeaturePrivacyFactsContent; dataflows: DataflowsResult }> = [];
+    const featuresForReport: ReportFeatureInput[] = [];
 
     for (const item of featureList) {
       const pageId = item.pageId;
@@ -509,6 +635,7 @@ export async function generatePrivacyReportArtifacts(args: {
       const deterministicPerms = derivePermissionPracticesFromCsv({
         featureId,
         featureTitle: feature.title,
+        pageTitle: cleanText(item.pageEntry.description),
         dataflows,
         sinksByCallsite,
         csvPermissions,
@@ -538,7 +665,13 @@ export async function generatePrivacyReportArtifacts(args: {
       });
 
       await writeJsonFile(path.join(dirAbs, 'privacy_facts.json'), outFile);
-      featuresForReport.push({ featureId, facts, dataflows });
+      featuresForReport.push({
+        featureId,
+        featureTitle: feature.title,
+        pageTitle: cleanText(item.pageEntry.description),
+        facts,
+        dataflows,
+      });
     }
 
     const unmatchedPermissions = Array.from(knownAppPermissions)
@@ -569,7 +702,13 @@ export async function generatePrivacyReportArtifacts(args: {
         facts: syntheticFacts,
       });
       await writeJsonFile(path.join(syntheticDirAbs, 'privacy_facts.json'), outFile);
-      featuresForReport.push({ featureId, facts: syntheticFacts, dataflows: syntheticDataflows });
+      featuresForReport.push({
+        featureId,
+        featureTitle: '应用权限兜底',
+        pageTitle: '',
+        facts: syntheticFacts,
+        dataflows: syntheticDataflows,
+      });
       featureIds.push(featureId);
     }
 
@@ -684,7 +823,7 @@ function pickValidRef(
 }
 
 function deterministicPermissionSentenceTokens(args: {
-  featureId: string;
+  feature: ReportFeatureInput;
   practice: PrivacyPermissionPractice;
   perFlowIndex: Map<string, Set<string>> | undefined;
 }): PrivacyReportToken[] {
@@ -693,9 +832,15 @@ function deterministicPermissionSentenceTokens(args: {
 
   const picked = pickValidRef(args.practice.refs as Array<{ flowId: string; nodeId: string }> | undefined, args.perFlowIndex);
   if (!picked) return [];
-  const jumpTo = { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId };
+  const jumpTo = { featureId: args.feature.featureId, flowId: picked.flowId, nodeId: picked.nodeId };
 
-  const scenario = clauseText(args.practice.businessScenario);
+  const scenario = clauseText(
+    normalizeScenarioForReport(args.practice.businessScenario, {
+      featureId: args.feature.featureId,
+      featureTitle: args.feature.featureTitle,
+      pageTitle: args.feature.pageTitle,
+    }),
+  );
   const purpose = purposeClauseText(args.practice.permissionPurpose);
   const denyImpact = clauseText(args.practice.denyImpact);
   const prefix = scenario ? `在“${scenario}”场景中，我们会调用` : '我们会调用';
@@ -710,7 +855,7 @@ function deterministicPermissionSentenceTokens(args: {
 }
 
 function ensurePermissionsSectionTokens(args: {
-  featureId: string;
+  feature: ReportFeatureInput;
   facts: FeaturePrivacyFactsContent;
   perFlowIndex: Map<string, Set<string>> | undefined;
 }): PrivacyReportToken[] {
@@ -718,7 +863,11 @@ function ensurePermissionsSectionTokens(args: {
     .map((practice) => ({
       ...practice,
       permissionName: normalizePermissionName(practice.permissionName),
-      businessScenario: cleanText(practice.businessScenario) || '未识别',
+      businessScenario: normalizeScenarioForReport(practice.businessScenario, {
+        featureId: args.feature.featureId,
+        featureTitle: args.feature.featureTitle,
+        pageTitle: args.feature.pageTitle,
+      }),
       permissionPurpose: cleanText(practice.permissionPurpose) || '未识别',
       denyImpact: cleanText(practice.denyImpact) || '未识别',
       refs: Array.isArray(practice.refs) ? practice.refs : [],
@@ -730,7 +879,7 @@ function ensurePermissionsSectionTokens(args: {
   const merged: PrivacyReportToken[] = [];
   for (const practice of practices) {
     const tokens = deterministicPermissionSentenceTokens({
-      featureId: args.featureId,
+      feature: args.feature,
       practice,
       perFlowIndex: args.perFlowIndex,
     });
@@ -739,7 +888,7 @@ function ensurePermissionsSectionTokens(args: {
     for (const token of tokens) merged.push(token);
   }
 
-  if (merged.length === 0 && args.featureId === '__app_permissions') {
+  if (merged.length === 0 && args.feature.featureId === '__app_permissions') {
     const names = practices.map((practice) => practice.permissionName).filter(Boolean);
     if (names.length > 0) {
       return [
@@ -763,7 +912,7 @@ function pushEntityListTokens(out: PrivacyReportToken[], entities: PrivacyReport
 }
 
 function deterministicCollectionAndUseTokens(args: {
-  featureId: string;
+  feature: ReportFeatureInput;
   facts: FeaturePrivacyFactsContent;
   perFlowIndex: Map<string, Set<string>> | undefined;
 }): PrivacyReportToken[] {
@@ -772,7 +921,6 @@ function deterministicCollectionAndUseTokens(args: {
 
   const out: PrivacyReportToken[] = [];
   for (const practice of practices) {
-    const scenario = clauseText(practice.businessScenario);
     const dataSources = uniq((Array.isArray(practice.dataSources) ? practice.dataSources : []).map(clauseText).filter(Boolean));
 
     const entityTokens: PrivacyReportToken[] = [];
@@ -781,7 +929,10 @@ function deterministicCollectionAndUseTokens(args: {
       if (!name) continue;
       const picked = pickValidRef(dataItem?.refs as Array<{ flowId: string; nodeId: string }> | undefined, args.perFlowIndex);
       if (picked) {
-        entityTokens.push({ text: name, jumpTo: { featureId: args.featureId, flowId: picked.flowId, nodeId: picked.nodeId } });
+        entityTokens.push({
+          text: name,
+          jumpTo: { featureId: args.feature.featureId, flowId: picked.flowId, nodeId: picked.nodeId },
+        });
       } else {
         entityTokens.push({ text: name });
       }
@@ -790,6 +941,13 @@ function deterministicCollectionAndUseTokens(args: {
 
     const processingPurpose = purposeClauseText(practice.processingPurpose);
     if (out.length > 0) out.push({ text: '此外，' });
+    const scenario = clauseText(
+      normalizeScenarioForReport(practice.businessScenario, {
+        featureId: args.feature.featureId,
+        featureTitle: args.feature.featureTitle,
+        pageTitle: args.feature.pageTitle,
+      }),
+    );
     if (scenario) out.push({ text: `在“${scenario}”场景中，` });
     out.push({ text: dataSources.length > 0 ? `我们会从${dataSources.join('、')}收集` : '我们会收集' });
     pushEntityListTokens(out, entityTokens);
@@ -803,7 +961,7 @@ export async function buildPrivacyReport(args: {
   runId: string;
   appName: string;
   llm: LlmConfig;
-  features: Array<{ featureId: string; facts: FeaturePrivacyFactsContent; dataflows: DataflowsResult }>;
+  features: ReportFeatureInput[];
 }): Promise<{ report: PrivacyReportFile; text: string; warnings: string[] }> {
   const generatedAt = new Date().toISOString();
   const flowIndexes = new Map<string, Map<string, Set<string>>>();
@@ -814,7 +972,7 @@ export async function buildPrivacyReport(args: {
   const collectionAndUse: PrivacyReportSection[] = args.features.map((feature) => ({
     featureId: feature.featureId,
     tokens: deterministicCollectionAndUseTokens({
-      featureId: feature.featureId,
+      feature,
       facts: feature.facts,
       perFlowIndex: flowIndexes.get(feature.featureId),
     }),
@@ -823,7 +981,7 @@ export async function buildPrivacyReport(args: {
   const permissions: PrivacyReportSection[] = args.features.map((feature) => ({
     featureId: feature.featureId,
     tokens: ensurePermissionsSectionTokens({
-      featureId: feature.featureId,
+      feature,
       facts: feature.facts,
       perFlowIndex: flowIndexes.get(feature.featureId),
     }),

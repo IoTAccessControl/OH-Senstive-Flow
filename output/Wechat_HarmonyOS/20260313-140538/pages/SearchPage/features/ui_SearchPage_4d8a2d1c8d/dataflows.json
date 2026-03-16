@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260313-140538",
+    "generatedAt": "2026-03-13T06:53:40.438Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "SearchPage",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+        "structName": "SearchPage",
+        "line": 10,
+        "description": "搜索页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_SearchPage_4d8a2d1c8d",
+      "kind": "ui",
+      "title": "搜索页面"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 16,
+          "code": "async aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 定义，作为数据流起点，在页面即将显示时自动触发执行。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  private context = getContext(this) as common.UIAbilityContext;",
+              "  private controller: TextInputController = new TextInputController()",
+              "  private keyboardHeight: number = 0",
+              "  @State private searchText: string = ''",
+              "",
+              "  async aboutToAppear() {",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 17,
+          "code": "await window.getLastWindow(getContext(this)).then(currentWindow => {",
+          "description": "调用 window.getLastWindow 获取当前应用的主窗口对象，这是监听系统 UI 事件的前提步骤。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  private controller: TextInputController = new TextInputController()",
+              "  private keyboardHeight: number = 0",
+              "  @State private searchText: string = ''",
+              "",
+              "  async aboutToAppear() {",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 18,
+          "code": "currentWindow.on('keyboardHeightChange', (height) => {",
+          "description": "注册 'keyboardHeightChange' 事件监听器，准备接收系统发出的软键盘高度变化数据。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  private keyboardHeight: number = 0",
+              "  @State private searchText: string = ''",
+              "",
+              "  async aboutToAppear() {",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p9:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 19,
+          "code": "this.keyboardHeight = height;",
+          "description": "事件回调执行点：将系统上报的键盘高度值 (height) 赋值给组件内部状态变量 this.keyboardHeight，完成数据采集与本地暂存。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  @State private searchText: string = ''",
+              "",
+              "  async aboutToAppear() {",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }",
+              "",
+              "  onBackPress() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        },
+        {
+          "from": "p9:n3",
+          "to": "p9:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "键盘高度变化事件 (keyboardHeightChange)",
+          "窗口对象引用 (Window Object)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (当软键盘高度发生变化时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (组件状态 this.keyboardHeight)",
+          "未加密 (普通数值类型)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

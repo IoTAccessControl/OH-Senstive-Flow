@@ -229,4 +229,32 @@ describe('privacy permission alignment with app source', () => {
     const predicted = await collectPredictedPermissionsFromRun(outputDirAbs);
     expect([...predicted]).toEqual(['ohos.permission.INTERNET']);
   });
+
+  it('uses chinese permission scenarios when deterministic fallback is based on english sink descriptions', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-perm-'));
+    const { outputDirAbs, featureDirAbs } = await writeMinimalFeatureRun({
+      repoRoot,
+      appPermissions: ['ohos.permission.INTERNET'],
+      sinkApiKey: '@ohos.net.connection.hasDefaultNetSync',
+      sinkDescription: 'Checks whether the default data network is activated.',
+      dataflowNodeCode: 'const hasNet: boolean = connection.hasDefaultNetSync();',
+      featureTitle: '功能入口',
+    });
+
+    await generatePrivacyReportArtifacts({
+      repoRoot,
+      runId: 'App_run1',
+      appName: 'App',
+      outputDirAbs,
+      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3-32b' },
+    });
+
+    const facts = JSON.parse(await fs.readFile(path.join(featureDirAbs, 'privacy_facts.json'), 'utf8')) as any;
+    expect(facts.facts.permissionPractices).toHaveLength(1);
+    expect(facts.facts.permissionPractices[0]?.businessScenario).toBe('测试页检查网络连接状态时');
+
+    const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
+    expect(reportText).toContain('测试页检查网络连接状态时');
+    expect(reportText).not.toContain('Checks whether the default data network is activated.');
+  });
 });

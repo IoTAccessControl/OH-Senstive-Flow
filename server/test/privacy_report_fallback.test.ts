@@ -111,4 +111,69 @@ describe('privacy report evidence rules', () => {
     expect(permissionSection?.tokens[0]?.text).toContain('ohos.permission.INTERNET');
     expect(result.text).toContain('尚未定位到可回溯的功能点数据流');
   });
+
+  it('rewrites english scenarios to chinese context before rendering the report', async () => {
+    const result = await buildPrivacyReport({
+      runId: 'run3',
+      appName: 'App',
+      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3-32b' },
+      features: [
+        {
+          featureId: 'feature_network',
+          featureTitle: '功能入口',
+          pageTitle: '快速登录页',
+          facts: {
+            dataPractices: [
+              {
+                appName: 'App',
+                businessScenario: 'Checks whether the default data network is activated.',
+                dataSources: ['网络服务'],
+                dataItems: [{ name: '网络连接状态', refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }] }],
+                processingMethod: '读取网络状态',
+                storageMethod: '内存暂存',
+                dataRecipients: [],
+                processingPurpose: '展示当前网络状态',
+              },
+            ],
+            permissionPractices: [
+              {
+                permissionName: 'ohos.permission.GET_NETWORK_INFO',
+                businessScenario: 'Checks whether the default data network is activated.',
+                permissionPurpose: '用于检查网络状态',
+                denyImpact: '无法判断是否联网',
+                refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }],
+              },
+            ],
+          },
+          dataflows: {
+            meta: {
+              runId: 'run3',
+              generatedAt: new Date().toISOString(),
+              counts: { flows: 1, nodes: 1, edges: 0 },
+            },
+            flows: [
+              {
+                flowId: 'flow:p1',
+                pathId: 'p1',
+                nodes: [
+                  {
+                    id: 'p1:n1',
+                    filePath: 'app/main.ets',
+                    line: 10,
+                    code: 'const hasNet = connection.hasDefaultNetSync();',
+                    description: '检查网络状态',
+                    context: { startLine: 10, lines: ['const hasNet = connection.hasDefaultNetSync();'] },
+                  },
+                ],
+                edges: [],
+              },
+            ],
+          },
+        },
+      ],
+    });
+
+    expect(result.text).toContain('快速登录页相关功能处理时');
+    expect(result.text).not.toContain('Checks whether the default data network is activated.');
+  });
 });

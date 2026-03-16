@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260313-140538",
+    "featureId": "ui_Mine_81f55e2b63",
+    "generatedAt": "2026-03-13T06:56:33.214Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户在个人资料页点击头像以更换个人头像图片",
+        "dataSources": [
+          "用户设备相册（系统媒体库）"
+        ],
+        "dataItems": [
+          {
+            "name": "用户头像图片文件及 URI",
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n11"
+              },
+              {
+                "flowId": "flow:p30",
+                "nodeId": "p30:n8"
+              },
+              {
+                "flowId": "flow:p33",
+                "nodeId": "p33:n12"
+              }
+            ]
+          },
+          {
+            "name": "应用包信息 (BundleInfo)",
+            "refs": [
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n11"
+              },
+              {
+                "flowId": "flow:p29",
+                "nodeId": "p29:n8"
+              }
+            ]
+          },
+          {
+            "name": "访问令牌 ID (AccessTokenId)",
+            "refs": [
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n12"
+              },
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n13"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取用户选择的图片 URI，将图片文件从系统媒体库复制到应用沙箱缓存目录，并更新内存中的状态变量以刷新 UI 显示",
+        "storageMethod": "本地存储于应用沙箱缓存目录 (cacheDir/pictures)，未检测到加密操作；同时临时存储于组件状态 (@State imgPath)",
+        "dataRecipients": [],
+        "processingPurpose": "允许用户自定义并展示个人资料页的头像图片",
+        "privacyToggleUi": {
+          "where": "个人资料页头像区域",
+          "refs": [
+            {
+              "uiNodeId": "ui:e8ac908cfff9"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "用户在个人资料页点击头像以选择新图片时",
+        "permissionPurpose": "读取用户设备相册中的图片文件，以便将其设置为新的个人头像",
+        "denyImpact": "无法打开系统相册选择器，导致用户无法更换头像",
+        "refs": [
+          {
+            "flowId": "flow:p24",
+            "nodeId": "p24:n7"
+          },
+          {
+            "flowId": "flow:p25",
+            "nodeId": "p25:n7"
+          },
+          {
+            "flowId": "flow:p26",
+            "nodeId": "p26:n6"
+          },
+          {
+            "flowId": "flow:p27",
+            "nodeId": "p27:n7"
+          },
+          {
+            "flowId": "flow:p28",
+            "nodeId": "p28:n7"
+          },
+          {
+            "flowId": "flow:p29",
+            "nodeId": "p29:n6"
+          },
+          {
+            "flowId": "flow:p30",
+            "nodeId": "p30:n7"
+          },
+          {
+            "flowId": "flow:p31",
+            "nodeId": "p31:n7"
+          },
+          {
+            "flowId": "flow:p32",
+            "nodeId": "p32:n6"
+          },
+          {
+            "flowId": "flow:p33",
+            "nodeId": "p33:n7"
+          },
+          {
+            "flowId": "flow:p34",
+            "nodeId": "p34:n7"
+          }
+        ]
+      },
+      {
+        "permissionName": "ohos.permission.WRITE_MEDIA",
+        "businessScenario": "用户在个人资料页点击头像以选择新图片时",
+        "permissionPurpose": "获取写入权限以支持系统相册选择器的交互流程及后续可能的文件操作",
+        "denyImpact": "无法完成相册选择流程，导致用户无法更换头像",
+        "refs": [
+          {
+            "flowId": "flow:p24",
+            "nodeId": "p24:n7"
+          },
+          {
+            "flowId": "flow:p25",
+            "nodeId": "p25:n7"
+          },
+          {
+            "flowId": "flow:p26",
+            "nodeId": "p26:n6"
+          },
+          {
+            "flowId": "flow:p27",
+            "nodeId": "p27:n7"
+          },
+          {
+            "flowId": "flow:p28",
+            "nodeId": "p28:n7"
+          },
+          {
+            "flowId": "flow:p29",
+            "nodeId": "p29:n6"
+          },
+          {
+            "flowId": "flow:p30",
+            "nodeId": "p30:n7"
+          },
+          {
+            "flowId": "flow:p31",
+            "nodeId": "p31:n7"
+          },
+          {
+            "flowId": "flow:p32",
+            "nodeId": "p32:n6"
+          },
+          {
+            "flowId": "flow:p33",
+            "nodeId": "p33:n7"
+          },
+          {
+            "flowId": "flow:p34",
+            "nodeId": "p34:n7"
+          }
+        ]
+      }
+    ]
+  }
+}

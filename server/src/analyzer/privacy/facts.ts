@@ -67,12 +67,65 @@ function isFrameworkishScenario(text: string): boolean {
   return /(ArkUI|UIAbility|WindowStage|生命周期函数|\bbuild\b|\bonDestroy\b|\bonForeground\b|\bonBackground\b|\bonWindowStage)/u.test(text);
 }
 
+function hasCjk(text: string): boolean {
+  return /[\u4e00-\u9fff]/u.test(text);
+}
+
+function normalizeScenarioKey(text: string): string {
+  return cleanText(text).replaceAll(/[“”"'`、，,。.!！？?；;：:\-_\s]+/gu, '').toLowerCase();
+}
+
+function isGenericScenarioText(text: string): boolean {
+  const key = normalizeScenarioKey(text);
+  if (!key) return true;
+  return new Set([
+    '功能入口',
+    '页面主布局容器',
+    '页面展示与交互',
+    '组件展示与交互',
+    '页面展示时',
+    '组件展示时',
+    '相关功能处理过程中',
+    '相关功能处理时',
+    '相关操作时',
+  ]).has(key);
+}
+
+function isEnglishLikeScenario(text: string): boolean {
+  const cleaned = cleanText(text);
+  if (!cleaned) return false;
+  if (!hasCjk(cleaned) && /[A-Za-z]/u.test(cleaned)) return true;
+
+  const englishWords = cleaned.match(/[A-Za-z][A-Za-z0-9-]*/gu) ?? [];
+  const cjkChars = cleaned.match(/[\u4e00-\u9fff]/gu) ?? [];
+  return englishWords.length >= 4 && cjkChars.length <= 2;
+}
+
+function isLowQualityScenario(text: string): boolean {
+  const cleaned = cleanText(text);
+  if (!cleaned) return true;
+  if (isFrameworkishScenario(cleaned)) return true;
+  if (isGenericScenarioText(cleaned)) return true;
+  if (isEnglishLikeScenario(cleaned)) return true;
+  return false;
+}
+
+function pickScenarioFunctionName(feature: PrivacyFactsFeatureContext | null): string {
+  const direct = cleanText(feature?.anchor?.functionName);
+  if (direct) return direct;
+
+  const sourceFunctions = Array.isArray(feature?.sources)
+    ? feature!.sources.map((item) => cleanText(item.functionName)).filter(Boolean)
+    : [];
+  return sourceFunctions.find((name) => name === 'build') ?? sourceFunctions[0] ?? '';
+}
+
 function fallbackScenario(feature: PrivacyFactsFeatureContext | null): string {
   const title = cleanText(feature?.title);
-  if (title && !isFrameworkishScenario(title)) return title;
+  if (title && !isLowQualityScenario(title)) return title;
 
   const pageTitle = cleanText(feature?.page?.entry?.description);
-  const fn = cleanText(feature?.anchor?.functionName);
+  const fn = pickScenarioFunctionName(feature);
 
   switch (fn) {
     case 'build':
@@ -100,13 +153,13 @@ function fallbackScenario(feature: PrivacyFactsFeatureContext | null): string {
     case 'onWindowStageDestroy':
       return '主窗口销毁时';
     default:
-      return pageTitle || '相关功能处理过程中';
+      return pageTitle ? `${pageTitle}相关功能处理时` : '相关功能处理过程中';
   }
 }
 
 function normalizeBusinessScenario(raw: unknown, feature: PrivacyFactsFeatureContext | null): string {
   const scenario = cleanText(raw);
-  if (scenario && !isFrameworkishScenario(scenario)) return scenario;
+  if (scenario && !isLowQualityScenario(scenario)) return scenario;
   return fallbackScenario(feature);
 }
 
@@ -363,6 +416,7 @@ function buildPrompt(args: {
     '2) 禁止凭空编造接收方/权限/数据项；允许对“处理方式/存储方式/处理目的/拒绝影响”等做弱推断，但必须与提供的证据一致。',
     '3) 输出必须是严格 JSON（不要多余文本）。',
     '4) businessScenario 必须写成用户或应用可理解的业务场景，禁止直接输出“build”“onForeground”“onBackground”“onDestroy”“生命周期函数”“UIAbility”“WindowStage”等框架术语；若只能判断到框架阶段，请改写为“页面展示时”“应用切到前台时”“应用退出时”等自然表述。',
+    '5) businessScenario、processingPurpose、permissionPurpose、denyImpact 必须使用简体中文；即使证据文本是英文，也必须翻译或改写成中文，禁止直接复用英文 SDK 注释原文。',
   ].join('\n');
 
   return { system, user };

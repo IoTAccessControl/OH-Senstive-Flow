@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260313-140538",
+    "generatedAt": "2026-03-13T06:53:40.438Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_14_891864d5",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p150",
+      "pathId": "p150",
+      "nodes": [
+        {
+          "id": "p150:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 14,
+          "code": "onDestroy() {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时由系统自动触发。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)"
+            ]
+          }
+        },
+        {
+          "id": "p150:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 15,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口执行日志记录操作，将固定的字符串 'Ability onDestroy' 与标签 'testTag' 组合，通过 %{public}s 格式说明符输出到系统日志流，表明该日志内容被视为公开信息而非敏感隐私。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p150:n1",
+          "to": "p150:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "日志标签 (testTag)",
+          "固定日志消息字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "存储于系统日志缓冲区 (hilog)",
+          "未加密 (标记为 %{public}s 表示公开可见)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

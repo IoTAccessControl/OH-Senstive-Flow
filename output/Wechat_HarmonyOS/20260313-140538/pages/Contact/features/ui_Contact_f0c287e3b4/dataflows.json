@@ -1,0 +1,322 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260313-140538",
+    "generatedAt": "2026-03-13T06:53:40.438Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 10,
+      "edges": 9,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "Contact",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+        "structName": "Contact",
+        "line": 9,
+        "description": "通讯录页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Contact_f0c287e3b4",
+      "kind": "ui",
+      "title": "通讯录"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p97",
+      "pathId": "p97",
+      "nodes": [
+        {
+          "id": "p97:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 84,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，初始化通讯录页面 UI 结构",
+          "context": {
+            "startLine": 79,
+            "lines": [
+              "      .height(36)",
+              "      .width(\"100%\")",
+              "      .padding({ left: 20 })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.End }) {",
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })"
+            ]
+          }
+        },
+        {
+          "id": "p97:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 85,
+          "code": "Stack({ alignContent: Alignment.End }) {",
+          "description": "创建 Stack 容器作为页面根布局，设定对齐方式",
+          "context": {
+            "startLine": 80,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .padding({ left: 20 })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.End }) {",
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表"
+            ]
+          }
+        },
+        {
+          "id": "p97:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 91,
+          "code": "List({ scroller: this.scroller }) {",
+          "description": "初始化 List 组件并绑定滚动控制器 scroller，用于展示通讯录数据列表",
+          "context": {
+            "startLine": 86,
+            "lines": [
+              "",
+              "      Column() {",
+              "        // 标题栏",
+              "        WechatToolbar({ title: \"通讯录\" })",
+              "        // 通讯录列表",
+              "        List({ scroller: this.scroller }) {",
+              "          // 遍历循环大组标签",
+              "          ForEach(this.dataList, (item: DataItem) => {",
+              "            // 大组标签",
+              "            ListItemGroup({ header: this.itemHead(item.title) }) {",
+              "              // 遍历循环大组内的联系人列表"
+            ]
+          }
+        },
+        {
+          "id": "p97:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 139,
+          "code": ".onSelect((index: number) => {",
+          "description": "注册索引器 onSelect 事件监听器，当用户点击字母索引时触发数据流",
+          "context": {
+            "startLine": 134,
+            "lines": [
+              "        .popupBackground(\"#57be6a\")",
+              "        .popupFont({ size: 32, weight: FontWeight.Bolder })",
+              "        .itemSize(20)",
+              "        .alignStyle(IndexerAlign.Right)",
+              "        .margin({ top: 80 })",
+              "        .onSelect((index: number) => {",
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)"
+            ]
+          }
+        },
+        {
+          "id": "p97:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 140,
+          "code": "let letter = this.letterList[index]",
+          "description": "从 letterList 数组中获取用户点击的字母标签数据",
+          "context": {
+            "startLine": 135,
+            "lines": [
+              "        .popupFont({ size: 32, weight: FontWeight.Bolder })",
+              "        .itemSize(20)",
+              "        .alignStyle(IndexerAlign.Right)",
+              "        .margin({ top: 80 })",
+              "        .onSelect((index: number) => {",
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)",
+              "              prompt.showToast({ message: \"\" + target })"
+            ]
+          }
+        },
+        {
+          "id": "p97:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 141,
+          "code": "let target: number = 0",
+          "description": "初始化目标索引变量 target，准备计算滚动位置",
+          "context": {
+            "startLine": 136,
+            "lines": [
+              "        .itemSize(20)",
+              "        .alignStyle(IndexerAlign.Right)",
+              "        .margin({ top: 80 })",
+              "        .onSelect((index: number) => {",
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)",
+              "              prompt.showToast({ message: \"\" + target })",
+              "              break"
+            ]
+          }
+        },
+        {
+          "id": "p97:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 142,
+          "code": "for (const item of this.dataList) {",
+          "description": "遍历通讯录 dataList 数据源，开始匹配用户选择的字母分组",
+          "context": {
+            "startLine": 137,
+            "lines": [
+              "        .alignStyle(IndexerAlign.Right)",
+              "        .margin({ top: 80 })",
+              "        .onSelect((index: number) => {",
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)",
+              "              prompt.showToast({ message: \"\" + target })",
+              "              break",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p97:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 143,
+          "code": "if (letter === item.title) {",
+          "description": "判断当前列表项标题是否与用户选择的字母匹配",
+          "context": {
+            "startLine": 138,
+            "lines": [
+              "        .margin({ top: 80 })",
+              "        .onSelect((index: number) => {",
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)",
+              "              prompt.showToast({ message: \"\" + target })",
+              "              break",
+              "            }",
+              "            target++"
+            ]
+          }
+        },
+        {
+          "id": "p97:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 144,
+          "code": "this.scroller.scrollToIndex(target)",
+          "description": "调用 scroller.scrollToIndex 将列表滚动至计算出的目标隐私数据位置",
+          "context": {
+            "startLine": 139,
+            "lines": [
+              "        .onSelect((index: number) => {",
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)",
+              "              prompt.showToast({ message: \"\" + target })",
+              "              break",
+              "            }",
+              "            target++",
+              "          }"
+            ]
+          }
+        },
+        {
+          "id": "p97:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/contact/Contact.ets",
+          "line": 145,
+          "code": "prompt.showToast({ message: \"\" + target })",
+          "description": "调用 prompt.showToast 将内部计算的列表索引位置 (target) 作为消息明文展示给用户，构成数据泄露风险点",
+          "context": {
+            "startLine": 140,
+            "lines": [
+              "          let letter = this.letterList[index]",
+              "          let target: number = 0",
+              "          for (const item of this.dataList) {",
+              "            if (letter === item.title) {",
+              "              this.scroller.scrollToIndex(target)",
+              "              prompt.showToast({ message: \"\" + target })",
+              "              break",
+              "            }",
+              "            target++",
+              "          }",
+              "        })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p97:n1",
+          "to": "p97:n2"
+        },
+        {
+          "from": "p97:n2",
+          "to": "p97:n3"
+        },
+        {
+          "from": "p97:n3",
+          "to": "p97:n4"
+        },
+        {
+          "from": "p97:n4",
+          "to": "p97:n5"
+        },
+        {
+          "from": "p97:n5",
+          "to": "p97:n6"
+        },
+        {
+          "from": "p97:n6",
+          "to": "p97:n7"
+        },
+        {
+          "from": "p97:n7",
+          "to": "p97:n8"
+        },
+        {
+          "from": "p97:n8",
+          "to": "p97:n9"
+        },
+        {
+          "from": "p97:n9",
+          "to": "p97:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "通讯录列表索引位置 (List Index)",
+          "字母索引标签 (Letter Index)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击索引器)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅在内存中临时计算，未持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}
