@@ -5,8 +5,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 
-import type { AnalyzeResponse } from './run.js';
-import { listRunRegistry, readResultJson, runAnalysis } from './run.js';
+import type { AnalyzeResponse } from '../analyzer/api.js';
+import { runAnalysis } from '../analyzer/api.js';
+import { listRunRegistry, readResultJson } from './run.js';
 import { normalizeWorkspaceSubpath, resolveSafeWorkspaceChild } from '../utils/accessWorkspace.js';
 
 type AnalyzeJobStatus = 'running' | 'done' | 'error';
