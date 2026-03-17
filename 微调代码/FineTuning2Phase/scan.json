@@ -1,0 +1,445 @@
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_HARDWARE_INFO_MARKET_NAME",
+      "data_type": "Device Hardware Info (Market Name)",
+      "description": "Retrieval of the device's market name for display on the hardware information page.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.onPageShow",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.getDeviceInfo()",
+          "details": "Page lifecycle event triggers device information gathering."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.marketName = deviceInfo.marketName",
+          "details": "Application calls 'deviceInfo.marketName' to get the device marketing name."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text(this.marketName)",
+          "details": "The device market name is displayed on the screen."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_OS_VERSION",
+      "data_type": "Device System Info (OS Version)",
+      "description": "Retrieval of the operating system full name for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "details": "Application accesses 'deviceInfo.osFullName' to get the OS version string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text('系统版本：' + this.osFullName)",
+          "details": "The OS version is rendered in the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_SDK_VERSION",
+      "data_type": "Device System Info (SDK API Version)",
+      "description": "Retrieval of the SDK API version for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "details": "Application accesses 'deviceInfo.sdkApiVersion'."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text('API 版本：' + this.sdkApiVersion)",
+          "details": "The SDK version is rendered in the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_DEVICE_TYPE",
+      "data_type": "Device Hardware Info (Device Type)",
+      "description": "Retrieval of the device type (e.g., phone, tablet) for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "details": "Application accesses 'deviceInfo.deviceType'."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text('设备类型：' + this.deviceType)",
+          "details": "The device type is displayed on the screen."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_UPTIME",
+      "data_type": "System Status (Uptime)",
+      "description": "Retrieval of the system uptime for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.uptime = process.uptime()",
+          "details": "Application calls 'process.uptime()' to get system running time."
+        },
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "dayjs.duration(this.uptime, 'seconds').format('D天H时mm分')",
+          "details": "Uptime seconds are formatted into a human-readable duration string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '运行时间', value: ... })",
+          "details": "Formatted uptime is displayed in a list row."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_NETWORK_TYPE",
+      "data_type": "Network Information (Connection Type)",
+      "description": "Detection of the active network connection type (Wifi/Cellular/Ethernet).",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionNetBearType",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.getConnectionNetBearType()",
+          "details": "Called during page initialization to check network status."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionNetBearType",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "const netCapabilities = connection.getNetCapabilitiesSync(defaultNet)",
+          "details": "Retrieves network capabilities to determine bearer type."
+        },
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionNetBearType",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "if (...includes(connection.NetBearType.BEARER_WIFI)) { this.netBearType = 'WIFI网络' }",
+          "details": "Raw bearer type is mapped to a user-friendly string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '网络类型', value: this.netBearType })",
+          "details": "Network type is displayed on the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_IP_ADDRESS",
+      "data_type": "Network Information (IP Address)",
+      "description": "Retrieval and display of the device's local IP address.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionProperties",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.getConnectionProperties()",
+          "details": "Called during page initialization."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionProperties",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "const connectionProperties = connection.getConnectionPropertiesSync(defaultNet)",
+          "details": "Retrieves connection properties including link addresses."
+        },
+        {
+          "step": "Sensitive Access",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionProperties",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.IPAddress = linkAddress.address.address",
+          "details": "Extracts the IP address string from the link address object."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: 'IP地址', value: this.IPAddress })",
+          "details": "Local IP address is displayed to the user."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_SUBNET_MASK",
+      "data_type": "Network Information (Subnet Mask)",
+      "description": "Calculation and display of the network subnet mask.",
+      "flow_steps": [
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.calculateSubnetMask",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.subnetMask = this.calculateSubnetMask(linkAddress.prefixLength)",
+          "details": "Calculates subnet mask string from the network prefix length."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '子网掩码', value: this.subnetMask })",
+          "details": "Subnet mask is displayed on the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_BROADCAST_ADDRESS",
+      "data_type": "Network Information (Broadcast Address)",
+      "description": "Calculation and display of the network broadcast address.",
+      "flow_steps": [
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.calculateBroadcastAddress",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.broadcastAddress = this.calculateBroadcastAddress(this.IPAddress, this.subnetMask)",
+          "details": "Derives broadcast address from IP address and subnet mask."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '广播地址', value: this.broadcastAddress })",
+          "details": "Broadcast address is displayed on the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_SCREEN_METRICS",
+      "data_type": "Device Hardware Info (Screen Configuration)",
+      "description": "Retrieval of screen metrics (resolution, refresh rate, density).",
+      "flow_steps": [
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getScreenInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "const ScreenInfo = display.getDefaultDisplaySync()",
+          "details": "Retrieves default display attributes."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '屏幕分辨率（像素）', value: `${this.displayHeight}x${this.displayWidth}` })",
+          "details": "Screen resolution is displayed."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '屏幕刷新率（Hz）', value: this.displayRefreshRate })",
+          "details": "Refresh rate is displayed."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_SENSOR_LIST",
+      "data_type": "Device Hardware Info (Sensors)",
+      "description": "Retrieving the list of all sensors available on the device.",
+      "flow_steps": [
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getSenorIdArr",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "let SensorList = await sensor.getSensorList()",
+          "details": "Calls Sensor Service Kit to get list of supported sensors."
+        },
+        {
+          "step": "Intermediate (Memory)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getSenorIdArr",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.supportSensorIds = SensorList.map<number>(item => item.sensorId)",
+          "details": "Maps full sensor objects to a list of IDs stored in memory state."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_CHAT_VOICE_RECORDING",
+      "data_type": "Health/Biometric Data (Voice Recording)",
+      "description": "Capturing user voice input via microphone, saving to disk, and displaying it as a chat message.",
+      "flow_steps": [
+        {
+          "step": "Trigger (User Input)",
+          "function": "ChatPage.struct.ChatPage.onPressTalk",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.onStartRecord()",
+          "details": "User interaction (TouchType.Down) triggers recording start."
+        },
+        {
+          "step": "Source (Microphone)",
+          "function": "AudioCaptureManager.startRecord",
+          "file": "entry/src/main/ets/utils/AudioCapturerManager.ets",
+          "code": "AudioCaptureManager.audioCapturer?.start();",
+          "details": "AudioCapturer API is invoked to begin capturing audio data."
+        },
+        {
+          "step": "Data Persistence (File Write)",
+          "function": "AudioCaptureManager.startRecord.readDataCallback",
+          "file": "entry/src/main/ets/utils/AudioCapturerManager.ets",
+          "code": "fs.writeSync(file.fd, buffer, options);",
+          "details": "Audio buffer data is written synchronously to a WAV file in the app fs."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "ChatPage.struct.ChatPage.postVoice",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.chatList.push(voiceChat)",
+          "details": "The created audio file is referenced in a chat bubble in the UI list."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_CHAT_SPEECH_RECOGNITION",
+      "data_type": "Biometric Data (Voice to Text)",
+      "description": "Real-time processing of user voice input into text using the Speech Recognizer Manager.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "ChatPage.struct.ChatPage.onPressTalk",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.onStartSpeechRecognize()",
+          "details": "Speech recognition is initialized simultaneously with recording."
+        },
+        {
+          "step": "Source (Speech Engine)",
+          "function": "SpeechRecognizerManager.init",
+          "file": "entry/src/main/ets/utils/SpeechRecognizerManager.ets",
+          "code": "SpeechRecognizerManager.asrEngine = await speechRecognizer.createEngine(...)",
+          "details": "Initializes the ASR (Automatic Speech Recognition) engine."
+        },
+        {
+          "step": "Data Processing",
+          "function": "ChatPage.struct.ChatPage.onStartSpeechRecognize",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.voiceToText = sentence + res.result",
+          "details": "The recognized text string is updated in real-time to the component state."
+        },
+        {
+          "step": "Sink (UI Preview)",
+          "function": "ChatPage.struct.ChatPage.buildRecordVoiceView",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "Text(this.voiceToText)",
+          "details": "Draft text is displayed to the user during the recording process."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_CHAT_TEXT_INPUT",
+      "data_type": "User Input (Chat Message)",
+      "description": "Handling user text input in the chat interface.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "ChatPage.struct.ChatPage.build.Row.TextArea.onChange",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "TextArea({ text: $$this.chatText ... })",
+          "details": "Two-way binding updates the state variable as the user types."
+        },
+        {
+          "step": "Intermediate (Memory Buffer)",
+          "function": "ChatPage.struct.ChatPage.sendTextMsg",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.dataList.push({ ... msg: this.chatText })",
+          "details": "User text is moved from input buffer to the chat history list in memory."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "ListChatContentRightItem.struct.ListChatContentRightItem.build",
+          "file": "entry/src/main/ets/component/ListChatContentRightItem.ets",
+          "code": "Text(this.data?.msg)",
+          "details": "The user's message is rendered in a chat bubble."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_PROFILE_IMAGE_GALLERY_ACCESS",
+      "data_type": "User Content (Photos)",
+      "description": "User selects a photo from the system gallery for their profile.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Mine.struct.Mine.build.Column.Row.Image.onClick",
+          "file": "entry/src/main/ets/pages/mine/Mine.ets",
+          "code": "PhotoPickerUtils.openGallery(...)",
+          "details": "User taps their avatar request to change it."
+        },
+        {
+          "step": "Permissions Check",
+          "function": "PhotoPickerUtils.openGallery",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+          "details": "App requests read/write access to media files."
+        },
+        {
+          "step": "Source (System Picker)",
+          "function": "PhotoPickerUtils.openGallery",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "photoPicker.select(PhotoSelectOptions)",
+          "details": "Invokes the system PhotoViewPicker."
+        },
+        {
+          "step": "Data Persistence (Sandbox Copy)",
+          "function": "PhotoPickerUtils.copyFileToCache",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "await fs.copyFile(file.fd, newPath)",
+          "details": "Detailed file content is copied from the public URI to the app's cache directory."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "Mine.struct.Mine.build",
+          "file": "entry/src/main/ets/pages/mine/Mine.ets",
+          "code": "Image(this.imgPath ? this.imgPath : ...)",
+          "details": "The selected image is displayed in the profile view."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_SEARCH_QUERY_HANDLING",
+      "data_type": "User Input (Search Keywords)",
+      "description": "Processing of search queries entered by the user.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "SearchPage.struct.SearchPage.build.TextInput.onChange",
+          "file": "entry/src/main/ets/pages/search/SearchPage.ets",   
+          "code": "this.searchText = value",
+          "details": "Input text is captured into state."
+        },
+        {
+          "step": "Sink (Toast Feedback)",
+          "function": "SearchPage.struct.SearchPage.build.TextInput.onSubmit",
+          "file": "entry/src/main/ets/pages/search/SearchPage.ets",
+          "code": "prompt.showToast({ message: this.searchText })",
+          "details": "Search query is echoed back to the user (simulation of search action)."
+        }
+      ]
+    }
+  ]
+}
