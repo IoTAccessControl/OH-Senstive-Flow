@@ -337,7 +337,6 @@
     },
     "output": "设备权限调用说明 本应用在运行过程中，严格遵循权限最小化原则。针对您提供的业务场景，说明如下：权限/能力名称：无危险权限调用；触发场景与时机：本应用在“设备信息展示”功能中，未申请任何安卓/HarmonyOS定义的“危险权限”（如位置、相机、麦克风、通讯录、短信、存储等）；用途说明：不适用；拒绝授权的后果：不适用；补充说明：本功能依赖系统基础能力，无需用户额外授权即可正常访问设备品牌、窗口配置及方向设置等非敏感系统属性。"
   },
-  [
   {
     "input": {
       "id": "FLOW_PERMISSION_REQUEST_TO_UI_DISPLAY",
@@ -497,9 +496,7 @@
       "supplementary_note": "The application does not apply for other dangerous permissions such as location, camera, microphone, contacts, SMS in health business; exercise distance and speed data are provided by Health Kit based on sensor algorithms, and the application does not directly apply for background location permission."
     },
     "output": "设备权限调用说明 本应用在运行过程中，可能会调用以下系统权限或依赖系统级授权能力。请您放心，我们仅在特定场景下触发相关请求，并严格遵循您的授权意愿。权限/能力名称：健康数据权限(Read/Write Health Data)；触发场景与时机：当您进入运动授权页面并点击“同意/授权”按钮时；用途说明：本应用将请求访问华为 Health Kit 的权限，以便：1. 将您的心率、速度、距离等运动数据写入系统健康数据库；2. 从数据库中读取历史运动记录供您查看；3. 注册当前设备为数据源；拒绝授权的后果：若您拒绝授权：1. 应用将无法记录您的本次运动数据；2. 应用将无法显示您的历史运动健康报告；3. 不影响您使用应用的其他非健康类基础功能（如设置、关于我们等）；权限/能力名称：无其他危险权限；触发场景与时机：本版本应用在健康业务中，未申请位置（GPS）、相机、麦克风、通讯录、短信等其他安卓定义的“危险权限”。(注：运动距离与速度数据由Health Kit基于传感器算法提供，本应用未直接申请后台定位权限)；用途说明：不适用；拒绝授权的后果：不适用。"
-  }
-],
-[
+  },
   {
     "input": {
       "id": "FLOW_PEDOMETER_SENSOR_TO_UI_AND_STORAGE",
@@ -625,9 +622,7 @@
       "supplementary_note": "The application only requests necessary permissions for core functions, and does not apply for other permissions such as camera, microphone, contacts, SMS."
     },
     "output": "设备权限调用说明 本应用在运行过程中，可能会调用以下系统权限。请您放心，我们仅在特定场景下触发相关请求，并严格遵循您的授权意愿。权限/能力名称：身体传感器权限(Body Sensors / Pedometer)；触发场景与时机：当您进入应用首页时；用途说明：本应用将请求访问计步传感器权限，以便：1. 实时读取您的步数数据；2. 计算运动消耗及目标达成率；拒绝授权的后果：若您拒绝授权：1. 应用将无法记录您的步数；2. 无法使用计步、运动统计及目标达成等核心功能；3. 不影响您使用应用的其他非计步类功能（如目标设置、查看帮助等）；权限/能力名称：位置信息权限(Location - Fine/Coarse)；触发场景与时机：当您点击“开始运动”按钮或主动开启定位功能时；用途说明：本应用将请求访问位置权限，以便：1. 获取您当前的GPS坐标；2. 通过逆地理编码解析出具体的起始地址并记录；拒绝授权的后果：若您拒绝授权：1. 应用将无法记录您的运动起始位置；2. 无法显示运动起点的详细地址；3. 不影响您继续使用计步功能或其他无需定位的功能。"
-  }
-],
-[
+  },
   {
     "input": {
       "id": "FLOW_STATIC_MAP_CAMERA_INIT",
@@ -695,9 +690,7 @@
       "supplementary_note": "The map displays pre-set fixed coordinates, no real-time location acquisition is required, so no system permission authorization pop-up will be triggered."
     },
     "output": "设备权限调用说明 关于地图功能的权限声明：位置权限（Location Permissions）：当前状态：在本应用的静态地图展示功能中，未申请也未使用任何位置权限（包括 ACCESS_FINE_LOCATION 或 ACCESS_COARSE_LOCATION）。说明：由于地图显示的坐标是预设的固定值，不需要获取您的实时位置，因此不会触发系统的权限授权弹窗。拒绝后果：不适用（因为未发起请求）。"
-  }
-],
-[
+  },
   {
     "input": {
       "id": "FLOW_COOKIE_READ_MANUAL",
@@ -792,7 +785,7 @@
           "step": "Sink (UI Display)",
           "function": "Verify.struct.build.NavDestination.Web.onPageEnd",
           "file": "entry/src/main/ets/pages/Verify.ets",
-          "line": 67,       
+          "line": 67,
           "code": "showDialog(originCookie);",
           "details": "The retrieved cookie string is displayed in a dialog."
         }
@@ -833,9 +826,7 @@
       "supplementary_note": "The app can only access cookies under its own domain, complying with sandbox security mechanism; disabling storage basic capability may affect cookie function."
     },
     "output": "设备权限调用说明 关于Web Cookie管理的权限声明：系统权限调用情况：无需申请危险权限：本应用中涉及的Cookie读取、写入及清除操作，均是通过调用鸿蒙/安卓系统自带的Web组件标准接口（WebCookieManager）实现的。非敏感权限范畴：这些操作不属于系统定义的“危险权限”（如位置、相机、麦克风、通讯录、短信等），因此不会触发系统的权限授权弹窗，也无需您手动授予额外权限。访问控制：应用仅能访问自身域名下的Cookie，无法访问其他应用或浏览器中的Cookie，符合沙箱安全机制。拒绝后果说明：由于该功能不依赖用户授予的“危险权限”，因此不存在“拒绝授权”的场景。功能影响提示：如果您通过系统设置禁用了应用的“存储”相关基础能力（极少见情况），可能会导致Cookie无法读写，进而导致应用内网页无法保持登录状态或无法自动验证身份，您可能需要每次访问时重新输入账号密码。"
-  }
-]，
-[
+  },
   {
     "input": {
       "id": "FLOW_DEVICE_TOKEN_ACQUISITION",
@@ -885,9 +876,7 @@
       "supplementary_note": "The function is only triggered when the user actively clicks the button, no background silent acquisition of device identification information."
     },
     "output": "设备权限调用说明 关于设备安全凭证功能的权限声明：系统权限调用情况：本功能通过调用鸿蒙系统底层的设备安全能力（DeviceSecurityKit）实现。无需申请危险权限：该操作不涉及安卓/鸿蒙定义的标准“危险权限”（如位置、相机、麦克风、通讯录等），因此不会触发系统的权限授权弹窗。访问控制：虽然无需用户手动授权，但该能力的调用受系统安全策略管控，仅允许合法合规的应用在用户主动触发（点击按钮）时访问。拒绝后果说明：由于该功能不依赖用户授予的“危险权限”，因此不存在“拒绝授权”的场景。若您不希望查看或披露您的设备安全凭证，请不要点击界面上的“获取设备Token”按钮。只要不触发该操作，应用绝不会后台静默获取或处理您的设备标识信息。"
-  }
-],
-[
+  },
   {
     "input": {
       "id": "FLOW_INSIGHT_INTENT_SHARING",
@@ -963,9 +952,7 @@
       "supplementary_note": "The functions are only triggered by user active clicks, no background silent data collection."
     },
     "output": "设备权限调用说明 关于智能意图与会话管理的权限声明：系统权限调用情况：无需申请危险权限：本应用中涉及的“用户意图共享”及“Session ID获取”功能，均是通过调用鸿蒙系统底层的系统能力接口（System Capability / Kit）实现的。非危险权限范畴：这些操作不涉及安卓/鸿蒙定义的标准“危险权限”（如位置、相机、麦克风、通讯录、短信等），因此不会触发系统的权限授权弹窗，也无需您手动授予额外权限。依赖条件：虽然无需显式授权，但“用户意图共享”功能可能需要您在设备的系统设置中开启相关的“智能服务”或“个性化推荐”开关。若系统级开关关闭，该功能可能无法生效。拒绝后果说明：由于该功能不依赖用户授予的“危险权限”，因此不存在传统意义上的“拒绝授权”场景。功能影响提示：若您不点击“分享意图”按钮，应用绝不会后台静默收集您的行为偏好数据，但您将无法使用基于当前场景的智能推荐服务。若您不点击“获取Session ID”按钮，应用不会获取您的会话标识符，但这不影响应用的正常核心功能，仅导致您无法查看当前的会话调试信息。"
-  }
-],
-[
+  },
   {
     "input": {
       "id": "FLOW_PAYMENT_REQUEST",
@@ -1041,9 +1028,7 @@
       "supplementary_note": "The final payment/contract confirmation is completed in the system interface, and the app does not touch core sensitive payment information."
     },
     "output": "设备权限调用说明 关于支付功能的权限声明：系统权限调用情况：无需申请危险权限：本应用中涉及的“在线支付”及“协议签约”功能，均是通过调用鸿蒙系统底层的Payment Kit（支付服务）标准接口实现的。非危险权限范畴：这些操作不涉及安卓/鸿蒙定义的标准“危险权限”（如位置、相机、麦克风、通讯录、短信等），因此不会触发系统的权限授权弹窗，也无需您手动授予额外权限。依赖条件：该功能依赖于设备上已安装并正常运行的系统支付服务（如华为钱包）或第三方支付应用。拒绝后果说明：由于该功能不依赖用户授予的“危险权限”，因此不存在传统意义上的“拒绝授权”场景。功能影响提示：若您未安装系统支付组件或关闭了相关支付服务，当您点击支付按钮时，可能无法拉起支付界面，导致无法完成付款或签约操作。若在系统支付界面中，您拒绝进行生物识别或密码验证（即取消支付），则当次交易或签约将立即终止，但这不会影响您使用应用内的其他非支付功能（如浏览商品、查看订单历史等）。"
-  }
-],
-[
+  },
   {
     "input": {
       "id": "FLOW_APP_UUID_GENERATION",
@@ -1248,9 +1233,7 @@
       "supplementary_note": "Network-dependent functions require network access (basic device capability), log upload is optional and user-initiated."
     },
     "output": "设备权限调用说明 关于基础功能与数据处理的权限声明：系统权限调用情况：无需申请危险权限：本应用中涉及的“应用标识生成”、“网络状态监测”、“版本信息获取”、“本地日志读取”及“搜索功能”，均是通过调用鸿蒙系统的基础能力接口或访问应用沙箱内文件实现的。非危险权限范畴：上述操作不涉及安卓/鸿蒙定义的标准“危险权限”（如位置、相机、麦克风、通讯录、短信、存储空间等），因此不会触发系统的权限授权弹窗。网络基础能力：搜索与日志上传功能依赖设备的网络连接能力，这是智能终端的基础功能，无需单独申请权限，但需要您在系统设置中保持网络开启。拒绝后果说明：由于本应用的核心功能不依赖用户授予的“危险权限”，因此不存在因拒绝授权而导致应用无法使用的情况。功能影响提示：若您在系统层面关闭了网络连接，您将无法使用视频搜索功能，也无法上传日志反馈，但这不影响您查看本地已缓存的内容或使用其他离线功能。若您选择不参与“日志反馈”，仅意味着开发者可能难以定位您遇到的特定故障，不影响应用的正常使用。"
-  }
-],
-[
+  },
   {
     "input": {
       "id": "FLOW_USER_LOGIN_STATUS_STORAGE",
@@ -1379,9 +1362,7 @@
       "supplementary_note": "Local data is protected by sandbox mechanism, network data is transmitted via HTTPS encryption."
     },
     "output": "设备权限调用说明 关于本地存储与网络功能的权限声明：系统权限调用情况：无需申请危险权限：本应用中涉及的“登录状态保存”、“用户信息存储”及“网络通信”功能，主要依赖鸿蒙系统的 Preferences（首选项） 接口和 Network Kit（网络能力）。非危险权限范畴：上述操作属于应用内部数据存储和基础网络通信，不涉及安卓/鸿蒙定义的标准“危险权限”（如位置、相机、麦克风、通讯录、短信、读写外部存储空间等）。因此，不会触发系统的权限授权弹窗。沙箱机制：所有本地存储的数据（Preferences）均保存在应用的私有沙箱目录中，其他应用无法访问，无需额外权限控制。拒绝后果说明：由于本功能不依赖用户授予的“危险权限”，因此不存在因拒绝授权而导致功能不可用的情况。功能影响提示：若您在系统设置中关闭了网络连接，您将无法进行登录验证，也无法同步或更新用户信息，但已本地缓存的登录状态和昵称仍可正常显示。若应用内部存储出现异常（如沙箱损坏），可能导致登录状态丢失，需重新登录，但这与系统权限无关。"
-  }
-],
-[
+  },
   {
     "input": {
       "id": "FLOW_HARDWARE_INFO_MARKET_NAME",
@@ -1856,7 +1837,7 @@
         {
           "step": "Trigger",
           "function": "SearchPage.struct.SearchPage.build.TextInput.onChange",
-          "file": "entry/src/main/ets/pages/search/SearchPage.ets",   
+          "file": "entry/src/main/ets/pages/search/SearchPage.ets",
           "code": "this.searchText = value",
           "details": "Input text is captured into state."
         },
@@ -1917,8 +1898,4 @@
     },
     "output": "设备权限调用说明 本应用在提供上述功能时，可能会请求以下系统权限。我们严格遵守“最小必要”原则，仅在特定场景下申请，且您有权拒绝。（1）麦克风权限（ohos.permission.MICROPHONE）触发时机：当您进入聊天页面并长按“说话”按钮准备发送语音消息，或使用语音转文字功能时。用途：用于录制您的语音声音，以便生成语音消息文件或进行本地语音识别。拒绝后果：若您拒绝授权，您将无法使用语音聊天和语音转文字功能，但您仍然可以正常使用文本聊天、浏览设备信息等其他所有功能。（2）媒体读写权限（ohos.permission.READ_MEDIA / ohos.permission.WRITE_MEDIA）触发时机：当您点击“我的”页面头像，并选择从系统相册中选择图片作为新头像时。用途：用于读取您选中的照片文件，并将其复制到应用本地缓存中以进行展示。拒绝后果：若您拒绝授权，您将无法从相册选择图片来更换头像，但您可以继续使用默认头像或使用文本功能，不影响应用的其他核心功能。（3）相机权限（ohos.permission.CAMERA）触发时机：当前版本暂未在界面绑定入口。若未来您主动触发“拍照”功能时，应用将申请此权限。用途：用于调用系统相机拍摄照片。拒绝后果：若您拒绝授权，您将无法使用拍照功能，但不影响应用的其他功能。"
   }
-]
-
-
-
 ]
