@@ -1,0 +1,2390 @@
+测试集groundTruth
+AccountKit-QuickLogin   
+提供手机号一键登录”和“华为账号登录”两个核心流程
+JSON
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_ANONYMOUS_PHONE_ACQUISITION",
+      "data_type": "Anonymous Mobile Number (Masked)",
+      "description": "The application requests the user's anonymous mobile number (masked) for quick login purposes and displays it for verification.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "PrepareLoginPage.struct.build.Column.Text.onClick",
+          "file": "entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 93,
+          "code": "this.getQuickLoginAnonymousPhone();",
+          "details": "User clicks the 'Login' (登录) text button, initiating the quick login flow."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "PrepareLoginPage.getQuickLoginAnonymousPhone",
+          "file": "entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 44,
+          "code": "controller.executeRequest(authRequest).then((response: _) => { ... }",
+          "details": "Application executes an authorization request with 'quickLoginAnonymousPhone' scope via the Huawei ID Provider."
+        },
+        {
+          "step": "Data Processing",
+          "function": "PrepareLoginPage.getQuickLoginAnonymousPhone",
+          "file": "entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 48,
+          "code": "const quickLoginAnonymousPhone = response.data?.extraInfo?.quickLoginAnonymousPhone as string;",
+          "details": "The masked anonymous phone number is extracted from the 'extraInfo' of the authorization response."
+        },
+        {
+          "step": "Storage",
+          "function": "PrepareLoginPage.getQuickLoginAnonymousPhone",
+          "file": "entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 49,
+          "code": "AppStorage.setOrCreate('quickLoginAnonymousPhone', quickLoginAnonymousPhone)",
+          "details": "The retrieved phone number is stored in the global AppStorage for access across pages."
+        },
+        {
+          "step": "Data Transmission",
+          "function": "PrepareLoginPage.jumpLoginPage",
+          "file": "entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 26,
+          "code": "this.pageInfos?.pushPathByName('QuickLoginPage', params, true);",
+          "details": "The phone number is packaged into parameters and passed to the 'QuickLoginPage' enabling the new page to display it without re-fetching."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HUAWEI_ID_LOGIN_CREDENTIALS",
+      "data_type": "User Credentials (OpenID, UnionID, Token)",
+      "description": "User performs a formal login using the Huawei ID Button, and the app retrieves sensitive identity tokens.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "QuickLoginPage.struct.build.Column.LoginWithHuaweiIDButton",
+          "file": "entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 268,
+          "code": "LoginWithHuaweiIDButton({ ... }).id('login_with_huaweiId_button')",
+          "details": "User clicks the standard 'One-Click Login' button provided by the Account Kit."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "QuickLoginPage.struct.LoginWithHuaweiIDButton.onClickLoginWithHuaweiIDButton",
+          "file": "entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 53,
+          "code": ".onClickLoginWithHuaweiIDButton((error: BusinessError, response: loginComponentManager.HuaweiIDCredential) => {",
+          "details": "The SDK handles the authentication and returns the 'HuaweiIDCredential' object containing sensitive tokens in the callback."
+        },
+        {
+          "step": "Data Processing",
+          "function": "QuickLoginPage.handleLoginWithHuaweiIDButton",
+          "file": "entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 105,
+          "code": "const openID = response.openID;\nconst unionID = response.unionID;\nconst idToken = response.idToken;",
+          "details": "Critical user identifiers (OpenID, UnionID) and the ID Token are extracted from the credential response."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_USER_INFO_UI_DISPLAY",
+      "data_type": "Anonymous Mobile Number",
+      "description": "The application reads the stored anonymous phone number and displays it on the Personal Information page.",
+      "flow_steps": [
+        {
+          "step": "Source (Storage)",
+          "function": "PersonalInfoPage.struct",
+          "file": "entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 12,
+          "code": "@StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+          "details": "The PersonalInfoPage retrieves the phone number from AppStorage using the @StorageProp decorator."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "PersonalInfoPage.struct.build.Column.Row.Text",
+          "file": "entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 42,
+          "code": "Text(this.anonymousPhone)",
+          "details": "The sensitive data (phone number) is rendered on the UI for user review."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+关键隐私信息
+[
+  {
+    "business_function": "快捷登录（匿名手机号）",
+    "business_scenario": "用户在准备登录页点击“登录”按钮，应用向华为ID服务商发起授权请求获取脱敏的匿名手机号，用于快速验证身份，随后将该号码存储并在后续登录页面展示供用户核对。",
+    "data_types_info": "匿名手机号(敏感)",
+    "processing_method": "本地加密存储 (存入AppStorage) 及 本地展示",
+    "permissions_info": "无 (依赖华为ID账号体系授权)"
+  },
+  {
+    "business_function": "华为账号正式登录",
+    "business_scenario": "用户在登录页点击“华为账号一键登录”按钮，应用通过Account Kit SDK完成身份认证，获取用户的OpenID、UnionID及ID Token等核心身份凭证，用于建立会话。",
+    "data_types_info": "OpenID(敏感), UnionID(敏感), ID Token(敏感)",
+    "processing_method": "本地处理 (SDK回调获取并提取)",
+    "permissions_info": "无 (依赖华为账号系统授权交互)"
+  },
+  {
+    "business_function": "个人信息展示",
+    "business_scenario": "用户进入个人信息页面，应用从本地全局存储中读取之前获取的匿名手机号，并将其渲染在界面上供用户查看。",
+    "data_types_info": "匿名手机号(敏感)",
+    "processing_method": "仅本地展示 (从AppStorage读取)",
+    "permissions_info": "无"
+  }
+]
+
+AdsKit
+展示视频或图片广告
+JSON
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_APP_TRACKING_PERMISSION_REQUEST",
+      "data_type": "App Tracking Consent (OAID Access)",
+      "description": "The application requests user permission to track activity (OAID) for advertising purposes.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "LoadAd.struct.aboutToAppear",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 67,
+          "code": "this.requestOAIDTrackingConsentPermissions(this.context);",
+          "details": "Permission request is initiated automatically when the page appears."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "LoadAd.requestOAIDTrackingConsentPermissions",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 133,
+          "code": "atManager.requestPermissionsFromUser(context, ['ohos.permission.APP_TRACKING_CONSENT'])",
+          "details": "System API is called to show the permission dialog to the user."
+        },
+        {
+          "step": "Data Processing",
+          "function": "LoadAd.requestOAIDTrackingConsentPermissions",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 134,
+          "code": "if (data.authResults[0] === 0) { ... identifier.getOAID() ... }",
+          "details": "The application checks if the user granted the permission."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_OAID_ACQUISITION_AND_AD_REQUEST",
+      "data_type": "OAID (Open Anonymous Device Identifier)",
+      "description": "The application retrieves the OAID and sends it to the advertising platform to request targeted ads.",
+      "flow_steps": [
+        {
+          "step": "Source (Device Info)",
+          "function": "LoadAd.requestOAIDTrackingConsentPermissions",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 136,
+          "code": "identifier.getOAID().then((data: string) => { this.oaid = data; ... }",
+          "details": "Strictly sensitive OAID is retrieved from the system identifier service."
+        },
+        {
+          "step": "Data Processing",
+          "function": "LoadAd.requestAd",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 99,
+          "code": "adReqParams.oaid = this.oaid;",
+          "details": "The retrieved OAID is attached to the advertising request parameters."
+        },
+        {
+          "step": "Data Transmission",
+          "function": "LoadAd.requestAd",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 126,
+          "code": "load.loadAd(adReqParams, adOptions, adLoaderListener);",
+          "details": "OAID is transmitted to the Ad Server via the AdLoader API to fetch relevant ads."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "adLoaderListener.onAdLoadSuccess",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 119,
+          "code": "advertising.showAd(ads[0], this.adDisplayOptions, this.context);",
+          "details": "The returned ad content is displayed on the user's screen."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_AD_INTERACTION_MONITORING",
+      "data_type": "Ad Interaction Events (Click/Close/View)",
+      "description": "The application listens for system-wide events regarding the status of the displayed interstitial ad.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "adLoaderListener.onAdLoadSuccess",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 117,
+          "code": "new InterstitialAdStatusHandler().registerPPSReceiver();",
+          "details": "Event listener is registered specifically when an ad is successfully loaded."
+        },
+        {
+          "step": "Sensitive Operation (Event Subscription)",
+          "function": "InterstitialAdStatusHandler.registerPPSReceiver",
+          "file": "entry/src/main/ets/event/InterstitialAdStatusHandler.ets",
+          "line": 39,
+          "code": "commonEventManager.createSubscriber(subscribeInfo, ...)",
+          "details": "Application creates a subscriber for 'com.huawei.hms.pps.action.PPS_INTERSTITIAL_STATUS_CHANGED'."
+        },
+        {
+          "step": "Sink (Data Processing)",
+          "function": "InterstitialAdStatusHandler.registerPPSReceiver.subscribe",
+          "file": "entry/src/main/ets/event/InterstitialAdStatusHandler.ets",
+          "line": 60,
+          "code": "const status: string = commonEventData?.parameters?.[KEY_INTERSTITIAL_STATUS];",
+          "details": "Application receives and processes user interaction data (Click, Close, Open) from the ad service."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+关键隐私信息
+[
+  {
+    "business_function": "广告追踪授权",
+    "business_scenario": "当应用首页加载时，自动向用户弹窗请求“广告追踪同意”权限。若用户同意，应用将获取设备的匿名标识符用于广告推荐；若拒绝，则不进行后续广告数据收集。",
+    "data_types_info": "广告追踪同意状态(一般)",
+    "processing_method": "系统级授权交互 (调用 ohos.permission.APP_TRACKING_CONSENT)",
+    "permissions_info": "APP_TRACKING_CONSENT (页面加载时自动触发)"
+  },
+  {
+    "business_function": "个性化广告展示",
+    "business_scenario": "在获得用户授权后，应用从系统服务获取设备匿名标识符 (OAID)，将其发送至广告服务器以请求匹配的广告内容，并将返回的广告展示在界面上。",
+    "data_types_info": "OAID(敏感)",
+    "processing_method": "上传云端 (发送至广告服务器) 及 本地展示",
+    "permissions_info": "无 (依赖前序 APP_TRACKING_CONSENT 授权)"
+  },
+  {
+    "business_function": "广告交互监测",
+    "business_scenario": "当广告成功加载并展示后，应用监听系统广播事件，记录用户对广告的交互行为（如点击、关闭、查看），用于优化广告投放策略。",
+    "data_types_info": "广告交互事件日志(一般)",
+    "processing_method": "本地处理 (监听系统广播事件)",
+    "permissions_info": "无"
+  }
+]
+
+codeLab_API
+展示了如何获取元服务运行时的系统信息和设置。
+JSON
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_DEVICE_BRAND_ACCESS",
+      "data_type": "Device Information (Brand)",
+      "description": "The application synchronously accesses the device brand information via the Atomic Service API and displays it on the UI.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 29,
+          "code": "onClick(() => { ... })",
+          "details": "User clicks the second button to request device brand information."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 31,
+          "code": "let result = atomicService.getSystemInfoSync(arr);",
+          "details": "Application calls atomicService.getSystemInfoSync to retrieve device metadata."
+        },
+        {
+          "step": "Data Processing",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 32,
+          "code": "this.systemInfoSync = String(result.brand);",
+          "details": "The 'brand' field is extracted from the result object and converted to a string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "FunctionalAPIPage.struct.build.Column.Button",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 24,
+          "code": "Button(this.systemInfoSync)",
+          "details": "The device brand is rendered as the label of the button."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_SYSTEM_WINDOW_INFO_ACCESS",
+      "data_type": "System Information (Window Width)",
+      "description": "The application asynchronously accesses the system window configuration.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 17,
+          "code": "onClick(() => { ... })",
+          "details": "User clicks the first button to request window information."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "atomicService.getSystemInfo(arr).then((result) => { ... })",
+          "details": "Application calls atomicService.getSystemInfo to asynchronously retrieve system info."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "FunctionalAPIPage.struct.build.Column.Button",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 12,
+          "code": "Button(this.systemInfo)",
+          "details": "The retrieved window width is displayed on the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_SYSTEM_SETTING_ACCESS",
+      "data_type": "System Setting (Device Orientation)",
+      "description": "The application accesses the current device orientation setting.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 40,
+          "code": "onClick(() => { ... })",
+          "details": "User clicks the third button to request system settings."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "FunctionalAPIPage.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 42,
+          "code": "let result = atomicService.getSystemSetting(arr);",
+          "details": "Application calls atomicService.getSystemSetting to retrieve configuration data."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "FunctionalAPIPage.struct.build.Column.Button",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 35,
+          "code": "Button(this.systemSettings)",
+          "details": "The device orientation status is displayed on the button label."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+关键隐私信息
+[
+  {
+    "business_function": "设备品牌信息展示",
+    "business_scenario": "用户点击功能页面上的特定按钮，应用同步调用系统原子服务接口获取当前设备的品牌信息，并将该信息直接显示在按钮标签上。",
+    "data_types_info": "设备品牌(一般)",
+    "processing_method": "仅本地展示 (调用系统接口获取并渲染)",
+    "permissions_info": "无"
+  },
+  {
+    "business_function": "窗口配置信息展示",
+    "business_scenario": "用户点击功能页面上的特定按钮，应用异步调用系统原子服务接口获取当前系统窗口的宽度等配置信息，并将结果展示在界面上。",
+    "data_types_info": "窗口宽度信息(一般)",
+    "processing_method": "仅本地展示 (调用系统接口获取并渲染)",
+    "permissions_info": "无"
+  },
+  {
+    "business_function": "系统设置状态展示",
+    "business_scenario": "用户点击功能页面上的特定按钮，应用调用系统原子服务接口获取当前的设备方向（横屏/竖屏）等系统设置状态，并将该状态显示在界面上。",
+    "data_types_info": "设备方向设置(一般)",
+    "processing_method": "仅本地展示 (调用系统接口获取并渲染)",
+    "permissions_info": "无"
+  }
+]
+
+Health_Service_Kit
+运动健康
+Bash
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_PERMISSION_REQUEST_TO_UI_DISPLAY",
+      "data_type": "Health Data Permissions (Read/Write)",
+      "description": "User authorizes health data access, and the permission status is displayed on the UI.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "AuthIndex.struct.Index.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/AuthIndex.ets",
+          "line": 19,
+          "code": "this.log = await AuthManagement.auth(...);",
+          "details": "User initiates authorization request via UI button."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "AuthManagement.auth",
+          "file": "entry/src/main/ets/common/bean/AuthManagement.ets",
+          "line": 18,
+          "code": "await healthStore.requestAuthorizations(context, authorizationParameter);",
+          "details": "Application invokes Health Kit API to request permissions."
+        },
+        {
+          "step": "Data Processing",
+          "function": "AuthManagement.auth",
+          "file": "entry/src/main/ets/common/bean/AuthManagement.ets",
+          "line": 22,
+          "code": "result += `grantedWriteDataType is : ${dataType.name}` ...",
+          "details": "Permission results are formatted into a string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "AuthIndex.struct.Index.build",
+          "file": "entry/src/main/ets/pages/AuthIndex.ets",
+          "line": 28,
+          "code": "Text(this.log)",
+          "details": "The formatted permission status string is rendered on the screen."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_GENERATED_EXERCISE_DATA_TO_HEALTH_STORE",
+      "data_type": "Health Data (Heart Rate, Speed, Distance)",
+      "description": "Simulated exercise data is generated by the app and securely stored in the Health Store.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "ExerciseSequenceIndex.struct.Index.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/ExerciseSequenceIndex.ets",
+          "line": 18,
+          "code": "await ExerciseSequenceManagement.saveData();",
+          "details": "User initiates data save operation."
+        },
+        {
+          "step": "Data Generation",
+          "function": "ExerciseSequenceManagement.saveData",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 21,
+          "code": "const runningSequence: healthStore.exerciseSequenceHelper.running.Model = { ... }",
+          "details": "Sensitive running data (heart rate, speed, location) is constructed/simulated in memory."
+        },
+        {
+          "step": "Sink (Persistent Storage)",
+          "function": "ExerciseSequenceManagement.saveData",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 78,
+          "code": "await healthStore.saveData(runningSequence);",
+          "details": "Constructed data is written to the persistent Health Store via Health Kit API."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HEALTH_STORE_TO_UI_DISPLAY",
+      "data_type": "Health Data (Heart Rate, Speed, Distance)",
+      "description": "Historical exercise data is read from the Health Store and displayed to the user.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "ExerciseSequenceIndex.struct.Index.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/ExerciseSequenceIndex.ets",
+          "line": 21,
+          "code": "await ExerciseSequenceManagement.readData();",
+          "details": "User initiates data read operation."
+        },
+        {
+          "step": "Source (Persistent Storage)",
+          "function": "ExerciseSequenceManagement.readData",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 102,
+          "code": "await healthStore.readData<healthStore.exerciseSequenceHelper.running.Model>(sequenceReadRequest);",
+          "details": "Sensitive data is queried from the Health Store."
+        },
+        {
+          "step": "Data Processing",
+          "function": "ExerciseSequenceManagement.readData",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 108,
+          "code": "result += `the start time is ${runningSequence.startTime}.` ...",
+          "details": "Retrieved data objects are iterated and formatted into a summary string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "ExerciseSequenceIndex.struct.Index.build",
+          "file": "entry/src/main/ets/pages/ExerciseSequenceIndex.ets",
+          "line": 40,
+          "code": "Text(this.log)",
+          "details": "The summary string containing sensitive health details is displayed on the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_DEVICE_ID_TO_HEALTH_STORE_METADATA",
+      "data_type": "Device Unique Identifier",
+      "description": "Device Unique ID is used to create a Data Source registry in the Health Store.",
+      "flow_steps": [
+        {
+          "step": "Trigger (Internal)",
+          "function": "ExerciseSequenceManagement.saveData",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 15,
+          "code": "await ExerciseSequenceManagement.initDataSourceId();",
+          "details": "Data source initialization is triggered before saving data."
+        },
+        {
+          "step": "Source (Device Info)",
+          "function": "ExerciseSequenceManagement.initDataSourceId",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 196,
+          "code": "uniqueId: 'deviceUuid_test'",
+          "details": "Device Unique ID (simulated hardcoded value here, usually from system) is accessed."
+        },
+        {
+          "step": "Sink (Persistent Metadata)",
+          "function": "ExerciseSequenceManagement.initDataSourceId",
+          "file": "entry/src/main/ets/common/bean/ExerciseSequenceManagement.ets",
+          "line": 210,
+          "code": "let res: string = await healthStore.insertDataSource(dataSource);",
+          "details": "Device ID is registered as part of the Data Source information in the Health Store via insertDataSource API."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+关键隐私信息
+[
+  {
+    "business_function": "健康数据权限授权",
+    "business_scenario": "用户在授权页面点击同意按钮，应用调用 Health Kit 接口向系统申请读取和写入健康数据的权限，并将授权结果（如已授予的读写数据类型）反馈在界面上。",
+    "data_types_info": "健康数据读写授权状态(一般)",
+    "processing_method": "系统级授权交互 (调用 healthStore.requestAuthorizations)",
+    "permissions_info": "Health Data Permissions (Read/Write) - 触发时机：用户点击授权按钮时"
+  },
+  {
+    "business_function": "运动数据记录与存储",
+    "business_scenario": "用户进行运动操作或手动触发保存时，应用在内存中生成模拟的运动过程数据（包含心率、速度、距离等），并将其安全保存至设备本地的健康数据库（Health Store）中。",
+    "data_types_info": "心率(敏感), 移动速度(敏感), 运动距离(敏感)",
+    "processing_method": "本地加密存储 (写入 Health Store)",
+    "permissions_info": "无 (需预先获得健康数据读写权限)"
+  },
+  {
+    "business_function": "历史运动数据查看",
+    "business_scenario": "用户点击查看记录按钮，应用从本地健康数据库（Health Store）中查询历史运动序列数据，提取关键信息（如开始时间、心率、速度等）并格式化展示在屏幕上。",
+    "data_types_info": "历史心率数据(敏感), 历史运动速度(敏感), 历史运动距离(敏感)",
+    "processing_method": "本地读取与展示 (从 Health Store 读取)",
+    "permissions_info": "无 (需预先获得健康数据读写权限)"
+  },
+  {
+    "business_function": "健康数据源注册",
+    "business_scenario": "在初始化运动数据记录功能或首次保存数据前，应用获取设备唯一标识符（Device ID），并将其作为数据来源标识注册到健康数据库的元数据中，以标记数据的产生来源。",
+    "data_types_info": "设备唯一标识符(Device ID)(敏感)",
+    "processing_method": "本地存储 (写入 Health Store 元数据)",
+    "permissions_info": "无 (通常属于系统基础信息，但涉及敏感个人标识)"
+  }
+]
+
+Pedometer
+计步器
+Bash
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_PEDOMETER_SENSOR_TO_UI_AND_STORAGE",
+      "data_type": "Pedometer Data (Step Count)",
+      "description": "Real-time step count data is collected from the device sensor, displayed to the user, and persisted to local storage.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HomePage.struct.requestPermissions",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 155,
+          "code": "sensor.on(sensor.SensorId.PEDOMETER, this.sensorCallback, { interval: CommonConstants.SENSOR_INTERVAL });",
+          "details": "The app subscribes to the pedometer sensor when the page is shown and permissions are granted."
+        },
+        {
+          "step": "Data Processing",
+          "function": "HomePage.struct.sensorCallback",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 55,
+          "code": "this.currentSteps = (data.steps - NumberUtil._parseInt(this.oldSteps, 10)).toString();",
+          "details": "Raw sensor data is processed to calculate the current session's step count relative to the start."
+        },
+        {
+          "step": "Sink (Persistent Storage)",
+          "function": "HomePage.struct.sensorCallback",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 53,
+          "code": "StepsUtil.putStorageValue(CommonConstants.CURRENT_STEPS, this.currentSteps);",
+          "details": "The calculated step count is saved to local preferences via StepsUtil."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "CurrentSituation.struct.build",
+          "file": "entry/src/main/ets/view/CurrentSituation.ets",
+          "line": 57,
+          "code": "Text($r('app.string.step', this.currentSteps))",
+          "details": "The current step count is updated and displayed on the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_LOCATION_SENSOR_TO_UI_AND_STORAGE",
+      "data_type": "Location Data (GPS & Address)",
+      "description": "GPS coordinates are converted to a physical address (reverse geocoding) and displayed/stored as the starting position.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HomePage.struct.requestPermissions",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 161,
+          "code": "LocationUtil.geolocationOn(this.getGeolocation);",
+          "details": "The app requests location updates."
+        },
+        {
+          "step": "Source (Sensor Access)",
+          "function": "LocationUtil.geolocationOn",
+          "file": "entry/src/main/ets/common/utils/LocationUtil.ets",
+          "line": 28,
+          "code": "geoLocationManager.on('locationChange', requestInfo, locationChange);",
+          "details": "The underlying utility subscribes to the system location manager."
+        },
+        {
+          "step": "Data Processing (Geocoding)",
+          "function": "HomePage.struct.getGeolocation",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 84,
+          "code": "geoLocationManager.getAddressesFromLocation(reverseGeocodeRequest).then(data => { ... this.currentLocation = data[0].placeName; ... }",
+          "details": "Coordinates are converted into a readable address (Place Name)."
+        },
+        {
+          "step": "Sink (Persistent Storage)",
+          "function": "HomePage.struct.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/HomePage.ets",
+          "line": 203,
+          "code": "StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);",
+          "details": "Upon clicking 'Start', the current location is saved as the starting position."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "CurrentSituation.struct.build",
+          "file": "entry/src/main/ets/view/CurrentSituation.ets",
+          "line": 89,
+          "code": "Text(this.startPosition)",
+          "details": "The captured starting location address is displayed on the screen."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_USER_INPUT_TO_STORAGE",
+      "data_type": "User Health Goal",
+      "description": "The user manually inputs their step goal, which is stored locally.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "CompletionStatus.struct.build.Button.onClick",
+          "file": "entry/src/main/ets/view/CompletionStatus.ets",
+          "line": 82,
+          "code": "this.inputDialogController.open();",
+          "details": "User opens the dialog to set a target."
+        },
+        {
+          "step": "Data Collection & Sink",
+          "function": "CompletionStatus.struct.inputDialogConfirm",
+          "file": "entry/src/main/ets/view/CompletionStatus.ets",
+          "line": 47,
+          "code": "StepsUtil.putStorageValue(CommonConstants.STEP_GOAL, this.stepGoal);",
+          "details": "The user's input is validated and saved to local storage."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "实时计步监测",
+    "business_scenario": "当用户进入首页且授权通过后，应用后台持续监听设备计步传感器，实时计算当前会话的步数增量，并将结果同步展示在界面上且保存至本地偏好设置中。",
+    "data_types_info": "实时步数(敏感)",
+    "processing_method": "本地处理与存储 (读取传感器数据并写入 Preferences)",
+    "permissions_info": "身体传感器权限 (页面加载时触发订阅)"
+  },
+  {
+    "business_function": "运动起点定位",
+    "business_scenario": "当用户开启定位功能或点击开始运动按钮时，应用获取当前GPS坐标并通过逆地理编码转换为具体地址（如街道/地标），将该起始位置信息展示在界面上并保存至本地。",
+    "data_types_info": "地理位置信息(敏感)、详细地址信息(敏感)",
+    "processing_method": "本地处理与存储 (调用系统定位服务及逆地理编码，结果写入 Preferences)",
+    "permissions_info": "位置信息权限 (页面加载或点击开始时触发)"
+  },
+  {
+    "business_function": "个人运动目标设置",
+    "business_scenario": "用户在界面点击设置按钮弹出输入框，手动输入每日步数目标，应用验证后将该目标值保存至本地偏好设置中，用于后续的运动达成率计算。",
+    "data_types_info": "用户设定的运动目标(一般)",
+    "processing_method": "本地存储 (写入 Preferences)",
+    "permissions_info": "无"
+  }
+]
+
+map-kit_-codelab
+展示地图和定位到特点位置
+JSON
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_STATIC_MAP_CAMERA_INIT",
+      "data_type": "Geographical Coordinates (Static/Hardcoded)",
+      "description": "The application initializes the map camera focus using pre-defined static latitude and longitude coordinates.",
+      "flow_steps": [
+        {
+          "step": "Source (Hardcoded)",
+          "function": "BasicMapDemo.struct.aboutToAppear",
+          "file": "entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 17,
+          "code": "let target: mapCommon.LatLng = { latitude: 39.9181, longitude: 116.3970193 };",
+          "details": "Static coordinate data is defined directly in the code."
+        },
+        {
+          "step": "Data Processing",
+          "function": "BasicMapDemo.struct.aboutToAppear",
+          "file": "entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 25,
+          "code": "this.mapOptions = { position: cameraPosition };",
+          "details": "Coordinates are encapsulated into MapOptions for component configuration."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "BasicMapDemo.struct.build.Stack.MapComponent",
+          "file": "entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 49,
+          "code": "MapComponent({ mapOptions: this.mapOptions, mapCallback: this.callback })",
+          "details": "The MapComponent consumes the options to render the map at the specific location."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_MAP_MARKER_ADDITION",
+      "data_type": "Marker Position Data (Static)",
+      "description": "The application programmatically adds a visual marker to the map interface.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "BasicMapDemo.struct.aboutToAppear.callback",
+          "file": "entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 30,
+          "code": "this.callback = async (err, mapController) => { ... }",
+          "details": "The map initialization callback is triggered when the MapComponent is ready."
+        },
+        {
+          "step": "Sensitive Operation (Map Control)",
+          "function": "BasicMapDemo.struct.aboutToAppear.callback",
+          "file": "entry/src/main/ets/pages/BasicMapDemo.ets",
+          "line": 41,
+          "code": "await this.mapController?.addMarker(markerOptions);",
+          "details": "The application invokes the MapComponentController to modify the map content (adding a marker)."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "地图初始化展示",
+    "business_scenario": "应用启动或进入地图页面时，自动加载预设的固定地理坐标（北京某地），将地图视图定位到该位置并向用户展示，不涉及获取用户实时位置。",
+    "data_types_info": "预设地理坐标(一般)",
+    "processing_method": "仅本地展示 (使用硬编码数据渲染地图组件)",
+    "permissions_info": "无 (未调用系统定位服务，仅使用代码内写死的静态数据)"
+  },
+  {
+    "business_function": "地图标记点添加",
+    "business_scenario": "地图组件加载完成后，应用在预设的固定坐标位置上 programmatically 添加一个视觉标记点（Marker），用于指示特定地点，不涉及用户个人轨迹或位置信息。",
+    "data_types_info": "预设标记位置数据(一般)",
+    "processing_method": "仅本地展示 (调用地图控制器在UI层添加图形元素)",
+    "permissions_info": "无 (未涉及敏感权限调用)"
+  }
+]
+
+WebCookie
+Bash
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_COOKIE_READ_MANUAL",
+      "data_type": "Web Cookies (Read)",
+      "description": "User manually triggers a read operation to fetch cookies for the current User Center URL and displays them.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "LinkButton.struct.build.Row.Text.onClick",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 37,
+          "code": "this.operationMethod();",
+          "details": "User clicks the 'Get Cookie' button."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "LinkButton.operationMethod",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 52,
+          "code": "let originCookie = webview.WebCookieManager.fetchCookieSync(CommonConstants.USER_CENTER_URL);",
+          "details": "Application synchronously fetches cookies for the specified URL from the WebCookieManager."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "LinkButton.operationMethod",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 53,
+          "code": "showDialog(originCookie);",
+          "details": "The retrieved cookie string is displayed to the user in a dialog box."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_COOKIE_WRITE",
+      "data_type": "Web Cookies (Write)",
+      "description": "User manually triggers a write operation to set a specific test cookie for the User About URL.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "LinkButton.struct.build.Row.Text.onClick",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 37,
+          "code": "this.operationMethod();",
+          "details": "User clicks the 'Set Cookie' button."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "LinkButton.operationMethod",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 55,
+          "code": "webview.WebCookieManager.configCookieSync(CommonConstants.USER_ABOUT_URL, 'info=测试cookie写入');",
+          "details": "Application writes a hardcoded cookie string to the WebCookieManager for the target URL."
+        },
+        {
+          "step": "Sink (Confirmation)",
+          "function": "LinkButton.operationMethod",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 56,
+          "code": "showDialog($r('app.string.write_success'));",
+          "details": "User is notified of the successful operation via a dialog."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_COOKIE_READ_AUTOMATIC_VERIFY",
+      "data_type": "Web Cookies (Read)",
+      "description": "When the Verify page loads, the application automatically reads cookies for the User About URL to verify login status.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Verify.struct.build.NavDestination.Web.onPageEnd",
+          "file": "entry/src/main/ets/pages/Verify.ets",
+          "line": 35,
+          "code": ".onPageEnd(() => { ... })",
+          "details": "The Web component finishes loading the page, extracting the cookie automatically."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "Verify.struct.build.NavDestination.Web.onPageEnd",
+          "file": "entry/src/main/ets/pages/Verify.ets",
+          "line": 62,
+          "code": "let originCookie = webview.WebCookieManager.fetchCookieSync(CommonConstants.USER_ABOUT_URL);",
+          "details": "Application synchronously fetches cookies for the 'About' URL from the WebCookieManager."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "Verify.struct.build.NavDestination.Web.onPageEnd",
+          "file": "entry/src/main/ets/pages/Verify.ets",
+          "line": 67,       
+          "code": "showDialog(originCookie);",
+          "details": "The retrieved cookie string is displayed in a dialog."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_COOKIE_CLEAR",
+      "data_type": "Web Cookies (Delete)",
+      "description": "User can clear all stored cookies globally for the application.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "LinkButton.struct.build.Row.Text.onClick",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 37,
+          "code": "this.operationMethod();",
+          "details": "User clicks the 'Delete Cookie' button."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "LinkButton.operationMethod",
+          "file": "entry/src/main/ets/view/LinkButton.ets",
+          "line": 58,
+          "code": "webview.WebCookieManager.clearAllCookiesSync();",
+          "details": "Application clears all cookies from the WebCookieManager."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "Web Cookie 手动读取与查看",
+    "business_scenario": "用户点击界面上的“获取 Cookie”按钮，应用同步读取指定用户中心 URL 的 Web Cookie 信息，并通过弹窗将 Cookie 字符串展示给用户核对。",
+    "data_types_info": "Web Cookie 信息(敏感)",
+    "processing_method": "仅本地展示 (从 WebCookieManager 读取后直接在内存中渲染至弹窗，未持久化存储或上传)",
+    "permissions_info": "无 (调用系统 Web 组件接口，无需显式申请危险权限)"
+  },
+  {
+    "business_function": "Web Cookie 手动写入测试",
+    "business_scenario": "用户点击“设置 Cookie”按钮，应用向指定的“关于页面”URL 写入一条硬编码的测试 Cookie 数据，并弹出成功提示框告知用户操作完成。",
+    "data_types_info": "Web Cookie 配置数据(一般)",
+    "processing_method": "本地处理 (调用 WebCookieManager 写入本地 WebView 存储区)",
+    "permissions_info": "无 (调用系统 Web 组件接口，无需显式申请危险权限)"
+  },
+  {
+    "business_function": "登录状态自动验证 (Cookie 读取)",
+    "business_scenario": "当用户进入验证页面且网页加载完成后，应用自动后台读取指定 URL 的 Cookie 信息以验证登录状态，并将读取到的 Cookie 内容通过弹窗展示（用于调试或确认）。",
+    "data_types_info": "Web Cookie 信息/登录凭证(敏感)",
+    "processing_method": "本地读取与展示 (页面加载结束时自动触发，数据仅在内存中暂存展示)",
+    "permissions_info": "无 (调用系统 Web 组件接口，无需显式申请危险权限)"
+  },
+  {
+    "business_function": "Web Cookie 全局清除",
+    "business_scenario": "用户点击“删除 Cookie”按钮，应用调用系统接口清除当前应用内所有已存储的 Web Cookie 数据，以保护隐私或重置登录状态。",
+    "data_types_info": "Web Cookie 数据(敏感)",
+    "processing_method": "本地处理 (调用系统 API 执行删除操作，数据被永久移除)",
+    "permissions_info": "无 (调用系统 Web 组件接口，无需显式申请危险权限)"
+  }
+]
+
+device-security-kit
+获取设备的 Device Token（设备凭据/令牌）
+JSON
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_DEVICE_TOKEN_ACQUISITION",
+      "data_type": "Device Security Token (Device Identifier)",
+      "description": "The application requests a device security token (Device Token) and displays it on the UI for verification.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Index.struct.build.Row.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 57,
+          "code": "devCertMangerModel.displayDeviceToken((result: string) => { ... })",
+          "details": "User clicks the 'GetDeviceToken' button to initiate the request."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "deviceTokenPromise",
+          "file": "entry/src/main/ets/model/DevCertManagerModel.ts",
+          "line": 10,
+          "code": "deviceCertificate.getDeviceToken().then((token) => { ... })",
+          "details": "The application calls the DeviceSecurityKit API 'getDeviceToken' to retrieve the sensitive device token."
+        },
+        {
+          "step": "Data Processing",
+          "function": "DevCertManagerModel.displayDeviceToken",
+          "file": "entry/src/main/ets/model/DevCertManagerModel.ts",
+          "line": 36,
+          "code": "callback(this.dispalyText);",
+          "details": "The retrieved token string is stored in memory and passed back to the UI component via a callback."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "Index.struct.build.Column.Column.Scroll.Text",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 30,
+          "code": "Text(this.devCertInfo)",
+          "details": "The sensitive Device Token is rendered directly on the screen for the user to see."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "设备安全凭证获取",
+    "business_scenario": "用户点击界面上的“获取设备Token”按钮，应用调用系统设备安全服务（DeviceSecurityKit）生成并获取当前设备的唯一安全凭证（Device Token），随后将该凭证直接展示在屏幕上供用户核对或复制。",
+    "data_types_info": "设备安全凭证/设备标识符(敏感)",
+    "processing_method": "仅本地展示 (调用系统API获取后仅在内存中暂存并渲染至UI，未持久化存储或上传)",
+    "permissions_info": "无 (通常通过系统能力调用，无需显式申请危险权限，但涉及敏感设备信息访问)"
+  }
+]
+
+IntentsKit-codelab-Clientdemo-ArkTS
+Bash
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_INSIGHT_INTENT_SHARING",
+      "data_type": "User Intent Data (Behavior/Preferences)",
+      "description": "The application reads simulated user intent data and shares it with the system's Insight Intent framework context.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Index.struct.build.Row.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 79,
+          "code": "this.result = await InsightIntentSharer.shareIntent(getContext(), this.input);",
+          "details": "User clicks the 'shareIntent' button to initiate the data sharing process."
+        },
+        {
+          "step": "Data Preparation",
+          "function": "InsightIntentSharer.shareIntent",
+          "file": "entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 33,
+          "code": "let insightIntents: insightIntent.InsightIntent[] = JSON.parse(input);",
+          "details": "The application parses the input string into InsightIntent objects containing user behavior data."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "InsightIntentSharer.shareIntent",
+          "file": "entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 38,
+          "code": "return await insightIntent.shareIntent(context, insightIntents)",
+          "details": "The application invokes the system API 'insightIntent.shareIntent' to transmit user data to the system."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_SESSION_ID_ACQUISITION",
+      "data_type": "Session ID (System Identifier)",
+      "description": "The application retrieves a session identifier (SID) from the system and displays it on the UI.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Index.struct.build.Row.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 173,
+          "code": "this.result = await InsightIntentSharer.getSid(getContext());",
+          "details": "User clicks the 'getSid' button."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "InsightIntentSharer.getSid",
+          "file": "entry/src/main/ets/utils/InsightIntentSharer.ets",
+          "line": 111,
+          "code": "return `SID: ${await insightIntent.getSid(context, false)}`;",
+          "details": "The application calls 'insightIntent.getSid' to access the sensitive session identifier."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "Index.struct.build.Column.Text",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 235,
+          "code": "Text(this.result)",
+          "details": "The retrieved Session ID is displayed directly on the screen."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "用户意图数据共享",
+    "business_scenario": "用户点击“分享意图”按钮，应用将用户输入的行为或偏好数据（如听歌习惯、使用场景等）解析为标准意图格式，并调用系统意图框架（Insight Intent Kit）共享给系统，以支持系统级的智能推荐或服务联动。",
+    "data_types_info": "用户行为偏好数据(敏感)",
+    "processing_method": "本地处理并共享至系统框架 (数据在本地解析后，通过系统API 'insightIntent.shareIntent' 传递给系统意图服务，用于端侧智能推荐，不上传云端)",
+    "permissions_info": "无 (调用系统能力接口，无需显式申请危险权限，但需用户在设置中开启相关智能服务)"
+  },
+  {
+    "business_function": "会话标识符获取与展示",
+    "business_scenario": "用户点击“获取Session ID”按钮，应用调用系统接口获取当前会话的唯一标识符（SID），并将该标识符直接显示在屏幕上，供用户核对或用于调试。",
+    "data_types_info": "会话标识符(Session ID)(敏感)",
+    "processing_method": "仅本地展示 (调用系统API 'insightIntent.getSid' 获取后仅在内存中暂存并渲染至UI，未持久化存储或上传)",
+    "permissions_info": "无 (调用系统能力接口，无需显式申请危险权限)"
+  }
+]
+
+PaymentKit-CodelabDemo
+支付服务
+SQL
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_PAYMENT_REQUEST",
+      "data_type": "Financial Transaction Data (Order Info)",
+      "description": "The application constructs a payment order containing sensitive merchant and transaction details and transmits it to the Payment Service to initiate a transaction.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Index.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 76,
+          "code": "this.requestPaymentPromise();",
+          "details": "User clicks the 'requestPaymentPromise' button."
+        },
+        {
+          "step": "Data Preparation",
+          "function": "Index.requestPaymentPromise",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 15,
+          "code": "const orderStr = '{\"app_id\":\"***\",\"merc_no\":\"***\",\"prepay_id\":\"xxx\"...}';",
+          "details": "Application prepares the sensitive order string (in a real app, this is fetched from a secure backend)."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "Index.requestPaymentPromise",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 16,
+          "code": "paymentService.requestPayment(this.context, orderStr)",
+          "details": "The application invokes the system Payment Kit API, passing the order details to the system-level payment UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_CONTRACT_SIGNING_REQUEST",
+      "data_type": "Financial Contract Data (Sign Info)",
+      "description": "The application constructs a contract signing request and transmits it to the Payment Service to initiate an automatic payment agreement.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Index.struct.build.Column.Button.onClick",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 90,
+          "code": "this.requestContractPromise();",
+          "details": "User clicks the 'requestContractPromise' button."
+        },
+        {
+          "step": "Data Preparation",
+          "function": "Index.requestContractPromise",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 43,
+          "code": "const contractStr = '{\"appId\":\"***\",\"preSignNo\":\"***\"}';",
+          "details": "Application prepares the sensitive contract string containing the pre-sign number."
+        },
+        {
+          "step": "Sensitive Operation",
+          "function": "Index.requestContractPromise",
+          "file": "entry/src/main/ets/pages/Index.ets",
+          "line": 44,
+          "code": "paymentService.requestContract(this.context, contractStr)",
+          "details": "The application invokes the system Payment Kit API to open the contract signing interface."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "在线支付交易",
+    "business_scenario": "用户点击“发起支付”按钮，应用构建包含商户号、预支付ID等关键信息的订单数据，并调用系统支付服务（Payment Kit）拉起收银台界面，以完成资金交易。",
+    "data_types_info": "订单信息(敏感)、商户编号(敏感)、预支付ID(敏感)",
+    "processing_method": "本地处理并传递至系统安全组件 (数据在本地组装后，通过加密通道传递给系统级支付UI，由系统接管后续支付流程，应用不直接处理资金流)",
+    "permissions_info": "无 (调用系统支付能力接口，无需显式申请危险权限，但依赖系统已安装的支付应用或钱包服务)"
+  },
+  {
+    "business_function": "免密支付/代扣协议签约",
+    "business_scenario": "用户点击“签订协议”按钮，应用构建包含应用ID、预签约号等信息的合约请求，并调用系统支付服务拉起签约界面，以授权后续的自动扣款或免密支付服务。",
+    "data_types_info": "合约签约信息(敏感)、预签约号(敏感)",
+    "processing_method": "本地处理并传递至系统安全组件 (数据在本地组装后，传递给系统级签约UI，由系统验证用户身份并签署协议，应用不存储敏感签约密钥)",
+    "permissions_info": "无 (调用系统支付能力接口，无需显式申请危险权限，但需用户本人在系统界面进行生物识别或密码验证)"
+  }
+]
+
+ohbili-master
+防哔哩哔哩应用
+SQL
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_APP_UUID_GENERATION",
+      "data_type": "Persistent Identifier (App UUID)",
+      "description": "A random UUID is generated on the first launch to uniquely identify the application instance and stored in persistent storage.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Splash.struct.Splash.aboutToAppear",
+          "file": "entry/src/main/ets/pages/Splash.ets",
+          "line": 37,
+          "code": "if (this.appUuid == 'undefined')",
+          "details": "Checks if the appUuid is already defined in persistent storage."
+        },
+        {
+          "step": "Source (Generation)",
+          "function": "Splash.struct.Splash.aboutToAppear",
+          "file": "entry/src/main/ets/pages/Splash.ets",
+          "line": 38,
+          "code": "this.appUuid = util.generateRandomUUID();",
+          "details": "Generates a random UUID using the system utility."
+        },
+        {
+          "step": "Sink (Persistent Storage)",
+          "function": "PersistentStorage.PersistProp",
+          "file": "entry/src/main/ets/pages/Splash.ets",
+          "line": 120,
+          "code": "PersistentStorage.PersistProp('appUuid', 'undefined');",
+          "details": "The generated UUID is saved to persistent storage, making it available across sessions."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_NETWORK_STATE_MONITORING",
+      "data_type": "Network Connection Status/Type",
+      "description": "The application consistently monitors the device's network connection status (WiFi/Cellular) and updates the app state.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "EntryAbility.onWindowStageCreate",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 50,
+          "code": "this.netConnRegister();",
+          "details": "Registers the network connection listener when the window stage is created."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "EntryAbility.netConnRegister",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 89,
+          "code": "this.netConn = connection.createNetConnection(netSpec, timeout);",
+          "details": "Creates a connection listener for Cellular and WiFi bearers."
+        },
+        {
+          "step": "Sink (State Update/Log)",
+          "function": "EntryAbility.netConnRegister",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 92,
+          "code": "AppStorage.SetOrCreate(\"netIsAvailable\", true);",
+          "details": "Updates global AppStorage with network availability status."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_APP_BUNDLE_INFO",
+      "data_type": "Installed App Information (Version/Name)",
+      "description": "The application retrieves its own bundle information (version, vendor, name) from the system.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "EntryAbility.onWindowStageCreate",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 51,
+          "code": "this.getAppBundleInfo();",
+          "details": "Initiates retrieval of app bundle info on startup."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "EntryAbility.getAppBundleInfo",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 107,
+          "code": "bundleManager.getBundleInfoForSelf(0).then(info => {",
+          "details": "Calls 'bundleManager.getBundleInfoForSelf' to get details about the current application."
+        },
+        {
+          "step": "Sink (State Update)",
+          "function": "EntryAbility.getAppBundleInfo",
+          "file": "entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 111,
+          "code": "AppStorage.SetOrCreate(\"appVersionName\", info.versionName);",
+          "details": "Stores the app version name in AppStorage."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_SEARCH_KEYWORD_NETWORK",
+      "data_type": "User Input (Search Keyword)",
+      "description": "The user's search keyword is captured from the UI and sent to the Bilibili API via a network request.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "SearchResultPage.struct.SearchResultPage.aboutToAppear",
+          "file": "entry/src/main/ets/pages/SearchResult.ets",
+          "line": 39,
+          "code": "this.keyword = params.keyword;",
+          "details": "Retrieves the search keyword passed from the previous page via router parameters."
+        },
+        {
+          "step": "Processing (API Call)",
+          "function": "ApiManager.requestSearch",
+          "file": "entry/src/main/ets/network/ApiManager.ets",
+          "line": 174,
+          "code": "TaskManager.getInstance().requestSearch(cookies, \"video\", encoded, pn)",
+          "details": "Passes the keyword to the TaskManager for network request execution."
+        },
+        {
+          "step": "Sink (Network Transmission)",
+          "function": "TaskManager.requestSearchTask",
+          "file": "entry/src/main/ets/network/TaskManager.ts",
+ 
+          "code": "dataService.getSearch(cookies, type, keyword, pn)",
+          "details": "Sends the search keyword to 'https://api.bilibili.com' via an HTTP GET request."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_DEVICE_LOGS_DISPLAY",
+      "data_type": "Device/App Logs (File System)",
+      "description": "The application reads debug logs potentially containing sensitive runtime information from the file system and displays them on the screen.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "LogDetail.struct.LogDetail.aboutToAppear",
+          "file": "entry/src/main/ets/pages/LogDetail.ets",
+          "code": "this.logFilePath = params.logFilePath;",
+          "details": "Receives the path to a specific log file."
+        },
+        {
+          "step": "Source (File System)",
+          "function": "LogDetail.struct.LogDetail.aboutToAppear",
+          "file": "entry/src/main/ets/pages/LogDetail.ets",
+          "code": "this.logStr = fs.readTextSync(this.logFilePath)",
+          "details": "Reads the raw content of the log file from the device's internal storage."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "LogDetail.struct.LogDetail.build",
+          "file": "entry/src/main/ets/pages/LogDetail.ets",
+          "code": "Text(this.logStr)",
+          "details": "Displays the raw log content directly on the user interface."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_GIST_UPLOAD_POTENTIAL",
+      "data_type": "Device/App Logs & AppUUID",
+      "description": "Feature to update/upload local app log files to a Gitee Gist repository (functionality present in code).",
+      "flow_steps": [
+        {
+          "step": "Trigger (Defined Function)",
+          "function": "Feedback.struct.Feedback.updateFile",
+          "file": "entry/src/main/ets/pages/Feedback.ets",
+          "code": "let logName = StringUtil.dateFormat(new Date(), \"HHmmss.fff\");",
+          "details": "Prepares the log name and content for upload."
+        },
+        {
+          "step": "Source (Log Content)",
+          "function": "Feedback.struct.Feedback.updateFile",
+          "file": "entry/src/main/ets/pages/Feedback.ets",
+          "code": "message: `update file ${logName}.txt \n by uuid: ${this.appUuid}`,",
+          "details": "Bundles the log content and the user's App UUID."
+        },
+        {
+          "step": "Sink (Network Transmission)",
+          "function": "GistClient.post",
+          "file": "entry/src/main/ets/network/GistClient.ts",
+          "code": "return this.request({ ...config, method: 'post', url, data })",
+          "details": "Sends the data to Gitee API."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "应用实例唯一标识生成",
+    "business_scenario": "应用首次启动时，自动生成一个随机的UUID作为当前应用实例的唯一标识，并将其持久化存储，以便在后续会话中识别该设备上的此应用实例（用于统计分析或故障排查）。",
+    "data_types_info": "应用实例唯一标识符(App UUID)(敏感)",
+    "processing_method": "本地生成并加密存储 (写入 PersistentStorage)",
+    "permissions_info": "无"
+  },
+  {
+    "business_function": "网络连接状态监测",
+    "business_scenario": "应用启动后，自动注册网络状态监听器，实时监测设备的网络连接类型（WiFi/蜂窝数据）及连通性，并根据网络变化更新应用内部状态，以优化内容加载策略。",
+    "data_types_info": "网络连接状态及类型(一般)",
+    "processing_method": "本地实时监测与状态更新 (写入 AppStorage)",
+    "permissions_info": "无 (系统基础能力，无需显式权限)"
+  },
+  {
+    "business_function": "应用版本信息获取",
+    "business_scenario": "应用启动时，自动从系统包管理器读取当前应用的版本号、名称及厂商信息，并存储在内存中，用于版本检查或关于页面展示。",
+    "data_types_info": "应用版本信息、应用名称(一般)",
+    "processing_method": "本地读取与内存存储 (调用 bundleManager 接口)",
+    "permissions_info": "无"
+  },
+  {
+    "business_function": "视频内容搜索",
+    "business_scenario": "用户在搜索框输入关键词并确认后，应用将该关键词通过网络请求发送至第三方服务器（哔哩哔哩 API），以获取相关的视频搜索结果列表。",
+    "data_types_info": "搜索关键词(一般)",
+    "processing_method": "上传云端 (发送至 https://api.bilibili.com)",
+    "permissions_info": "无 (依赖网络基础能力)"
+  },
+  {
+    "business_function": "本地日志查看",
+    "business_scenario": "用户进入日志详情页面时，应用从设备内部存储读取指定的调试日志文件内容，并将原始日志文本直接展示在屏幕上，供用户查看或反馈问题。",
+    "data_types_info": "应用运行日志(一般)",
+    "processing_method": "本地读取与仅本地展示 (从文件系统读取并渲染至UI)",
+    "permissions_info": "无 (访问应用沙箱内文件无需额外权限)"
+  },
+  {
+    "business_function": "日志反馈与上传",
+    "business_scenario": "用户触发反馈功能时，应用将当前的运行日志文件内容与用户的“应用实例唯一标识符(App UUID)”打包，并通过网络上传至第三方代码托管平台（Gitee Gist），以便开发者分析故障。",
+    "data_types_info": "应用运行日志(一般)、应用实例唯一标识符(App UUID)(敏感)",
+    "processing_method": "上传云端 (发送至 Gitee API)",
+    "permissions_info": "无 (依赖网络基础能力)"
+  }
+]
+
+TodayNews_harmony-main
+仿今日头条应用
+JSON
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_NEWS_FEED_REQUEST",
+      "data_type": "Usage Data (Timestamp)",
+      "description": "The application requests a news feed from 'm.toutiao.com', transmitting the current timestamp and a hardcoded token.",
+      "flow_steps": [
+        {
+          "step": "Trigger (User Refresh/Load)",
+          "function": "NewsDataList.refreshNewsData",
+          "file": "home/src/main/ets/view/NewsDataList.ets",
+          "code": "NewsDataViewModel.getNewsList(this.currentPage, this.categoryId)",
+          "details": "User interaction (or initial load) triggers a request for news content."
+        },
+        {
+          "step": "Data Processing",
+          "function": "NewsDataViewModel.getNewsList",
+          "file": "home/src/main/ets/viewmodel/NewsDataViewModel.ets",
+          "code": "url += '&max_time=' + timeStamp + '&max_behot_time=' + timeStamp+ '&i=' + timeStamp;",
+          "details": "Current timestamp is appended to the URL as query parameters."
+        },
+        {
+          "step": "Data Transmission (Sink)",
+          "function": "httpRequestGet",
+          "file": "common/src/main/ets/utils/HttpUtil.ets",
+          "code": "let responseResult = httpRequest.request(url, ...)",
+          "details": "The constructed URL is sent via HTTP GET to 'm.toutiao.com'."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_ARTICLE_CONTENT_BROWSING",
+      "data_type": "Browsing History (URL)",
+      "description": "The application loads an external article URL in a Web component, effectively sharing the user's reading choice with the content provider.",
+      "flow_steps": [
+        {
+          "step": "Trigger (User Selection)",
+          "function": "DetailPage.aboutToAppear",
+          "file": "home/src/main/ets/pages/DetailPage.ets",
+          "code": "this.article = params;",
+          "details": "User selects an article, and its details (including URL) are passed to the detail page."
+        },
+        {
+          "step": "Data Loading (Sink)",
+          "function": "DetailPage.build",
+          "file": "home/src/main/ets/pages/DetailPage.ets",
+          "code": "src: this.article.article_url",
+          "details": "The Web component loads the article URL, initiating a network request to the content server."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_DEVICE_INFO_SPOOFING",
+      "data_type": "Device Identification (User-Agent)",
+      "description": "The application spoofs the User-Agent string in HTTP requests to masquerade as an iPhone, hiding the real device information.",
+      "flow_steps": [
+        {
+          "step": "Static Definition",
+          "function": "httpRequestGetHtml",
+          "file": "common/src/main/ets/utils/HttpUtil.ets",
+          "code": "'User-Agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 16_2_1 like Mac OS X)...'",
+          "details": "A hardcoded User-Agent string mimicking an iPhone is defined in the HTTP header."
+        },
+        {
+          "step": "Data Transmission (Sink)",
+          "function": "httpRequest.request",
+          "file": "common/src/main/ets/utils/HttpUtil.ets",
+          "code": "httpRequest.request(url, { ... header: { ... } })",
+          "details": "The spoofed User-Agent is sent with the HTTP request."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "新闻资讯获取",
+    "business_scenario": "用户打开应用或下拉刷新新闻列表时，应用自动向第三方服务器（今日头条）发起请求，携带当前时间戳以获取最新的新闻资讯内容。",
+    "data_types_info": "操作时间戳(一般)",
+    "processing_method": "上传云端 (发送至 m.toutiao.com)",
+    "permissions_info": "无 (依赖网络基础能力)"
+  },
+  {
+    "business_function": "文章详情浏览",
+    "business_scenario": "用户点击具体的新闻标题后，应用加载外部链接并在内置浏览器组件中展示文章全文，此过程会将用户的阅读选择（URL）传递给内容提供商。",
+    "data_types_info": "浏览记录/文章链接(一般)",
+    "processing_method": "上传云端 (通过Web组件加载外部URL)",
+    "permissions_info": "无 (依赖网络基础能力)"
+  },
+  {
+    "business_function": "设备信息伪装（User-Agent设置）",
+    "business_scenario": "应用在发起所有网络请求时，自动在HTTP头中预设固定的User-Agent字符串（模拟iPhone设备），以隐藏真实的设备型号和系统版本信息，确保兼容第三方服务。",
+    "data_types_info": "设备标识信息(User-Agent)(一般)",
+    "processing_method": "本地处理并上传云端 (在请求头中附加静态伪装信息)",
+    "permissions_info": "无"
+  }
+]
+
+open_neteasy_cloud-main
+Bash
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_NEWS_FEED_REQUEST",
+      "data_type": "Usage Data (Timestamp)",
+      "description": "The application requests a news feed from 'm.toutiao.com', transmitting the current timestamp to fetch content.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "NewsDataList.refreshNewsData",
+          "file": "home/src/main/ets/view/NewsDataList.ets",
+          "code": "NewsDataViewModel.getNewsList(this.currentPage, this.categoryId)",
+          "details": "User initiates a news feed refresh or the page loads initially."
+        },
+        {
+          "step": "Data Processing",
+          "function": "NewsDataViewModel.getNewsList",
+          "file": "home/src/main/ets/viewmodel/NewsDataViewModel.ets",
+          "code": "url += '&max_time=' + timeStamp + '&max_behot_time=' + timeStamp+ '&i=' + timeStamp;",
+          "details": "The current timestamp is appended to the API URL query parameters."
+        },
+        {
+          "step": "Sink (Network Request)",
+          "function": "httpRequestGet",
+          "file": "common/src/main/ets/utils/HttpUtil.ets",
+          "code": "httpRequest.request(url, http.RequestMethod.GET)",
+          "details": "The request is transmitted via HTTP GET to 'm.toutiao.com'."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_ARTICLE_BROWSING",
+      "data_type": "Browsing History (URL)",
+      "description": "User views an article, causing the application to load an external article URL in a Webview, sharing the user's interest with the content provider.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "DetailPage.aboutToAppear",
+          "file": "home/src/main/ets/pages/DetailPage.ets",
+          "code": "this.article = params;",
+          "details": "The article object containing the external URL is passed to the detail page."
+        },
+        {
+          "step": "Sink (Webview Display)",
+          "function": "DetailPage.build",
+          "file": "home/src/main/ets/pages/DetailPage.ets",
+          "code": "src: this.article.article_url",
+          "details": "The Web component loads the URL from the article data."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_DEVICE_INFO_SPOOFING",
+      "data_type": "Device Identification (User-Agent)",
+      "description": "The application mimics an iPhone by sending a hardcoded User-Agent string in HTTP requests.",
+      "flow_steps": [
+        {
+          "step": "Static Definition",
+          "function": "httpRequestGetHtml",
+          "file": "common/src/main/ets/utils/HttpUtil.ets",
+          "code": "'User-Agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 16_2_1 like Mac OS X)...'",
+          "details": "A fake User-Agent string is hardcoded in the HTTP header configuration."
+        },
+        {
+          "step": "Sink (Network Request)",
+          "function": "httpRequest.request",
+          "file": "common/src/main/ets/utils/HttpUtil.ets",
+          "code": "httpRequest.request(url, ...)",
+          "details": "The spoofed User-Agent header is sent with outgoing HTTP requests."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_MOCK_USER_PROFILE",
+      "data_type": "User Profile (Mock Data)",
+      "description": "The application displays hardcoded user profile information (Nickname, Location) locally, mimicking a logged-in user.",
+      "flow_steps": [
+        {
+          "step": "Static Definition",
+          "function": "authorView.build",
+          "file": "mine/src/main/ets/view/authorView.ets",
+          "code": "Text(\"大眼萌机器人\")",
+          "details": "Hardcoded nickname is defined in the UI."
+        },
+        {
+          "step": "Static Definition",
+          "function": "otherView.build",
+          "file": "mine/src/main/ets/view/otherView.ets",
+          "code": "Text(\"IP 归属：北京 >\")",
+          "details": "Hardcoded location string is defined in the UI."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "MinePage.build",
+          "file": "mine/src/main/ets/pages/MinePage.ets",
+          "code": "topBackgroundView(...)",
+          "details": "The mock profile data is rendered on the Mine page."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_VIDEO_PLAYBACK_LOCAL",
+      "data_type": "Media Consumption (Local)",
+      "description": "The application plays video content from local raw files.",
+      "flow_steps": [
+        {
+          "step": "Static Definition",
+          "function": "VIDEO_DATA",
+          "file": "video/src/main/ets/viewModel/VideoViewModel.ets",
+          "code": "src: $rawfile('oUiC9RMqlQNDAyARZBIe6x3DI0ngstAzOgbeZs.MP4')",
+          "details": "Video source paths are defined in a static data array."
+        },
+        {
+          "step": "Sink (Media Player)",
+          "function": "VideoPage.build",
+          "file": "video/src/main/ets/pages/VideoPage.ets",
+          "code": "videoPlayView({ videoArray: $videoArray,play:$play })",
+          "details": "The Video player component plays the file from local resources."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "新闻资讯列表刷新",
+    "business_scenario": "用户打开应用首页或下拉刷新时，应用向第三方服务器（今日头条）发起请求，携带当前时间戳以获取最新的新闻列表数据。",
+    "data_types_info": "操作时间戳(一般)",
+    "processing_method": "上传云端 (发送至 m.toutiao.com)",
+    "permissions_info": "无 (依赖网络基础能力)"
+  },
+  {
+    "business_function": "文章详情浏览",
+    "business_scenario": "用户点击新闻标题后，应用加载外部链接并在内置Web组件中展示文章全文，此过程会将用户的阅读选择（URL）传递给内容提供商。",
+    "data_types_info": "浏览记录/文章链接(一般)",
+    "processing_method": "上传云端 (通过Web组件加载外部URL)",
+    "permissions_info": "无 (依赖网络基础能力)"
+  },
+  {
+    "business_function": "设备兼容性适配（User-Agent伪装）",
+    "business_scenario": "应用在发起所有网络请求时，自动在HTTP头中预设固定的User-Agent字符串（模拟iPhone设备），以隐藏真实的设备型号和系统版本，确保能正确获取移动版网页内容。",
+    "data_types_info": "设备标识信息(User-Agent)(一般)",
+    "processing_method": "本地处理并上传云端 (在请求头中附加静态伪装信息)",
+    "permissions_info": "无"
+  },
+  {
+    "business_function": "模拟用户个人中心展示",
+    "business_scenario": "用户进入“我的”页面时，应用直接展示硬编码的虚拟昵称（“大眼萌机器人”）和虚拟IP归属地（“北京”），用于演示界面效果，不涉及真实用户数据的采集或处理。",
+    "data_types_info": "虚拟昵称、虚拟位置信息(非个人信息)",
+    "processing_method": "仅本地展示 (静态文本渲染)",
+    "permissions_info": "无"
+  },
+  {
+    "business_function": "本地视频播放",
+    "business_scenario": "用户进入视频页面时，应用直接从安装包内的本地资源文件（rawfile）读取并播放预设的视频内容，不涉及网络传输或外部数据收集。",
+    "data_types_info": "无个人数据收集",
+    "processing_method": "仅本地处理 (读取本地资源文件)",
+    "permissions_info": "无"
+  }
+]
+
+HarmoneyOpenEye-master
+Bash
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_USER_LOGIN_STATUS_STORAGE",
+      "data_type": "User Authentication Status",
+      "description": "User login status is stored locally and checked before network requests.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "TestPage.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/test/TestPage.ets",
+          "code": "StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+          "details": "User triggers a simulated login action which stores the login status."
+        },
+        {
+          "step": "Data Storage",
+          "function": "StorageUtils.put",
+          "file": "entry/src/main/ets/utils/StorageUtils.ets",
+          "code": "await preferences.put(key, value)",
+          "details": "Login status is persisted to local preferences."
+        },
+        {
+          "step": "Data Access",
+          "function": "axiosClient.interceptorHooks.requestInterceptor",
+          "file": "entry/src/main/ets/http/AxiosRequest.ets",
+          "code": "let hasLogin = await StorageUtils.get(StorageKeys.USER_LOGIN, false)",
+          "details": "Network client retrieves login status to validate authentication state."
+        },
+        {
+          "step": "Sink (Log)",
+          "function": "axiosClient.interceptorHooks.requestInterceptor",
+          "file": "entry/src/main/ets/http/AxiosRequest.ets",
+          "code": "LogUtils.debug('网络请求Request 登录状态校验>>>', `${hasLogin.toString()}`);",
+          "details": "The sensitive authentication status is written to the system log."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_USER_INFO_STORAGE_AND_DISPLAY",
+      "data_type": "User Personal Information",
+      "description": "User information is stored locally and retrieved for display/debugging.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "TestPage.build.Button.onClick",
+          "file": "entry/src/main/ets/pages/test/TestPage.ets",
+          "code": "StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+          "details": "User triggers an action that stores user profile information."
+        },
+        {
+          "step": "Data Storage",
+          "function": "StorageUtils.put",
+          "file": "entry/src/main/ets/utils/StorageUtils.ets",
+          "code": "await preferences.put(key, value)",
+          "details": "User info is persisted to local preferences."
+        },
+        {
+          "step": "Data Access",
+          "function": "MinePage.itemBuilder.onClick",
+          "file": "entry/src/main/ets/pages/mine/MinePage.ets",
+          "code": "StorageUtils.get(StorageKeys.USER_INFO_KEY, \"\").then(result => {",
+          "details": "Application retrieves user info from storage."
+        },
+        {
+          "step": "Sink (Log)",
+          "function": "MinePage.itemBuilder.onClick",
+          "file": "entry/src/main/ets/pages/mine/MinePage.ets",
+          "code": "LogUtils.debug(`测试Storage>>>>>>${result}`)",
+          "details": "User information is written to the system log for debugging purposes."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_NETWORK_DATA_LOGGING",
+      "data_type": "Network Request/Response Data (Potentially Sensitive)",
+      "description": "Full network request payloads and responses are logged, effectively leaking any sensitive data transmitted.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Any API Call",
+          "file": "entry/src/main/ets/http/apiService.ets",
+          "code": "return axiosClient.get<HomeModel>(...",
+          "details": "Application initiates a network request (e.g., fetching home list)."
+        },
+        {
+          "step": "Data Processing",
+          "function": "axiosClient.interceptorHooks.requestInterceptor",
+          "file": "entry/src/main/ets/http/AxiosRequest.ets",
+          "code": "LogUtils.debug('网络请求Request Data:', `${JsonUtils.stringify(config.data)}`);",
+          "details": "Request payload (which may contain sensitive info) is stringified."
+        },
+        {
+          "step": "Sink (Log - Request)",
+          "function": "LogUtils.debug",
+          "file": "entry/src/main/ets/utils/LogUtils.ts",
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "details": "Request data is written to the system hiLog."
+        },
+        {
+          "step": "Data Processing",
+          "function": "axiosClient.interceptorHooks.responseInterceptor",
+          "file": "entry/src/main/ets/http/AxiosRequest.ets",
+          "code": "LogUtils.debug('网络请求响应Response:', `\\n${JsonUtils.stringify(response.data)}`);",
+          "details": "Response payload (which may contain user data) is stringified."
+        },
+        {
+          "step": "Sink (Log - Response)",
+          "function": "LogUtils.debug",
+          "file": "entry/src/main/ets/utils/LogUtils.ts",
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "details": "Response data is written to the system hiLog."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "用户登录状态管理",
+    "business_scenario": "用户在测试页面触发模拟登录操作，应用将登录状态（布尔值）保存至本地偏好设置（Preferences），并在后续发起网络请求时读取该状态以校验身份，同时将校验结果记录到系统日志中。",
+    "data_types_info": "登录状态标识(一般)",
+    "processing_method": "本地加密存储 (Preferences) 及 本地日志记录",
+    "permissions_info": "无"
+  },
+  {
+    "business_function": "用户个人信息本地存储与调试",
+    "business_scenario": "用户在测试页面触发操作，应用将用户昵称（如“allen”）等个人信息保存至本地偏好设置，并在用户点击“我的”页面特定项时读取展示，同时将读取到的用户信息明文记录到系统调试日志中。",
+    "data_types_info": "用户昵称(一般)",
+    "processing_method": "本地加密存储 (Preferences) 及 本地日志记录",
+    "permissions_info": "无"
+  },
+  {
+    "business_function": "网络通信全量日志记录",
+    "business_scenario": "应用在进行任何网络请求（如获取首页列表）时，自动拦截并记录完整的请求参数（Payload）和服务器响应数据（Response），并将这些包含潜在敏感信息的数据明文输出到系统日志（hiLog）中用于调试。",
+    "data_types_info": "网络请求/响应数据(含潜在敏感信息)(敏感)",
+    "processing_method": "本地日志记录 (存在数据泄露风险)",
+    "permissions_info": "无"
+  }
+]
+
+Wechat_HarmonyOS-main
+Bash
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_HARDWARE_INFO_MARKET_NAME",
+      "data_type": "Device Hardware Info (Market Name)",
+      "description": "Retrieval of the device's market name for display on the hardware information page.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.onPageShow",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.getDeviceInfo()",
+          "details": "Page lifecycle event triggers device information gathering."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.marketName = deviceInfo.marketName",
+          "details": "Application calls 'deviceInfo.marketName' to get the device marketing name."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text(this.marketName)",
+          "details": "The device market name is displayed on the screen."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_OS_VERSION",
+      "data_type": "Device System Info (OS Version)",
+      "description": "Retrieval of the operating system full name for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "details": "Application accesses 'deviceInfo.osFullName' to get the OS version string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text('系统版本：' + this.osFullName)",
+          "details": "The OS version is rendered in the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_SDK_VERSION",
+      "data_type": "Device System Info (SDK API Version)",
+      "description": "Retrieval of the SDK API version for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "details": "Application accesses 'deviceInfo.sdkApiVersion'."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text('API 版本：' + this.sdkApiVersion)",
+          "details": "The SDK version is rendered in the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_DEVICE_TYPE",
+      "data_type": "Device Hardware Info (Device Type)",
+      "description": "Retrieval of the device type (e.g., phone, tablet) for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "details": "Application accesses 'deviceInfo.deviceType'."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "Text('设备类型：' + this.deviceType)",
+          "details": "The device type is displayed on the screen."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_UPTIME",
+      "data_type": "System Status (Uptime)",
+      "description": "Retrieval of the system uptime for display.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getDeviceInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.uptime = process.uptime()",
+          "details": "Application calls 'process.uptime()' to get system running time."
+        },
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "dayjs.duration(this.uptime, 'seconds').format('D天H时mm分')",
+          "details": "Uptime seconds are formatted into a human-readable duration string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '运行时间', value: ... })",
+          "details": "Formatted uptime is displayed in a list row."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_NETWORK_TYPE",
+      "data_type": "Network Information (Connection Type)",
+      "description": "Detection of the active network connection type (Wifi/Cellular/Ethernet).",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionNetBearType",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.getConnectionNetBearType()",
+          "details": "Called during page initialization to check network status."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionNetBearType",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "const netCapabilities = connection.getNetCapabilitiesSync(defaultNet)",
+          "details": "Retrieves network capabilities to determine bearer type."
+        },
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionNetBearType",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "if (...includes(connection.NetBearType.BEARER_WIFI)) { this.netBearType = 'WIFI网络' }",
+          "details": "Raw bearer type is mapped to a user-friendly string."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '网络类型', value: this.netBearType })",
+          "details": "Network type is displayed on the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_IP_ADDRESS",
+      "data_type": "Network Information (IP Address)",
+      "description": "Retrieval and display of the device's local IP address.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionProperties",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.getConnectionProperties()",
+          "details": "Called during page initialization."
+        },
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionProperties",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "const connectionProperties = connection.getConnectionPropertiesSync(defaultNet)",
+          "details": "Retrieves connection properties including link addresses."
+        },
+        {
+          "step": "Sensitive Access",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getConnectionProperties",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.IPAddress = linkAddress.address.address",
+          "details": "Extracts the IP address string from the link address object."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: 'IP地址', value: this.IPAddress })",
+          "details": "Local IP address is displayed to the user."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_SUBNET_MASK",
+      "data_type": "Network Information (Subnet Mask)",
+      "description": "Calculation and display of the network subnet mask.",
+      "flow_steps": [
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.calculateSubnetMask",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.subnetMask = this.calculateSubnetMask(linkAddress.prefixLength)",
+          "details": "Calculates subnet mask string from the network prefix length."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '子网掩码', value: this.subnetMask })",
+          "details": "Subnet mask is displayed on the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_BROADCAST_ADDRESS",
+      "data_type": "Network Information (Broadcast Address)",
+      "description": "Calculation and display of the network broadcast address.",
+      "flow_steps": [
+        {
+          "step": "Data Processing",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.calculateBroadcastAddress",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.broadcastAddress = this.calculateBroadcastAddress(this.IPAddress, this.subnetMask)",
+          "details": "Derives broadcast address from IP address and subnet mask."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '广播地址', value: this.broadcastAddress })",
+          "details": "Broadcast address is displayed on the UI."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_SCREEN_METRICS",
+      "data_type": "Device Hardware Info (Screen Configuration)",
+      "description": "Retrieval of screen metrics (resolution, refresh rate, density).",
+      "flow_steps": [
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getScreenInfo",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "const ScreenInfo = display.getDefaultDisplaySync()",
+          "details": "Retrieves default display attributes."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '屏幕分辨率（像素）', value: `${this.displayHeight}x${this.displayWidth}` })",
+          "details": "Screen resolution is displayed."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.build",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "ListRow({ title: '屏幕刷新率（Hz）', value: this.displayRefreshRate })",
+          "details": "Refresh rate is displayed."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_HARDWARE_INFO_SENSOR_LIST",
+      "data_type": "Device Hardware Info (Sensors)",
+      "description": "Retrieving the list of all sensors available on the device.",
+      "flow_steps": [
+        {
+          "step": "Source (System API)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getSenorIdArr",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "let SensorList = await sensor.getSensorList()",
+          "details": "Calls Sensor Service Kit to get list of supported sensors."
+        },
+        {
+          "step": "Intermediate (Memory)",
+          "function": "HardwareIndexPage.struct.HardwareIndexPage.getSenorIdArr",
+          "file": "entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "code": "this.supportSensorIds = SensorList.map<number>(item => item.sensorId)",
+          "details": "Maps full sensor objects to a list of IDs stored in memory state."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_CHAT_VOICE_RECORDING",
+      "data_type": "Health/Biometric Data (Voice Recording)",
+      "description": "Capturing user voice input via microphone, saving to disk, and displaying it as a chat message.",
+      "flow_steps": [
+        {
+          "step": "Trigger (User Input)",
+          "function": "ChatPage.struct.ChatPage.onPressTalk",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.onStartRecord()",
+          "details": "User interaction (TouchType.Down) triggers recording start."
+        },
+        {
+          "step": "Source (Microphone)",
+          "function": "AudioCaptureManager.startRecord",
+          "file": "entry/src/main/ets/utils/AudioCapturerManager.ets",
+          "code": "AudioCaptureManager.audioCapturer?.start();",
+          "details": "AudioCapturer API is invoked to begin capturing audio data."
+        },
+        {
+          "step": "Data Persistence (File Write)",
+          "function": "AudioCaptureManager.startRecord.readDataCallback",
+          "file": "entry/src/main/ets/utils/AudioCapturerManager.ets",
+          "code": "fs.writeSync(file.fd, buffer, options);",
+          "details": "Audio buffer data is written synchronously to a WAV file in the app fs."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "ChatPage.struct.ChatPage.postVoice",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.chatList.push(voiceChat)",
+          "details": "The created audio file is referenced in a chat bubble in the UI list."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_CHAT_SPEECH_RECOGNITION",
+      "data_type": "Biometric Data (Voice to Text)",
+      "description": "Real-time processing of user voice input into text using the Speech Recognizer Manager.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "ChatPage.struct.ChatPage.onPressTalk",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.onStartSpeechRecognize()",
+          "details": "Speech recognition is initialized simultaneously with recording."
+        },
+        {
+          "step": "Source (Speech Engine)",
+          "function": "SpeechRecognizerManager.init",
+          "file": "entry/src/main/ets/utils/SpeechRecognizerManager.ets",
+          "code": "SpeechRecognizerManager.asrEngine = await speechRecognizer.createEngine(...)",
+          "details": "Initializes the ASR (Automatic Speech Recognition) engine."
+        },
+        {
+          "step": "Data Processing",
+          "function": "ChatPage.struct.ChatPage.onStartSpeechRecognize",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.voiceToText = sentence + res.result",
+          "details": "The recognized text string is updated in real-time to the component state."
+        },
+        {
+          "step": "Sink (UI Preview)",
+          "function": "ChatPage.struct.ChatPage.buildRecordVoiceView",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "Text(this.voiceToText)",
+          "details": "Draft text is displayed to the user during the recording process."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_CHAT_TEXT_INPUT",
+      "data_type": "User Input (Chat Message)",
+      "description": "Handling user text input in the chat interface.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "ChatPage.struct.ChatPage.build.Row.TextArea.onChange",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "TextArea({ text: $$this.chatText ... })",
+          "details": "Two-way binding updates the state variable as the user types."
+        },
+        {
+          "step": "Intermediate (Memory Buffer)",
+          "function": "ChatPage.struct.ChatPage.sendTextMsg",
+          "file": "entry/src/main/ets/pages/chat/ChatPage.ets",
+          "code": "this.dataList.push({ ... msg: this.chatText })",
+          "details": "User text is moved from input buffer to the chat history list in memory."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "ListChatContentRightItem.struct.ListChatContentRightItem.build",
+          "file": "entry/src/main/ets/component/ListChatContentRightItem.ets",
+          "code": "Text(this.data?.msg)",
+          "details": "The user's message is rendered in a chat bubble."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_PROFILE_IMAGE_GALLERY_ACCESS",
+      "data_type": "User Content (Photos)",
+      "description": "User selects a photo from the system gallery for their profile.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "Mine.struct.Mine.build.Column.Row.Image.onClick",
+          "file": "entry/src/main/ets/pages/mine/Mine.ets",
+          "code": "PhotoPickerUtils.openGallery(...)",
+          "details": "User taps their avatar request to change it."
+        },
+        {
+          "step": "Permissions Check",
+          "function": "PhotoPickerUtils.openGallery",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "await PermissionUtils.request(['ohos.permission.WRITE_MEDIA', 'ohos.permission.READ_MEDIA'])",
+          "details": "App requests read/write access to media files."
+        },
+        {
+          "step": "Source (System Picker)",
+          "function": "PhotoPickerUtils.openGallery",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "photoPicker.select(PhotoSelectOptions)",
+          "details": "Invokes the system PhotoViewPicker."
+        },
+        {
+          "step": "Data Persistence (Sandbox Copy)",
+          "function": "PhotoPickerUtils.copyFileToCache",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "await fs.copyFile(file.fd, newPath)",
+          "details": "Detailed file content is copied from the public URI to the app's cache directory."
+        },
+        {
+          "step": "Sink (UI Display)",
+          "function": "Mine.struct.Mine.build",
+          "file": "entry/src/main/ets/pages/mine/Mine.ets",
+          "code": "Image(this.imgPath ? this.imgPath : ...)",
+          "details": "The selected image is displayed in the profile view."
+        }
+      ]
+    },
+    {
+      "id": "FLOW_SEARCH_QUERY_HANDLING",
+      "data_type": "User Input (Search Keywords)",
+      "description": "Processing of search queries entered by the user.",
+      "flow_steps": [
+        {
+          "step": "Trigger",
+          "function": "SearchPage.struct.SearchPage.build.TextInput.onChange",
+          "file": "entry/src/main/ets/pages/search/SearchPage.ets",   
+          "code": "this.searchText = value",
+          "details": "Input text is captured into state."
+        },
+        {
+          "step": "Sink (Toast Feedback)",
+          "function": "SearchPage.struct.SearchPage.build.TextInput.onSubmit",
+          "file": "entry/src/main/ets/pages/search/SearchPage.ets",
+          "code": "prompt.showToast({ message: this.searchText })",
+          "details": "Search query is echoed back to the user (simulation of search action)."
+        }
+      ]
+    }
+  ]
+}
+{
+  "project_privacy_data_flows": [
+    {
+      "id": "FLOW_CAMERA_PHOTO_CAPTURE_POTENTIAL",
+      "data_type": "User Content (Photos via Camera)",
+      "description": "Logic implemented to capture photos using the system camera. (Note: This function is fully implemented but currently NOT wired to any UI button in the app).",
+      "flow_steps": [
+        {
+          "step": "Trigger (Potential)",
+          "function": "PhotoPickerUtils.openCamera",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "static async openCamera(onSuccess: (uri: string) => void, onFailed: (error: string) => void)",
+          "details": "The static method entry point for camera operations."
+        },
+        {
+          "step": "Permissions Check",
+          "function": "PhotoPickerUtils.openCamera",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "const granted = await PermissionUtils.request(['ohos.permission.CAMERA'])",
+          "details": "Applicaton explicitly requests 'ohos.permission.CAMERA' authorization from the user."
+        },
+        {
+          "step": "Source (System Camera)",
+          "function": "PhotoPickerUtils.openCamera",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "await cameraPicker.pick(getContext(), [cameraPicker.PickerMediaType.PHOTO, ...], pickerProfile)",
+          "details": "Invokes the HarmonyOS system camera picker interface to capture content."
+        },
+        {
+          "step": "Sink (Callback Return)",
+          "function": "PhotoPickerUtils.openCamera",
+          "file": "entry/src/main/ets/utils/PhotoPickerUtils.ets",
+          "code": "onSuccess(pickerResult.resultUri)",
+          "details": "The URI of the captured photo is returned to the caller via callback."
+        }
+      ]
+    }
+  ]
+}
+
+JSON
+[
+  {
+    "business_function": "设备硬件信息展示",
+    "business_scenario": "用户进入设备信息页面时，应用自动读取并展示设备的市场名称、操作系统版本、SDK版本、设备类型、屏幕分辨率、刷新率及传感器列表等基础硬件信息。",
+    "data_types_info": "设备型号(一般)、系统版本(一般)、屏幕参数(一般)、传感器列表(一般)",
+    "processing_method": "仅本地展示 (读取系统属性并渲染)",
+    "permissions_info": "无 (读取基础设备信息无需额外权限)"
+  },
+  {
+    "business_function": "网络连接状态检测与展示",
+    "business_scenario": "用户进入设备信息页面时，应用检测当前的网络连接类型（WiFi/蜂窝/以太网），并获取本地IP地址、子网掩码和广播地址进行展示。",
+    "data_types_info": "网络类型(一般)、本地IP地址(敏感)、子网掩码(一般)",
+    "processing_method": "仅本地展示 (读取网络状态并计算)",
+    "permissions_info": "无 (HarmonyOS基础网络状态读取通常无需动态权限，但需联网能力)"
+  },
+  {
+    "business_function": "语音聊天与录音",
+    "business_scenario": "用户在聊天界面长按说话按钮，应用调用麦克风录制语音，将音频数据保存为本地WAV文件，并在聊天窗口中显示语音消息气泡。",
+    "data_types_info": "语音录音(敏感)",
+    "processing_method": "本地加密存储 (写入应用沙箱文件系统)",
+    "permissions_info": "ohos.permission.MICROPHONE (用户长按说话按钮时触发)"
+  },
+  {
+    "business_function": "语音转文字识别",
+    "business_scenario": "用户在录制语音的同时，应用实时调用语音识别引擎，将用户的语音内容转换为文本草稿并展示在界面上，以便用户确认。",
+    "data_types_info": "语音生物特征(敏感)、转换后的文本(敏感)",
+    "processing_method": "本地处理 (调用系统ASR引擎)",
+    "permissions_info": "ohos.permission.MICROPHONE (依赖录音权限，通常在录音开始时一并触发)"
+  },
+  {
+    "business_function": "文本消息输入与发送",
+    "business_scenario": "用户在聊天框输入文字并发送，应用将文本内容暂存于内存并立即在聊天界面展示。",
+    "data_types_info": "聊天文本内容(一般)",
+    "processing_method": "仅本地展示 (内存暂存与UI渲染)",
+    "permissions_info": "无"
+  },
+  {
+    "business_function": "个人头像设置（相册选择）",
+    "business_scenario": "用户点击个人头像区域选择更换图片，应用请求媒体访问权限后，调用系统相册选择器，用户选中图片后，应用将该图片复制至本地缓存目录并更新显示。",
+    "data_types_info": "用户照片(敏感)",
+    "processing_method": "本地加密存储 (复制文件至应用沙箱)",
+    "permissions_info": "ohos.permission.READ_MEDIA, ohos.permission.WRITE_MEDIA (用户点击头像选择图片时触发)"
+  },
+  {
+    "business_function": "搜索功能",
+    "business_scenario": "用户在搜索框输入关键词并提交，应用捕获输入内容并以弹窗形式反馈（当前为模拟演示）。",
+    "data_types_info": "搜索关键词(一般)",
+    "processing_method": "仅本地展示 (输入捕获与Toast提示)",
+    "permissions_info": "无"
+  },
+  {
+    "business_function": "相机拍照功能（预留）",
+    "business_scenario": "虽然当前界面未绑定入口，但应用已预置拍照逻辑：当触发该功能时，将请求相机权限并调用系统相机拍摄照片，返回照片URI供应用使用。",
+    "data_types_info": "拍摄的照片(敏感)",
+    "processing_method": "本地处理 (调用系统相机接口)",
+    "permissions_info": "ohos.permission.CAMERA (功能触发时申请)"
+  }
+]
+
