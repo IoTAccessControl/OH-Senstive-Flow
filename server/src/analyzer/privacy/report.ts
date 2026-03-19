@@ -11,6 +11,7 @@ import type { SinkRecord, SourceRecord } from '../extract/types.js';
 import { sourceRecordToRef, type SourceRef } from '../extract/sources.js';
 
 import { extractFeaturePrivacyFacts } from './facts.js';
+import { getPermissionDisplayName } from './permissionDisplay.js';
 import type {
   DataflowNodeRef,
   FeaturePrivacyFactsFile,
@@ -822,6 +823,12 @@ function pickValidRef(
   return null;
 }
 
+function permissionDisplayName(permissionName: string): string {
+  const normalized = normalizePermissionName(permissionName);
+  if (!normalized) return '';
+  return cleanText(getPermissionDisplayName(normalized)) || normalized;
+}
+
 function deterministicPermissionSentenceTokens(args: {
   feature: ReportFeatureInput;
   practice: PrivacyPermissionPractice;
@@ -829,6 +836,7 @@ function deterministicPermissionSentenceTokens(args: {
 }): PrivacyReportToken[] {
   const permissionName = normalizePermissionName(args.practice.permissionName);
   if (!permissionName) return [];
+  const permissionLabel = permissionDisplayName(permissionName);
 
   const picked = pickValidRef(args.practice.refs as Array<{ flowId: string; nodeId: string }> | undefined, args.perFlowIndex);
   if (!picked) return [];
@@ -848,7 +856,7 @@ function deterministicPermissionSentenceTokens(args: {
 
   return [
     { text: prefix },
-    { text: permissionName, jumpTo },
+    { text: permissionLabel, jumpTo },
     { text: suffix },
     ...(denyImpact ? [{ text: `若您拒绝授权，${denyImpact}。` }] : []),
   ];
@@ -889,11 +897,16 @@ function ensurePermissionsSectionTokens(args: {
   }
 
   if (merged.length === 0 && args.feature.featureId === '__app_permissions') {
-    const names = practices.map((practice) => practice.permissionName).filter(Boolean);
+    const names = uniq(
+      practices
+        .map((practice) => practice.permissionName)
+        .filter(Boolean)
+        .map((item) => permissionDisplayName(item)),
+    );
     if (names.length > 0) {
       return [
         {
-          text: `当前已在应用源码/配置扫描或 SDK API 权限映射中识别到以下权限：${uniq(names).join('、')}；但尚未定位到可回溯的功能点数据流，因此本章节暂不生成具体权限声明。`,
+          text: `当前已在应用源码/配置扫描或 SDK API 权限映射中识别到以下权限：${names.join('、')}；但尚未定位到可回溯的功能点数据流，因此本章节暂不生成具体权限声明。`,
         },
       ];
     }

@@ -108,7 +108,7 @@ describe('privacy report evidence rules', () => {
 
     const permissionSection = result.report.sections.permissions[0];
     expect(permissionSection?.tokens.length).toBeGreaterThan(0);
-    expect(permissionSection?.tokens[0]?.text).toContain('ohos.permission.INTERNET');
+    expect(permissionSection?.tokens[0]?.text).toContain('网络访问权限');
     expect(result.text).toContain('尚未定位到可回溯的功能点数据流');
   });
 

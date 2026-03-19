@@ -177,7 +177,7 @@ describe('privacy permission alignment with app source', () => {
     const appPermissionSection = report.sections.permissions.find((section: any) => section.featureId === '__app_permissions');
     expect(appPermissionSection).toBeTruthy();
     expect(appPermissionSection.tokens?.length ?? 0).toBeGreaterThan(0);
-    expect(appPermissionSection.tokens[0]?.text ?? '').toContain('ohos.permission.CAMERA');
+    expect(appPermissionSection.tokens[0]?.text ?? '').toContain('相机权限');
     expect(appPermissionSection.tokens.some((token: any) => token.jumpTo)).toBe(false);
     expect((report.meta.warnings ?? []).some((item: string) => item.includes('权限段落缺少有效跳转引用'))).toBe(false);
   });

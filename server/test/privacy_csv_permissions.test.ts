@@ -199,7 +199,7 @@ describe('privacy facts - deterministic permissions from CSV', () => {
 
     const permissionSection = (report?.sections?.permissions ?? []).find((s: any) => s.featureId === 'ui_P1_feature');
     const tokens = permissionSection?.tokens ?? [];
-    const internetToken = tokens.find((t: any) => t.text === 'ohos.permission.INTERNET');
+    const internetToken = tokens.find((t: any) => t.text === '网络访问权限');
     expect(internetToken).toBeTruthy();
     expect(internetToken.jumpTo).toEqual({ featureId: 'ui_P1_feature', flowId: 'flow:p1', nodeId: 'p1:n1' });
 
