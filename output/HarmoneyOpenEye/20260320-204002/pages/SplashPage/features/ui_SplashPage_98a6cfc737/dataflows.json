@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.776Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "SplashPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/SplashPage.ets",
+        "structName": "SplashPage",
+        "line": 6,
+        "description": "启动引导页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_SplashPage_98a6cfc737",
+      "kind": "ui",
+      "title": "启动页"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p16",
+      "pathId": "p16",
+      "nodes": [
+        {
+          "id": "p16:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/SplashPage.ets",
+          "line": 7,
+          "code": "aboutToAppear() {",
+          "description": "定义 aboutToAppear 生命周期函数，作为页面加载后的入口点，启动后续逻辑。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import { RoutePath } from '../route/RoutePath'",
+              "",
+              "@Entry",
+              "@Component",
+              "struct SplashPage {",
+              "  aboutToAppear() {",
+              "    setTimeout(() => {",
+              "      router.replaceUrl({ url: RoutePath.MainPage })",
+              "    }, 2000)",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p16:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/SplashPage.ets",
+          "line": 8,
+          "code": "setTimeout(() => {",
+          "description": "调用 setTimeout 设置延时任务，模拟闪屏展示时长，不涉及数据采集。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "@Entry",
+              "@Component",
+              "struct SplashPage {",
+              "  aboutToAppear() {",
+              "    setTimeout(() => {",
+              "      router.replaceUrl({ url: RoutePath.MainPage })",
+              "    }, 2000)",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p16:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/SplashPage.ets",
+          "line": 9,
+          "code": "router.replaceUrl({ url: RoutePath.MainPage })",
+          "description": "执行路由替换操作，将当前闪屏页替换为主页，仅进行界面跳转，未触发任何隐私数据读取或网络请求。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct SplashPage {",
+              "  aboutToAppear() {",
+              "    setTimeout(() => {",
+              "      router.replaceUrl({ url: RoutePath.MainPage })",
+              "    }, 2000)",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p16:n1",
+          "to": "p16:n2"
+        },
+        {
+          "from": "p16:n2",
+          "to": "p16:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地敏感数据存储行为"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

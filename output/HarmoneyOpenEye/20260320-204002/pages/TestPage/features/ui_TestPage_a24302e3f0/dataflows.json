@@ -1,0 +1,1214 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.776Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 4,
+      "nodes": 40,
+      "edges": 37,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "TestPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+        "structName": "TestPage",
+        "line": 11,
+        "description": "功能测试页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_TestPage_a24302e3f0",
+      "kind": "ui",
+      "title": "测试模拟登录"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p54",
+      "pathId": "p54",
+      "nodes": [
+        {
+          "id": "p54:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 28,
+          "code": "build() {",
+          "description": "UI 构建入口，渲染包含测试按钮的界面组件",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    TestViewModel.getHomeBanner((result) => {",
+              "      this.message = JSON.stringify(result, null, 2)",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")"
+            ]
+          }
+        },
+        {
+          "id": "p54:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 31,
+          "code": "Button(\"测试Storage模拟登陆\").onClick(() => {",
+          "description": "定义按钮点击事件监听器，触发模拟登录逻辑",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+              "        setTimeout(() => {",
+              "          StorageUtils.get(StorageKeys.USER_LOGIN).then((result) => {",
+              "            showToast(result.toString())"
+            ]
+          }
+        },
+        {
+          "id": "p54:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 32,
+          "code": "StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+          "description": "调用 StorageUtils.put 保存用户登录状态 (key: USER_LOGIN, value: true)",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+              "        setTimeout(() => {",
+              "          StorageUtils.get(StorageKeys.USER_LOGIN).then((result) => {",
+              "            showToast(result.toString())",
+              "          })"
+            ]
+          }
+        },
+        {
+          "id": "p54:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 33,
+          "code": "StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+          "description": "调用 StorageUtils.put 保存用户信息/用户名 (key: USER_INFO_KEY, value: 'allen')",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+              "        setTimeout(() => {",
+              "          StorageUtils.get(StorageKeys.USER_LOGIN).then((result) => {",
+              "            showToast(result.toString())",
+              "          })",
+              "        }, 3000)"
+            ]
+          }
+        },
+        {
+          "id": "p54:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 25,
+          "code": "static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+          "description": "StorageUtils.put 方法入口，接收键值对及偏好设置文件名",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "   */",
+              "  static async getPreferences(preferenceName: string = defaultPreferenceName) {",
+              "    return await dataPreferences.getPreferences(this.context, preferenceName)",
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)",
+              "    await preferences.put(key, value)",
+              "    //Tips Point ---此处一定要flush，要不然不能永久序列化到本地",
+              "    await preferences.flush()"
+            ]
+          }
+        },
+        {
+          "id": "p54:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 27,
+          "code": "let preferences = await this.getPreferences(preferenceName)",
+          "description": "在 put 方法内部调用 getPreferences 获取 Preferences 实例",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "    return await dataPreferences.getPreferences(this.context, preferenceName)",
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)",
+              "    await preferences.put(key, value)",
+              "    //Tips Point ---此处一定要flush，要不然不能永久序列化到本地",
+              "    await preferences.flush()",
+              "  }",
+              "  /**"
+            ]
+          }
+        },
+        {
+          "id": "p54:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 21,
+          "code": "static async getPreferences(preferenceName: string = defaultPreferenceName) {",
+          "description": "StorageUtils.getPreferences 方法入口，准备加载偏好设置文件",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  /**",
+              "   * 获取Prefer实例",
+              "   * @param preferenceName",
+              "   * @returns",
+              "   */",
+              "  static async getPreferences(preferenceName: string = defaultPreferenceName) {",
+              "    return await dataPreferences.getPreferences(this.context, preferenceName)",
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例"
+            ]
+          }
+        },
+        {
+          "id": "p54:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 22,
+          "code": "return await dataPreferences.getPreferences(this.context, preferenceName)",
+          "description": "调用系统 API dataPreferences.getPreferences 加载指定名称的偏好设置文件到内存",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "   * 获取Prefer实例",
+              "   * @param preferenceName",
+              "   * @returns",
+              "   */",
+              "  static async getPreferences(preferenceName: string = defaultPreferenceName) {",
+              "    return await dataPreferences.getPreferences(this.context, preferenceName)",
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)"
+            ]
+          }
+        },
+        {
+          "id": "p54:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 28,
+          "code": "await preferences.put(key, value)",
+          "description": "调用 Preferences 实例的 put 方法将数据写入内存缓存",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)",
+              "    await preferences.put(key, value)",
+              "    //Tips Point ---此处一定要flush，要不然不能永久序列化到本地",
+              "    await preferences.flush()",
+              "  }",
+              "  /**",
+              "   * 获取值"
+            ]
+          }
+        },
+        {
+          "id": "p54:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 30,
+          "code": "await preferences.flush()",
+          "description": "调用 Preferences 实例的 flush 方法将内存数据持久化序列化到本地文件系统",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)",
+              "    await preferences.put(key, value)",
+              "    //Tips Point ---此处一定要flush，要不然不能永久序列化到本地",
+              "    await preferences.flush()",
+              "  }",
+              "  /**",
+              "   * 获取值",
+              "   * @param key",
+              "   * @param defaultValue"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p54:n1",
+          "to": "p54:n2"
+        },
+        {
+          "from": "p54:n2",
+          "to": "p54:n3"
+        },
+        {
+          "from": "p54:n2",
+          "to": "p54:n4"
+        },
+        {
+          "from": "p54:n3",
+          "to": "p54:n5"
+        },
+        {
+          "from": "p54:n4",
+          "to": "p54:n5"
+        },
+        {
+          "from": "p54:n5",
+          "to": "p54:n6"
+        },
+        {
+          "from": "p54:n6",
+          "to": "p54:n7"
+        },
+        {
+          "from": "p54:n7",
+          "to": "p54:n8"
+        },
+        {
+          "from": "p54:n6",
+          "to": "p54:n9"
+        },
+        {
+          "from": "p54:n9",
+          "to": "p54:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户登录状态 (USER_LOGIN)",
+          "用户名/用户标识 (USER_INFO_KEY)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (点击按钮时)"
+        ],
+        "cloudUpload": [
+          "未检测到网络上传行为"
+        ],
+        "storageAndEncryption": [
+          "本地持久化存储 (Preferences)",
+          "明文存储 (未检测到加密操作)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p55",
+      "pathId": "p55",
+      "nodes": [
+        {
+          "id": "p55:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 28,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build()，开始渲染测试页面组件树。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    TestViewModel.getHomeBanner((result) => {",
+              "      this.message = JSON.stringify(result, null, 2)",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")"
+            ]
+          }
+        },
+        {
+          "id": "p55:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 29,
+          "code": "Column() {",
+          "description": "创建 Column 布局容器，作为页面内容的父节点。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.message = JSON.stringify(result, null, 2)",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+              "        setTimeout(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p55:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 31,
+          "code": "Button(\"测试Storage模拟登陆\").onClick(() => {",
+          "description": "定义一个按钮组件，并绑定 onClick 点击事件监听器，等待用户交互触发数据流。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+              "        setTimeout(() => {",
+              "          StorageUtils.get(StorageKeys.USER_LOGIN).then((result) => {",
+              "            showToast(result.toString())"
+            ]
+          }
+        },
+        {
+          "id": "p55:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 32,
+          "code": "StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+          "description": "点击事件触发：调用 StorageUtils.put 方法，准备将用户登录状态 (true) 写入本地存储。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+              "        setTimeout(() => {",
+              "          StorageUtils.get(StorageKeys.USER_LOGIN).then((result) => {",
+              "            showToast(result.toString())",
+              "          })"
+            ]
+          }
+        },
+        {
+          "id": "p55:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 33,
+          "code": "StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+          "description": "点击事件触发：调用 StorageUtils.put 方法，准备将用户信息 ('allen') 写入本地存储。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+              "        setTimeout(() => {",
+              "          StorageUtils.get(StorageKeys.USER_LOGIN).then((result) => {",
+              "            showToast(result.toString())",
+              "          })",
+              "        }, 3000)"
+            ]
+          }
+        },
+        {
+          "id": "p55:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 25,
+          "code": "static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+          "description": "进入 StorageUtils.put 静态方法，接收键值对参数，准备执行存储逻辑。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "   */",
+              "  static async getPreferences(preferenceName: string = defaultPreferenceName) {",
+              "    return await dataPreferences.getPreferences(this.context, preferenceName)",
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)",
+              "    await preferences.put(key, value)",
+              "    //Tips Point ---此处一定要flush，要不然不能永久序列化到本地",
+              "    await preferences.flush()"
+            ]
+          }
+        },
+        {
+          "id": "p55:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 27,
+          "code": "let preferences = await this.getPreferences(preferenceName)",
+          "description": "在 put 方法内部调用 getPreferences 异步方法，以获取 Preferences 实例对象。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "    return await dataPreferences.getPreferences(this.context, preferenceName)",
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)",
+              "    await preferences.put(key, value)",
+              "    //Tips Point ---此处一定要flush，要不然不能永久序列化到本地",
+              "    await preferences.flush()",
+              "  }",
+              "  /**"
+            ]
+          }
+        },
+        {
+          "id": "p55:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 21,
+          "code": "static async getPreferences(preferenceName: string = defaultPreferenceName) {",
+          "description": "进入 getPreferences 静态方法，初始化偏好设置文件名参数。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  /**",
+              "   * 获取Prefer实例",
+              "   * @param preferenceName",
+              "   * @returns",
+              "   */",
+              "  static async getPreferences(preferenceName: string = defaultPreferenceName) {",
+              "    return await dataPreferences.getPreferences(this.context, preferenceName)",
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例"
+            ]
+          }
+        },
+        {
+          "id": "p55:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 22,
+          "code": "return await dataPreferences.getPreferences(this.context, preferenceName)",
+          "description": "【Sink】调用系统 API dataPreferences.getPreferences，加载指定名称的偏好设置文件到内存中。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "   * 获取Prefer实例",
+              "   * @param preferenceName",
+              "   * @returns",
+              "   */",
+              "  static async getPreferences(preferenceName: string = defaultPreferenceName) {",
+              "    return await dataPreferences.getPreferences(this.context, preferenceName)",
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)"
+            ]
+          }
+        },
+        {
+          "id": "p55:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 28,
+          "code": "await preferences.put(key, value)",
+          "description": "获取实例成功后，调用 preferences.put 将具体的键值对 (登录状态/用户名) 写入内存中的偏好设置对象。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)",
+              "    await preferences.put(key, value)",
+              "    //Tips Point ---此处一定要flush，要不然不能永久序列化到本地",
+              "    await preferences.flush()",
+              "  }",
+              "  /**",
+              "   * 获取值"
+            ]
+          }
+        },
+        {
+          "id": "p55:n11",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 30,
+          "code": "await preferences.flush()",
+          "description": "调用 preferences.flush() 强制将内存中的数据序列化并持久化保存到设备本地文件中。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)",
+              "    await preferences.put(key, value)",
+              "    //Tips Point ---此处一定要flush，要不然不能永久序列化到本地",
+              "    await preferences.flush()",
+              "  }",
+              "  /**",
+              "   * 获取值",
+              "   * @param key",
+              "   * @param defaultValue"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p55:n1",
+          "to": "p55:n2"
+        },
+        {
+          "from": "p55:n2",
+          "to": "p55:n3"
+        },
+        {
+          "from": "p55:n3",
+          "to": "p55:n4"
+        },
+        {
+          "from": "p55:n4",
+          "to": "p55:n5"
+        },
+        {
+          "from": "p55:n5",
+          "to": "p55:n6"
+        },
+        {
+          "from": "p55:n6",
+          "to": "p55:n7"
+        },
+        {
+          "from": "p55:n7",
+          "to": "p55:n8"
+        },
+        {
+          "from": "p55:n8",
+          "to": "p55:n9"
+        },
+        {
+          "from": "p55:n9",
+          "to": "p55:n10"
+        },
+        {
+          "from": "p55:n10",
+          "to": "p55:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户登录状态 (USER_LOGIN)",
+          "用户标识符/用户名 (USER_INFO_KEY: allen)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "未检测到网络上传行为 (仅本地存储)"
+        ],
+        "storageAndEncryption": [
+          "本地持久化存储 (Preferences)",
+          "数据明文存储 (未检测到加密操作)"
+        ],
+        "permissions": [
+          "ohos.permission.PREFERENCE_READ_WRITE (隐式需要，用于访问 Preferences)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p56",
+      "pathId": "p56",
+      "nodes": [
+        {
+          "id": "p56:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 28,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数，启动页面渲染流程，间接触发数据加载逻辑。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    TestViewModel.getHomeBanner((result) => {",
+              "      this.message = JSON.stringify(result, null, 2)",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")"
+            ]
+          }
+        },
+        {
+          "id": "p56:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 29,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为页面布局的根节点，其内部可能包含触发数据加载的生命周期或按钮事件（虽然此处主要展示静态结构，但它是执行流的上下文）。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.message = JSON.stringify(result, null, 2)",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+              "        setTimeout(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p56:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 19,
+          "code": "this.loadNet()",
+          "description": "在 aboutToAppear 生命周期中调用 loadNet() 方法，发起网络数据获取请求。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "    TestViewModel.observeState(state => {",
+              "      this.viewState = state",
+              "    })",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    TestViewModel.getHomeBanner((result) => {",
+              "      this.message = JSON.stringify(result, null, 2)"
+            ]
+          }
+        },
+        {
+          "id": "p56:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 22,
+          "code": "loadNet() {",
+          "description": "定义 loadNet() 函数，作为业务逻辑层与 UI 层的桥梁，负责启动具体的数据获取任务。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "      this.viewState = state",
+              "    })",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    TestViewModel.getHomeBanner((result) => {",
+              "      this.message = JSON.stringify(result, null, 2)",
+              "    })",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p56:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/viewmodel/TestViewModel.ets",
+          "line": 8,
+          "code": "async getHomeBanner(resultCallback?: ResultCallback) {",
+          "description": "定义异步函数 getHomeBanner，封装获取首页横幅数据的业务逻辑，接收回调函数处理结果。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "import { BaseViewModel, ResultCallback } from './BaseViewModel';",
+              "/**",
+              " * 测试数据类ViewModel",
+              " */",
+              "export class TestViewModel extends BaseViewModel {",
+              "  async getHomeBanner(resultCallback?: ResultCallback) {",
+              "    await this.httpRequest(true)",
+              "      .promise(getWanAndroidBanner())",
+              "      .then((result) => {",
+              "        LogUtils.debug(`>>>>>>${JSON.stringify(result.data, null, 2)}`)",
+              "        resultCallback?.(result.data)"
+            ]
+          }
+        },
+        {
+          "id": "p56:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/viewmodel/TestViewModel.ets",
+          "line": 10,
+          "code": ".promise(getWanAndroidBanner())",
+          "description": "执行实际的 HTTP 请求 (getWanAndroidBanner)，从远程服务器获取 Banner 数据，此步骤隐含使用网络权限。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              " * 测试数据类ViewModel",
+              " */",
+              "export class TestViewModel extends BaseViewModel {",
+              "  async getHomeBanner(resultCallback?: ResultCallback) {",
+              "    await this.httpRequest(true)",
+              "      .promise(getWanAndroidBanner())",
+              "      .then((result) => {",
+              "        LogUtils.debug(`>>>>>>${JSON.stringify(result.data, null, 2)}`)",
+              "        resultCallback?.(result.data)",
+              "      })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p56:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/viewmodel/TestViewModel.ets",
+          "line": 12,
+          "code": "LogUtils.debug(`>>>>>>${JSON.stringify(result.data, null, 2)}`)",
+          "description": "将网络返回的结果数据 (result.data) 序列化为 JSON 字符串，并拼接调试前缀，准备传入日志工具。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "export class TestViewModel extends BaseViewModel {",
+              "  async getHomeBanner(resultCallback?: ResultCallback) {",
+              "    await this.httpRequest(true)",
+              "      .promise(getWanAndroidBanner())",
+              "      .then((result) => {",
+              "        LogUtils.debug(`>>>>>>${JSON.stringify(result.data, null, 2)}`)",
+              "        resultCallback?.(result.data)",
+              "      })",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p56:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义静态调试方法 debug，接收可变参数，作为日志输出的统一入口。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p56:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 API hilog.debug，将包含业务数据的格式化字符串写入系统调试日志，这是数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p56:n1",
+          "to": "p56:n2"
+        },
+        {
+          "from": "p56:n2",
+          "to": "p56:n3"
+        },
+        {
+          "from": "p56:n3",
+          "to": "p56:n4"
+        },
+        {
+          "from": "p56:n4",
+          "to": "p56:n5"
+        },
+        {
+          "from": "p56:n5",
+          "to": "p56:n6"
+        },
+        {
+          "from": "p56:n6",
+          "to": "p56:n7"
+        },
+        {
+          "from": "p56:n7",
+          "to": "p56:n8"
+        },
+        {
+          "from": "p56:n8",
+          "to": "p56:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "网络响应数据 (WanAndroid Banner)",
+          "JSON 格式化的业务数据",
+          "调试日志内容"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面加载/aboutToAppear)",
+          "一次性 (每次页面初始化)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传 (仅本地日志输出)",
+          "数据来源于云端 API (getWanAndroidBanner)"
+        ],
+        "storageAndEncryption": [
+          "未在此路径中发现持久化存储",
+          "未在此路径中发现加密操作",
+          "数据仅在内存中流转并打印至系统日志"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于网络请求)",
+          "无敏感隐私权限 (如位置、联系人等) 在此路径被调用"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p57",
+      "pathId": "p57",
+      "nodes": [
+        {
+          "id": "p57:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 28,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数，触发页面渲染及后续数据加载逻辑",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    TestViewModel.getHomeBanner((result) => {",
+              "      this.message = JSON.stringify(result, null, 2)",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")"
+            ]
+          }
+        },
+        {
+          "id": "p57:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 19,
+          "code": "this.loadNet()",
+          "description": "在 aboutToAppear 生命周期中调用 loadNet 方法，发起网络数据获取请求",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "    TestViewModel.observeState(state => {",
+              "      this.viewState = state",
+              "    })",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    TestViewModel.getHomeBanner((result) => {",
+              "      this.message = JSON.stringify(result, null, 2)"
+            ]
+          }
+        },
+        {
+          "id": "p57:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 22,
+          "code": "loadNet() {",
+          "description": "定义 loadNet 函数，作为启动获取首页 Banner 数据的控制节点",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "      this.viewState = state",
+              "    })",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    TestViewModel.getHomeBanner((result) => {",
+              "      this.message = JSON.stringify(result, null, 2)",
+              "    })",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p57:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 23,
+          "code": "TestViewModel.getHomeBanner((result) => {",
+          "description": "调用 TestViewModel.getHomeBanner 方法，传入回调函数以接收异步网络结果",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "    })",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    TestViewModel.getHomeBanner((result) => {",
+              "      this.message = JSON.stringify(result, null, 2)",
+              "    })",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p57:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/viewmodel/TestViewModel.ets",
+          "line": 8,
+          "code": "async getHomeBanner(resultCallback?: ResultCallback) {",
+          "description": "定义 getHomeBanner 异步方法，封装获取首页 Banner 的业务逻辑",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "import { BaseViewModel, ResultCallback } from './BaseViewModel';",
+              "/**",
+              " * 测试数据类ViewModel",
+              " */",
+              "export class TestViewModel extends BaseViewModel {",
+              "  async getHomeBanner(resultCallback?: ResultCallback) {",
+              "    await this.httpRequest(true)",
+              "      .promise(getWanAndroidBanner())",
+              "      .then((result) => {",
+              "        LogUtils.debug(`>>>>>>${JSON.stringify(result.data, null, 2)}`)",
+              "        resultCallback?.(result.data)"
+            ]
+          }
+        },
+        {
+          "id": "p57:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/viewmodel/TestViewModel.ets",
+          "line": 10,
+          "code": ".promise(getWanAndroidBanner())",
+          "description": "执行具体的 HTTP 网络请求 (getWanAndroidBanner)，从云端获取原始数据",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              " * 测试数据类ViewModel",
+              " */",
+              "export class TestViewModel extends BaseViewModel {",
+              "  async getHomeBanner(resultCallback?: ResultCallback) {",
+              "    await this.httpRequest(true)",
+              "      .promise(getWanAndroidBanner())",
+              "      .then((result) => {",
+              "        LogUtils.debug(`>>>>>>${JSON.stringify(result.data, null, 2)}`)",
+              "        resultCallback?.(result.data)",
+              "      })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p57:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/viewmodel/TestViewModel.ets",
+          "line": 12,
+          "code": "LogUtils.debug(`>>>>>>${JSON.stringify(result.data, null, 2)}`)",
+          "description": "将网络返回的 result.data 序列化为 JSON 字符串，并拼接日志前缀，准备输出调试信息",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "export class TestViewModel extends BaseViewModel {",
+              "  async getHomeBanner(resultCallback?: ResultCallback) {",
+              "    await this.httpRequest(true)",
+              "      .promise(getWanAndroidBanner())",
+              "      .then((result) => {",
+              "        LogUtils.debug(`>>>>>>${JSON.stringify(result.data, null, 2)}`)",
+              "        resultCallback?.(result.data)",
+              "      })",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p57:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/viewmodel/TestViewModel.ets",
+          "line": 13,
+          "code": "resultCallback?.(result.data)",
+          "description": "通过回调函数将处理后的数据返回给调用方 (TestPage)",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "  async getHomeBanner(resultCallback?: ResultCallback) {",
+              "    await this.httpRequest(true)",
+              "      .promise(getWanAndroidBanner())",
+              "      .then((result) => {",
+              "        LogUtils.debug(`>>>>>>${JSON.stringify(result.data, null, 2)}`)",
+              "        resultCallback?.(result.data)",
+              "      })",
+              "  }",
+              "}",
+              "",
+              "let testViewModel = new TestViewModel()"
+            ]
+          }
+        },
+        {
+          "id": "p57:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "LogUtils 静态 debug 方法入口，接收可变参数作为待记录的日志内容",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p57:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将包含业务数据的字符串写入系统日志缓冲区 (Sink)",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p57:n1",
+          "to": "p57:n2"
+        },
+        {
+          "from": "p57:n2",
+          "to": "p57:n3"
+        },
+        {
+          "from": "p57:n3",
+          "to": "p57:n4"
+        },
+        {
+          "from": "p57:n4",
+          "to": "p57:n5"
+        },
+        {
+          "from": "p57:n5",
+          "to": "p57:n6"
+        },
+        {
+          "from": "p57:n6",
+          "to": "p57:n7"
+        },
+        {
+          "from": "p57:n7",
+          "to": "p57:n8"
+        },
+        {
+          "from": "p57:n7",
+          "to": "p57:n9"
+        },
+        {
+          "from": "p57:n9",
+          "to": "p57:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "网络响应数据 (Home Banner)",
+          "JSON 格式化的业务数据"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面加载/组件构建时)"
+        ],
+        "cloudUpload": [
+          "无直接上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "未持久化存储",
+          "无加密处理",
+          "数据以明文形式传递给日志系统"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于网络请求)",
+          "ohos.permission.LOG (隐含，用于写入系统日志)"
+        ]
+      }
+    }
+  ]
+}

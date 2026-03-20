@@ -1,0 +1,149 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_CategoryDetailPage_ca6ae2c149",
+    "generatedAt": "2026-03-20T14:54:25.918Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.LOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在分类详情页面下拉刷新或点击重试按钮时，应用重新加载并展示最新的业务数据列表。",
+        "dataSources": [
+          "用户交互事件（下拉刷新、重试）",
+          "网络请求返回的数据"
+        ],
+        "dataItems": [
+          {
+            "name": "视图状态 (viewState)",
+            "refs": [
+              {
+                "flowId": "flow:p417",
+                "nodeId": "p417:n3"
+              },
+              {
+                "flowId": "flow:p420",
+                "nodeId": "p420:n3"
+              }
+            ]
+          },
+          {
+            "name": "刷新状态标志 (isRefreshing)",
+            "refs": [
+              {
+                "flowId": "flow:p417",
+                "nodeId": "p417:n5"
+              },
+              {
+                "flowId": "flow:p420",
+                "nodeId": "p420:n5"
+              }
+            ]
+          },
+          {
+            "name": "业务数据列表 (dataList)",
+            "refs": [
+              {
+                "flowId": "flow:p417",
+                "nodeId": "p417:n6"
+              },
+              {
+                "flowId": "flow:p419",
+                "nodeId": "p419:n6"
+              },
+              {
+                "flowId": "flow:p420",
+                "nodeId": "p420:n6"
+              }
+            ]
+          },
+          {
+            "name": "滚动偏移量 (scrollOffset)",
+            "refs": [
+              {
+                "flowId": "flow:p424",
+                "nodeId": "p424:n6"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转参数 (params)",
+            "refs": [
+              {
+                "flowId": "flow:p417",
+                "nodeId": "p417:n8"
+              },
+              {
+                "flowId": "flow:p419",
+                "nodeId": "p419:n8"
+              }
+            ]
+          },
+          {
+            "name": "目标页面 URL",
+            "refs": [
+              {
+                "flowId": "flow:p417",
+                "nodeId": "p417:n9"
+              },
+              {
+                "flowId": "flow:p419",
+                "nodeId": "p419:n9"
+              }
+            ]
+          },
+          {
+            "name": "错误码与错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p418",
+                "nodeId": "p418:n7"
+              },
+              {
+                "flowId": "flow:p422",
+                "nodeId": "p422:n8"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "内存临时存储与 UI 渲染；部分调试数据（如滚动位置、URL、错误信息）被记录至系统日志缓冲区。",
+        "storageMethod": "内存临时存储（ArkTS State 变量）；系统日志存储（hilog，未加密）。",
+        "dataRecipients": [],
+        "processingPurpose": "响应用户操作以更新页面内容，展示最新的分类详情数据，并记录必要的调试与错误日志以便排查问题。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "用户在分类详情页面进行下拉刷新或点击重试时，应用需要访问网络以获取最新的业务数据。",
+        "permissionPurpose": "允许应用发起网络请求，从服务器拉取分类详情列表数据。",
+        "denyImpact": "若拒绝此权限，用户将无法通过下拉刷新或重试功能获取最新数据，页面可能显示为空或保留旧数据。",
+        "refs": [
+          {
+            "flowId": "flow:p419",
+            "nodeId": "p419:n4"
+          },
+          {
+            "flowId": "flow:p423",
+            "nodeId": "p423:n4"
+          },
+          {
+            "flowId": "flow:p427",
+            "nodeId": "p427:n4"
+          }
+        ]
+      }
+    ]
+  }
+}

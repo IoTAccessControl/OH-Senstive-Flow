@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_CategoryDetailPage_afe1ec275a",
+    "generatedAt": "2026-03-20T14:53:55.457Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户进入分类详情页面时，应用接收并处理页面跳转参数以展示对应的分类标题和头部图片。",
+        "dataSources": [
+          "页面路由参数"
+        ],
+        "dataItems": [
+          {
+            "name": "分类 ID",
+            "refs": [
+              {
+                "flowId": "flow:p404",
+                "nodeId": "p404:n2"
+              }
+            ]
+          },
+          {
+            "name": "分类标题",
+            "refs": [
+              {
+                "flowId": "flow:p404",
+                "nodeId": "p404:n4"
+              }
+            ]
+          },
+          {
+            "name": "分类头部图片地址",
+            "refs": [
+              {
+                "flowId": "flow:p404",
+                "nodeId": "p404:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中解析并赋值给组件状态变量，用于 UI 渲染。",
+        "storageMethod": "内存临时存储（@State 状态变量），未加密。",
+        "dataRecipients": [],
+        "processingPurpose": "初始化页面内容，展示当前分类的详细信息列表。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在分类详情页进行交互或触发重试逻辑时，应用执行页面跳转操作。",
+        "dataSources": [
+          "内部业务逻辑",
+          "用户交互事件"
+        ],
+        "dataItems": [
+          {
+            "name": "目标页面 URL",
+            "refs": [
+              {
+                "flowId": "flow:p405",
+                "nodeId": "p405:n4"
+              },
+              {
+                "flowId": "flow:p407",
+                "nodeId": "p407:n3"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转参数",
+            "refs": [
+              {
+                "flowId": "flow:p405",
+                "nodeId": "p405:n4"
+              },
+              {
+                "flowId": "flow:p413",
+                "nodeId": "p413:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "调用系统路由接口将 URL 和参数传递给操作系统进行页面导航。",
+        "storageMethod": "无本地持久化存储，数据仅在内存中传递。",
+        "dataRecipients": [
+          {
+            "name": "系统路由服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p405",
+                "nodeId": "p405:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "响应用户操作或网络重试需求，实现页面间的导航跳转。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "应用在页面跳转过程中发生错误或成功完成跳转时，记录诊断日志。",
+        "dataSources": [
+          "系统错误回调",
+          "路由执行结果"
+        ],
+        "dataItems": [
+          {
+            "name": "路由错误码",
+            "refs": [
+              {
+                "flowId": "flow:p406",
+                "nodeId": "p406:n5"
+              },
+              {
+                "flowId": "flow:p410",
+                "nodeId": "p410:n4"
+              }
+            ]
+          },
+          {
+            "name": "路由错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p406",
+                "nodeId": "p406:n5"
+              },
+              {
+                "flowId": "flow:p410",
+                "nodeId": "p410:n4"
+              }
+            ]
+          },
+          {
+            "name": "跳转成功的 URL",
+            "refs": [
+              {
+                "flowId": "flow:p407",
+                "nodeId": "p407:n3"
+              },
+              {
+                "flowId": "flow:p411",
+                "nodeId": "p411:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "将错误码、错误消息及 URL 拼接成字符串，通过日志工具输出。",
+        "storageMethod": "写入系统日志缓冲区（hilog），通常不加密且由系统轮转策略管理。",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p406",
+                "nodeId": "p406:n8"
+              },
+              {
+                "flowId": "flow:p407",
+                "nodeId": "p407:n5"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "记录应用运行时的异常情况和导航状态，用于故障排查和调试。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "应用从网络加载分类详情列表数据并更新到页面视图。",
+        "dataSources": [
+          "网络请求响应"
+        ],
+        "dataItems": [
+          {
+            "name": "分类列表数据",
+            "refs": [
+              {
+                "flowId": "flow:p412",
+                "nodeId": "p412:n5"
+              },
+              {
+                "flowId": "flow:p412",
+                "nodeId": "p412:n6"
+              }
+            ]
+          },
+          {
+            "name": "视图状态数据",
+            "refs": [
+              {
+                "flowId": "flow:p412",
+                "nodeId": "p412:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "解析网络返回的数据结构，将其赋值给内存中的状态变量以驱动 UI 更新。",
+        "storageMethod": "内存临时存储（UI 状态变量），无本地持久化。",
+        "dataRecipients": [],
+        "processingPurpose": "展示分类下的具体内容列表，支持用户浏览和交互。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

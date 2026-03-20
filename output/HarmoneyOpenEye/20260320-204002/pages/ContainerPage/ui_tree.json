@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.919Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 3,
+      "edges": 2,
+      "pages": 1,
+      "elements": 2
+    }
+  },
+  "roots": [
+    "page:57338f975d25"
+  ],
+  "nodes": {
+    "page:57338f975d25": {
+      "id": "page:57338f975d25",
+      "category": "Page",
+      "name": "ContainerPage",
+      "description": "发现容器页",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/container/ContainerPage.ets",
+      "line": 9,
+      "code": "struct ContainerPage {",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "import { FocusPage } from '../find/focus/FocusPage'",
+          "import { TopicPage } from '../find/topic/TopicPage'",
+          "",
+          "@Entry",
+          "@Component",
+          "struct ContainerPage {",
+          "  @State containerType: string = 'focus'",
+          "  @State title: string = \"关注\"",
+          "  @Provide findCurrentIndex: number = -1",
+          "  @Provide homeTabSelected: number = -1",
+          ""
+        ]
+      }
+    },
+    "ui:5918bffb5b8c": {
+      "id": "ui:5918bffb5b8c",
+      "category": "Component",
+      "name": "build",
+      "description": "功能入口",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/container/ContainerPage.ets",
+      "line": 20,
+      "code": "build() {",
+      "context": {
+        "startLine": 15,
+        "lines": [
+          "  aboutToAppear() {",
+          "    this.containerType = router.getParams()[\"containerType\"]",
+          "    this.convertTitle()",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      CommonTopBar({ title: this.title, alpha: 1 })",
+          "      Stack() {",
+          "        this.buildContent()",
+          "      }.layoutWeight(1)"
+        ]
+      }
+    },
+    "ui:f65a605eecd4": {
+      "id": "ui:f65a605eecd4",
+      "category": "Component",
+      "name": "CommonTopBar",
+      "description": "顶部导航栏",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/container/ContainerPage.ets",
+      "line": 22,
+      "code": "CommonTopBar({ title: this.title, alpha: 1 })",
+      "context": {
+        "startLine": 17,
+        "lines": [
+          "    this.convertTitle()",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      CommonTopBar({ title: this.title, alpha: 1 })",
+          "      Stack() {",
+          "        this.buildContent()",
+          "      }.layoutWeight(1)",
+          "",
+          "    }"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:57338f975d25",
+      "to": "ui:5918bffb5b8c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:57338f975d25",
+      "to": "ui:f65a605eecd4",
+      "kind": "contains"
+    }
+  ]
+}

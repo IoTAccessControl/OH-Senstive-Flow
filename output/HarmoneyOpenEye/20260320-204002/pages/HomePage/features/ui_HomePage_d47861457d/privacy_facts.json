@@ -1,0 +1,244 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_HomePage_d47861457d",
+    "generatedAt": "2026-03-20T14:57:18.144Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在首页动态流列表中点击视频条目时，应用提取该条目的 ID 和播放地址以跳转至详情页；若跳转失败或成功，系统会记录相关日志。",
+        "dataSources": [
+          "用户交互（点击列表项）",
+          "应用内部数据模型"
+        ],
+        "dataItems": [
+          {
+            "name": "视频内容 ID",
+            "refs": [
+              {
+                "flowId": "flow:p162",
+                "nodeId": "p162:n5"
+              },
+              {
+                "flowId": "flow:p163",
+                "nodeId": "p163:n5"
+              },
+              {
+                "flowId": "flow:p164",
+                "nodeId": "p164:n5"
+              },
+              {
+                "flowId": "flow:p207",
+                "nodeId": "p207:n4"
+              },
+              {
+                "flowId": "flow:p208",
+                "nodeId": "p208:n4"
+              },
+              {
+                "flowId": "flow:p209",
+                "nodeId": "p209:n4"
+              },
+              {
+                "flowId": "flow:p255",
+                "nodeId": "p255:n4"
+              },
+              {
+                "flowId": "flow:p256",
+                "nodeId": "p256:n4"
+              },
+              {
+                "flowId": "flow:p257",
+                "nodeId": "p257:n4"
+              },
+              {
+                "flowId": "flow:p301",
+                "nodeId": "p301:n3"
+              }
+            ]
+          },
+          {
+            "name": "视频播放地址",
+            "refs": [
+              {
+                "flowId": "flow:p162",
+                "nodeId": "p162:n5"
+              },
+              {
+                "flowId": "flow:p163",
+                "nodeId": "p163:n5"
+              },
+              {
+                "flowId": "flow:p164",
+                "nodeId": "p164:n5"
+              },
+              {
+                "flowId": "flow:p207",
+                "nodeId": "p207:n4"
+              },
+              {
+                "flowId": "flow:p208",
+                "nodeId": "p208:n4"
+              },
+              {
+                "flowId": "flow:p209",
+                "nodeId": "p209:n4"
+              },
+              {
+                "flowId": "flow:p255",
+                "nodeId": "p255:n4"
+              },
+              {
+                "flowId": "flow:p256",
+                "nodeId": "p256:n4"
+              },
+              {
+                "flowId": "flow:p257",
+                "nodeId": "p257:n4"
+              },
+              {
+                "flowId": "flow:p301",
+                "nodeId": "p301:n3"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误码",
+            "refs": [
+              {
+                "flowId": "flow:p163",
+                "nodeId": "p163:n7"
+              },
+              {
+                "flowId": "flow:p208",
+                "nodeId": "p208:n6"
+              },
+              {
+                "flowId": "flow:p256",
+                "nodeId": "p256:n6"
+              },
+              {
+                "flowId": "flow:p301",
+                "nodeId": "p301:n5"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p163",
+                "nodeId": "p163:n7"
+              },
+              {
+                "flowId": "flow:p208",
+                "nodeId": "p208:n6"
+              },
+              {
+                "flowId": "flow:p256",
+                "nodeId": "p256:n6"
+              },
+              {
+                "flowId": "flow:p301",
+                "nodeId": "p301:n5"
+              }
+            ]
+          },
+          {
+            "name": "页面路由路径",
+            "refs": [
+              {
+                "flowId": "flow:p164",
+                "nodeId": "p164:n8"
+              },
+              {
+                "flowId": "flow:p209",
+                "nodeId": "p209:n6"
+              },
+              {
+                "flowId": "flow:p257",
+                "nodeId": "p257:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中临时传递，通过路由参数对象在应用内页面间流转；部分数据（如错误码、URL）被拼接为字符串并调用系统日志接口输出。",
+        "storageMethod": "数据仅在内存中临时存储用于页面跳转和日志生成，未检测到本地持久化存储或加密处理；日志数据写入系统日志缓冲区。",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p163",
+                "nodeId": "p163:n9"
+              },
+              {
+                "flowId": "flow:p164",
+                "nodeId": "p164:n10"
+              },
+              {
+                "flowId": "flow:p208",
+                "nodeId": "p208:n8"
+              },
+              {
+                "flowId": "flow:p209",
+                "nodeId": "p209:n8"
+              },
+              {
+                "flowId": "flow:p256",
+                "nodeId": "p256:n8"
+              },
+              {
+                "flowId": "flow:p257",
+                "nodeId": "p257:n10"
+              },
+              {
+                "flowId": "flow:p301",
+                "nodeId": "p301:n7"
+              }
+            ]
+          },
+          {
+            "name": "详情页组件",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p162",
+                "nodeId": "p162:n7"
+              },
+              {
+                "flowId": "flow:p164",
+                "nodeId": "p164:n7"
+              },
+              {
+                "flowId": "flow:p207",
+                "nodeId": "p207:n6"
+              },
+              {
+                "flowId": "flow:p255",
+                "nodeId": "p255:n6"
+              },
+              {
+                "flowId": "flow:p257",
+                "nodeId": "p257:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现应用内页面导航，将用户选中的视频详情数据传递给目标页面进行展示；记录路由操作状态以便调试和故障排查。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

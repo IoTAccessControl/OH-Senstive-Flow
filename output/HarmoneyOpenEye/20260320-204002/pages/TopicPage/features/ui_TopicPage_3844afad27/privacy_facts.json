@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_TopicPage_3844afad27",
+    "generatedAt": "2026-03-20T15:00:29.907Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACCESS_NETWORK 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.LOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在话题页面点击重试按钮或下拉刷新时，应用重新加载话题列表数据；或在路由跳转过程中记录操作日志。",
+        "dataSources": [
+          "用户交互（点击重试、下拉刷新）",
+          "网络请求返回的数据",
+          "系统路由参数"
+        ],
+        "dataItems": [
+          {
+            "name": "话题列表数据",
+            "refs": [
+              {
+                "flowId": "flow:p312",
+                "nodeId": "p312:n6"
+              },
+              {
+                "flowId": "flow:p318",
+                "nodeId": "p318:n5"
+              }
+            ]
+          },
+          {
+            "name": "图片资源路径",
+            "refs": [
+              {
+                "flowId": "flow:p312",
+                "nodeId": "p312:n8"
+              },
+              {
+                "flowId": "flow:p314",
+                "nodeId": "p314:n8"
+              }
+            ]
+          },
+          {
+            "name": "页面路由参数",
+            "refs": [
+              {
+                "flowId": "flow:p309",
+                "nodeId": "p309:n5"
+              },
+              {
+                "flowId": "flow:p315",
+                "nodeId": "p315:n9"
+              }
+            ]
+          },
+          {
+            "name": "目标页面 URL",
+            "refs": [
+              {
+                "flowId": "flow:p309",
+                "nodeId": "p309:n6"
+              },
+              {
+                "flowId": "flow:p317",
+                "nodeId": "p317:n9"
+              }
+            ]
+          },
+          {
+            "name": "错误日志信息",
+            "refs": [
+              {
+                "flowId": "flow:p310",
+                "nodeId": "p310:n5"
+              },
+              {
+                "flowId": "flow:p313",
+                "nodeId": "p313:n7"
+              }
+            ]
+          },
+          {
+            "name": "UI 状态数据",
+            "refs": [
+              {
+                "flowId": "flow:p310",
+                "nodeId": "p310:n3"
+              },
+              {
+                "flowId": "flow:p314",
+                "nodeId": "p314:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "内存临时存储与渲染，部分数据通过系统日志接口输出至系统日志缓冲区",
+        "storageMethod": "内存临时存储（State 变量），无本地持久化存储；日志数据存储于系统日志缓冲区（未加密）",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务 (hilog)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p310",
+                "nodeId": "p310:n7"
+              },
+              {
+                "flowId": "flow:p311",
+                "nodeId": "p311:n8"
+              },
+              {
+                "flowId": "flow:p313",
+                "nodeId": "p313:n7"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "支持话题内容的展示、刷新及重试功能，并记录路由跳转与错误信息以辅助调试和监控",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

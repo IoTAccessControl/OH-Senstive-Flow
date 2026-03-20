@@ -1,0 +1,4328 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.776Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 18,
+      "nodes": 144,
+      "edges": 126,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "FocusItemComponent",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+        "structName": "FocusItemComponent",
+        "line": 6,
+        "description": "发现页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_FocusItemComponent_132d677c44",
+      "kind": "ui",
+      "title": "焦点图组件"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p351",
+      "pathId": "p351",
+      "nodes": [
+        {
+          "id": "p351:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "UI 组件构建入口，初始化界面布局，准备渲染包含业务数据 (item) 的视图元素。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p351:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 3,
+          "code": "import { Router } from '../../../../route/Router'",
+          "description": "导入自定义路由工具类 Router，为后续页面跳转调用做准备。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import { FocusModelItemList, FocusModelItemListDataItemList } from '../../../../model/FocusModel'",
+              "import { RoutePath } from '../../../../route/RoutePath'",
+              "import { Router } from '../../../../route/Router'",
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p351:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 7,
+          "code": "private item: FocusModelItemList",
+          "description": "定义组件私有属性 item，持有 FocusModelItemList 类型的业务数据，该数据可能包含待传递的参数源。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import { RoutePath } from '../../../../route/RoutePath'",
+              "import { Router } from '../../../../route/Router'",
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)"
+            ]
+          }
+        },
+        {
+          "id": "p351:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标页面 URL 和可选参数对象 params，作为数据流动的中间封装层。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p351:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 API router.pushUrl，将 URL 和 params 打包传入，执行实际的页面导航操作，此处为数据流出的汇点。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p351:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "捕获路由跳转失败的异常信息，记录错误代码和消息到日志，不涉及隐私数据外传。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p351:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "记录路由跳转成功的日志信息，包含目标 URL，用于调试追踪。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p351:n1",
+          "to": "p351:n2"
+        },
+        {
+          "from": "p351:n2",
+          "to": "p351:n3"
+        },
+        {
+          "from": "p351:n3",
+          "to": "p351:n4"
+        },
+        {
+          "from": "p351:n4",
+          "to": "p351:n5"
+        },
+        {
+          "from": "p351:n5",
+          "to": "p351:n6"
+        },
+        {
+          "from": "p351:n5",
+          "to": "p351:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由 URL",
+          "路由参数对象 (params)",
+          "业务数据项 (FocusModelItemList)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击或 UI 交互)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅在内存中通过路由机制传递"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p352",
+      "pathId": "p352",
+      "nodes": [
+        {
+          "id": "p352:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "UI 组件构建入口，此处虽为起点，但当前片段主要展示 UI 渲染逻辑，实际数据流由用户交互触发的路由跳转间接引起。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p352:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和参数，是数据流中业务逻辑的起始点。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p352:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl 发起页面跳转，注册回调函数以处理异步结果（成功或失败）。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p352:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "在路由跳转失败的回调中，拼接错误码和错误消息字符串，准备记录异常信息。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p352:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "调用 LogUtils.error 方法，将包含敏感路由状态（如失败原因）的字符串传入日志工具类。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p352:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "LogUtils 的错误日志入口函数，接收可变参数数组，准备将其格式化并输出。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p352:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 hilog.error 接口，将错误信息写入系统日志缓冲区，这是数据流的终点（Sink）。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p352:n1",
+          "to": "p352:n2"
+        },
+        {
+          "from": "p352:n2",
+          "to": "p352:n3"
+        },
+        {
+          "from": "p352:n3",
+          "to": "p352:n4"
+        },
+        {
+          "from": "p352:n4",
+          "to": "p352:n5"
+        },
+        {
+          "from": "p352:n5",
+          "to": "p352:n6"
+        },
+        {
+          "from": "p352:n6",
+          "to": "p352:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "路由跳转错误码 (err.code)",
+          "路由跳转错误信息 (err.message)",
+          "目标路由 URL (url)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (仅在路由跳转失败或成功时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅输出至系统日志缓冲区)"
+        ],
+        "storageAndEncryption": [
+          "本地易失性存储 (系统日志圈，未加密，依赖系统日志配置持久化)",
+          "无应用层加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.LOG (隐式需要，用于调用 hilog 接口)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p353",
+      "pathId": "p353",
+      "nodes": [
+        {
+          "id": "p353:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "UI 组件构建入口，初始化渲染焦点项组件，此时可能隐式准备路由跳转所需的上下文数据（如图片、标题）。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p353:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 12,
+          "code": "Image(this.item.data.header.icon)",
+          "description": "加载并渲染列表项头部图标，该资源路径作为潜在的数据项被读取用于 UI 展示。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)"
+            ]
+          }
+        },
+        {
+          "id": "p353:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 17,
+          "code": "Text(this.item.data?.header.title)",
+          "description": "加载并渲染列表项标题文本，该文本内容作为潜在的数据项被读取用于 UI 展示。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)",
+              "            .fontSize($r('app.float.size_text_15'))",
+              "            .fontColor($r('app.color.color_333'))",
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "          Text(this.item.data?.header.description)"
+            ]
+          }
+        },
+        {
+          "id": "p353:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标 URL 和可选参数对象，作为数据流的中间处理节点。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p353:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统路由 API 执行页面跳转，将 URL 和 params 数据传递给系统服务。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p353:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "在路由失败回调中，拼接错误码和错误消息字符串，准备记录异常数据流。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p353:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "在路由成功回调中，拼接成功标识与目标 URL 字符串，准备记录正常操作数据流。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p353:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "日志工具类信息级别入口，接收可变参数数组，准备将业务操作状态写入日志。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p353:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用系统 hilog.info 接口，将包含路由状态、URL 或错误信息的敏感数据明文输出到系统日志缓冲区。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p353:n1",
+          "to": "p353:n2"
+        },
+        {
+          "from": "p353:n2",
+          "to": "p353:n3"
+        },
+        {
+          "from": "p353:n3",
+          "to": "p353:n4"
+        },
+        {
+          "from": "p353:n4",
+          "to": "p353:n5"
+        },
+        {
+          "from": "p353:n5",
+          "to": "p353:n6"
+        },
+        {
+          "from": "p353:n6",
+          "to": "p353:n7"
+        },
+        {
+          "from": "p353:n7",
+          "to": "p353:n8"
+        },
+        {
+          "from": "p353:n8",
+          "to": "p353:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "路由跳转目标 URL",
+          "路由参数对象 (params)",
+          "路由操作结果状态 (成功/失败)",
+          "错误码与错误消息",
+          "组件内嵌的图片资源路径",
+          "组件内嵌的标题文本"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击或程序自动导航时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅输出至系统日志缓冲区)"
+        ],
+        "storageAndEncryption": [
+          "临时存储于系统日志缓冲区 (hilog)",
+          "未加密 (明文记录)",
+          "依赖系统日志轮转机制清理"
+        ],
+        "permissions": [
+          "ohos.permission.LOG (隐含，用于调用 hilog 接口)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p354",
+      "pathId": "p354",
+      "nodes": [
+        {
+          "id": "p354:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染包含业务数据的界面元素",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p354:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器，准备展示列表项内容，隐含了对 this.item 数据的引用",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p354:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 12,
+          "code": "Image(this.item.data.header.icon)",
+          "description": "读取并渲染业务数据中的图标资源，确认数据流中包含具体的业务模型对象 (FocusModelItemList)",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)"
+            ]
+          }
+        },
+        {
+          "id": "p354:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 17,
+          "code": "Text(this.item.data?.header.title)",
+          "description": "读取并渲染业务数据中的标题文本，进一步确认数据流承载了用户可见的业务信息",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)",
+              "            .fontSize($r('app.float.size_text_15'))",
+              "            .fontColor($r('app.color.color_333'))",
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "          Text(this.item.data?.header.description)"
+            ]
+          }
+        },
+        {
+          "id": "p354:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标 URL 和可选的参数对象 (params)，作为数据传递的中间节点",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p354:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统路由 API (router.pushUrl)，将 URL 和参数对象封装后发起页面导航请求，完成数据在页面间的传递",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p354:n1",
+          "to": "p354:n2"
+        },
+        {
+          "from": "p354:n2",
+          "to": "p354:n3"
+        },
+        {
+          "from": "p354:n3",
+          "to": "p354:n4"
+        },
+        {
+          "from": "p354:n4",
+          "to": "p354:n5"
+        },
+        {
+          "from": "p354:n5",
+          "to": "p354:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (params)",
+          "目标页面 URL",
+          "业务数据对象 (FocusModelItemList)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击或组件渲染时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅在内存中通过路由机制传递"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p355",
+      "pathId": "p355",
+      "nodes": [
+        {
+          "id": "p355:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染焦点项界面，此时可能触发后续的路由逻辑或数据加载。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p355:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器，作为 UI 渲染的起始节点，若用户交互触发跳转则流向路由模块。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p355:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标 URL 和参数，是潜在的数据（页面参数）传输起点。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p355:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "捕获路由跳转失败的异常对象，提取错误码和错误消息，构造待记录的敏感数据字符串。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p355:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "封装错误日志记录方法，接收来自路由模块的错误信息参数，准备调用系统日志接口。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p355:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 hilog.error 接口，将错误码和错误消息写入系统日志缓冲区，完成数据流出。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p355:n1",
+          "to": "p355:n2"
+        },
+        {
+          "from": "p355:n2",
+          "to": "p355:n3"
+        },
+        {
+          "from": "p355:n3",
+          "to": "p355:n4"
+        },
+        {
+          "from": "p355:n4",
+          "to": "p355:n5"
+        },
+        {
+          "from": "p355:n5",
+          "to": "p355:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "路由跳转错误信息 (错误码、错误消息)",
+          "UI 组件渲染数据 (图标 URL、标题文本)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (仅在路由跳转失败时收集)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传 (数据仅输出至系统日志缓冲区)"
+        ],
+        "storageAndEncryption": [
+          "临时存储于系统日志缓冲区 (LogBuffer)",
+          "未加密 (依赖系统日志权限控制)"
+        ],
+        "permissions": [
+          "ohos.permission.LOG (隐式需要，用于写入系统日志)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p356",
+      "pathId": "p356",
+      "nodes": [
+        {
+          "id": "p356:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染焦点项界面，准备展示数据",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p356:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器，组织子组件（如图片、文本），此处可能隐含触发路由跳转的逻辑上下文",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p356:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标 URL 和可选参数对象，作为数据流的中间处理节点",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p356:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由成功回调中，构造包含 URL 的成功日志消息字符串，准备记录操作轨迹",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p356:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "日志工具类的 info 方法入口，接收可变参数数组，准备将信息写入系统日志",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p356:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用系统 hilog.info API，将路由成功信息及 URL 数据输出到系统日志缓冲区，完成数据流终点",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p356:n1",
+          "to": "p356:n2"
+        },
+        {
+          "from": "p356:n2",
+          "to": "p356:n3"
+        },
+        {
+          "from": "p356:n3",
+          "to": "p356:n4"
+        },
+        {
+          "from": "p356:n4",
+          "to": "p356:n5"
+        },
+        {
+          "from": "p356:n5",
+          "to": "p356:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由 URL",
+          "路由参数 (params)",
+          "路由操作状态日志",
+          "错误代码与消息",
+          "UI 组件数据 (图标、标题)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户交互或逻辑跳转)",
+          "一次性 (单次路由操作)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为",
+          "日志仅输出至系统日志缓冲区 (hilog)，未检测到网络发送"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅在内存中流转并输出到系统日志"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p357",
+      "pathId": "p357",
+      "nodes": [
+        {
+          "id": "p357:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染关注项列表界面，加载内存中的业务数据模型。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p357:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器，准备展示头部信息（图标和标题）。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p357:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 39,
+          "code": "List({ space: 10 }) {",
+          "description": "创建列表容器并遍历数据源 (itemList)，为每个列表项生成可交互的 UI 元素，隐含用户点击后触发跳转的逻辑。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)"
+            ]
+          }
+        },
+        {
+          "id": "p357:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标页面 URL 和可选的参数对象，作为数据流转的控制节点。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p357:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统路由 API (router.pushUrl) 执行页面跳转，将 URL 和参数传递给系统框架，完成导航动作。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p357:n1",
+          "to": "p357:n2"
+        },
+        {
+          "from": "p357:n2",
+          "to": "p357:n3"
+        },
+        {
+          "from": "p357:n3",
+          "to": "p357:n4"
+        },
+        {
+          "from": "p357:n4",
+          "to": "p357:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件数据 (FocusModelItemList)",
+          "图片资源 URL (icon, cover.feed)",
+          "文本标题 (title)",
+          "路由目标页面 URL",
+          "路由传递参数 (params)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项或 UI 渲染时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "数据暂存于内存组件属性 (this.item)",
+          "无本地持久化存储行为",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p358",
+      "pathId": "p358",
+      "nodes": [
+        {
+          "id": "p358:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染焦点项组件，加载内部数据模型。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p358:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器，准备展示组件内容。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p358:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 12,
+          "code": "Image(this.item.data.header.icon)",
+          "description": "读取并渲染数据模型中的头部图标路径 (this.item.data.header.icon)。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)"
+            ]
+          }
+        },
+        {
+          "id": "p358:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 17,
+          "code": "Text(this.item.data?.header.title)",
+          "description": "读取并渲染数据模型中的标题文本 (this.item.data?.header.title)。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)",
+              "            .fontSize($r('app.float.size_text_15'))",
+              "            .fontColor($r('app.color.color_333'))",
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "          Text(this.item.data?.header.description)"
+            ]
+          }
+        },
+        {
+          "id": "p358:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 39,
+          "code": "List({ space: 10 }) {",
+          "description": "创建列表容器，遍历内部数据项列表 (itemList) 以渲染子项。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)"
+            ]
+          }
+        },
+        {
+          "id": "p358:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 44,
+          "code": "Image(innerItem.data?.cover.feed)",
+          "description": "读取并渲染列表子项的封面图片路径 (innerItem.data?.cover.feed)。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)",
+              "                  .width(\"100%\")",
+              "                  .height(\"100%\")",
+              "                  .border({ radius: $r('app.float.size_10') })",
+              "                  .alt($r('app.media.back_placeholder'))",
+              "                Text(innerItem.data?.category)"
+            ]
+          }
+        },
+        {
+          "id": "p358:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标 URL 和可选参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p358:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统路由 API 执行页面跳转，若失败则进入回调处理。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p358:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "捕获路由跳转错误，构造包含错误码和错误消息的日志字符串，调用日志工具记录错误。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p358:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "日志工具类的错误记录方法入口，接收可变参数作为日志内容。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p358:n11",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 hilog.error 接口将错误信息输出到系统日志缓冲区 (Sink)。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p358:n1",
+          "to": "p358:n2"
+        },
+        {
+          "from": "p358:n2",
+          "to": "p358:n3"
+        },
+        {
+          "from": "p358:n3",
+          "to": "p358:n4"
+        },
+        {
+          "from": "p358:n4",
+          "to": "p358:n5"
+        },
+        {
+          "from": "p358:n5",
+          "to": "p358:n6"
+        },
+        {
+          "from": "p358:n6",
+          "to": "p358:n7"
+        },
+        {
+          "from": "p358:n7",
+          "to": "p358:n8"
+        },
+        {
+          "from": "p358:n8",
+          "to": "p358:n9"
+        },
+        {
+          "from": "p358:n9",
+          "to": "p358:n10"
+        },
+        {
+          "from": "p358:n10",
+          "to": "p358:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件数据 (FocusModelItemList)",
+          "图片资源路径 (icon, cover.feed)",
+          "文本标题 (title)",
+          "路由跳转参数 (url, params)",
+          "错误日志信息 (错误码，错误消息)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 渲染时)",
+          "事件触发 (路由跳转失败时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据暂存于内存用于 UI 渲染和日志打印"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p359",
+      "pathId": "p359",
+      "nodes": [
+        {
+          "id": "p359:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染焦点列表项组件，加载私有成员 item 中的数据。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p359:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器 Column，作为组件根节点，准备承载子元素。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p359:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 12,
+          "code": "Image(this.item.data.header.icon)",
+          "description": "读取并渲染数据项中的头部图标 URL (this.item.data.header.icon)，涉及图片资源加载。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)"
+            ]
+          }
+        },
+        {
+          "id": "p359:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 17,
+          "code": "Text(this.item.data?.header.title)",
+          "description": "读取并渲染数据项中的标题文本 (this.item.data?.header.title)，涉及文本内容展示。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)",
+              "            .fontSize($r('app.float.size_text_15'))",
+              "            .fontColor($r('app.color.color_333'))",
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "          Text(this.item.data?.header.description)"
+            ]
+          }
+        },
+        {
+          "id": "p359:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 39,
+          "code": "List({ space: 10 }) {",
+          "description": "创建列表容器 List，初始化列表空间，准备遍历渲染内部子项列表。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)"
+            ]
+          }
+        },
+        {
+          "id": "p359:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 44,
+          "code": "Image(innerItem.data?.cover.feed)",
+          "description": "在列表循环中读取并渲染子项的封面图片 URL (innerItem.data?.cover.feed)，涉及更多图片资源加载。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)",
+              "                  .width(\"100%\")",
+              "                  .height(\"100%\")",
+              "                  .border({ radius: $r('app.float.size_10') })",
+              "                  .alt($r('app.media.back_placeholder'))",
+              "                Text(innerItem.data?.category)"
+            ]
+          }
+        },
+        {
+          "id": "p359:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和可选参数对象，可能包含敏感业务参数。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p359:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl 接口执行页面跳转，将 URL 和 params 传递给系统路由模块。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p359:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由成功回调中，拼接成功消息与目标 URL，调用 LogUtils.info 记录日志。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p359:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "LogUtils 信息日志方法入口，接收可变参数数组，准备格式化日志内容。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p359:n11",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用系统 hilog.info 接口输出信息级日志，将路由状态及 URL 等信息写入系统日志缓冲区。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p359:n1",
+          "to": "p359:n2"
+        },
+        {
+          "from": "p359:n2",
+          "to": "p359:n3"
+        },
+        {
+          "from": "p359:n3",
+          "to": "p359:n4"
+        },
+        {
+          "from": "p359:n4",
+          "to": "p359:n5"
+        },
+        {
+          "from": "p359:n5",
+          "to": "p359:n6"
+        },
+        {
+          "from": "p359:n6",
+          "to": "p359:n7"
+        },
+        {
+          "from": "p359:n7",
+          "to": "p359:n8"
+        },
+        {
+          "from": "p359:n8",
+          "to": "p359:n9"
+        },
+        {
+          "from": "p359:n9",
+          "to": "p359:n10"
+        },
+        {
+          "from": "p359:n10",
+          "to": "p359:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件渲染数据 (FocusModelItemList)",
+          "图片资源 URL (icon, cover.feed)",
+          "文本标题 (title)",
+          "路由跳转参数 (params)",
+          "路由执行状态日志"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面渲染时)",
+          "事件触发 (路由跳转时)"
+        ],
+        "cloudUpload": [
+          "无直接网络上传行为 (仅本地日志记录)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅在内存中用于 UI 渲染和日志输出"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p360",
+      "pathId": "p360",
+      "nodes": [
+        {
+          "id": "p360:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建焦点项界面，此时组件已持有业务数据模型 item",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p360:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 12,
+          "code": "Image(this.item.data.header.icon)",
+          "description": "读取并渲染数据模型中的头像图标路径 (this.item.data.header.icon)，涉及图片资源数据流",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)"
+            ]
+          }
+        },
+        {
+          "id": "p360:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 17,
+          "code": "Text(this.item.data?.header.title)",
+          "description": "读取并渲染数据模型中的标题文本 (this.item.data?.header.title)，涉及文本展示数据流",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)",
+              "            .fontSize($r('app.float.size_text_15'))",
+              "            .fontColor($r('app.color.color_333'))",
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "          Text(this.item.data?.header.description)"
+            ]
+          }
+        },
+        {
+          "id": "p360:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 39,
+          "code": "List({ space: 10 }) {",
+          "description": "构建列表容器 List，准备遍历内部数据项 (itemList) 进行渲染，可能触发后续交互事件",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)"
+            ]
+          }
+        },
+        {
+          "id": "p360:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 40,
+          "code": "ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+          "description": "ForEach 循环遍历数据列表，将每个内部数据项 (innerItem) 绑定到列表项，此处是潜在的用户点击事件触发源",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)",
+              "                  .width(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p360:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 44,
+          "code": "Image(innerItem.data?.cover.feed)",
+          "description": "读取并渲染列表项的封面图片路径 (innerItem.data?.cover.feed)，完成界面数据展示",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)",
+              "                  .width(\"100%\")",
+              "                  .height(\"100%\")",
+              "                  .border({ radius: $r('app.float.size_10') })",
+              "                  .alt($r('app.media.back_placeholder'))",
+              "                Text(innerItem.data?.category)"
+            ]
+          }
+        },
+        {
+          "id": "p360:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和可选参数对象 (params)，作为数据传递的中间层",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p360:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 API router.pushUrl，将 URL 和 params 数据封装后发送给系统路由模块，执行页面导航（Sink 点）",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p360:n1",
+          "to": "p360:n2"
+        },
+        {
+          "from": "p360:n2",
+          "to": "p360:n3"
+        },
+        {
+          "from": "p360:n3",
+          "to": "p360:n4"
+        },
+        {
+          "from": "p360:n4",
+          "to": "p360:n5"
+        },
+        {
+          "from": "p360:n5",
+          "to": "p360:n6"
+        },
+        {
+          "from": "p360:n6",
+          "to": "p360:n7"
+        },
+        {
+          "from": "p360:n7",
+          "to": "p360:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (params)",
+          "目标页面 URL",
+          "焦点列表数据项 (FocusModelItemList)",
+          "图片资源 URL (icon, cover.feed)",
+          "文本标题 (title)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击或列表渲染时)",
+          "一次性 (单次导航请求)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存临时存储 (组件状态 item)",
+          "未检测到本地持久化存储",
+          "未检测到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p361",
+      "pathId": "p361",
+      "nodes": [
+        {
+          "id": "p361:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染焦点列表项界面，初始化 UI 数据流。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p361:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 39,
+          "code": "List({ space: 10 }) {",
+          "description": "构建列表容器，遍历数据模型准备渲染子项，此处的交互可能触发后续的路由跳转逻辑。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)"
+            ]
+          }
+        },
+        {
+          "id": "p361:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标 URL 和参数，发起页面导航请求。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p361:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "捕获路由跳转失败的回调，提取错误码和错误消息，构造包含敏感路由信息的日志字符串。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p361:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "封装错误日志记录方法，接收可变参数数组，准备调用底层日志接口。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p361:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 hilog.error 接口，将路由错误详情（含 URL 和错误原因）写入系统日志缓冲区，作为数据流汇点。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p361:n1",
+          "to": "p361:n2"
+        },
+        {
+          "from": "p361:n2",
+          "to": "p361:n3"
+        },
+        {
+          "from": "p361:n3",
+          "to": "p361:n4"
+        },
+        {
+          "from": "p361:n4",
+          "to": "p361:n5"
+        },
+        {
+          "from": "p361:n5",
+          "to": "p361:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "路由跳转错误信息 (错误码、错误消息)",
+          "路由目标 URL",
+          "UI 组件渲染数据 (图片 URL、标题文本)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (仅在路由跳转失败时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅写入系统日志缓冲区)"
+        ],
+        "storageAndEncryption": [
+          "存储于系统日志缓冲区 (hilog)",
+          "未加密 (明文记录)",
+          "非持久化本地存储 (依赖日志守护进程策略)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p362",
+      "pathId": "p362",
+      "nodes": [
+        {
+          "id": "p362:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染焦点列表项界面，加载本地模型数据。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p362:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 12,
+          "code": "Image(this.item.data.header.icon)",
+          "description": "读取并渲染列表项头部图标图片资源 (this.item.data.header.icon)。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)"
+            ]
+          }
+        },
+        {
+          "id": "p362:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 17,
+          "code": "Text(this.item.data?.header.title)",
+          "description": "读取并渲染列表项头部标题文本 (this.item.data?.header.title)。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)",
+              "            .fontSize($r('app.float.size_text_15'))",
+              "            .fontColor($r('app.color.color_333'))",
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "          Text(this.item.data?.header.description)"
+            ]
+          }
+        },
+        {
+          "id": "p362:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 39,
+          "code": "List({ space: 10 }) {",
+          "description": "构建内部列表容器，准备遍历渲染子项数据 (itemList)。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)"
+            ]
+          }
+        },
+        {
+          "id": "p362:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 44,
+          "code": "Image(innerItem.data?.cover.feed)",
+          "description": "读取并渲染子项封面图片资源 (innerItem.data?.cover.feed)。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)",
+              "                  .width(\"100%\")",
+              "                  .height(\"100%\")",
+              "                  .border({ radius: $r('app.float.size_10') })",
+              "                  .alt($r('app.media.back_placeholder'))",
+              "                Text(innerItem.data?.category)"
+            ]
+          }
+        },
+        {
+          "id": "p362:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标 URL 和可选参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p362:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl 执行页面跳转，传入 URL 和参数。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p362:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由成功回调中，调用日志工具记录成功信息及目标 URL。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p362:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "定义通用日志 info 方法，封装底层 hilog 调用接口。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p362:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用 OpenHarmony 系统 hilog.info 接口，将包含路由信息的字符串写入系统日志。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p362:n1",
+          "to": "p362:n2"
+        },
+        {
+          "from": "p362:n2",
+          "to": "p362:n3"
+        },
+        {
+          "from": "p362:n3",
+          "to": "p362:n4"
+        },
+        {
+          "from": "p362:n4",
+          "to": "p362:n5"
+        },
+        {
+          "from": "p362:n5",
+          "to": "p362:n6"
+        },
+        {
+          "from": "p362:n6",
+          "to": "p362:n7"
+        },
+        {
+          "from": "p362:n7",
+          "to": "p362:n8"
+        },
+        {
+          "from": "p362:n8",
+          "to": "p362:n9"
+        },
+        {
+          "from": "p362:n9",
+          "to": "p362:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件渲染数据 (FocusModelItemList)",
+          "图片资源 URL (header.icon, cover.feed)",
+          "文本标题 (header.title)",
+          "路由跳转目标地址 (url)",
+          "路由参数 (params)",
+          "系统日志信息 (Log Message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 构建时)",
+          "事件触发 (用户交互/路由跳转时)"
+        ],
+        "cloudUpload": [
+          "无直接网络上传行为 (仅本地日志记录)"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (UI 渲染数据)",
+          "系统日志存储 (由 hilog 管理，未显式加密)"
+        ],
+        "permissions": [
+          "ohos.permission.ACCESS_NETWORK (隐含，若图片需网络加载)",
+          "无敏感隐私权限显式调用"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p363",
+      "pathId": "p363",
+      "nodes": [
+        {
+          "id": "p363:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "UI 组件构建入口，开始渲染关注项列表中的单个条目界面",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p363:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器，作为条目内容的父节点",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p363:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 11,
+          "code": "Row() {",
+          "description": "创建水平布局容器，用于排列图标和文本信息",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p363:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 12,
+          "code": "Image(this.item.data.header.icon)",
+          "description": "加载并显示业务数据中的图标资源 (this.item.data.header.icon)",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)"
+            ]
+          }
+        },
+        {
+          "id": "p363:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 17,
+          "code": "Text(this.item.data?.header.title)",
+          "description": "加载并显示业务数据中的标题文本 (this.item.data.header.title)，此处通常绑定点击事件以触发跳转",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)",
+              "            .fontSize($r('app.float.size_text_15'))",
+              "            .fontColor($r('app.color.color_333'))",
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "          Text(this.item.data?.header.description)"
+            ]
+          }
+        },
+        {
+          "id": "p363:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标页面 URL 和可选的参数对象",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p363:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API，执行页面导航并将 URL 和参数传递给系统路由模块",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p363:n1",
+          "to": "p363:n2"
+        },
+        {
+          "from": "p363:n2",
+          "to": "p363:n3"
+        },
+        {
+          "from": "p363:n3",
+          "to": "p363:n4"
+        },
+        {
+          "from": "p363:n4",
+          "to": "p363:n5"
+        },
+        {
+          "from": "p363:n5",
+          "to": "p363:n6"
+        },
+        {
+          "from": "p363:n6",
+          "to": "p363:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由地址 (URL)",
+          "页面跳转参数 (Params)",
+          "业务展示数据 (图标/标题)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击交互)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅在内存中传递用于路由跳转"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p364",
+      "pathId": "p364",
+      "nodes": [
+        {
+          "id": "p364:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染焦点项组件，准备读取业务数据用于界面展示。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p364:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器 (Column)，作为组件根节点，承载子元素。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p364:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 11,
+          "code": "Row() {",
+          "description": "创建水平布局容器 (Row)，用于排列图标和文本信息。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p364:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 12,
+          "code": "Image(this.item.data.header.icon)",
+          "description": "读取并渲染数据项中的图标路径 (this.item.data.header.icon)，涉及业务数据展示。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)"
+            ]
+          }
+        },
+        {
+          "id": "p364:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 17,
+          "code": "Text(this.item.data?.header.title)",
+          "description": "读取并渲染数据项中的标题文本 (this.item.data?.header.title)，涉及业务数据展示。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)",
+              "            .fontSize($r('app.float.size_text_15'))",
+              "            .fontColor($r('app.color.color_333'))",
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "          Text(this.item.data?.header.description)"
+            ]
+          }
+        },
+        {
+          "id": "p364:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标 URL 和可选参数对象，作为数据流转的中间节点。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p364:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "捕获路由跳转异常，提取错误码和错误消息字符串，构造日志内容准备记录。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p364:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "调用日志工具类的 error 方法，接收可变参数数组，准备将错误信息写入系统日志。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p364:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用 OpenHarmony 系统 hilog.error 接口，将包含路由错误信息的敏感数据输出到系统日志缓冲区。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p364:n1",
+          "to": "p364:n2"
+        },
+        {
+          "from": "p364:n2",
+          "to": "p364:n3"
+        },
+        {
+          "from": "p364:n3",
+          "to": "p364:n4"
+        },
+        {
+          "from": "p364:n4",
+          "to": "p364:n5"
+        },
+        {
+          "from": "p364:n5",
+          "to": "p364:n6"
+        },
+        {
+          "from": "p364:n6",
+          "to": "p364:n7"
+        },
+        {
+          "from": "p364:n7",
+          "to": "p364:n8"
+        },
+        {
+          "from": "p364:n8",
+          "to": "p364:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件数据 (item.data.header.icon)",
+          "UI 组件数据 (item.data.header.title)",
+          "路由跳转目标 URL",
+          "路由参数 (params)",
+          "路由错误码 (err.code)",
+          "路由错误信息 (err.message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面渲染时)",
+          "事件触发 (路由跳转失败时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅输出至系统日志 (hilog)，未进行本地持久化存储或加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p365",
+      "pathId": "p365",
+      "nodes": [
+        {
+          "id": "p365:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染焦点项组件，读取私有成员 item 中的数据模型。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p365:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器 Column，作为组件根节点，准备承载子视图。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p365:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 11,
+          "code": "Row() {",
+          "description": "创建水平布局容器 Row，用于并排展示图标和文本信息。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p365:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 12,
+          "code": "Image(this.item.data.header.icon)",
+          "description": "加载并渲染图片组件，数据源来自 item.data.header.icon，涉及图片资源路径数据的读取。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)"
+            ]
+          }
+        },
+        {
+          "id": "p365:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 17,
+          "code": "Text(this.item.data?.header.title)",
+          "description": "加载并渲染文本组件，数据源来自 item.data?.header.title，涉及文本标题数据的读取与展示。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)",
+              "            .fontSize($r('app.float.size_text_15'))",
+              "            .fontColor($r('app.color.color_333'))",
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "          Text(this.item.data?.header.description)"
+            ]
+          }
+        },
+        {
+          "id": "p365:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和可选参数对象，准备发起页面导航。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p365:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API 执行实际跳转，将 url 和 params 传入系统路由服务。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p365:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由成功回调中，构造成功日志消息字符串，包含跳转的 url 信息。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p365:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "LogUtils 工具类的 info 方法入口，接收可变参数数组，准备记录信息级日志。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p365:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用系统 hilog.info API 将格式化后的日志数据（含路由状态）写入系统日志缓冲区，作为数据流终点。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p365:n1",
+          "to": "p365:n2"
+        },
+        {
+          "from": "p365:n2",
+          "to": "p365:n3"
+        },
+        {
+          "from": "p365:n3",
+          "to": "p365:n4"
+        },
+        {
+          "from": "p365:n4",
+          "to": "p365:n5"
+        },
+        {
+          "from": "p365:n5",
+          "to": "p365:n6"
+        },
+        {
+          "from": "p365:n6",
+          "to": "p365:n7"
+        },
+        {
+          "from": "p365:n7",
+          "to": "p365:n8"
+        },
+        {
+          "from": "p365:n8",
+          "to": "p365:n9"
+        },
+        {
+          "from": "p365:n9",
+          "to": "p365:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件渲染数据 (FocusModelItemList)",
+          "图片资源路径 (icon)",
+          "文本标题 (title)",
+          "路由跳转目标地址 (url)",
+          "路由参数 (params)",
+          "路由执行状态日志"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 构建时)",
+          "事件触发 (路由跳转时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存临时存储 (UI 渲染缓冲)",
+          "系统日志缓冲区 (hilog)",
+          "未检测到本地持久化存储",
+          "未检测到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p366",
+      "pathId": "p366",
+      "nodes": [
+        {
+          "id": "p366:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，初始化 UI 渲染上下文，准备读取 item 数据模型。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p366:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器 (Column)，作为列表项的根节点，承载后续子组件。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p366:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 11,
+          "code": "Row() {",
+          "description": "创建水平布局容器 (Row)，用于排列头像图标和标题文本。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p366:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 39,
+          "code": "List({ space: 10 }) {",
+          "description": "创建列表容器 (List)，遍历数据模型中的 itemList 数组，为每个数据项生成可交互的列表元素。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)"
+            ]
+          }
+        },
+        {
+          "id": "p366:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法，接收目标页面 URL 和可选参数对象，封装系统路由调用。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p366:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API，执行页面跳转操作，将 URL 和参数传递给系统导航服务。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p366:n1",
+          "to": "p366:n2"
+        },
+        {
+          "from": "p366:n2",
+          "to": "p366:n3"
+        },
+        {
+          "from": "p366:n3",
+          "to": "p366:n4"
+        },
+        {
+          "from": "p366:n4",
+          "to": "p366:n5"
+        },
+        {
+          "from": "p366:n5",
+          "to": "p366:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件数据 (FocusModelItemList)",
+          "图片资源路径 (icon, cover.feed)",
+          "文本标题 (title)",
+          "页面路由 URL",
+          "页面跳转参数 (params)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击或列表渲染时)",
+          "一次性 (单次页面跳转)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存临时存储 (UI 组件状态)",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p367",
+      "pathId": "p367",
+      "nodes": [
+        {
+          "id": "p367:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始初始化界面数据流",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p367:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建垂直布局容器，准备承载子组件数据",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p367:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 11,
+          "code": "Row() {",
+          "description": "创建水平布局容器，用于排列图标和文本信息",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p367:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 39,
+          "code": "List({ space: 10 }) {",
+          "description": "创建列表组件并遍历数据源 (itemList)，准备渲染列表项中的封面图片和内容",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)"
+            ]
+          }
+        },
+        {
+          "id": "p367:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义路由跳转方法，接收目标 URL 和潜在的用户交互参数 (params)",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p367:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "定义错误日志记录方法，准备收集异常堆栈或错误描述信息",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p367:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 hilog.error 接口，将格式化后的错误信息输出到系统日志缓冲区 (Sink)",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p367:n1",
+          "to": "p367:n2"
+        },
+        {
+          "from": "p367:n2",
+          "to": "p367:n3"
+        },
+        {
+          "from": "p367:n3",
+          "to": "p367:n4"
+        },
+        {
+          "from": "p367:n4",
+          "to": "p367:n5"
+        },
+        {
+          "from": "p367:n5",
+          "to": "p367:n6"
+        },
+        {
+          "from": "p367:n6",
+          "to": "p367:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件数据 (FocusModelItemList)",
+          "图片资源 URL (icon, cover.feed)",
+          "文本标题 (title)",
+          "路由跳转参数 (params)",
+          "错误日志信息 (error message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 渲染时)",
+          "异常发生时 (路由失败)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存中临时存储用于 UI 渲染",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p368",
+      "pathId": "p368",
+      "nodes": [
+        {
+          "id": "p368:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 9,
+          "code": "build() {",
+          "description": "UI 组件构建入口 build() 函数开始执行，准备渲染焦点列表项组件。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))"
+            ]
+          }
+        },
+        {
+          "id": "p368:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 10,
+          "code": "Column() {",
+          "description": "创建 Column 布局容器，作为组件的根节点，用于垂直排列子元素。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "@Component",
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })"
+            ]
+          }
+        },
+        {
+          "id": "p368:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 11,
+          "code": "Row() {",
+          "description": "在 Column 内创建 Row 布局容器，用于水平排列头部图标和标题文本。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "export struct FocusItemComponent {",
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p368:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 12,
+          "code": "Image(this.item.data.header.icon)",
+          "description": "加载并显示数据模型中的头部图标 (this.item.data.header.icon)，涉及图片资源读取。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  private item: FocusModelItemList",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)"
+            ]
+          }
+        },
+        {
+          "id": "p368:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 17,
+          "code": "Text(this.item.data?.header.title)",
+          "description": "加载并显示数据模型中的标题文本 (this.item.data?.header.title)，涉及字符串数据渲染。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "        Image(this.item.data.header.icon)",
+              "          .width($r('app.float.size_50'))",
+              "          .height($r('app.float.size_50'))",
+              "          .border({ radius: $r('app.float.size_25') })",
+              "        Column() {",
+              "          Text(this.item.data?.header.title)",
+              "            .fontSize($r('app.float.size_text_15'))",
+              "            .fontColor($r('app.color.color_333'))",
+              "            .maxLines(1)",
+              "            .textOverflow({ overflow: TextOverflow.Ellipsis })",
+              "          Text(this.item.data?.header.description)"
+            ]
+          }
+        },
+        {
+          "id": "p368:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 39,
+          "code": "List({ space: 10 }) {",
+          "description": "创建 List 列表组件，初始化空间间距，准备遍历渲染内部的数据项列表。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "      .width(\"100%\")",
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)"
+            ]
+          }
+        },
+        {
+          "id": "p368:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 40,
+          "code": "ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+          "description": "使用 ForEach 循环遍历 itemList 数据数组，为每个数据项生成对应的 UI 列表项。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "      .height($r('app.float.size_60'))",
+              "      .alignItems(VerticalAlign.Center)",
+              "      .padding({ left: $r('app.float.size_5'), right: $r('app.float.size_5') })",
+              "",
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)",
+              "                  .width(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p368:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/component/FocusItemComponent.ets",
+          "line": 44,
+          "code": "Image(innerItem.data?.cover.feed)",
+          "description": "在列表项中加载并显示封面图片 (innerItem.data?.cover.feed)，涉及网络或本地图片资源读取。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "      List({ space: 10 }) {",
+              "        ForEach(this.item.data.itemList, (innerItem: FocusModelItemListDataItemList, index: number) => {",
+              "          ListItem() {",
+              "            Stack() {",
+              "              Stack() {",
+              "                Image(innerItem.data?.cover.feed)",
+              "                  .width(\"100%\")",
+              "                  .height(\"100%\")",
+              "                  .border({ radius: $r('app.float.size_10') })",
+              "                  .alt($r('app.media.back_placeholder'))",
+              "                Text(innerItem.data?.category)"
+            ]
+          }
+        },
+        {
+          "id": "p368:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和可选参数对象，用于页面导航。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p368:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API 执行实际页面跳转，将 URL 和 params 传递给系统路由模块。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p368:n11",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由跳转成功后，调用 LogUtils.info 记录成功日志，包含跳转的目标 URL 信息。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p368:n12",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "定义 LogUtils 的工具方法 info，用于封装系统日志输出接口，接收可变参数。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p368:n13",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用系统 hilog.info API 将格式化后的日志信息（含路由 URL）写入系统日志缓冲区。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p368:n1",
+          "to": "p368:n2"
+        },
+        {
+          "from": "p368:n2",
+          "to": "p368:n3"
+        },
+        {
+          "from": "p368:n3",
+          "to": "p368:n4"
+        },
+        {
+          "from": "p368:n4",
+          "to": "p368:n5"
+        },
+        {
+          "from": "p368:n5",
+          "to": "p368:n6"
+        },
+        {
+          "from": "p368:n6",
+          "to": "p368:n7"
+        },
+        {
+          "from": "p368:n7",
+          "to": "p368:n8"
+        },
+        {
+          "from": "p368:n8",
+          "to": "p368:n9"
+        },
+        {
+          "from": "p368:n9",
+          "to": "p368:n10"
+        },
+        {
+          "from": "p368:n10",
+          "to": "p368:n11"
+        },
+        {
+          "from": "p368:n11",
+          "to": "p368:n12"
+        },
+        {
+          "from": "p368:n12",
+          "to": "p368:n13"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件渲染数据 (FocusModelItemList)",
+          "图片资源 URL (header.icon, cover.feed)",
+          "文本标题 (header.title)",
+          "路由跳转参数 (params)",
+          "路由目标地址 (url)",
+          "应用运行日志 (Log Message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 构建时)",
+          "事件触发 (用户点击/路由跳转时)",
+          "一次性 (日志记录)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地内存存储 (UI 状态数据)",
+          "系统日志存储 (hilog，未加密，依赖系统配置)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

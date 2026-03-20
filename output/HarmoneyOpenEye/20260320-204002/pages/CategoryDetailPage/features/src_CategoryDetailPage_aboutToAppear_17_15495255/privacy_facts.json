@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "src_CategoryDetailPage_aboutToAppear_17_15495255",
+    "generatedAt": "2026-03-20T14:53:11.183Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.WINDOW_MANAGER 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "分类详情页面加载展示时，自动获取系统窗口布局信息以适配界面显示。",
+        "dataSources": [
+          "系统窗口服务"
+        ],
+        "dataItems": [
+          {
+            "name": "系统状态栏高度",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n8"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n8"
+              }
+            ]
+          },
+          {
+            "name": "底部导航栏高度",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n10"
+              }
+            ]
+          },
+          {
+            "name": "窗口避让区域信息",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "在内存中读取系统窗口属性，对获取到的顶部避让区域高度进行硬编码修正（固定为90），并赋值给组件状态变量触发UI渲染；同时通过日志工具输出调试信息。",
+        "storageMethod": "仅内存存储（组件状态 @State），未加密，未持久化存储。",
+        "dataRecipients": [],
+        "processingPurpose": "获取系统状态栏和导航栏尺寸，用于调整页面顶栏及列表的布局位置，确保内容不被系统UI遮挡。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

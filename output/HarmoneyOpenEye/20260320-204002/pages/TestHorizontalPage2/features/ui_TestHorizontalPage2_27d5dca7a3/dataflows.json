@@ -1,0 +1,3189 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.776Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 15,
+      "nodes": 105,
+      "edges": 90,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "TestHorizontalPage2",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+        "structName": "TestHorizontalPage2",
+        "line": 6,
+        "description": "横向滚动测试页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_TestHorizontalPage2_27d5dca7a3",
+      "kind": "ui",
+      "title": "联动滚动测试页"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p38",
+      "pathId": "p38",
+      "nodes": [
+        {
+          "id": "p38:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 15,
+          "code": "async aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，组件即将显示时触发，用于初始化数据。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  private scrollScroller: Scroller = new Scroller()",
+              "  private scrollFlag = -1 // 1=左边   2=右边",
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p38:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 16,
+          "code": "for (let index = 0; index < 100; index++) {",
+          "description": "开始循环遍历，准备生成模拟数据。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  private scrollFlag = -1 // 1=左边   2=右边",
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p38:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 17,
+          "code": "this.dataList.push(index)",
+          "description": "将索引值推入 dataList 数组，在内存中构建本地列表数据，不涉及隐私采集。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p38:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标页面 URL 和可选参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p38:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 API router.pushUrl 执行页面跳转，将 URL 和 params 传递给系统路由服务，可能包含业务参数传递。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p38:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "路由失败回调，记录错误代码和消息到日志，不上传云端。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p38:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由成功回调，记录成功信息及目标 URL 到日志，仅限本地调试输出。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p38:n1",
+          "to": "p38:n2"
+        },
+        {
+          "from": "p38:n2",
+          "to": "p38:n3"
+        },
+        {
+          "from": "p38:n3",
+          "to": "p38:n4"
+        },
+        {
+          "from": "p38:n4",
+          "to": "p38:n5"
+        },
+        {
+          "from": "p38:n5",
+          "to": "p38:n6"
+        },
+        {
+          "from": "p38:n5",
+          "to": "p38:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (params)",
+          "页面 URL (url)",
+          "本地列表数据 (dataList)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)",
+          "事件触发 (用户交互调用路由时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存临时存储 (未加密)",
+          "无持久化存储",
+          "无网络发送行为"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p39",
+      "pathId": "p39",
+      "nodes": [
+        {
+          "id": "p39:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 15,
+          "code": "async aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，页面组件即将显示时触发，启动数据初始化流程。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  private scrollScroller: Scroller = new Scroller()",
+              "  private scrollFlag = -1 // 1=左边   2=右边",
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p39:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 16,
+          "code": "for (let index = 0; index < 100; index++) {",
+          "description": "开始循环遍历，准备生成测试用的列表数据。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  private scrollFlag = -1 // 1=左边   2=右边",
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p39:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 17,
+          "code": "this.dataList.push(index)",
+          "description": "将索引值推入 dataList 数组，构建本地内存中的模拟数据项。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p39:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和可选参数，作为潜在的数据流转出点。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p39:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl 接口执行页面跳转，该操作可能隐式携带设备上下文信息。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p39:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "捕获路由跳转失败的回调，提取错误码 (code) 和错误消息 (message) 作为敏感数据源。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p39:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "LogUtils 工具类的 error 方法入口，接收可变参数数组，准备进行日志记录。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p39:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 hilog.error 接口，将包含路由错误详情或 URL 的字符串格式化输出到系统日志缓冲区。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p39:n1",
+          "to": "p39:n2"
+        },
+        {
+          "from": "p39:n2",
+          "to": "p39:n3"
+        },
+        {
+          "from": "p39:n3",
+          "to": "p39:n4"
+        },
+        {
+          "from": "p39:n4",
+          "to": "p39:n5"
+        },
+        {
+          "from": "p39:n5",
+          "to": "p39:n6"
+        },
+        {
+          "from": "p39:n6",
+          "to": "p39:n7"
+        },
+        {
+          "from": "p39:n7",
+          "to": "p39:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "路由错误码 (err.code)",
+          "路由错误信息 (err.message)",
+          "路由目标地址 (url)",
+          "组件初始化状态数据 (dataList)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面加载时)",
+          "异常发生时"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存临时存储 (未持久化)",
+          "系统日志框架输出 (hilog)，默认不加密但受系统日志权限控制"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p40",
+      "pathId": "p40",
+      "nodes": [
+        {
+          "id": "p40:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 15,
+          "code": "async aboutToAppear() {",
+          "description": "组件生命周期函数 aboutToAppear 入口，页面即将显示时触发，开始初始化数据。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  private scrollScroller: Scroller = new Scroller()",
+              "  private scrollFlag = -1 // 1=左边   2=右边",
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p40:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 16,
+          "code": "for (let index = 0; index < 100; index++) {",
+          "description": "启动循环，准备生成 100 条测试数据。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  private scrollFlag = -1 // 1=左边   2=右边",
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p40:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 17,
+          "code": "this.dataList.push(index)",
+          "description": "将索引值推入 dataList 数组，在内存中构建本地测试数据集。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p40:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和可选参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p40:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API 执行页面跳转，传入 URL 和参数。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p40:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由跳转成功后，拼接成功消息与目标 URL 字符串，准备记录日志。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p40:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "调用 LogUtils.info 方法，将路由成功信息作为参数传递。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p40:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "LogUtils 工具类的 info 方法入口，接收可变长度的字符串参数。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p40:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用系统 hilog.info API 输出信息级日志，数据流向系统日志服务（Sink）。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p40:n1",
+          "to": "p40:n2"
+        },
+        {
+          "from": "p40:n2",
+          "to": "p40:n3"
+        },
+        {
+          "from": "p40:n3",
+          "to": "p40:n4"
+        },
+        {
+          "from": "p40:n4",
+          "to": "p40:n5"
+        },
+        {
+          "from": "p40:n5",
+          "to": "p40:n6"
+        },
+        {
+          "from": "p40:n6",
+          "to": "p40:n7"
+        },
+        {
+          "from": "p40:n7",
+          "to": "p40:n8"
+        },
+        {
+          "from": "p40:n8",
+          "to": "p40:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由 URL",
+          "路由参数 (params)",
+          "组件生命周期状态",
+          "本地生成的测试数据列表"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件加载时)",
+          "事件触发 (路由跳转时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存临时存储 (dataList 数组)",
+          "无持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p41",
+      "pathId": "p41",
+      "nodes": [
+        {
+          "id": "p41:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 13,
+          "code": "@State xScroll: number = 0",
+          "description": "定义 @State 装饰的 xScroll 变量，作为 UI 状态数据源，可能包含滚动位置等隐私信息",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "  private leftScroller: Scroller = new Scroller()",
+              "  private rightScroller: Scroller = new Scroller()",
+              "  private scrollScroller: Scroller = new Scroller()",
+              "  private scrollFlag = -1 // 1=左边   2=右边",
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p41:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 15,
+          "code": "async aboutToAppear() {",
+          "description": "aboutToAppear 生命周期函数入口，在页面显示前执行数据初始化逻辑",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  private scrollScroller: Scroller = new Scroller()",
+              "  private scrollFlag = -1 // 1=左边   2=右边",
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p41:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 16,
+          "code": "for (let index = 0; index < 100; index++) {",
+          "description": "初始化循环开始，准备生成列表数据",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  private scrollFlag = -1 // 1=左边   2=右边",
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p41:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 17,
+          "code": "this.dataList.push(index)",
+          "description": "将索引值推入 dataList 数组，构建用于 UI 渲染的基础数据集",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  private scrollY = 0",
+              "  @State xScroll: number = 0",
+              "",
+              "  async aboutToAppear() {",
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p41:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "build() 函数入口，ArkUI 开始构建当前页面的视图树，触发数据读取",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p41:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 26,
+          "code": "ForEach(this.dataList, (item, index) => {",
+          "description": "ForEach 循环遍历 dataList，将数据项绑定到 UI 组件，此处数据流进入视图层",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }",
+              "              .width(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p41:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 29,
+          "code": "Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+          "description": "Text 组件渲染具体数据项 (`左边${item}`)，若 item 含敏感信息则在此处暴露于界面",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }",
+              "              .width(\"100%\")",
+              "              .height(100)",
+              "              .backgroundColor(Color.Blue)",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p41:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 4,
+          "code": "const format = `%{public}s, %{public}s`",
+          "description": "定义日志格式字符串 `%{public}s`，标记输出内容为公开级别，非敏感掩码",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import hilog from '@ohos.hilog'",
+              "",
+              "const prefix = \"OpenEyeTag\"",
+              "const format = `%{public}s, %{public}s`",
+              "const domain = 0x1111",
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */"
+            ]
+          }
+        },
+        {
+          "id": "p41:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "LogUtils.debug 静态方法被调用，接收可变参数 args 作为待记录的调试数据",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p41:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将 args 数据写入系统调试日志缓冲区，完成数据流出",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p41:n1",
+          "to": "p41:n2"
+        },
+        {
+          "from": "p41:n2",
+          "to": "p41:n3"
+        },
+        {
+          "from": "p41:n3",
+          "to": "p41:n4"
+        },
+        {
+          "from": "p41:n4",
+          "to": "p41:n5"
+        },
+        {
+          "from": "p41:n5",
+          "to": "p41:n6"
+        },
+        {
+          "from": "p41:n6",
+          "to": "p41:n7"
+        },
+        {
+          "from": "p41:n7",
+          "to": "p41:n8"
+        },
+        {
+          "from": "p41:n8",
+          "to": "p41:n9"
+        },
+        {
+          "from": "p41:n9",
+          "to": "p41:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件状态数据 (xScroll)",
+          "列表渲染数据 (dataList/index)",
+          "调试日志参数 (args)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 构建/重绘时)",
+          "一次性 (页面加载初始化)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (UI 状态)",
+          "系统日志缓冲 (未加密，依赖系统配置)"
+        ],
+        "permissions": [
+          "无敏感权限调用 (ohos.permission 未在此路径出现)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p42",
+      "pathId": "p42",
+      "nodes": [
+        {
+          "id": "p42:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数被调用，标志着 UI 渲染流程的开始，此处为数据流的源头（Source），触发后续组件构建。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p42:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 22,
+          "code": "Column() {",
+          "description": "执行 Column 容器构建，开始布局子组件，此过程可能隐式收集当前页面的视图结构信息。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p42:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 26,
+          "code": "ForEach(this.dataList, (item, index) => {",
+          "description": "ForEach 循环遍历 dataList 数据源，逐个处理列表项数据（item/index），这些数据将作为潜在的可打印内容进入数据流。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }",
+              "              .width(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p42:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 29,
+          "code": "Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+          "description": "构建 Text 组件并绑定动态数据 `左边${item}`，此时具体的业务数据（列表索引值）被格式化并准备渲染，若此处有日志调用则数据在此处被捕获。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }",
+              "              .width(\"100%\")",
+              "              .height(100)",
+              "              .backgroundColor(Color.Blue)",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p42:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "LogUtils.debug 静态方法被调用（推测由 UI 构建过程中的某个逻辑触发），接收可变参数 args，作为隐私数据向日志系统传递的中间节点。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p42:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug 接口（Sink），将 domain、prefix、format 及 args 参数写入系统调试日志缓冲区，完成数据的最终输出。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p42:n1",
+          "to": "p42:n2"
+        },
+        {
+          "from": "p42:n2",
+          "to": "p42:n3"
+        },
+        {
+          "from": "p42:n3",
+          "to": "p42:n4"
+        },
+        {
+          "from": "p42:n4",
+          "to": "p42:n5"
+        },
+        {
+          "from": "p42:n5",
+          "to": "p42:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件构建事件",
+          "列表数据索引 (index)",
+          "调试日志参数 (args)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面加载时)",
+          "事件触发 (UI 渲染构建时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地系统日志输出)"
+        ],
+        "storageAndEncryption": [
+          "存储方式：系统日志缓冲区 (非应用持久化存储)",
+          "加密状态：未加密 (明文输出，依赖系统日志权限控制)"
+        ],
+        "permissions": [
+          "ohos.permission.HILog (隐含，用于调用 hilog 接口)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p43",
+      "pathId": "p43",
+      "nodes": [
+        {
+          "id": "p43:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数，开始构建页面 UI 结构。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p43:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 22,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为页面的垂直布局主干。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p43:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 24,
+          "code": "Row() {",
+          "description": "在 Column 内部创建 Row 容器组件，用于水平排列子元素。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p43:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 26,
+          "code": "ForEach(this.dataList, (item, index) => {",
+          "description": "遍历 dataList 数据源（包含 0-99 的整数索引），为列表中的每一项生成 UI 节点，此处涉及非隐私的模拟数据流。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }",
+              "              .width(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p43:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 29,
+          "code": "Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+          "description": "将遍历到的数据项 item 格式化为文本字符串（如'左边 0'），准备渲染到界面上。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }",
+              "              .width(\"100%\")",
+              "              .height(100)",
+              "              .backgroundColor(Color.Blue)",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p43:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义静态调试方法 debug，接收可变参数数组，作为日志数据的封装入口。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p43:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将传入的参数、预定义的 domain(0x1111) 和 prefix 写入系统调试日志缓冲区，此为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p43:n1",
+          "to": "p43:n2"
+        },
+        {
+          "from": "p43:n2",
+          "to": "p43:n3"
+        },
+        {
+          "from": "p43:n3",
+          "to": "p43:n4"
+        },
+        {
+          "from": "p43:n4",
+          "to": "p43:n5"
+        },
+        {
+          "from": "p43:n5",
+          "to": "p43:n6"
+        },
+        {
+          "from": "p43:n6",
+          "to": "p43:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件渲染数据 (列表索引)",
+          "调试日志字符串"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面加载时初始化数据)",
+          "事件触发 (UI 构建/渲染时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅存在于内存及系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p44",
+      "pathId": "p44",
+      "nodes": [
+        {
+          "id": "p44:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染横向联动滚动测试页面",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p44:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 22,
+          "code": "Column() {",
+          "description": "创建垂直布局容器 Column，作为页面主结构",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p44:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 24,
+          "code": "Row() {",
+          "description": "创建水平布局容器 Row，用于容纳左右联动的列表组件",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p44:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 72,
+          "code": "Scroll(this.scrollScroller) {",
+          "description": "创建 Scroll 滚动容器并绑定 scroller 对象，监听内部列表的滚动行为",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {",
+              "          List({ scroller: this.rightScroller }) {",
+              "            ForEach(this.dataList, (item, index) => {",
+              "              ListItem() {",
+              "                Stack({ alignContent: Alignment.Start }) {",
+              "                  Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p44:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 67,
+          "code": "LogUtils.debug(`滚动-左边Frame`)",
+          "description": "在滚动帧开始回调中捕获滚动偏移量，调用 LogUtils.debug 记录'滚动 - 左边 Frame'日志",
+          "context": {
+            "startLine": 62,
+            "lines": [
+              "            this.scrollY = yOffset",
+              "            // this.rightScroller.scrollTo({ xOffset: 0, yOffset: yOffset })",
+              "          }",
+              "        })",
+              "        .onScrollFrameBegin((offset: number) => {",
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {"
+            ]
+          }
+        },
+        {
+          "id": "p44:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义静态调试方法 debug，接收可变参数作为日志内容",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p44:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug 接口，将包含滚动状态的日志数据写入系统日志缓冲区",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p44:n1",
+          "to": "p44:n2"
+        },
+        {
+          "from": "p44:n2",
+          "to": "p44:n3"
+        },
+        {
+          "from": "p44:n3",
+          "to": "p44:n4"
+        },
+        {
+          "from": "p44:n4",
+          "to": "p44:n5"
+        },
+        {
+          "from": "p44:n5",
+          "to": "p44:n6"
+        },
+        {
+          "from": "p44:n6",
+          "to": "p44:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 滚动偏移量 (Scroll Offset)",
+          "列表索引数据 (List Index Data)",
+          "调试日志字符串 (Debug Log String)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (滚动帧开始时)",
+          "一次性 (页面加载时初始化列表)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅输出至系统日志缓冲区 (hilog)",
+          "无本地文件存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p45",
+      "pathId": "p45",
+      "nodes": [
+        {
+          "id": "p45:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化页面布局结构。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p45:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 22,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为页面的垂直布局主干。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p45:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 72,
+          "code": "Scroll(this.scrollScroller) {",
+          "description": "实例化 Scroll 滚动容器并绑定 scroller 对象，准备监听内部列表的滚动行为。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {",
+              "          List({ scroller: this.rightScroller }) {",
+              "            ForEach(this.dataList, (item, index) => {",
+              "              ListItem() {",
+              "                Stack({ alignContent: Alignment.Start }) {",
+              "                  Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p45:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 66,
+          "code": ".onScrollFrameBegin((offset: number) => {",
+          "description": "注册 onScrollFrameBegin 回调事件，当滚动帧开始时触发，获取当前滚动偏移量 (offset)。",
+          "context": {
+            "startLine": 61,
+            "lines": [
+              "            this.rightScroller.scrollBy(0, scrollOffset)",
+              "            this.scrollY = yOffset",
+              "            // this.rightScroller.scrollTo({ xOffset: 0, yOffset: yOffset })",
+              "          }",
+              "        })",
+              "        .onScrollFrameBegin((offset: number) => {",
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p45:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 67,
+          "code": "LogUtils.debug(`滚动-左边Frame`)",
+          "description": "调用 LogUtils.debug 方法，将包含滚动状态信息的字符串传入日志工具类。",
+          "context": {
+            "startLine": 62,
+            "lines": [
+              "            this.scrollY = yOffset",
+              "            // this.rightScroller.scrollTo({ xOffset: 0, yOffset: yOffset })",
+              "          }",
+              "        })",
+              "        .onScrollFrameBegin((offset: number) => {",
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {"
+            ]
+          }
+        },
+        {
+          "id": "p45:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "LogUtils 类的静态 debug 方法接收可变参数数组，准备处理调试信息。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p45:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将域 ID、前缀标签、格式化字符串及实际数据项输出到系统日志流。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p45:n1",
+          "to": "p45:n2"
+        },
+        {
+          "from": "p45:n2",
+          "to": "p45:n3"
+        },
+        {
+          "from": "p45:n3",
+          "to": "p45:n4"
+        },
+        {
+          "from": "p45:n4",
+          "to": "p45:n5"
+        },
+        {
+          "from": "p45:n5",
+          "to": "p45:n6"
+        },
+        {
+          "from": "p45:n6",
+          "to": "p45:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "滚动偏移量 (Scroll Offset)",
+          "UI 组件状态标识",
+          "调试日志字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发 (滚动帧开始/结束时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存临时存储 (日志缓冲区)",
+          "未加密 (明文日志)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p46",
+      "pathId": "p46",
+      "nodes": [
+        {
+          "id": "p46:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数，开始构建页面 UI 结构。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p46:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 22,
+          "code": "Column() {",
+          "description": "创建 Column 容器，作为页面的垂直布局根节点。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p46:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 24,
+          "code": "Row() {",
+          "description": "在 Column 中创建 Row 容器，用于水平排列内部子组件。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p46:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 25,
+          "code": "List({ scroller: this.leftScroller }) {",
+          "description": "在 Row 中创建 List 组件，绑定 scroller 对象 (this.leftScroller) 以控制滚动状态，此处的 xScroll 状态可能涉及用户交互轨迹。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }"
+            ]
+          }
+        },
+        {
+          "id": "p46:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义 LogUtils 类的静态 debug 方法，接收可变参数 args 作为待记录的日志数据源。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p46:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将传入的参数 args 格式化后输出到系统日志缓冲区，构成数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p46:n1",
+          "to": "p46:n2"
+        },
+        {
+          "from": "p46:n2",
+          "to": "p46:n3"
+        },
+        {
+          "from": "p46:n3",
+          "to": "p46:n4"
+        },
+        {
+          "from": "p46:n4",
+          "to": "p46:n5"
+        },
+        {
+          "from": "p46:n5",
+          "to": "p46:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件状态数据 (xScroll)",
+          "列表渲染数据 (dataList)",
+          "调试日志参数 (args)"
+        ],
+        "collectionFrequency": [
+          "一次性初始化 (aboutToAppear)",
+          "UI 构建时触发 (build)",
+          "事件/调用触发 (LogUtils.debug)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存临时存储 (State 变量)",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p47",
+      "pathId": "p47",
+      "nodes": [
+        {
+          "id": "p47:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化页面组件树。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p47:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 22,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为页面的垂直布局根节点。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p47:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 24,
+          "code": "Row() {",
+          "description": "在 Column 内部创建 Row 容器，用于水平排列左侧列表和右侧滚动区域。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p47:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 25,
+          "code": "List({ scroller: this.leftScroller }) {",
+          "description": "创建左侧 List 组件并绑定 scroller 对象，准备展示 dataList 中的索引数据。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }"
+            ]
+          }
+        },
+        {
+          "id": "p47:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 72,
+          "code": "Scroll(this.scrollScroller) {",
+          "description": "创建 Scroll 组件包裹右侧列表，建立联动滚动的视图结构。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {",
+              "          List({ scroller: this.rightScroller }) {",
+              "            ForEach(this.dataList, (item, index) => {",
+              "              ListItem() {",
+              "                Stack({ alignContent: Alignment.Start }) {",
+              "                  Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p47:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 66,
+          "code": ".onScrollFrameBegin((offset: number) => {",
+          "description": "注册左侧 List 的 onScrollFrameBegin 回调事件，当用户滚动界面时触发，获取实时滚动偏移量 (offset)。",
+          "context": {
+            "startLine": 61,
+            "lines": [
+              "            this.rightScroller.scrollBy(0, scrollOffset)",
+              "            this.scrollY = yOffset",
+              "            // this.rightScroller.scrollTo({ xOffset: 0, yOffset: yOffset })",
+              "          }",
+              "        })",
+              "        .onScrollFrameBegin((offset: number) => {",
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p47:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 67,
+          "code": "LogUtils.debug(`滚动-左边Frame`)",
+          "description": "调用 LogUtils.debug 方法，将包含'滚动 - 左边 Frame'的字符串及滚动偏移量作为参数传入，准备记录调试信息。",
+          "context": {
+            "startLine": 62,
+            "lines": [
+              "            this.scrollY = yOffset",
+              "            // this.rightScroller.scrollTo({ xOffset: 0, yOffset: yOffset })",
+              "          }",
+              "        })",
+              "        .onScrollFrameBegin((offset: number) => {",
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {"
+            ]
+          }
+        },
+        {
+          "id": "p47:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "进入 LogUtils 类的静态 debug 方法，接收可变参数数组 args（包含滚动事件产生的数据）。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p47:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将 domain、prefix、format 以及来自 UI 层的滚动数据 args 发送给系统日志服务进行输出。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p47:n1",
+          "to": "p47:n2"
+        },
+        {
+          "from": "p47:n2",
+          "to": "p47:n3"
+        },
+        {
+          "from": "p47:n3",
+          "to": "p47:n4"
+        },
+        {
+          "from": "p47:n4",
+          "to": "p47:n5"
+        },
+        {
+          "from": "p47:n5",
+          "to": "p47:n6"
+        },
+        {
+          "from": "p47:n6",
+          "to": "p47:n7"
+        },
+        {
+          "from": "p47:n7",
+          "to": "p47:n8"
+        },
+        {
+          "from": "p47:n8",
+          "to": "p47:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 滚动偏移量 (Scroll Offset)",
+          "列表索引数据 (List Index Data)",
+          "调试日志字符串 (Debug Log String)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (滚动帧开始事件 onScrollFrameBegin)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存临时存储 (用于 UI 渲染和日志缓冲)",
+          "未加密 (日志以明文形式传递给系统日志服务)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p48",
+      "pathId": "p48",
+      "nodes": [
+        {
+          "id": "p48:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数，开始构建页面 UI 结构。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p48:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 24,
+          "code": "Row() {",
+          "description": "在 build 函数中创建 Row 容器组件，作为列表的父布局。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p48:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 26,
+          "code": "ForEach(this.dataList, (item, index) => {",
+          "description": "遍历 dataList 数据源，为每个索引项生成列表项，此处产生待显示的数值数据。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }",
+              "              .width(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p48:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 29,
+          "code": "Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+          "description": "将遍历到的数值 item 转换为文本字符串 (`左边${item}`)，准备用于 UI 渲染或潜在的数据传递。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }",
+              "              .width(\"100%\")",
+              "              .height(100)",
+              "              .backgroundColor(Color.Blue)",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p48:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义静态调试方法 debug，接收可变参数 args，作为日志数据的收集入口。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p48:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将传入的参数 args 格式化后输出到系统调试日志中，此为数据流终点 (Sink)。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p48:n1",
+          "to": "p48:n2"
+        },
+        {
+          "from": "p48:n2",
+          "to": "p48:n3"
+        },
+        {
+          "from": "p48:n3",
+          "to": "p48:n4"
+        },
+        {
+          "from": "p48:n4",
+          "to": "p48:n5"
+        },
+        {
+          "from": "p48:n5",
+          "to": "p48:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件渲染数据 (index)",
+          "调试日志参数 (args)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面初始化)",
+          "事件触发 (UI 构建时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "仅输出至系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p49",
+      "pathId": "p49",
+      "nodes": [
+        {
+          "id": "p49:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "UI 组件构建入口 build()，初始化页面布局结构，作为数据流展示的起点。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p49:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 24,
+          "code": "Row() {",
+          "description": "构建 Row 容器，作为横向布局的父节点，包裹内部的滚动列表组件。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p49:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 72,
+          "code": "Scroll(this.scrollScroller) {",
+          "description": "构建 Scroll 滚动容器并绑定 scroller 对象，注册滚动事件监听器，是获取用户交互数据（滚动位置）的关键节点。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {",
+              "          List({ scroller: this.rightScroller }) {",
+              "            ForEach(this.dataList, (item, index) => {",
+              "              ListItem() {",
+              "                Stack({ alignContent: Alignment.Start }) {",
+              "                  Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p49:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 67,
+          "code": "LogUtils.debug(`滚动-左边Frame`)",
+          "description": "在 onScrollFrameBegin 回调中捕获滚动偏移量，构造包含'滚动 - 左边 Frame'信息的日志字符串，并调用 LogUtils.debug 进行传递。",
+          "context": {
+            "startLine": 62,
+            "lines": [
+              "            this.scrollY = yOffset",
+              "            // this.rightScroller.scrollTo({ xOffset: 0, yOffset: yOffset })",
+              "          }",
+              "        })",
+              "        .onScrollFrameBegin((offset: number) => {",
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {"
+            ]
+          }
+        },
+        {
+          "id": "p49:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "LogUtils 类的静态 debug 方法接收可变参数，作为日志数据的中间处理层，准备调用底层日志 API。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p49:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用 ohos.hilog.debug 接口，将域 ID、标签、格式化字符串及具体的滚动事件数据写入系统日志缓冲区，完成数据流出。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p49:n1",
+          "to": "p49:n2"
+        },
+        {
+          "from": "p49:n2",
+          "to": "p49:n3"
+        },
+        {
+          "from": "p49:n3",
+          "to": "p49:n4"
+        },
+        {
+          "from": "p49:n4",
+          "to": "p49:n5"
+        },
+        {
+          "from": "p49:n5",
+          "to": "p49:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "滚动偏移量 (Scroll Offset)",
+          "列表索引数据 (List Index Data)",
+          "调试日志字符串 (Debug Log String)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (滚动帧开始事件 onScrollFrameBegin)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储",
+          "无加密处理",
+          "数据通过 hilog 接口输出至系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p50",
+      "pathId": "p50",
+      "nodes": [
+        {
+          "id": "p50:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "UI 组件构建入口 (build)，初始化页面布局结构，准备渲染滚动列表容器。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p50:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 72,
+          "code": "Scroll(this.scrollScroller) {",
+          "description": "创建 Scroll 滚动容器组件，绑定 scroller 对象以监听或控制滚动行为，作为后续滚动事件的数据源。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {",
+              "          List({ scroller: this.rightScroller }) {",
+              "            ForEach(this.dataList, (item, index) => {",
+              "              ListItem() {",
+              "                Stack({ alignContent: Alignment.Start }) {",
+              "                  Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p50:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 67,
+          "code": "LogUtils.debug(`滚动-左边Frame`)",
+          "description": "在滚动帧开始事件 (onScrollFrameBegin) 中捕获滚动偏移量，并调用 LogUtils.debug 记录调试信息 '滚动 - 左边 Frame'。",
+          "context": {
+            "startLine": 62,
+            "lines": [
+              "            this.scrollY = yOffset",
+              "            // this.rightScroller.scrollTo({ xOffset: 0, yOffset: yOffset })",
+              "          }",
+              "        })",
+              "        .onScrollFrameBegin((offset: number) => {",
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {"
+            ]
+          }
+        },
+        {
+          "id": "p50:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义静态调试方法 debug，接收可变参数数组，作为日志数据的封装层。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p50:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 API hilog.debug 将格式化后的日志字符串输出到系统日志缓冲区，完成数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p50:n1",
+          "to": "p50:n2"
+        },
+        {
+          "from": "p50:n2",
+          "to": "p50:n3"
+        },
+        {
+          "from": "p50:n3",
+          "to": "p50:n4"
+        },
+        {
+          "from": "p50:n4",
+          "to": "p50:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 滚动事件数据 (Scroll Offset)",
+          "组件调试日志字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发 (滚动帧开始/构建时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地系统日志输出)"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储，由系统日志服务管理，未加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p51",
+      "pathId": "p51",
+      "nodes": [
+        {
+          "id": "p51:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数，开始构建页面布局，此时会读取状态变量用于渲染。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p51:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 24,
+          "code": "Row() {",
+          "description": "创建 Row 容器组件，作为水平布局的父节点，包裹后续的列表组件。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p51:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 25,
+          "code": "List({ scroller: this.leftScroller }) {",
+          "description": "创建 List 列表组件，绑定 scroller 对象 (this.leftScroller) 以控制滚动状态，准备渲染 dataList 中的数据。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }"
+            ]
+          }
+        },
+        {
+          "id": "p51:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义 LogUtils 类的静态 debug 方法，接收可变数量的字符串参数作为待记录的日志内容。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p51:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将传入的参数 args 结合 domain、prefix 和 format 格式化后输出到系统日志缓冲区。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p51:n1",
+          "to": "p51:n2"
+        },
+        {
+          "from": "p51:n2",
+          "to": "p51:n3"
+        },
+        {
+          "from": "p51:n3",
+          "to": "p51:n4"
+        },
+        {
+          "from": "p51:n4",
+          "to": "p51:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件状态数据 (xScroll)",
+          "列表渲染数据 (dataList)",
+          "调试日志参数 (args)"
+        ],
+        "collectionFrequency": [
+          "一次性初始化 (aboutToAppear)",
+          "UI 构建时触发 (build)",
+          "事件触发 (调用 debug 函数时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存临时存储 (State 变量)",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p52",
+      "pathId": "p52",
+      "nodes": [
+        {
+          "id": "p52:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "UI 组件构建入口 build() 函数，开始渲染页面结构",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    for (let index = 0; index < 100; index++) {",
+              "      this.dataList.push(index)",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p52:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 24,
+          "code": "Row() {",
+          "description": "创建 Row 容器，作为横向布局的父节点",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p52:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 25,
+          "code": "List({ scroller: this.leftScroller }) {",
+          "description": "初始化左侧 List 组件并绑定 scroller 对象，准备处理滚动逻辑",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"联动滚动2\", alpha: 1 })",
+              "      Row() {",
+              "        List({ scroller: this.leftScroller }) {",
+              "          ForEach(this.dataList, (item, index) => {",
+              "            ListItem() {",
+              "              Row() {",
+              "                Text(`左边${item}`).width(100).textAlign(TextAlign.Center)",
+              "              }"
+            ]
+          }
+        },
+        {
+          "id": "p52:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 72,
+          "code": "Scroll(this.scrollScroller) {",
+          "description": "初始化 Scroll 组件并绑定 scrollScroller，嵌套右侧 List，建立联动滚动结构",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {",
+              "          List({ scroller: this.rightScroller }) {",
+              "            ForEach(this.dataList, (item, index) => {",
+              "              ListItem() {",
+              "                Stack({ alignContent: Alignment.Start }) {",
+              "                  Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p52:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestHorizontalPage2.ets",
+          "line": 67,
+          "code": "LogUtils.debug(`滚动-左边Frame`)",
+          "description": "在 onScrollFrameBegin 回调中捕获滚动事件，调用 LogUtils.debug 记录滚动状态（数据源点）",
+          "context": {
+            "startLine": 62,
+            "lines": [
+              "            this.scrollY = yOffset",
+              "            // this.rightScroller.scrollTo({ xOffset: 0, yOffset: yOffset })",
+              "          }",
+              "        })",
+              "        .onScrollFrameBegin((offset: number) => {",
+              "          LogUtils.debug(`滚动-左边Frame`)",
+              "          return { offsetRemain: Math.floor(offset) }",
+              "        })",
+              "        .edgeEffect(EdgeEffect.None)",
+              "",
+              "        Scroll(this.scrollScroller) {"
+            ]
+          }
+        },
+        {
+          "id": "p52:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "LogUtils 静态方法 debug 被调用，接收滚动事件产生的字符串参数",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p52:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API 将格式化后的日志数据输出到系统日志缓冲区（数据汇点）",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p52:n1",
+          "to": "p52:n2"
+        },
+        {
+          "from": "p52:n2",
+          "to": "p52:n3"
+        },
+        {
+          "from": "p52:n3",
+          "to": "p52:n4"
+        },
+        {
+          "from": "p52:n4",
+          "to": "p52:n5"
+        },
+        {
+          "from": "p52:n5",
+          "to": "p52:n6"
+        },
+        {
+          "from": "p52:n6",
+          "to": "p52:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 滚动偏移量 (Scroll Offset)",
+          "列表索引数据 (List Index Data)",
+          "调试日志字符串 (Debug Log String)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (滚动帧开始时)",
+          "一次性 (页面加载初始化)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存临时存储 (运行时变量)",
+          "无本地持久化存储",
+          "无加密处理 (明文日志)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

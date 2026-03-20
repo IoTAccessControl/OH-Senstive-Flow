@@ -1,0 +1,2382 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.776Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 10,
+      "nodes": 79,
+      "edges": 69,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "HomePage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+        "structName": "HomePage",
+        "line": 17,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_HomePage_d47861457d",
+      "kind": "ui",
+      "title": "动态流列表"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p162",
+      "pathId": "p162",
+      "nodes": [
+        {
+          "id": "p162:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 48,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化首页界面结构。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "          this.dataList = [...this.dataList, ...result]",
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,"
+            ]
+          }
+        },
+        {
+          "id": "p162:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 49,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为页面垂直布局的根节点。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,"
+            ]
+          }
+        },
+        {
+          "id": "p162:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 51,
+          "code": "Stack() {",
+          "description": "创建 Stack 容器组件，用于叠加显示状态组件和列表内容。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,",
+              "          retryCallback: () => {",
+              "            this.loadNet()"
+            ]
+          }
+        },
+        {
+          "id": "p162:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 62,
+          "code": "ListItem() {",
+          "description": "遍历数据列表生成 ListItem 组件，渲染单个视频条目，并绑定点击事件。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "          }",
+              "        }) {",
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p162:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 64,
+          "code": "Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+          "description": "用户点击列表项时触发回调，提取当前项的视频 ID 和播放地址，调用 Router.push 进行页面跳转。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })",
+              "              ListItem() {",
+              "                RefreshFooter({ showFooter: this.showLoading })"
+            ]
+          }
+        },
+        {
+          "id": "p162:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标页面 URL 和参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p162:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API，将包含视频 ID 和播放地址的参数传递给目标页面，完成内部导航。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p162:n1",
+          "to": "p162:n2"
+        },
+        {
+          "from": "p162:n2",
+          "to": "p162:n3"
+        },
+        {
+          "from": "p162:n3",
+          "to": "p162:n4"
+        },
+        {
+          "from": "p162:n4",
+          "to": "p162:n5"
+        },
+        {
+          "from": "p162:n5",
+          "to": "p162:n6"
+        },
+        {
+          "from": "p162:n6",
+          "to": "p162:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频内容 ID (item.data.id)",
+          "视频播放地址 (item.data.playUrl)",
+          "页面路由参数 (params)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅在应用内页面间传递)"
+        ],
+        "storageAndEncryption": [
+          "内存中临时存储 (通过 Router 参数传递，未持久化)",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p163",
+      "pathId": "p163",
+      "nodes": [
+        {
+          "id": "p163:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 48,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化页面视图结构。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "          this.dataList = [...this.dataList, ...result]",
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,"
+            ]
+          }
+        },
+        {
+          "id": "p163:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 49,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为页面的垂直布局主干。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,"
+            ]
+          }
+        },
+        {
+          "id": "p163:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 51,
+          "code": "Stack() {",
+          "description": "创建 Stack 容器组件，用于叠加显示状态组件和内容列表。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,",
+              "          retryCallback: () => {",
+              "            this.loadNet()"
+            ]
+          }
+        },
+        {
+          "id": "p163:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 62,
+          "code": "ListItem() {",
+          "description": "遍历数据列表生成 ListItem 组件，渲染单个视频条目，并绑定点击事件。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "          }",
+              "        }) {",
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p163:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 64,
+          "code": "Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+          "description": "点击事件触发，提取当前项的 id 和 playUrl 作为参数，调用 Router.push 发起页面跳转。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })",
+              "              ListItem() {",
+              "                RefreshFooter({ showFooter: this.showLoading })"
+            ]
+          }
+        },
+        {
+          "id": "p163:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "Router 类的静态 push 方法被调用，接收目标 URL 和包含敏感数据 (id, playUrl) 的参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p163:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "捕获路由跳转失败的异常对象，提取错误码和错误消息，构造日志字符串并调用 LogUtils.error。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p163:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "LogUtils 的 error 静态方法被调用，准备将错误信息写入系统日志。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p163:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 hilog.error 接口，将包含错误详情的数据流输出到系统日志缓冲区 (Sink)。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p163:n1",
+          "to": "p163:n2"
+        },
+        {
+          "from": "p163:n2",
+          "to": "p163:n3"
+        },
+        {
+          "from": "p163:n3",
+          "to": "p163:n4"
+        },
+        {
+          "from": "p163:n4",
+          "to": "p163:n5"
+        },
+        {
+          "from": "p163:n5",
+          "to": "p163:n6"
+        },
+        {
+          "from": "p163:n6",
+          "to": "p163:n7"
+        },
+        {
+          "from": "p163:n7",
+          "to": "p163:n8"
+        },
+        {
+          "from": "p163:n8",
+          "to": "p163:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频列表项 ID (item.data.id)",
+          "视频播放地址 (item.data.playUrl)",
+          "路由跳转错误码 (err.code)",
+          "路由跳转错误信息 (err.message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项)",
+          "异常触发 (路由失败时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "数据仅存在于内存中用于 UI 渲染和路由传参",
+          "日志通过系统 hilog 接口输出，未进行应用层加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p164",
+      "pathId": "p164",
+      "nodes": [
+        {
+          "id": "p164:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 48,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化首页界面结构。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "          this.dataList = [...this.dataList, ...result]",
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,"
+            ]
+          }
+        },
+        {
+          "id": "p164:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 49,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为页面垂直布局的根节点。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,"
+            ]
+          }
+        },
+        {
+          "id": "p164:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 51,
+          "code": "Stack() {",
+          "description": "创建 Stack 容器组件，用于叠加显示状态组件和列表内容。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,",
+              "          retryCallback: () => {",
+              "            this.loadNet()"
+            ]
+          }
+        },
+        {
+          "id": "p164:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 62,
+          "code": "ListItem() {",
+          "description": "遍历数据列表生成 ListItem 组件，渲染单个视频条目，并绑定点击事件。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "          }",
+              "        }) {",
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p164:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 64,
+          "code": "Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+          "description": "用户点击列表项时触发回调，提取当前项的视频 ID 和播放地址，调用 Router.push 进行页面跳转。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })",
+              "              ListItem() {",
+              "                RefreshFooter({ showFooter: this.showLoading })"
+            ]
+          }
+        },
+        {
+          "id": "p164:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p164:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API 执行实际页面跳转，传入包含视频 ID 和播放地址的参数。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p164:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由跳转成功后，调用 LogUtils.info 记录成功日志，包含目标路径信息。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p164:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "定义日志工具类 info 方法，封装底层日志输出接口。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p164:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用系统 hilog.info API 输出信息级日志，将路由成功消息写入系统日志缓冲区。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p164:n1",
+          "to": "p164:n2"
+        },
+        {
+          "from": "p164:n2",
+          "to": "p164:n3"
+        },
+        {
+          "from": "p164:n3",
+          "to": "p164:n4"
+        },
+        {
+          "from": "p164:n4",
+          "to": "p164:n5"
+        },
+        {
+          "from": "p164:n5",
+          "to": "p164:n6"
+        },
+        {
+          "from": "p164:n6",
+          "to": "p164:n7"
+        },
+        {
+          "from": "p164:n7",
+          "to": "p164:n8"
+        },
+        {
+          "from": "p164:n8",
+          "to": "p164:n9"
+        },
+        {
+          "from": "p164:n9",
+          "to": "p164:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频内容 ID (item.data.id)",
+          "视频播放地址 (item.data.playUrl)",
+          "页面路由路径 (RoutePath.DetailPage)",
+          "路由操作状态日志"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅用于本地页面跳转)",
+          "日志可能通过系统日志服务收集 (取决于设备配置)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅在内存中作为路由参数传递"
+        ],
+        "permissions": [
+          "无需敏感权限 (ohos.permission.* 未在此路径显式调用)",
+          "隐含依赖 ohos.permission.INTERNET (若 playUrl 涉及网络加载，但此路径仅为传参)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p207",
+      "pathId": "p207",
+      "nodes": [
+        {
+          "id": "p207:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 48,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化首页界面结构。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "          this.dataList = [...this.dataList, ...result]",
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,"
+            ]
+          }
+        },
+        {
+          "id": "p207:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 49,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为首页内容的垂直布局根节点。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,"
+            ]
+          }
+        },
+        {
+          "id": "p207:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 62,
+          "code": "ListItem() {",
+          "description": "遍历数据列表渲染 ListItem 组件，为每个列表项绑定点击事件监听器。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "          }",
+              "        }) {",
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p207:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 64,
+          "code": "Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+          "description": "提取当前列表项的业务数据 (id, playUrl)，封装为参数对象并调用自定义 Router.push 方法发起页面跳转。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })",
+              "              ListItem() {",
+              "                RefreshFooter({ showFooter: this.showLoading })"
+            ]
+          }
+        },
+        {
+          "id": "p207:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和参数对象，准备进行路由分发。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p207:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 API router.pushUrl，将包含业务 ID 和播放地址的参数传递给系统路由模块，执行实际的页面导航操作。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p207:n1",
+          "to": "p207:n2"
+        },
+        {
+          "from": "p207:n2",
+          "to": "p207:n3"
+        },
+        {
+          "from": "p207:n3",
+          "to": "p207:n4"
+        },
+        {
+          "from": "p207:n4",
+          "to": "p207:n5"
+        },
+        {
+          "from": "p207:n5",
+          "to": "p207:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "业务数据 ID (item.data.id)",
+          "业务播放地址 (item.data.playUrl)",
+          "页面路由路径 (RoutePath)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅在应用内页面间传递)"
+        ],
+        "storageAndEncryption": [
+          "内存中临时传递 (通过 Router 参数对象)",
+          "未涉及本地持久化存储",
+          "未涉及加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p208",
+      "pathId": "p208",
+      "nodes": [
+        {
+          "id": "p208:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 48,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化首页视图结构。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "          this.dataList = [...this.dataList, ...result]",
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,"
+            ]
+          }
+        },
+        {
+          "id": "p208:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 49,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为页面主布局容器。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,"
+            ]
+          }
+        },
+        {
+          "id": "p208:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 62,
+          "code": "ListItem() {",
+          "description": "遍历数据列表渲染 ListItem 组件，准备绑定点击事件以处理用户交互。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "          }",
+              "        }) {",
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p208:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 64,
+          "code": "Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+          "description": "定义列表项点击回调，从数据模型中提取视频 ID 和播放地址 (playUrl) 作为参数，调用 Router.push 发起页面跳转。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })",
+              "              ListItem() {",
+              "                RefreshFooter({ showFooter: this.showLoading })"
+            ]
+          }
+        },
+        {
+          "id": "p208:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "Router 类的静态 push 方法被调用，接收目标 URL 和包含敏感业务数据 (ID, playUrl) 的参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p208:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "捕获路由跳转失败的异常，将错误码和错误消息拼接成日志字符串，传递给 LogUtils.error 进行处理。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p208:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "LogUtils 的 error 静态方法被调用，准备将错误信息写入系统日志。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p208:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 hilog.error 接口 (Sink)，将包含路由错误详情的数据输出到系统日志流中。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p208:n1",
+          "to": "p208:n2"
+        },
+        {
+          "from": "p208:n2",
+          "to": "p208:n3"
+        },
+        {
+          "from": "p208:n3",
+          "to": "p208:n4"
+        },
+        {
+          "from": "p208:n4",
+          "to": "p208:n5"
+        },
+        {
+          "from": "p208:n5",
+          "to": "p208:n6"
+        },
+        {
+          "from": "p208:n6",
+          "to": "p208:n7"
+        },
+        {
+          "from": "p208:n7",
+          "to": "p208:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频列表项 ID (item.data.id)",
+          "视频播放地址 (item.data.playUrl)",
+          "路由跳转错误码 (err.code)",
+          "路由跳转错误信息 (err.message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)",
+          "异常触发 (路由跳转失败时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "数据仅暂存于内存用于页面跳转参数",
+          "日志通过系统 hilog 接口输出，默认存储于系统日志缓冲区，未观察到应用层加密或持久化存储"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p209",
+      "pathId": "p209",
+      "nodes": [
+        {
+          "id": "p209:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 48,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化首页视图结构。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "          this.dataList = [...this.dataList, ...result]",
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,"
+            ]
+          }
+        },
+        {
+          "id": "p209:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 49,
+          "code": "Column() {",
+          "description": "创建 Column 容器组件，作为页面主布局容器。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,"
+            ]
+          }
+        },
+        {
+          "id": "p209:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 62,
+          "code": "ListItem() {",
+          "description": "渲染列表项 ListItem，准备绑定点击事件以处理用户交互。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "          }",
+              "        }) {",
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p209:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 64,
+          "code": "Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+          "description": "定义点击回调：提取当前视频条目的 ID 和播放地址 (playUrl)，调用 Router.push 发起页面跳转。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })",
+              "              ListItem() {",
+              "                RefreshFooter({ showFooter: this.showLoading })"
+            ]
+          }
+        },
+        {
+          "id": "p209:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "Router 静态方法 push 被调用，接收目标 URL 和包含敏感数据 (ID, playUrl) 的参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p209:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由跳转成功后，构造包含目标 URL 的成功日志消息，并调用 LogUtils.info 记录。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p209:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "LogUtils.info 方法被调用，接收路由成功消息字符串作为可变参数。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p209:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用系统 API hilog.info 将包含路由信息的日志写入系统日志缓冲区 (Sink)。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p209:n1",
+          "to": "p209:n2"
+        },
+        {
+          "from": "p209:n2",
+          "to": "p209:n3"
+        },
+        {
+          "from": "p209:n3",
+          "to": "p209:n4"
+        },
+        {
+          "from": "p209:n4",
+          "to": "p209:n5"
+        },
+        {
+          "from": "p209:n5",
+          "to": "p209:n6"
+        },
+        {
+          "from": "p209:n6",
+          "to": "p209:n7"
+        },
+        {
+          "from": "p209:n7",
+          "to": "p209:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频条目 ID (item.data.id)",
+          "视频播放地址 (item.data.playUrl)",
+          "页面路由 URL",
+          "路由跳转状态日志"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅在应用内路由传递)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅存在于内存变量及系统日志缓冲区"
+        ],
+        "permissions": [
+          "ohos.permission.LOG (隐含，用于调用 hilog.info)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p255",
+      "pathId": "p255",
+      "nodes": [
+        {
+          "id": "p255:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 48,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，开始渲染首页界面结构。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "          this.dataList = [...this.dataList, ...result]",
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,"
+            ]
+          }
+        },
+        {
+          "id": "p255:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 51,
+          "code": "Stack() {",
+          "description": "创建 Stack 容器组件，用于堆叠布局展示内容。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,",
+              "          retryCallback: () => {",
+              "            this.loadNet()"
+            ]
+          }
+        },
+        {
+          "id": "p255:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 62,
+          "code": "ListItem() {",
+          "description": "遍历数据列表生成 ListItem 组件，代表单个视频条目，准备绑定点击事件。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "          }",
+              "        }) {",
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p255:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 64,
+          "code": "Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+          "description": "定义列表项点击回调：从当前数据模型 (item) 中提取视频 ID 和播放地址，封装为参数对象，调用自定义路由方法跳转至详情页。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })",
+              "              ListItem() {",
+              "                RefreshFooter({ showFooter: this.showLoading })"
+            ]
+          }
+        },
+        {
+          "id": "p255:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和参数对象，作为数据流转发的中间层。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p255:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 API router.pushUrl，将包含视频 ID 和播放地址的参数对象传递给系统路由服务，执行页面导航操作（数据流终点）。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p255:n1",
+          "to": "p255:n2"
+        },
+        {
+          "from": "p255:n2",
+          "to": "p255:n3"
+        },
+        {
+          "from": "p255:n3",
+          "to": "p255:n4"
+        },
+        {
+          "from": "p255:n4",
+          "to": "p255:n5"
+        },
+        {
+          "from": "p255:n5",
+          "to": "p255:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频内容 ID (item.data.id)",
+          "视频播放地址 (item.data.playUrl)",
+          "页面路由参数 (params)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "数据暂存于内存 (this.dataList)",
+          "通过路由参数在应用内页面间传递",
+          "未检测到本地持久化存储",
+          "未检测到加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p256",
+      "pathId": "p256",
+      "nodes": [
+        {
+          "id": "p256:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 48,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化首页界面结构。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "          this.dataList = [...this.dataList, ...result]",
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,"
+            ]
+          }
+        },
+        {
+          "id": "p256:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 51,
+          "code": "Stack() {",
+          "description": "创建 Stack 容器组件，用于层叠布局首页内容。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,",
+              "          retryCallback: () => {",
+              "            this.loadNet()"
+            ]
+          }
+        },
+        {
+          "id": "p256:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 62,
+          "code": "ListItem() {",
+          "description": "遍历数据列表渲染 ListItem 组件，并绑定点击事件监听器。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "          }",
+              "        }) {",
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p256:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 64,
+          "code": "Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+          "description": "用户点击列表项时触发回调，提取当前项的 id 和 playUrl 作为参数，调用 Router.push 发起页面跳转。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })",
+              "              ListItem() {",
+              "                RefreshFooter({ showFooter: this.showLoading })"
+            ]
+          }
+        },
+        {
+          "id": "p256:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "Router 类的静态方法 push 被调用，接收目标 URL 和包含敏感数据 (id, playUrl) 的参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p256:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "捕获路由跳转失败的异常对象，提取错误码和错误消息，构造日志字符串并调用 LogUtils.error。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p256:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "LogUtils 的工具方法 error 被调用，准备将错误信息写入系统日志。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p256:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 API hilog.error 将包含错误详情的数据流最终输出到系统日志服务 (Sink)。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p256:n1",
+          "to": "p256:n2"
+        },
+        {
+          "from": "p256:n2",
+          "to": "p256:n3"
+        },
+        {
+          "from": "p256:n3",
+          "to": "p256:n4"
+        },
+        {
+          "from": "p256:n4",
+          "to": "p256:n5"
+        },
+        {
+          "from": "p256:n5",
+          "to": "p256:n6"
+        },
+        {
+          "from": "p256:n6",
+          "to": "p256:n7"
+        },
+        {
+          "from": "p256:n7",
+          "to": "p256:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频列表项 ID (item.data.id)",
+          "视频播放地址 (item.data.playUrl)",
+          "路由跳转错误码 (err.code)",
+          "路由跳转错误信息 (err.message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)",
+          "异常触发 (路由跳转失败时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅通过系统日志接口 (hilog.error) 输出到本地日志缓冲区",
+          "未观察到加密处理",
+          "未观察到持久化存储或网络上传行为"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p257",
+      "pathId": "p257",
+      "nodes": [
+        {
+          "id": "p257:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 48,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化首页界面结构。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "          this.dataList = [...this.dataList, ...result]",
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,"
+            ]
+          }
+        },
+        {
+          "id": "p257:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 51,
+          "code": "Stack() {",
+          "description": "创建 Stack 容器组件，用于层叠布局首页主要内容区域。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,",
+              "          showSkeleton: true,",
+              "          retryCallback: () => {",
+              "            this.loadNet()"
+            ]
+          }
+        },
+        {
+          "id": "p257:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 62,
+          "code": "ListItem() {",
+          "description": "遍历数据列表生成 ListItem 组件，渲染单个视频条目，并绑定点击事件。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "          }",
+              "        }) {",
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p257:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 64,
+          "code": "Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+          "description": "用户点击列表项时触发回调，提取当前项的视频 ID 和播放地址作为参数，调用 Router.push 进行页面跳转。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })",
+              "              ListItem() {",
+              "                RefreshFooter({ showFooter: this.showLoading })"
+            ]
+          }
+        },
+        {
+          "id": "p257:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "Router 类的静态 push 方法被调用，接收目标页面 URL 和包含敏感数据 (ID, 播放地址) 的参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p257:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API 执行实际的路由跳转，将参数传递给下一页面。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p257:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由跳转成功后，构造包含目标 URL 的日志消息字符串，准备记录操作流水。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p257:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "调用 LogUtils.info 方法，将路由成功信息及 URL 传入日志工具类。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p257:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "LogUtils.info 静态方法接收可变参数，准备将其格式化输出。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p257:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用系统 hilog.info API 将包含路由信息的日志写入系统日志缓冲区 (Sink)，完成数据流终点。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p257:n1",
+          "to": "p257:n2"
+        },
+        {
+          "from": "p257:n2",
+          "to": "p257:n3"
+        },
+        {
+          "from": "p257:n3",
+          "to": "p257:n4"
+        },
+        {
+          "from": "p257:n4",
+          "to": "p257:n5"
+        },
+        {
+          "from": "p257:n5",
+          "to": "p257:n6"
+        },
+        {
+          "from": "p257:n6",
+          "to": "p257:n7"
+        },
+        {
+          "from": "p257:n7",
+          "to": "p257:n8"
+        },
+        {
+          "from": "p257:n8",
+          "to": "p257:n9"
+        },
+        {
+          "from": "p257:n9",
+          "to": "p257:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频内容 ID (item.data.id)",
+          "视频播放地址 (item.data.playUrl)",
+          "页面路由 URL",
+          "路由操作日志信息"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)"
+        ],
+        "cloudUpload": [
+          "无直接网络上传行为 (数据仅在应用内路由传递及本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "未涉及持久化存储",
+          "未涉及加密处理",
+          "日志通过 hilog 输出到系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p301",
+      "pathId": "p301",
+      "nodes": [
+        {
+          "id": "p301:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 48,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build()，开始渲染首页列表界面，为后续用户交互提供上下文环境。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "          this.dataList = [...this.dataList, ...result]",
+              "        }",
+              "      })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: \"首页\", backButton: false, alpha: 1 }).align(Alignment.TopStart)",
+              "      Stack() {",
+              "        StateComponent({",
+              "          viewState: this.viewState,"
+            ]
+          }
+        },
+        {
+          "id": "p301:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 62,
+          "code": "ListItem() {",
+          "description": "渲染列表项组件 ListItem()，该组件包含具体的业务数据项（如视频 ID 和播放链接），并绑定点击事件监听器。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "          }",
+              "        }) {",
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p301:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/home/HomePage.ets",
+          "line": 64,
+          "code": "Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+          "description": "用户点击列表项时触发回调，从当前数据模型 item 中提取敏感数据项 'id' 和 'playUrl'，并调用自定义 Router.push 方法发起页面跳转，将上述数据作为参数传递。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "          Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+              "            List({ space: 10, initialIndex: 0 }) {",
+              "              ForEach(this.dataList, (item: HomeModelIssueListItemList, index: number) => {",
+              "                ListItem() {",
+              "                  HomeListItemComponent({ item: item }).onClick(() => {",
+              "                    Router.push(RoutePath.DetailPage, { \"id\": item?.data?.id, playUrl: item?.data?.playUrl })",
+              "                  })",
+              "                }",
+              "              })",
+              "              ListItem() {",
+              "                RefreshFooter({ showFooter: this.showLoading })"
+            ]
+          }
+        },
+        {
+          "id": "p301:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "自定义路由工具类 Router 的静态方法 push() 被调用，接收包含业务数据的 params 对象，准备执行系统级路由跳转。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p301:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "在系统路由跳转失败的回掉函数中，捕获错误对象 err，提取错误码 (code) 和错误信息 (message)，将其拼接成日志字符串并传递给 LogUtils.error 进行处理。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p301:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "LogUtils 工具类的 error 静态方法被调用，接收来自上层的格式化日志参数，准备调用系统日志接口。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p301:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用 OpenHarmony 系统 API hilog.error()，将包含路由错误信息及潜在上下文数据的日志写入系统日志缓冲区，此为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p301:n1",
+          "to": "p301:n2"
+        },
+        {
+          "from": "p301:n2",
+          "to": "p301:n3"
+        },
+        {
+          "from": "p301:n3",
+          "to": "p301:n4"
+        },
+        {
+          "from": "p301:n4",
+          "to": "p301:n5"
+        },
+        {
+          "from": "p301:n5",
+          "to": "p301:n6"
+        },
+        {
+          "from": "p301:n6",
+          "to": "p301:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频条目 ID (item.data.id)",
+          "视频播放地址 (item.data.playUrl)",
+          "路由跳转错误码 (err.code)",
+          "路由跳转错误信息 (err.message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅通过系统日志接口 (hilog.error) 输出到本地日志缓冲区",
+          "未观察到加密处理",
+          "未观察到持久化存储或网络上传行为"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_MainPage_2b386ca8b5",
+    "generatedAt": "2026-03-20T14:58:04.101Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "主页面加载与路由跳转时的状态提示管理",
+        "dataSources": [
+          "应用内部事件总线",
+          "系统路由模块"
+        ],
+        "dataItems": [
+          {
+            "name": "UI 状态标志 (loadingShow)",
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n3"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n4"
+              }
+            ]
+          },
+          {
+            "name": "加载提示文本 (loadingTips)",
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n5"
+              },
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n5"
+              }
+            ]
+          },
+          {
+            "name": "事件负载数据 (event.data)",
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n3"
+              }
+            ]
+          },
+          {
+            "name": "页面路由 URL",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n6"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n7"
+              }
+            ]
+          },
+          {
+            "name": "路由参数对象 (params)",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n6"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n7"
+              }
+            ]
+          },
+          {
+            "name": "系统日志信息",
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n10"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n9"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "内存临时存储与事件监听处理，用于更新界面状态及记录运行日志",
+        "storageMethod": "仅内存存储（组件实例变量、EventBus 监听器列表），未检测到本地持久化存储或加密处理；日志信息写入系统日志缓冲区",
+        "dataRecipients": [],
+        "processingPurpose": "在页面加载或跳转过程中向用户展示加载状态提示，并在发生路由错误时记录调试信息以辅助问题排查",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_TestPage_16fae1202f",
+    "generatedAt": "2026-03-20T14:59:51.315Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.HILOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "页面展示时自动加载首页 Banner 数据",
+        "dataSources": [
+          "网络响应"
+        ],
+        "dataItems": [
+          {
+            "name": "网络响应数据 (Home Banner)",
+            "refs": [
+              {
+                "flowId": "flow:p53",
+                "nodeId": "p53:n6"
+              },
+              {
+                "flowId": "flow:p53",
+                "nodeId": "p53:n7"
+              }
+            ]
+          },
+          {
+            "name": "JSON 格式化的业务数据",
+            "refs": [
+              {
+                "flowId": "flow:p53",
+                "nodeId": "p53:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "将网络获取的数据序列化为 JSON 字符串并输出至系统日志",
+        "storageMethod": "无本地持久化存储，仅临时写入系统日志缓冲区",
+        "dataRecipients": [],
+        "processingPurpose": "调试与开发测试，用于验证网络请求及数据返回情况",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "页面展示时自动加载首页 Banner 数据",
+        "permissionPurpose": "允许应用发起网络请求以获取远程服务器上的 Banner 数据",
+        "denyImpact": "无法加载首页 Banner 内容，相关功能可能显示为空或失败",
+        "refs": [
+          {
+            "flowId": "flow:p53",
+            "nodeId": "p53:n6"
+          }
+        ]
+      }
+    ]
+  }
+}

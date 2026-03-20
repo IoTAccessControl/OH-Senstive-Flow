@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_TopicPage_1318df9e2a",
+    "generatedAt": "2026-03-20T15:00:09.940Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.LOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在话题页面浏览或点击内容触发页面跳转时，系统记录路由跳转的成功状态、目标地址及失败时的错误信息。",
+        "dataSources": [
+          "应用内部路由逻辑",
+          "用户交互事件"
+        ],
+        "dataItems": [
+          {
+            "name": "路由跳转目标 URL",
+            "refs": [
+              {
+                "flowId": "flow:p305",
+                "nodeId": "p305:n3"
+              },
+              {
+                "flowId": "flow:p308",
+                "nodeId": "p308:n4"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误码",
+            "refs": [
+              {
+                "flowId": "flow:p304",
+                "nodeId": "p304:n3"
+              },
+              {
+                "flowId": "flow:p307",
+                "nodeId": "p307:n4"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p304",
+                "nodeId": "p304:n3"
+              },
+              {
+                "flowId": "flow:p307",
+                "nodeId": "p307:n4"
+              }
+            ]
+          },
+          {
+            "name": "路由参数",
+            "refs": [
+              {
+                "flowId": "flow:p305",
+                "nodeId": "p305:n2"
+              },
+              {
+                "flowId": "flow:p308",
+                "nodeId": "p308:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中拼接为日志字符串后，通过系统日志接口输出至系统日志缓冲区。",
+        "storageMethod": "临时存储于系统日志缓冲区（hilog），未进行加密处理，依赖系统日志轮转策略清除，非持久化本地文件存储。",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务 (hilog)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p304",
+                "nodeId": "p304:n5"
+              },
+              {
+                "flowId": "flow:p305",
+                "nodeId": "p305:n5"
+              },
+              {
+                "flowId": "flow:p307",
+                "nodeId": "p307:n6"
+              },
+              {
+                "flowId": "flow:p308",
+                "nodeId": "p308:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于记录应用内部页面导航的调试信息与异常排查，辅助开发人员定位路由跳转问题。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_MinePage_84d96cc608",
+    "generatedAt": "2026-03-20T14:58:25.469Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.HILOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户进入‘我的’页面时，系统加载页面布局、默认头像及应用名称文本。若发生页面间跳转或路由操作，会记录相关状态日志。",
+        "dataSources": [
+          "应用内部路由参数",
+          "UI 渲染事件"
+        ],
+        "dataItems": [
+          {
+            "name": "页面路由 URL",
+            "refs": [
+              {
+                "flowId": "flow:p58",
+                "nodeId": "p58:n2"
+              },
+              {
+                "flowId": "flow:p60",
+                "nodeId": "p60:n6"
+              }
+            ]
+          },
+          {
+            "name": "路由参数对象 (params)",
+            "refs": [
+              {
+                "flowId": "flow:p58",
+                "nodeId": "p58:n2"
+              },
+              {
+                "flowId": "flow:p60",
+                "nodeId": "p60:n6"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误码与消息",
+            "refs": [
+              {
+                "flowId": "flow:p59",
+                "nodeId": "p59:n5"
+              },
+              {
+                "flowId": "flow:p63",
+                "nodeId": "p63:n4"
+              }
+            ]
+          },
+          {
+            "name": "UI 组件构建事件",
+            "refs": [
+              {
+                "flowId": "flow:p61",
+                "nodeId": "p61:n1"
+              },
+              {
+                "flowId": "flow:p65",
+                "nodeId": "p65:n1"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中传递并格式化为日志字符串，最终通过系统 API 写入设备本地日志缓冲区（HiLog）。",
+        "storageMethod": "存储于设备本地系统日志缓冲区，未进行加密处理，遵循系统日志轮转策略。",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务 (HiLog)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p59",
+                "nodeId": "p59:n7"
+              },
+              {
+                "flowId": "flow:p60",
+                "nodeId": "p60:n10"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于诊断应用内的页面跳转逻辑是否正常，以及记录 UI 渲染过程中的关键节点状态，便于问题排查。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_TopicDetailPage_5444eae148",
+    "generatedAt": "2026-03-20T14:59:57.970Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户进入话题详情页时，应用加载并展示该话题的标题、简介及列表内容。",
+        "dataSources": [
+          "页面路由参数",
+          "云端服务器"
+        ],
+        "dataItems": [
+          {
+            "name": "话题标识 (topicId)",
+            "refs": [
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n2"
+              }
+            ]
+          },
+          {
+            "name": "话题详情数据 (detailData)",
+            "refs": [
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n7"
+              }
+            ]
+          },
+          {
+            "name": "话题标题/简介 (title/brief)",
+            "refs": [
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n8"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "网络请求获取数据并在内存中进行状态绑定与渲染",
+        "storageMethod": "内存临时存储 (@State 状态变量)，未检测到持久化或加密存储行为",
+        "dataRecipients": [
+          {
+            "name": "后端服务接口",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "根据用户选择的话题 ID，从服务器获取并展示对应的话题详情信息（包括标题、简介及列表）。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

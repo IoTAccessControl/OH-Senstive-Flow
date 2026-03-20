@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_CategoryDetailPage_e2074257be",
+    "generatedAt": "2026-03-20T14:54:05.280Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户进入分类详情页面时，应用自动加载并展示该分类的标题、头图及列表内容。",
+        "dataSources": [
+          "路由参数",
+          "网络请求"
+        ],
+        "dataItems": [
+          {
+            "name": "分类 ID",
+            "refs": [
+              {
+                "flowId": "flow:p402",
+                "nodeId": "p402:n3"
+              },
+              {
+                "flowId": "flow:p403",
+                "nodeId": "p403:n3"
+              }
+            ]
+          },
+          {
+            "name": "分类头图 URL",
+            "refs": [
+              {
+                "flowId": "flow:p402",
+                "nodeId": "p402:n4"
+              },
+              {
+                "flowId": "flow:p403",
+                "nodeId": "p403:n4"
+              }
+            ]
+          },
+          {
+            "name": "分类标题",
+            "refs": [
+              {
+                "flowId": "flow:p402",
+                "nodeId": "p402:n5"
+              },
+              {
+                "flowId": "flow:p403",
+                "nodeId": "p403:n5"
+              }
+            ]
+          },
+          {
+            "name": "分类详情列表数据",
+            "refs": [
+              {
+                "flowId": "flow:p402",
+                "nodeId": "p402:n7"
+              },
+              {
+                "flowId": "flow:p403",
+                "nodeId": "p403:n8"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "从路由参数中提取关键标识符，发起网络请求获取详细数据，并在内存中更新状态以驱动界面渲染。",
+        "storageMethod": "本地内存存储（@State 状态变量），未明确加密。",
+        "dataRecipients": [
+          {
+            "name": "后端服务器",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p402",
+                "nodeId": "p402:n6"
+              },
+              {
+                "flowId": "flow:p403",
+                "nodeId": "p403:n8"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "根据用户选择的分类，动态获取并展示对应的商品或内容列表及相关元数据。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

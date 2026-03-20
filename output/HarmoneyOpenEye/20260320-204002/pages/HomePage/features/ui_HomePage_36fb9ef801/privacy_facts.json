@@ -1,0 +1,122 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_HomePage_36fb9ef801",
+    "generatedAt": "2026-03-20T14:56:38.644Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACCESS_NETWORK_STATE 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.LOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "首页加载及页面跳转时，记录路由导航状态、目标地址及错误信息用于调试与监控。",
+        "dataSources": [
+          "应用内部路由逻辑",
+          "系统路由服务"
+        ],
+        "dataItems": [
+          {
+            "name": "页面路由 URL",
+            "refs": [
+              {
+                "flowId": "flow:p111",
+                "nodeId": "p111:n4"
+              },
+              {
+                "flowId": "flow:p113",
+                "nodeId": "p113:n4"
+              },
+              {
+                "flowId": "flow:p116",
+                "nodeId": "p116:n4"
+              }
+            ]
+          },
+          {
+            "name": "路由参数对象 (params)",
+            "refs": [
+              {
+                "flowId": "flow:p111",
+                "nodeId": "p111:n3"
+              },
+              {
+                "flowId": "flow:p117",
+                "nodeId": "p117:n6"
+              }
+            ]
+          },
+          {
+            "name": "路由错误码",
+            "refs": [
+              {
+                "flowId": "flow:p112",
+                "nodeId": "p112:n5"
+              },
+              {
+                "flowId": "flow:p115",
+                "nodeId": "p115:n4"
+              }
+            ]
+          },
+          {
+            "name": "路由错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p112",
+                "nodeId": "p112:n5"
+              },
+              {
+                "flowId": "flow:p118",
+                "nodeId": "p118:n6"
+              }
+            ]
+          },
+          {
+            "name": "操作日志",
+            "refs": [
+              {
+                "flowId": "flow:p119",
+                "nodeId": "p119:n6"
+              },
+              {
+                "flowId": "flow:p122",
+                "nodeId": "p122:n9"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中临时传递，通过日志工具类格式化后输出至系统日志缓冲区。",
+        "storageMethod": "存储于系统日志缓冲区（由 hilog 管理），未检测到应用层持久化存储或加密处理。",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务 (hilog)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p112",
+                "nodeId": "p112:n8"
+              },
+              {
+                "flowId": "flow:p113",
+                "nodeId": "p113:n7"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "记录页面跳转轨迹、诊断路由失败原因及监控应用运行状态。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_CategoryPage_6a4f70c57f",
+    "generatedAt": "2026-03-20T14:55:00.774Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.LOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在分类页面浏览内容或点击分类项进行页面跳转时，系统记录路由跳转状态（成功或失败）及相关的调试信息。",
+        "dataSources": [
+          "用户交互行为（点击、导航）",
+          "应用内部路由逻辑"
+        ],
+        "dataItems": [
+          {
+            "name": "目标路由 URL",
+            "refs": [
+              {
+                "flowId": "flow:p370",
+                "nodeId": "p370:n2"
+              },
+              {
+                "flowId": "flow:p371",
+                "nodeId": "p371:n3"
+              },
+              {
+                "flowId": "flow:p383",
+                "nodeId": "p383:n8"
+              },
+              {
+                "flowId": "flow:p398",
+                "nodeId": "p398:n6"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转参数",
+            "refs": [
+              {
+                "flowId": "flow:p371",
+                "nodeId": "p371:n2"
+              },
+              {
+                "flowId": "flow:p373",
+                "nodeId": "p373:n3"
+              },
+              {
+                "flowId": "flow:p382",
+                "nodeId": "p382:n4"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误码",
+            "refs": [
+              {
+                "flowId": "flow:p370",
+                "nodeId": "p370:n3"
+              },
+              {
+                "flowId": "flow:p373",
+                "nodeId": "p373:n4"
+              },
+              {
+                "flowId": "flow:p398",
+                "nodeId": "p398:n5"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p370",
+                "nodeId": "p370:n3"
+              },
+              {
+                "flowId": "flow:p373",
+                "nodeId": "p373:n4"
+              },
+              {
+                "flowId": "flow:p398",
+                "nodeId": "p398:n5"
+              }
+            ]
+          },
+          {
+            "name": "操作日志字符串",
+            "refs": [
+              {
+                "flowId": "flow:p371",
+                "nodeId": "p371:n3"
+              },
+              {
+                "flowId": "flow:p373",
+                "nodeId": "p373:n4"
+              },
+              {
+                "flowId": "flow:p383",
+                "nodeId": "p383:n8"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中临时拼接为日志字符串，随后调用系统日志接口写入缓冲区。",
+        "storageMethod": "数据仅存储于系统日志缓冲区（hilog），未进行应用层加密，依赖系统日志服务配置管理生命周期。",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务 (hilog)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p370",
+                "nodeId": "p370:n5"
+              },
+              {
+                "flowId": "flow:p371",
+                "nodeId": "p371:n5"
+              },
+              {
+                "flowId": "flow:p373",
+                "nodeId": "p373:n6"
+              },
+              {
+                "flowId": "flow:p383",
+                "nodeId": "p383:n10"
+              },
+              {
+                "flowId": "flow:p398",
+                "nodeId": "p398:n8"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于开发调试、故障排查及监控路由跳转的异常情况。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

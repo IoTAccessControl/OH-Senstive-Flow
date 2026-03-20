@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.776Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "ContainerPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/container/ContainerPage.ets",
+        "structName": "ContainerPage",
+        "line": 9,
+        "description": "发现容器页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_ContainerPage_80a350efd9",
+      "kind": "ui",
+      "title": "功能入口"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p399",
+      "pathId": "p399",
+      "nodes": [
+        {
+          "id": "p399:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/container/ContainerPage.ets",
+          "line": 15,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，在组件即将显示时触发，作为数据流的起始点。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  @State containerType: string = 'focus'",
+              "  @State title: string = \"关注\"",
+              "  @Provide findCurrentIndex: number = -1",
+              "  @Provide homeTabSelected: number = -1",
+              "",
+              "  aboutToAppear() {",
+              "    this.containerType = router.getParams()[\"containerType\"]",
+              "    this.convertTitle()",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p399:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/container/ContainerPage.ets",
+          "line": 16,
+          "code": "this.containerType = router.getParams()[\"containerType\"]",
+          "description": "调用 router.getParams() 获取当前页面的路由参数，并提取 'containerType' 字段，这是外部传入的控制数据。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  @State title: string = \"关注\"",
+              "  @Provide findCurrentIndex: number = -1",
+              "  @Provide homeTabSelected: number = -1",
+              "",
+              "  aboutToAppear() {",
+              "    this.containerType = router.getParams()[\"containerType\"]",
+              "    this.convertTitle()",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p399:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/container/ContainerPage.ets",
+          "line": 10,
+          "code": "@State containerType: string = 'focus'",
+          "description": "将提取到的 containerType 赋值给组件的 @State 状态变量，数据被保存在内存中用于驱动 UI 渲染。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "import { TopicPage } from '../find/topic/TopicPage'",
+              "",
+              "@Entry",
+              "@Component",
+              "struct ContainerPage {",
+              "  @State containerType: string = 'focus'",
+              "  @State title: string = \"关注\"",
+              "  @Provide findCurrentIndex: number = -1",
+              "  @Provide homeTabSelected: number = -1",
+              "",
+              "  aboutToAppear() {"
+            ]
+          }
+        },
+        {
+          "id": "p399:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/container/ContainerPage.ets",
+          "line": 17,
+          "code": "this.convertTitle()",
+          "description": "调用 convertTitle() 方法，基于更新后的 containerType 状态进行后续业务逻辑处理（如标题转换）。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  @Provide findCurrentIndex: number = -1",
+              "  @Provide homeTabSelected: number = -1",
+              "",
+              "  aboutToAppear() {",
+              "    this.containerType = router.getParams()[\"containerType\"]",
+              "    this.convertTitle()",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: this.title, alpha: 1 })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p399:n1",
+          "to": "p399:n2"
+        },
+        {
+          "from": "p399:n2",
+          "to": "p399:n3"
+        },
+        {
+          "from": "p399:n3",
+          "to": "p399:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (containerType)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面加载时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存存储 (组件状态 @State)，未加密"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.920Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 4,
+      "edges": 3,
+      "pages": 1,
+      "elements": 3
+    }
+  },
+  "roots": [
+    "page:20d263e3cffc"
+  ],
+  "nodes": {
+    "page:20d263e3cffc": {
+      "id": "page:20d263e3cffc",
+      "category": "Page",
+      "name": "DetailPage",
+      "description": "视频详情页",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+      "line": 9,
+      "code": "struct DetailPage {",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "import { LogUtils } from '../../utils/LogUtils'",
+          "import { VideoBottomComponent } from './component/VideoBottomComponent'",
+          "",
+          "@Entry",
+          "@Component",
+          "struct DetailPage {",
+          "  @State isAutoPlay: boolean = true",
+          "  @State showControls: boolean = true",
+          "  @State playUrl: string = \"\"",
+          "  @State relationId: number = -1",
+          "  private controller: VideoController = new VideoController()"
+        ]
+      }
+    },
+    "ui:2b8b0ac40e75": {
+      "id": "ui:2b8b0ac40e75",
+      "category": "Component",
+      "name": "build",
+      "description": "视频详情",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+      "line": 21,
+      "code": "build() {",
+      "context": {
+        "startLine": 16,
+        "lines": [
+          "  aboutToAppear() {",
+          "    this.relationId = router.getParams()['id']",
+          "    this.playUrl = router.getParams()['playUrl']",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      CommonTopBar({ title: '视频详情', alpha: 1 })",
+          "      this.headerPlayer()",
+          "      VideoBottomComponent({",
+          "        relationId: this.relationId,"
+        ]
+      }
+    },
+    "ui:8fc9caba0985": {
+      "id": "ui:8fc9caba0985",
+      "category": "Component",
+      "name": "CommonTopBar",
+      "description": "视频详情标题栏",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+      "line": 23,
+      "code": "CommonTopBar({ title: '视频详情', alpha: 1 })",
+      "context": {
+        "startLine": 18,
+        "lines": [
+          "    this.playUrl = router.getParams()['playUrl']",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      CommonTopBar({ title: '视频详情', alpha: 1 })",
+          "      this.headerPlayer()",
+          "      VideoBottomComponent({",
+          "        relationId: this.relationId,",
+          "        onItemClick: (playUrl) => {",
+          "          this.playUrl = playUrl"
+        ]
+      }
+    },
+    "ui:8499e4f075e7": {
+      "id": "ui:8499e4f075e7",
+      "category": "Component",
+      "name": "VideoBottomComponent",
+      "description": "底部推荐区",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+      "line": 25,
+      "code": "VideoBottomComponent({",
+      "context": {
+        "startLine": 20,
+        "lines": [
+          "",
+          "  build() {",
+          "    Column() {",
+          "      CommonTopBar({ title: '视频详情', alpha: 1 })",
+          "      this.headerPlayer()",
+          "      VideoBottomComponent({",
+          "        relationId: this.relationId,",
+          "        onItemClick: (playUrl) => {",
+          "          this.playUrl = playUrl",
+          "        } }",
+          "      ).layoutWeight(1)"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:20d263e3cffc",
+      "to": "ui:2b8b0ac40e75",
+      "kind": "contains"
+    },
+    {
+      "from": "page:20d263e3cffc",
+      "to": "ui:8fc9caba0985",
+      "kind": "contains"
+    },
+    {
+      "from": "page:20d263e3cffc",
+      "to": "ui:8499e4f075e7",
+      "kind": "contains"
+    }
+  ]
+}

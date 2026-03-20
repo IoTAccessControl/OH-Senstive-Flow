@@ -1,0 +1,222 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_CategoryPage_60c85079f7",
+    "generatedAt": "2026-03-20T14:55:24.799Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在分类页面浏览分类列表，点击分类项进入详情页面，或触发数据刷新重试时。",
+        "dataSources": [
+          "网络请求 (CategoryViewModel.getCategoryDataList)",
+          "用户交互事件 (点击/重试)"
+        ],
+        "dataItems": [
+          {
+            "name": "分类数据列表 (CategoryModelChild)",
+            "refs": [
+              {
+                "flowId": "flow:p372",
+                "nodeId": "p372:n5"
+              },
+              {
+                "flowId": "flow:p378",
+                "nodeId": "p378:n5"
+              },
+              {
+                "flowId": "flow:p379",
+                "nodeId": "p379:n5"
+              },
+              {
+                "flowId": "flow:p381",
+                "nodeId": "p381:n1"
+              }
+            ]
+          },
+          {
+            "name": "背景图片资源路径 (bgPicture)",
+            "refs": [
+              {
+                "flowId": "flow:p372",
+                "nodeId": "p372:n9"
+              },
+              {
+                "flowId": "flow:p378",
+                "nodeId": "p378:n10"
+              },
+              {
+                "flowId": "flow:p379",
+                "nodeId": "p379:n10"
+              },
+              {
+                "flowId": "flow:p381",
+                "nodeId": "p381:n8"
+              }
+            ]
+          },
+          {
+            "name": "分类名称 (name)",
+            "refs": [
+              {
+                "flowId": "flow:p381",
+                "nodeId": "p381:n9"
+              },
+              {
+                "flowId": "flow:p389",
+                "nodeId": "p389:n10"
+              }
+            ]
+          },
+          {
+            "name": "页面路由参数 (params)",
+            "refs": [
+              {
+                "flowId": "flow:p369",
+                "nodeId": "p369:n4"
+              },
+              {
+                "flowId": "flow:p372",
+                "nodeId": "p372:n10"
+              },
+              {
+                "flowId": "flow:p378",
+                "nodeId": "p378:n11"
+              },
+              {
+                "flowId": "flow:p379",
+                "nodeId": "p379:n11"
+              }
+            ]
+          },
+          {
+            "name": "目标页面 URL",
+            "refs": [
+              {
+                "flowId": "flow:p369",
+                "nodeId": "p369:n5"
+              },
+              {
+                "flowId": "flow:p372",
+                "nodeId": "p372:n11"
+              },
+              {
+                "flowId": "flow:p378",
+                "nodeId": "p378:n12"
+              },
+              {
+                "flowId": "flow:p379",
+                "nodeId": "p379:n12"
+              }
+            ]
+          },
+          {
+            "name": "路由错误信息 (err.code, err.message)",
+            "refs": [
+              {
+                "flowId": "flow:p369",
+                "nodeId": "p369:n6"
+              },
+              {
+                "flowId": "flow:p379",
+                "nodeId": "p379:n13"
+              },
+              {
+                "flowId": "flow:p386",
+                "nodeId": "p386:n10"
+              },
+              {
+                "flowId": "flow:p388",
+                "nodeId": "p388:n11"
+              }
+            ]
+          },
+          {
+            "name": "路由成功日志信息",
+            "refs": [
+              {
+                "flowId": "flow:p369",
+                "nodeId": "p369:n7"
+              },
+              {
+                "flowId": "flow:p380",
+                "nodeId": "p380:n11"
+              },
+              {
+                "flowId": "flow:p386",
+                "nodeId": "p386:n11"
+              },
+              {
+                "flowId": "flow:p389",
+                "nodeId": "p389:n12"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "应用从服务器获取分类数据后，在内存中临时存储并解析，用于构建 UI 组件展示图片和文字；当用户点击或重试时，将相关参数封装并通过系统 API 进行页面跳转；同时记录路由操作的成功或失败状态到系统日志。",
+        "storageMethod": "内存临时存储 (this.dataList, this.dataSource)，未检测到加密处理；日志信息输出至系统日志缓冲区 (hilog)。",
+        "dataRecipients": [
+          {
+            "name": "系统路由模块",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p369",
+                "nodeId": "p369:n5"
+              },
+              {
+                "flowId": "flow:p372",
+                "nodeId": "p372:n11"
+              },
+              {
+                "flowId": "flow:p378",
+                "nodeId": "p378:n12"
+              },
+              {
+                "flowId": "flow:p379",
+                "nodeId": "p379:n12"
+              }
+            ]
+          },
+          {
+            "name": "系统日志服务 (hilog)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p379",
+                "nodeId": "p379:n15"
+              },
+              {
+                "flowId": "flow:p380",
+                "nodeId": "p380:n13"
+              },
+              {
+                "flowId": "flow:p386",
+                "nodeId": "p386:n13"
+              },
+              {
+                "flowId": "flow:p388",
+                "nodeId": "p388:n13"
+              },
+              {
+                "flowId": "flow:p389",
+                "nodeId": "p389:n14"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "展示分类列表内容，响应用户点击进行页面导航，以及记录应用运行过程中的路由跳转状态和异常信息以便调试。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

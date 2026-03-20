@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_TopicPage_93df49d955",
+    "generatedAt": "2026-03-20T15:00:58.406Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACCESS_NETWORK_STATE 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.LOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在话题页面下拉刷新或点击列表项时，应用加载并展示主题数据，执行页面跳转，并记录操作日志。",
+        "dataSources": [
+          "用户交互事件（下拉刷新、点击）",
+          "网络请求返回的业务数据",
+          "系统路由模块"
+        ],
+        "dataItems": [
+          {
+            "name": "主题列表数据 (topicList)",
+            "refs": [
+              {
+                "flowId": "flow:p321",
+                "nodeId": "p321:n4"
+              },
+              {
+                "flowId": "flow:p322",
+                "nodeId": "p322:n4"
+              },
+              {
+                "flowId": "flow:p323",
+                "nodeId": "p323:n4"
+              }
+            ]
+          },
+          {
+            "name": "图片资源地址",
+            "refs": [
+              {
+                "flowId": "flow:p321",
+                "nodeId": "p321:n5"
+              }
+            ]
+          },
+          {
+            "name": "页面路由参数 (params)",
+            "refs": [
+              {
+                "flowId": "flow:p321",
+                "nodeId": "p321:n6"
+              },
+              {
+                "flowId": "flow:p324",
+                "nodeId": "p324:n6"
+              },
+              {
+                "flowId": "flow:p342",
+                "nodeId": "p342:n4"
+              }
+            ]
+          },
+          {
+            "name": "目标页面 URL",
+            "refs": [
+              {
+                "flowId": "flow:p321",
+                "nodeId": "p321:n7"
+              },
+              {
+                "flowId": "flow:p329",
+                "nodeId": "p329:n6"
+              },
+              {
+                "flowId": "flow:p344",
+                "nodeId": "p344:n3"
+              }
+            ]
+          },
+          {
+            "name": "UI 状态数据 (isRefreshing)",
+            "refs": [
+              {
+                "flowId": "flow:p322",
+                "nodeId": "p322:n3"
+              },
+              {
+                "flowId": "flow:p323",
+                "nodeId": "p323:n3"
+              }
+            ]
+          },
+          {
+            "name": "错误日志信息 (err.code, err.message)",
+            "refs": [
+              {
+                "flowId": "flow:p322",
+                "nodeId": "p322:n6"
+              },
+              {
+                "flowId": "flow:p328",
+                "nodeId": "p328:n6"
+              },
+              {
+                "flowId": "flow:p343",
+                "nodeId": "p343:n4"
+              }
+            ]
+          },
+          {
+            "name": "成功日志信息 (URL)",
+            "refs": [
+              {
+                "flowId": "flow:p323",
+                "nodeId": "p323:n6"
+              },
+              {
+                "flowId": "flow:p326",
+                "nodeId": "p326:n7"
+              },
+              {
+                "flowId": "flow:p329",
+                "nodeId": "p329:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "内存临时存储与渲染；调用系统 API 进行页面导航；将日志数据写入系统日志缓冲区。",
+        "storageMethod": "内存临时存储（State 变量）；系统日志缓冲区（未加密，依赖系统配置持久化）。",
+        "dataRecipients": [
+          {
+            "name": "系统路由模块",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p321",
+                "nodeId": "p321:n7"
+              },
+              {
+                "flowId": "flow:p324",
+                "nodeId": "p324:n8"
+              }
+            ]
+          },
+          {
+            "name": "系统日志服务 (hilog)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p322",
+                "nodeId": "p322:n8"
+              },
+              {
+                "flowId": "flow:p323",
+                "nodeId": "p323:n8"
+              },
+              {
+                "flowId": "flow:p328",
+                "nodeId": "p328:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现话题列表的展示与刷新，响应用户点击进行页面跳转，以及记录应用运行状态和错误信息用于调试。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

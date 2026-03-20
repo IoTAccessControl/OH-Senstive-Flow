@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.922Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 5,
+      "edges": 4,
+      "pages": 1,
+      "elements": 4
+    }
+  },
+  "roots": [
+    "page:1ec5ca99b786"
+  ],
+  "nodes": {
+    "page:1ec5ca99b786": {
+      "id": "page:1ec5ca99b786",
+      "category": "Page",
+      "name": "RankPage",
+      "description": "排行榜页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/rank/RankPage.ets",
+      "line": 11,
+      "code": "export struct RankPage {",
+      "context": {
+        "startLine": 6,
+        "lines": [
+          "import { LogUtils } from '../../../utils/LogUtils'",
+          "import { RankViewModel } from '../../../viewmodel/RankViewModel'",
+          "import { HomeListItemComponent } from '../../home/component/HomeListItemComponent'",
+          "",
+          "@Component",
+          "export struct RankPage {",
+          "  private rankType: string = \"weekly\"",
+          "  private positionIndex: number = 0",
+          "  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING",
+          "  @State rankList: HomeModelIssueListItemList[] = []",
+          "  @Consume @Watch(\"onHomeTabSelected\") homeTabSelected: number"
+        ]
+      }
+    },
+    "ui:ea0c46f13c06": {
+      "id": "ui:ea0c46f13c06",
+      "category": "Button",
+      "name": "build",
+      "description": "排行榜列表",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/rank/RankPage.ets",
+      "line": 59,
+      "code": "build() {",
+      "context": {
+        "startLine": 54,
+        "lines": [
+          "    this.viewModel.getRankList(this.rankType, (result) => {",
+          "      this.rankList = result",
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        List({ space: 10, initialIndex: 0 }) {"
+        ]
+      }
+    },
+    "ui:df7d3124598b": {
+      "id": "ui:df7d3124598b",
+      "category": "Button",
+      "name": "StateComponent",
+      "description": "排行榜内容区",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/rank/RankPage.ets",
+      "line": 61,
+      "code": "StateComponent({ viewState: this.viewState, retryCallback: () => {",
+      "context": {
+        "startLine": 56,
+        "lines": [
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        List({ space: 10, initialIndex: 0 }) {",
+          "          ForEach(this.rankList, (item: HomeModelIssueListItemList, index: number) => {",
+          "            ListItem() {"
+        ]
+      }
+    },
+    "ui:8618c128693c": {
+      "id": "ui:8618c128693c",
+      "category": "Button",
+      "name": "ForEach",
+      "description": "排行榜列表",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/rank/RankPage.ets",
+      "line": 65,
+      "code": "ForEach(this.rankList, (item: HomeModelIssueListItemList, index: number) => {",
+      "context": {
+        "startLine": 60,
+        "lines": [
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        List({ space: 10, initialIndex: 0 }) {",
+          "          ForEach(this.rankList, (item: HomeModelIssueListItemList, index: number) => {",
+          "            ListItem() {",
+          "              HomeListItemComponent({ item: item })",
+          "            }.onClick(() => {",
+          "              Router.push(RoutePath.DetailPage, { \"id\": item.data.id, playUrl: item.data.playUrl })",
+          "            })"
+        ]
+      }
+    },
+    "ui:f090d8d7a026": {
+      "id": "ui:f090d8d7a026",
+      "category": "Button",
+      "name": "HomeListItemComponent",
+      "description": "排行榜列表项",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/rank/RankPage.ets",
+      "line": 67,
+      "code": "HomeListItemComponent({ item: item })",
+      "context": {
+        "startLine": 62,
+        "lines": [
+          "        this.loadNet()",
+          "      } }) {",
+          "        List({ space: 10, initialIndex: 0 }) {",
+          "          ForEach(this.rankList, (item: HomeModelIssueListItemList, index: number) => {",
+          "            ListItem() {",
+          "              HomeListItemComponent({ item: item })",
+          "            }.onClick(() => {",
+          "              Router.push(RoutePath.DetailPage, { \"id\": item.data.id, playUrl: item.data.playUrl })",
+          "            })",
+          "          })",
+          "          ListItem() {"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:1ec5ca99b786",
+      "to": "ui:ea0c46f13c06",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1ec5ca99b786",
+      "to": "ui:df7d3124598b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1ec5ca99b786",
+      "to": "ui:8618c128693c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1ec5ca99b786",
+      "to": "ui:f090d8d7a026",
+      "kind": "contains"
+    }
+  ]
+}

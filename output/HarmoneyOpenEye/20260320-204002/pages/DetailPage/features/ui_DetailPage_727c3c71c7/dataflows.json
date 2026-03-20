@@ -1,0 +1,341 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.776Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 10,
+      "edges": 8,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "DetailPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+        "structName": "DetailPage",
+        "line": 9,
+        "description": "视频详情页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_DetailPage_727c3c71c7",
+      "kind": "ui",
+      "title": "视频详情标题栏"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p400",
+      "pathId": "p400",
+      "nodes": [
+        {
+          "id": "p400:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 16,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 开始执行，标志着组件即将显示，是数据初始化的入口点。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  @State showControls: boolean = true",
+              "  @State playUrl: string = \"\"",
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p400:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 17,
+          "code": "this.relationId = router.getParams()['id']",
+          "description": "调用 router.getParams() 获取路由跳转携带的参数对象，并提取 'id' 字段赋值给 relationId 状态变量，完成业务标识数据的收集。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  @State playUrl: string = \"\"",
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p400:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 18,
+          "code": "this.playUrl = router.getParams()['playUrl']",
+          "description": "再次从路由参数对象中提取 'playUrl' 字段赋值给 playUrl 状态变量，完成视频资源地址数据的收集。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '视频详情', alpha: 1 })"
+            ]
+          }
+        },
+        {
+          "id": "p400:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 19,
+          "code": "}",
+          "description": "aboutToAppear 函数执行结束，数据加载完成，准备进入 UI 构建阶段。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '视频详情', alpha: 1 })",
+              "      this.headerPlayer()"
+            ]
+          }
+        },
+        {
+          "id": "p400:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 24,
+          "code": "this.headerPlayer()",
+          "description": "在 build 函数中调用 headerPlayer()，此处通常会使用已初始化的 playUrl 和 relationId 进行视频播放器的配置与渲染。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '视频详情', alpha: 1 })",
+              "      this.headerPlayer()",
+              "      VideoBottomComponent({",
+              "        relationId: this.relationId,",
+              "        onItemClick: (playUrl) => {",
+              "          this.playUrl = playUrl",
+              "        } }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p400:n1",
+          "to": "p400:n2"
+        },
+        {
+          "from": "p400:n2",
+          "to": "p400:n3"
+        },
+        {
+          "from": "p400:n3",
+          "to": "p400:n4"
+        },
+        {
+          "from": "p400:n4",
+          "to": "p400:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (relationId)",
+          "页面路由参数 (playUrl)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存存储 (@State 状态变量)",
+          "未加密 (明文传输/存储)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p401",
+      "pathId": "p401",
+      "nodes": [
+        {
+          "id": "p401:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 16,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，当 DetailPage 组件即将显示时被系统调用，触发数据初始化流程。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  @State showControls: boolean = true",
+              "  @State playUrl: string = \"\"",
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p401:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 17,
+          "code": "this.relationId = router.getParams()['id']",
+          "description": "调用 router.getParams() 获取路由参数中的 'id' 字段，并赋值给本地状态变量 relationId，用于标识视频关联关系。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  @State playUrl: string = \"\"",
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p401:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 18,
+          "code": "this.playUrl = router.getParams()['playUrl']",
+          "description": "调用 router.getParams() 获取路由参数中的 'playUrl' 字段（视频播放地址），并赋值给本地状态变量 playUrl，完成敏感数据从路由到组件状态的流转。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '视频详情', alpha: 1 })"
+            ]
+          }
+        },
+        {
+          "id": "p401:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 12,
+          "code": "@State playUrl: string = \"\"",
+          "description": "定义 playUrl 状态变量，此时数据被持久化在组件内存中，等待后续 UI 渲染或播放器使用。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct DetailPage {",
+              "  @State isAutoPlay: boolean = true",
+              "  @State showControls: boolean = true",
+              "  @State playUrl: string = \"\"",
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']"
+            ]
+          }
+        },
+        {
+          "id": "p401:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 24,
+          "code": "this.headerPlayer()",
+          "description": "在 build 构建函数中调用 headerPlayer()，暗示 playUrl 数据将被传递给视频播放器组件进行网络请求或解码播放。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '视频详情', alpha: 1 })",
+              "      this.headerPlayer()",
+              "      VideoBottomComponent({",
+              "        relationId: this.relationId,",
+              "        onItemClick: (playUrl) => {",
+              "          this.playUrl = playUrl",
+              "        } }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p401:n1",
+          "to": "p401:n2"
+        },
+        {
+          "from": "p401:n2",
+          "to": "p401:n3"
+        },
+        {
+          "from": "p401:n3",
+          "to": "p401:n4"
+        },
+        {
+          "from": "p401:n4",
+          "to": "p401:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (playUrl)",
+          "页面路由参数 (id/relationId)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存存储 (@State 状态变量)",
+          "未加密 (明文字符串)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

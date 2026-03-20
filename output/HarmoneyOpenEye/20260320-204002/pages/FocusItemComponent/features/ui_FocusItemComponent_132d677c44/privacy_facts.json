@@ -1,0 +1,138 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_FocusItemComponent_132d677c44",
+    "generatedAt": "2026-03-20T14:56:18.859Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.LOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在发现页面查看焦点图组件时，应用加载并展示列表项的图标、标题及封面图片；当用户点击列表项触发页面跳转时，应用记录路由跳转的目标地址及操作状态日志。",
+        "dataSources": [
+          "内存中的业务数据模型 (FocusModelItemList)",
+          "系统路由模块"
+        ],
+        "dataItems": [
+          {
+            "name": "页面路由 URL",
+            "refs": [
+              {
+                "flowId": "flow:p351",
+                "nodeId": "p351:n4"
+              },
+              {
+                "flowId": "flow:p353",
+                "nodeId": "p353:n7"
+              },
+              {
+                "flowId": "flow:p356",
+                "nodeId": "p356:n4"
+              }
+            ]
+          },
+          {
+            "name": "路由参数对象 (params)",
+            "refs": [
+              {
+                "flowId": "flow:p351",
+                "nodeId": "p351:n4"
+              },
+              {
+                "flowId": "flow:p354",
+                "nodeId": "p354:n5"
+              }
+            ]
+          },
+          {
+            "name": "业务数据项 (FocusModelItemList)",
+            "refs": [
+              {
+                "flowId": "flow:p351",
+                "nodeId": "p351:n3"
+              },
+              {
+                "flowId": "flow:p357",
+                "nodeId": "p357:n1"
+              }
+            ]
+          },
+          {
+            "name": "图片资源路径 (icon, cover.feed)",
+            "refs": [
+              {
+                "flowId": "flow:p353",
+                "nodeId": "p353:n2"
+              },
+              {
+                "flowId": "flow:p358",
+                "nodeId": "p358:n6"
+              }
+            ]
+          },
+          {
+            "name": "文本标题 (title)",
+            "refs": [
+              {
+                "flowId": "flow:p353",
+                "nodeId": "p353:n3"
+              },
+              {
+                "flowId": "flow:p359",
+                "nodeId": "p359:n4"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误码与消息",
+            "refs": [
+              {
+                "flowId": "flow:p352",
+                "nodeId": "p352:n4"
+              },
+              {
+                "flowId": "flow:p355",
+                "nodeId": "p355:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "数据在内存中通过路由机制传递以进行页面导航，部分路由状态信息（如成功/失败、URL）被拼接为字符串后写入系统日志缓冲区。",
+        "storageMethod": "无本地持久化存储；数据仅在内存中临时流转；日志信息暂存于系统日志缓冲区（hilog），依赖系统日志轮转机制清理，未进行加密处理。",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务 (System Log Service)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p352",
+                "nodeId": "p352:n7"
+              },
+              {
+                "flowId": "flow:p353",
+                "nodeId": "p353:n9"
+              },
+              {
+                "flowId": "flow:p356",
+                "nodeId": "p356:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "支持页面间的导航跳转功能，并在发生异常或完成操作时记录调试日志以便追踪问题。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

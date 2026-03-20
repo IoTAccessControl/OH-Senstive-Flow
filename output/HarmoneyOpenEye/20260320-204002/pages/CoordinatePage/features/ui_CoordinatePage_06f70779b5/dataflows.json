@@ -1,0 +1,2244 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.776Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 11,
+      "nodes": 73,
+      "edges": 63,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "CoordinatePage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+        "structName": "CoordinatePage",
+        "line": 9,
+        "description": "热门导航页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_CoordinatePage_06f70779b5",
+      "kind": "ui",
+      "title": "热门页面"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p74",
+      "pathId": "p74",
+      "nodes": [
+        {
+          "id": "p74:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 22,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，组件即将显示时触发，开始初始化数据。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  @State topBarAlpha: number = 0",
+              "  private topBarHeight: number = 90",
+              "  private topHeaderHeight: number = 300",
+              "  private scrollMap: Map<number, number> = new Map()",
+              "",
+              "  aboutToAppear() {",
+              "    HotViewModel.hotTabTitle.forEach((item) => {",
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p74:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 23,
+          "code": "HotViewModel.hotTabTitle.forEach((item) => {",
+          "description": "遍历 HotViewModel 中的热点标签标题数据源。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "  private topBarHeight: number = 90",
+              "  private topHeaderHeight: number = 300",
+              "  private scrollMap: Map<number, number> = new Map()",
+              "",
+              "  aboutToAppear() {",
+              "    HotViewModel.hotTabTitle.forEach((item) => {",
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p74:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 24,
+          "code": "this.tabList.push(item.title)",
+          "description": "将遍历到的标签标题推入本地状态变量 tabList，完成内存中的数据准备。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  private topHeaderHeight: number = 300",
+              "  private scrollMap: Map<number, number> = new Map()",
+              "",
+              "  aboutToAppear() {",
+              "    HotViewModel.hotTabTitle.forEach((item) => {",
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p74:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 26,
+          "code": "this.hotCurrentIndex = 0",
+          "description": "初始化当前选中索引为 0，完成页面静态数据加载流程。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "    HotViewModel.hotTabTitle.forEach((item) => {",
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })"
+            ]
+          }
+        },
+        {
+          "id": "p74:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和可选参数对象，作为数据流转发的中间节点。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p74:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 API router.pushUrl，将 URL 和 params 数据传递给系统路由模块进行页面导航，此为数据流终点（Sink）。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p74:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "路由失败回调：记录错误代码和消息到日志，不涉及隐私数据外传。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p74:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由成功回调：记录跳转成功的 URL 到日志，仅用于调试监控。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p74:n1",
+          "to": "p74:n2"
+        },
+        {
+          "from": "p74:n2",
+          "to": "p74:n3"
+        },
+        {
+          "from": "p74:n3",
+          "to": "p74:n4"
+        },
+        {
+          "from": "p74:n4",
+          "to": "p74:n5"
+        },
+        {
+          "from": "p74:n5",
+          "to": "p74:n6"
+        },
+        {
+          "from": "p74:n6",
+          "to": "p74:n7"
+        },
+        {
+          "from": "p74:n6",
+          "to": "p74:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (params)",
+          "目标页面 URL",
+          "热点标签列表 (tabList)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件加载时)",
+          "事件触发 (用户导航时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (State 变量)",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p75",
+      "pathId": "p75",
+      "nodes": [
+        {
+          "id": "p75:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 22,
+          "code": "aboutToAppear() {",
+          "description": "组件生命周期函数 aboutToAppear 入口，页面即将显示时触发初始化逻辑。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  @State topBarAlpha: number = 0",
+              "  private topBarHeight: number = 90",
+              "  private topHeaderHeight: number = 300",
+              "  private scrollMap: Map<number, number> = new Map()",
+              "",
+              "  aboutToAppear() {",
+              "    HotViewModel.hotTabTitle.forEach((item) => {",
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p75:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 23,
+          "code": "HotViewModel.hotTabTitle.forEach((item) => {",
+          "description": "遍历热点视图模型中的标签标题列表，准备渲染数据。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "  private topBarHeight: number = 90",
+              "  private topHeaderHeight: number = 300",
+              "  private scrollMap: Map<number, number> = new Map()",
+              "",
+              "  aboutToAppear() {",
+              "    HotViewModel.hotTabTitle.forEach((item) => {",
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p75:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 24,
+          "code": "this.tabList.push(item.title)",
+          "description": "将标签标题添加到组件状态列表 tabList 中，触发 UI 更新。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  private topHeaderHeight: number = 300",
+              "  private scrollMap: Map<number, number> = new Map()",
+              "",
+              "  aboutToAppear() {",
+              "    HotViewModel.hotTabTitle.forEach((item) => {",
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p75:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和可选参数。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p75:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl 发起页面跳转，并注册异步回调处理结果。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p75:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 7,
+          "code": "if (err) {",
+          "description": "检查路由跳转回调中是否存在错误对象 err。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })"
+            ]
+          }
+        },
+        {
+          "id": "p75:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "构造包含错误码和错误信息的日志字符串，并调用 LogUtils.error 记录异常。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p75:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "LogUtils 工具类的 error 静态方法入口，用于统一处理错误日志格式化。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p75:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 hilog.error API 将格式化后的错误信息输出到系统日志缓冲区。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p75:n1",
+          "to": "p75:n2"
+        },
+        {
+          "from": "p75:n2",
+          "to": "p75:n3"
+        },
+        {
+          "from": "p75:n3",
+          "to": "p75:n4"
+        },
+        {
+          "from": "p75:n4",
+          "to": "p75:n5"
+        },
+        {
+          "from": "p75:n5",
+          "to": "p75:n6"
+        },
+        {
+          "from": "p75:n6",
+          "to": "p75:n7"
+        },
+        {
+          "from": "p75:n7",
+          "to": "p75:n8"
+        },
+        {
+          "from": "p75:n8",
+          "to": "p75:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "路由错误码 (err.code)",
+          "路由错误信息 (err.message)",
+          "目标路由 URL"
+        ],
+        "collectionFrequency": [
+          "事件触发 (仅在路由跳转失败时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出，未检测到网络发送行为)"
+        ],
+        "storageAndEncryption": [
+          "系统日志存储 (由 hilog 模块管理，应用层未显式加密或持久化)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p76",
+      "pathId": "p76",
+      "nodes": [
+        {
+          "id": "p76:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 22,
+          "code": "aboutToAppear() {",
+          "description": "组件生命周期函数 aboutToAppear 入口，准备初始化页面数据，此处为数据流起点（虽未直接调用路由，但作为页面加载上下文）",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  @State topBarAlpha: number = 0",
+              "  private topBarHeight: number = 90",
+              "  private topHeaderHeight: number = 300",
+              "  private scrollMap: Map<number, number> = new Map()",
+              "",
+              "  aboutToAppear() {",
+              "    HotViewModel.hotTabTitle.forEach((item) => {",
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p76:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 23,
+          "code": "HotViewModel.hotTabTitle.forEach((item) => {",
+          "description": "遍历热点标签列表，构建页面 Tab 数据，属于页面初始化逻辑的一部分",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "  private topBarHeight: number = 90",
+              "  private topHeaderHeight: number = 300",
+              "  private scrollMap: Map<number, number> = new Map()",
+              "",
+              "  aboutToAppear() {",
+              "    HotViewModel.hotTabTitle.forEach((item) => {",
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p76:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "定义静态路由跳转方法 push，接收目标 URL 和可选参数对象，是数据流转发的关键节点",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p76:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API 执行页面跳转，将 URL 和 params 传入系统路由服务",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p76:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由成功回调中，构造包含目标 URL 的成功日志消息字符串，准备记录跳转行为",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p76:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "路由失败回调中，构造包含错误码和错误信息的日志消息，记录异常数据",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p76:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 15,
+          "code": "static info(...args: string[]) {",
+          "description": "LogUtils.info 方法定义入口，接收可变参数数组，作为日志输出的统一封装层",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p76:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "调用系统 hilog.info API，将格式化后的日志数据（含 URL 或错误信息）写入系统日志缓冲区，数据流终点",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p76:n1",
+          "to": "p76:n2"
+        },
+        {
+          "from": "p76:n2",
+          "to": "p76:n3"
+        },
+        {
+          "from": "p76:n3",
+          "to": "p76:n4"
+        },
+        {
+          "from": "p76:n4",
+          "to": "p76:n5"
+        },
+        {
+          "from": "p76:n5",
+          "to": "p76:n6"
+        },
+        {
+          "from": "p76:n6",
+          "to": "p76:n7"
+        },
+        {
+          "from": "p76:n7",
+          "to": "p76:n8"
+        },
+        {
+          "from": "p76:n4",
+          "to": "p76:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由 URL",
+          "路由参数 (params)",
+          "路由操作状态日志"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面跳转时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地系统日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅存在于内存并输出至系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p77",
+      "pathId": "p77",
+      "nodes": [
+        {
+          "id": "p77:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 29,
+          "code": "build() {",
+          "description": "ArkUI 组件的 build 入口函数开始执行，准备渲染界面，此时可能访问组件内部状态数据。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,"
+            ]
+          }
+        },
+        {
+          "id": "p77:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 34,
+          "code": "{ currentIndex: $hotCurrentIndex,",
+          "description": "在 build 过程中读取组件状态变量 $hotCurrentIndex，作为 CustomTabLayout 的输入数据。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })"
+            ]
+          }
+        },
+        {
+          "id": "p77:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 35,
+          "code": "tabTitle: $tabList,",
+          "description": "在 build 过程中读取组件状态变量 $tabList，作为 CustomTabLayout 的输入数据。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })",
+              "        .width(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p77:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义 LogUtils.debug 静态方法，接收可变数量的字符串参数 args，作为日志数据的收集点。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p77:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 4,
+          "code": "const format = `%{public}s, %{public}s`",
+          "description": "定义日志格式化字符串 format，其中 %{public}s 标记表明输出内容将被视为公开数据，不进行隐私脱敏。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import hilog from '@ohos.hilog'",
+              "",
+              "const prefix = \"OpenEyeTag\"",
+              "const format = `%{public}s, %{public}s`",
+              "const domain = 0x1111",
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */"
+            ]
+          }
+        },
+        {
+          "id": "p77:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将 domain、prefix、format 及传入的 args 参数写入系统调试日志缓冲区。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p77:n1",
+          "to": "p77:n2"
+        },
+        {
+          "from": "p77:n2",
+          "to": "p77:n3"
+        },
+        {
+          "from": "p77:n3",
+          "to": "p77:n4"
+        },
+        {
+          "from": "p77:n4",
+          "to": "p77:n5"
+        },
+        {
+          "from": "p77:n5",
+          "to": "p77:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件状态数据 (tabList, hotCurrentIndex)",
+          "调试日志参数 (args)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 构建时)",
+          "一次性 (单次调用)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地系统日志输出)"
+        ],
+        "storageAndEncryption": [
+          "存储于系统日志缓冲区 (hilog buffer)",
+          "未加密 (格式标记为 %{public}s，表示公开可见)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p78",
+      "pathId": "p78",
+      "nodes": [
+        {
+          "id": "p78:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 29,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 函数入口，开始构建页面 UI 结构，此时可能读取组件内部状态变量。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,"
+            ]
+          }
+        },
+        {
+          "id": "p78:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 30,
+          "code": "Stack({ alignContent: Alignment.Top }) {",
+          "description": "创建 Stack 容器组件，初始化对齐方式，作为后续子组件的父节点，不涉及敏感数据采集。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,"
+            ]
+          }
+        },
+        {
+          "id": "p78:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 34,
+          "code": "{ currentIndex: $hotCurrentIndex,",
+          "description": "将组件内部状态变量 $hotCurrentIndex 绑定到 CustomTabLayout，数据流在此处从组件状态流向 UI 渲染逻辑。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })"
+            ]
+          }
+        },
+        {
+          "id": "p78:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 35,
+          "code": "tabTitle: $tabList,",
+          "description": "将组件内部状态变量 $tabList 绑定到 CustomTabLayout，传递列表数据用于渲染标签页标题。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })",
+              "        .width(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p78:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义静态调试方法 debug，接收可变参数 args，作为日志数据的收集入口点。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p78:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将 domain、prefix、format 及用户传入的 args 格式化后输出到系统日志缓冲区，此为数据泄露的潜在汇点（Sink）。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p78:n1",
+          "to": "p78:n2"
+        },
+        {
+          "from": "p78:n2",
+          "to": "p78:n3"
+        },
+        {
+          "from": "p78:n3",
+          "to": "p78:n4"
+        },
+        {
+          "from": "p78:n4",
+          "to": "p78:n5"
+        },
+        {
+          "from": "p78:n5",
+          "to": "p78:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件状态数据 (tabList, hotCurrentIndex)",
+          "调试日志参数 (args)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面构建时)",
+          "事件触发 (调用 LogUtils.debug 时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅输出至系统日志缓冲区 (hilog)",
+          "未进行加密处理",
+          "无本地持久化存储"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p79",
+      "pathId": "p79",
+      "nodes": [
+        {
+          "id": "p79:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 29,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建页面视图结构，此时可能访问组件内部状态变量。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,"
+            ]
+          }
+        },
+        {
+          "id": "p79:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 30,
+          "code": "Stack({ alignContent: Alignment.Top }) {",
+          "description": "创建 Stack 容器组件，设置对齐方式，作为页面布局的根节点。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,"
+            ]
+          }
+        },
+        {
+          "id": "p79:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 43,
+          "code": "Scroll(this.scroller) {",
+          "description": "创建 Scroll 滚动容器，绑定 scroller 控制器，准备承载长列表内容，此过程涉及 UI 状态数据的读取。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "          }",
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })",
+              "        .zIndex(10)",
+              "      Scroll(this.scroller) {",
+              "        Column() {",
+              "          Image($r(\"app.media.back_mine\"))",
+              "            .height($r(\"app.float.size_300\"))",
+              "            .width(\"100%\")",
+              "          Swiper(this.swiperController) {"
+            ]
+          }
+        },
+        {
+          "id": "p79:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义 LogUtils 静态 debug 方法，接收可变参数 args，作为日志数据的收集入口。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p79:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API，将 domain、prefix、format 及用户传入的 args 格式化后输出到系统日志，完成数据流出。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p79:n1",
+          "to": "p79:n2"
+        },
+        {
+          "from": "p79:n2",
+          "to": "p79:n3"
+        },
+        {
+          "from": "p79:n3",
+          "to": "p79:n4"
+        },
+        {
+          "from": "p79:n4",
+          "to": "p79:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件状态数据 (tabList, hotCurrentIndex)",
+          "调试日志参数 (args)",
+          "固定域名标识 (domain: 0x1111)",
+          "固定前缀标识 (prefix: OpenEyeTag)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 构建时)",
+          "按需调用 (当 debug 方法被显式调用时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地系统日志输出)"
+        ],
+        "storageAndEncryption": [
+          "存储方式：写入系统日志缓冲区 (hilog buffer)",
+          "加密状态：未加密 (format 标记为 %{public}s，内容明文可见)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p80",
+      "pathId": "p80",
+      "nodes": [
+        {
+          "id": "p80:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 29,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口，初始化页面渲染流程，准备收集 UI 状态数据。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,"
+            ]
+          }
+        },
+        {
+          "id": "p80:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 30,
+          "code": "Stack({ alignContent: Alignment.Top }) {",
+          "description": "创建 Stack 容器组件，设定对齐方式，作为页面布局的根节点。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,"
+            ]
+          }
+        },
+        {
+          "id": "p80:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 43,
+          "code": "Scroll(this.scroller) {",
+          "description": "创建 Scroll 滚动容器，绑定 scroller 对象以处理页面滚动事件和位置状态。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "          }",
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })",
+              "        .zIndex(10)",
+              "      Scroll(this.scroller) {",
+              "        Column() {",
+              "          Image($r(\"app.media.back_mine\"))",
+              "            .height($r(\"app.float.size_300\"))",
+              "            .width(\"100%\")",
+              "          Swiper(this.swiperController) {"
+            ]
+          }
+        },
+        {
+          "id": "p80:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 44,
+          "code": "Column() {",
+          "description": "在滚动容器内创建 Column 垂直布局，用于排列子组件（如图片、列表）。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })",
+              "        .zIndex(10)",
+              "      Scroll(this.scroller) {",
+              "        Column() {",
+              "          Image($r(\"app.media.back_mine\"))",
+              "            .height($r(\"app.float.size_300\"))",
+              "            .width(\"100%\")",
+              "          Swiper(this.swiperController) {",
+              "            ForEach(HotViewModel.hotTabTitle, (tabItem, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p80:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 36,
+          "code": "tabSelectCallback: (position, item) => {",
+          "description": "定义 Tab 选择回调函数，当用户切换标签时触发，收集并更新当前选中位置索引 (position)。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })"
+            ]
+          }
+        },
+        {
+          "id": "p80:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义静态调试日志方法入口，接收可变长度的字符串参数数组作为待记录的数据。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p80:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug 接口，将传入的参数格式化后写入系统调试日志缓冲区 (Sink)。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p80:n1",
+          "to": "p80:n2"
+        },
+        {
+          "from": "p80:n2",
+          "to": "p80:n3"
+        },
+        {
+          "from": "p80:n3",
+          "to": "p80:n4"
+        },
+        {
+          "from": "p80:n4",
+          "to": "p80:n5"
+        },
+        {
+          "from": "p80:n5",
+          "to": "p80:n6"
+        },
+        {
+          "from": "p80:n6",
+          "to": "p80:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件状态 (tabList, hotCurrentIndex)",
+          "调试日志参数 (args)",
+          "应用媒体资源标识 (app.media.back_mine)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面构建时)",
+          "事件触发 (用户交互/Tab 切换)",
+          "按需调用 (日志记录时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地易失性存储 (内存变量)",
+          "无加密 (日志明文输出至系统日志缓冲区)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p81",
+      "pathId": "p81",
+      "nodes": [
+        {
+          "id": "p81:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 29,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建热门坐标页面的 UI 树结构。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,"
+            ]
+          }
+        },
+        {
+          "id": "p81:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 30,
+          "code": "Stack({ alignContent: Alignment.Top }) {",
+          "description": "创建 Stack 容器作为根布局，设定对齐方式为顶部对齐，准备承载子组件。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,"
+            ]
+          }
+        },
+        {
+          "id": "p81:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 44,
+          "code": "Column() {",
+          "description": "在 Scroll 容器中创建 Column 布局，用于垂直排列热门内容列表项。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })",
+              "        .zIndex(10)",
+              "      Scroll(this.scroller) {",
+              "        Column() {",
+              "          Image($r(\"app.media.back_mine\"))",
+              "            .height($r(\"app.float.size_300\"))",
+              "            .width(\"100%\")",
+              "          Swiper(this.swiperController) {",
+              "            ForEach(HotViewModel.hotTabTitle, (tabItem, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p81:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义 LogUtils 类的静态 debug 方法，接收可变参数作为待记录的日志内容。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p81:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug 接口，将域 ID、前缀标签、格式化字符串及参数写入系统调试日志缓冲区。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p81:n1",
+          "to": "p81:n2"
+        },
+        {
+          "from": "p81:n2",
+          "to": "p81:n3"
+        },
+        {
+          "from": "p81:n3",
+          "to": "p81:n4"
+        },
+        {
+          "from": "p81:n4",
+          "to": "p81:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件状态 (hotCurrentIndex, tabList)",
+          "日志调试信息 (args)",
+          "预定义日志标签 (OpenEyeTag)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 构建时)",
+          "按需调用 (手动触发 debug 日志)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地系统日志输出)"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (UI 状态变量)",
+          "系统日志缓冲区 (未加密，依赖系统权限控制)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p82",
+      "pathId": "p82",
+      "nodes": [
+        {
+          "id": "p82:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 29,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建热门页面 UI 结构，初始化数据流起点。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,"
+            ]
+          }
+        },
+        {
+          "id": "p82:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 36,
+          "code": "tabSelectCallback: (position, item) => {",
+          "description": "定义 Tab 选择回调函数，捕获用户切换 Tab 的位置索引（position）事件，作为潜在的数据源。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })"
+            ]
+          }
+        },
+        {
+          "id": "p82:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 37,
+          "code": "this.hotCurrentIndex = position",
+          "description": "将捕获的 Tab 位置索引赋值给组件状态变量 hotCurrentIndex，完成数据在组件内部的传递。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })",
+              "        .zIndex(10)"
+            ]
+          }
+        },
+        {
+          "id": "p82:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 43,
+          "code": "Scroll(this.scroller) {",
+          "description": "创建 Scroll 滚动容器，渲染包含 Tab 布局的页面内容，此时若发生交互可能触发后续日志记录逻辑（虽源码片段未直接显示调用 LogUtils，但作为锚点连接上下文）。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "          }",
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })",
+              "        .zIndex(10)",
+              "      Scroll(this.scroller) {",
+              "        Column() {",
+              "          Image($r(\"app.media.back_mine\"))",
+              "            .height($r(\"app.float.size_300\"))",
+              "            .width(\"100%\")",
+              "          Swiper(this.swiperController) {"
+            ]
+          }
+        },
+        {
+          "id": "p82:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义静态调试方法 debug，接收可变参数数组，准备将传入的数据转换为日志格式。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p82:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug 接口，将格式化后的字符串（含公共标记%{public}s）输出到系统日志缓冲区，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p82:n1",
+          "to": "p82:n2"
+        },
+        {
+          "from": "p82:n2",
+          "to": "p82:n3"
+        },
+        {
+          "from": "p82:n3",
+          "to": "p82:n4"
+        },
+        {
+          "from": "p82:n4",
+          "to": "p82:n5"
+        },
+        {
+          "from": "p82:n5",
+          "to": "p82:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 交互事件（Tab 切换位置）",
+          "调试日志字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户点击 Tab 时）"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅输出至系统日志缓冲区（hilog），未持久化存储，未加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p83",
+      "pathId": "p83",
+      "nodes": [
+        {
+          "id": "p83:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 29,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化页面视图树，此时可能读取 hotCurrentIndex 和 tabList 等状态数据用于渲染。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,"
+            ]
+          }
+        },
+        {
+          "id": "p83:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 43,
+          "code": "Scroll(this.scroller) {",
+          "description": "创建 Scroll 滚动容器组件，绑定 scroller 对象，准备承载可滚动的内容列，此操作涉及 UI 布局数据的流转。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "          }",
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })",
+              "        .zIndex(10)",
+              "      Scroll(this.scroller) {",
+              "        Column() {",
+              "          Image($r(\"app.media.back_mine\"))",
+              "            .height($r(\"app.float.size_300\"))",
+              "            .width(\"100%\")",
+              "          Swiper(this.swiperController) {"
+            ]
+          }
+        },
+        {
+          "id": "p83:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 44,
+          "code": "Column() {",
+          "description": "在 Scroll 容器内构建 Column 垂直布局容器，作为子组件（如图片、轮播图）的父节点，继续传递布局上下文。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })",
+              "        .zIndex(10)",
+              "      Scroll(this.scroller) {",
+              "        Column() {",
+              "          Image($r(\"app.media.back_mine\"))",
+              "            .height($r(\"app.float.size_300\"))",
+              "            .width(\"100%\")",
+              "          Swiper(this.swiperController) {",
+              "            ForEach(HotViewModel.hotTabTitle, (tabItem, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p83:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义静态调试方法 debug，接收可变参数 args (string[])，此处为数据流的处理节点，准备将传入的字符串参数格式化。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p83:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug API 作为数据汇点 (Sink)，将 domain、prefix、format 及用户传入的 args 输出到系统日志，完成数据流出。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p83:n1",
+          "to": "p83:n2"
+        },
+        {
+          "from": "p83:n2",
+          "to": "p83:n3"
+        },
+        {
+          "from": "p83:n3",
+          "to": "p83:n4"
+        },
+        {
+          "from": "p83:n4",
+          "to": "p83:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件状态 (hotCurrentIndex)",
+          "列表数据 (tabList)",
+          "调试日志参数 (args)",
+          "固定域名标识 (domain: 0x1111)",
+          "固定前缀标识 (OpenEyeTag)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 构建时)",
+          "事件触发 (用户交互/滚动时潜在调用)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅输出至系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p84",
+      "pathId": "p84",
+      "nodes": [
+        {
+          "id": "p84:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 29,
+          "code": "build() {",
+          "description": "ArkUI 组件 build 入口，开始构建热门页面的 UI 结构，此时会读取组件内部状态变量。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,"
+            ]
+          }
+        },
+        {
+          "id": "p84:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 34,
+          "code": "{ currentIndex: $hotCurrentIndex,",
+          "description": "将组件状态变量 hotCurrentIndex 绑定到 CustomTabLayout 组件，作为当前选中的 Tab 索引数据源。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })"
+            ]
+          }
+        },
+        {
+          "id": "p84:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 35,
+          "code": "tabTitle: $tabList,",
+          "description": "将组件状态变量 tabList 绑定到 CustomTabLayout 组件，作为 Tab 标题列表的数据源。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })",
+              "        .width(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p84:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 36,
+          "code": "tabSelectCallback: (position, item) => {",
+          "description": "定义 Tab 选择回调函数，当用户点击切换 Tab 时触发，接收位置参数 position 和 item 数据。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })"
+            ]
+          }
+        },
+        {
+          "id": "p84:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 37,
+          "code": "this.hotCurrentIndex = position",
+          "description": "在回调中更新组件状态 hotCurrentIndex 为用户选择的 position，完成 UI 状态的数据流转。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,",
+              "          tabTitle: $tabList,",
+              "          tabSelectCallback: (position, item) => {",
+              "            this.hotCurrentIndex = position",
+              "          }",
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })",
+              "        .zIndex(10)"
+            ]
+          }
+        },
+        {
+          "id": "p84:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 44,
+          "code": "Column() {",
+          "description": "构建 Scroll 容器内的 Column 布局节点，此处为页面主要内容区域的渲染起点，可能隐式触发子组件的日志记录。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "        })",
+              "        .width(\"100%\")",
+              "        .position({ y: this.tabPosY, x: 0 })",
+              "        .zIndex(10)",
+              "      Scroll(this.scroller) {",
+              "        Column() {",
+              "          Image($r(\"app.media.back_mine\"))",
+              "            .height($r(\"app.float.size_300\"))",
+              "            .width(\"100%\")",
+              "          Swiper(this.swiperController) {",
+              "            ForEach(HotViewModel.hotTabTitle, (tabItem, index) => {"
+            ]
+          }
+        },
+        {
+          "id": "p84:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 11,
+          "code": "static debug(...args: string[]) {",
+          "description": "定义静态调试方法 debug，接收可变参数 args，作为日志数据的收集入口。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p84:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "调用系统 hilog.debug 接口，将 domain、prefix、format 及传入的 args 参数输出到系统日志缓冲区，完成数据流出。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p84:n1",
+          "to": "p84:n2"
+        },
+        {
+          "from": "p84:n2",
+          "to": "p84:n3"
+        },
+        {
+          "from": "p84:n3",
+          "to": "p84:n4"
+        },
+        {
+          "from": "p84:n4",
+          "to": "p84:n5"
+        },
+        {
+          "from": "p84:n5",
+          "to": "p84:n6"
+        },
+        {
+          "from": "p84:n6",
+          "to": "p84:n7"
+        },
+        {
+          "from": "p84:n7",
+          "to": "p84:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 组件状态 (hotCurrentIndex)",
+          "Tab 列表数据 (tabList)",
+          "用户交互事件 (Tab 切换位置 position)",
+          "调试日志参数 (args)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面构建时)",
+          "事件触发 (用户点击 Tab 时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存临时存储 (UI 状态变量)",
+          "无本地持久化存储",
+          "无加密处理 (日志内容为明文)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

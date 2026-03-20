@@ -1,0 +1,228 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.920Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "counts": {
+      "nodes": 7,
+      "edges": 6,
+      "pages": 1,
+      "elements": 6
+    }
+  },
+  "roots": [
+    "page:6367267ce66e"
+  ],
+  "nodes": {
+    "page:6367267ce66e": {
+      "id": "page:6367267ce66e",
+      "category": "Page",
+      "name": "CoordinatePage",
+      "description": "热门导航页",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+      "line": 9,
+      "code": "struct CoordinatePage {",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "import { RankPage } from './rank/RankPage'",
+          "import { CustomTabLayout } from '../../views/CustomTabLayout'",
+          "",
+          "@Entry",
+          "@Component",
+          "struct CoordinatePage {",
+          "  @Provide homeTabSelected: number = 2",
+          "  @Provide hotCurrentIndex: number = 0",
+          "  private scroller: Scroller = new Scroller()",
+          "  private swiperController: SwiperController = new SwiperController()",
+          "  @State offsetY: number = 0"
+        ]
+      }
+    },
+    "ui:fa5b1e916395": {
+      "id": "ui:fa5b1e916395",
+      "category": "Component",
+      "name": "build",
+      "description": "热门页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+      "line": 29,
+      "code": "build() {",
+      "context": {
+        "startLine": 24,
+        "lines": [
+          "      this.tabList.push(item.title)",
+          "    })",
+          "    this.hotCurrentIndex = 0",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack({ alignContent: Alignment.Top }) {",
+          "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+          "        .zIndex(10)",
+          "      CustomTabLayout(",
+          "        { currentIndex: $hotCurrentIndex,"
+        ]
+      }
+    },
+    "ui:4b675e3ad7cc": {
+      "id": "ui:4b675e3ad7cc",
+      "category": "Component",
+      "name": "CommonTopBar",
+      "description": "热门",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+      "line": 31,
+      "code": "CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+      "context": {
+        "startLine": 26,
+        "lines": [
+          "    this.hotCurrentIndex = 0",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack({ alignContent: Alignment.Top }) {",
+          "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+          "        .zIndex(10)",
+          "      CustomTabLayout(",
+          "        { currentIndex: $hotCurrentIndex,",
+          "          tabTitle: $tabList,",
+          "          tabSelectCallback: (position, item) => {"
+        ]
+      }
+    },
+    "ui:77766e5df02d": {
+      "id": "ui:77766e5df02d",
+      "category": "Component",
+      "name": "CustomTabLayout",
+      "description": "热门标签栏",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+      "line": 33,
+      "code": "CustomTabLayout(",
+      "context": {
+        "startLine": 28,
+        "lines": [
+          "",
+          "  build() {",
+          "    Stack({ alignContent: Alignment.Top }) {",
+          "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+          "        .zIndex(10)",
+          "      CustomTabLayout(",
+          "        { currentIndex: $hotCurrentIndex,",
+          "          tabTitle: $tabList,",
+          "          tabSelectCallback: (position, item) => {",
+          "            this.hotCurrentIndex = position",
+          "          }"
+        ]
+      }
+    },
+    "ui:562089e7523d": {
+      "id": "ui:562089e7523d",
+      "category": "Display",
+      "name": "Image",
+      "description": "背景图片",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+      "line": 45,
+      "code": "Image($r(\"app.media.back_mine\"))",
+      "context": {
+        "startLine": 40,
+        "lines": [
+          "        .width(\"100%\")",
+          "        .position({ y: this.tabPosY, x: 0 })",
+          "        .zIndex(10)",
+          "      Scroll(this.scroller) {",
+          "        Column() {",
+          "          Image($r(\"app.media.back_mine\"))",
+          "            .height($r(\"app.float.size_300\"))",
+          "            .width(\"100%\")",
+          "          Swiper(this.swiperController) {",
+          "            ForEach(HotViewModel.hotTabTitle, (tabItem, index) => {",
+          "              RankPage({"
+        ]
+      }
+    },
+    "ui:c1912cbfd1f7": {
+      "id": "ui:c1912cbfd1f7",
+      "category": "Component",
+      "name": "ForEach",
+      "description": "热门榜单",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+      "line": 49,
+      "code": "ForEach(HotViewModel.hotTabTitle, (tabItem, index) => {",
+      "context": {
+        "startLine": 44,
+        "lines": [
+          "        Column() {",
+          "          Image($r(\"app.media.back_mine\"))",
+          "            .height($r(\"app.float.size_300\"))",
+          "            .width(\"100%\")",
+          "          Swiper(this.swiperController) {",
+          "            ForEach(HotViewModel.hotTabTitle, (tabItem, index) => {",
+          "              RankPage({",
+          "                rankType: tabItem.rankType,",
+          "                positionIndex: index,",
+          "                hasInit: index == 0 ? true : false",
+          "              })"
+        ]
+      }
+    },
+    "ui:cf3b550ba0bb": {
+      "id": "ui:cf3b550ba0bb",
+      "category": "Component",
+      "name": "RankPage",
+      "description": "排行榜",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+      "line": 50,
+      "code": "RankPage({",
+      "context": {
+        "startLine": 45,
+        "lines": [
+          "          Image($r(\"app.media.back_mine\"))",
+          "            .height($r(\"app.float.size_300\"))",
+          "            .width(\"100%\")",
+          "          Swiper(this.swiperController) {",
+          "            ForEach(HotViewModel.hotTabTitle, (tabItem, index) => {",
+          "              RankPage({",
+          "                rankType: tabItem.rankType,",
+          "                positionIndex: index,",
+          "                hasInit: index == 0 ? true : false",
+          "              })",
+          "            }, item => item)"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:6367267ce66e",
+      "to": "ui:fa5b1e916395",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6367267ce66e",
+      "to": "ui:4b675e3ad7cc",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6367267ce66e",
+      "to": "ui:77766e5df02d",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6367267ce66e",
+      "to": "ui:562089e7523d",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6367267ce66e",
+      "to": "ui:c1912cbfd1f7",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6367267ce66e",
+      "to": "ui:cf3b550ba0bb",
+      "kind": "contains"
+    }
+  ]
+}

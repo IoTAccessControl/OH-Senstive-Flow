@@ -1,0 +1,508 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "generatedAt": "2026-03-20T14:52:55.776Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-397b-a17b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 16,
+      "edges": 14,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "CategoryDetailPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+        "structName": "CategoryDetailPage",
+        "line": 16,
+        "description": "分类详情页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_CategoryDetailPage_e2074257be",
+      "kind": "ui",
+      "title": "功能入口"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p402",
+      "pathId": "p402",
+      "nodes": [
+        {
+          "id": "p402:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 26,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，组件即将显示时触发，开始初始化数据流。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State headerImage: string = \"\"",
+              "  @State showLoading: boolean = false",
+              "  @State title: string = \"\"",
+              "  private scrollOffset: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()"
+            ]
+          }
+        },
+        {
+          "id": "p402:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 27,
+          "code": "categoryDetailViewModel.observeState((state) => this.viewState = state)",
+          "description": "订阅 ViewModel 的状态变化，建立响应式数据绑定，准备接收后端数据更新。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "  @State showLoading: boolean = false",
+              "  @State title: string = \"\"",
+              "  private scrollOffset: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p402:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 28,
+          "code": "categoryDetailViewModel.id = router.getParams()[\"id\"]",
+          "description": "从路由参数中提取 'id' 字段，赋值给 ViewModel，作为后续请求分类详情的关键索引。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  @State title: string = \"\"",
+              "  private scrollOffset: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p402:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 29,
+          "code": "this.headerImage = router.getParams()[\"headerImage\"]",
+          "description": "从路由参数中提取 'headerImage' 字段，赋值给本地状态变量，用于 UI 渲染。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  private scrollOffset: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {"
+            ]
+          }
+        },
+        {
+          "id": "p402:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 30,
+          "code": "this.title = router.getParams()[\"title\"]",
+          "description": "从路由参数中提取 'title' 字段，赋值给本地状态变量，用于 UI 标题展示。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    categoryDetailViewModel.getCategoryDetailList((result) => {"
+            ]
+          }
+        },
+        {
+          "id": "p402:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 31,
+          "code": "this.loadNet()",
+          "description": "调用 loadNet 方法，基于已获取的 id 参数发起网络请求，拉取分类详情列表数据。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    categoryDetailViewModel.getCategoryDetailList((result) => {",
+              "      this.isRefreshing = false"
+            ]
+          }
+        },
+        {
+          "id": "p402:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 35,
+          "code": "categoryDetailViewModel.getCategoryDetailList((result) => {",
+          "description": "网络请求回调处理，接收服务器返回的分类详情列表结果，准备更新本地状态。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    categoryDetailViewModel.getCategoryDetailList((result) => {",
+              "      this.isRefreshing = false",
+              "      this.showLoading = false",
+              "      if (categoryDetailViewModel.pageIndex == 0) {",
+              "        this.dataList = result",
+              "      } else {"
+            ]
+          }
+        },
+        {
+          "id": "p402:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 36,
+          "code": "this.isRefreshing = false",
+          "description": "将刷新状态标记为 false，结束加载动画，完成数据流的闭环更新。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    categoryDetailViewModel.getCategoryDetailList((result) => {",
+              "      this.isRefreshing = false",
+              "      this.showLoading = false",
+              "      if (categoryDetailViewModel.pageIndex == 0) {",
+              "        this.dataList = result",
+              "      } else {",
+              "        this.dataList = [...this.dataList, ...result]"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p402:n1",
+          "to": "p402:n2"
+        },
+        {
+          "from": "p402:n2",
+          "to": "p402:n3"
+        },
+        {
+          "from": "p402:n3",
+          "to": "p402:n4"
+        },
+        {
+          "from": "p402:n4",
+          "to": "p402:n5"
+        },
+        {
+          "from": "p402:n5",
+          "to": "p402:n6"
+        },
+        {
+          "from": "p402:n6",
+          "to": "p402:n7"
+        },
+        {
+          "from": "p402:n7",
+          "to": "p402:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (id)",
+          "页面路由参数 (headerImage)",
+          "页面路由参数 (title)",
+          "分类详情列表数据"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面加载时)"
+        ],
+        "cloudUpload": [
+          "间接触发：通过 loadNet() 发起网络请求获取数据，可能包含设备标识或上下文信息"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (@State 状态变量)",
+          "未明确加密 (依赖框架默认行为)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p403",
+      "pathId": "p403",
+      "nodes": [
+        {
+          "id": "p403:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 26,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，组件即将显示时触发，开始执行数据初始化逻辑。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State headerImage: string = \"\"",
+              "  @State showLoading: boolean = false",
+              "  @State title: string = \"\"",
+              "  private scrollOffset: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()"
+            ]
+          }
+        },
+        {
+          "id": "p403:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 27,
+          "code": "categoryDetailViewModel.observeState((state) => this.viewState = state)",
+          "description": "订阅 ViewModel 的状态变化，建立视图与数据模型的响应式连接。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "  @State showLoading: boolean = false",
+              "  @State title: string = \"\"",
+              "  private scrollOffset: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p403:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 28,
+          "code": "categoryDetailViewModel.id = router.getParams()[\"id\"]",
+          "description": "调用 router.getParams() 获取路由参数 'id'，并赋值给 ViewModel，用于标识当前分类。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  @State title: string = \"\"",
+              "  private scrollOffset: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p403:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 29,
+          "code": "this.headerImage = router.getParams()[\"headerImage\"]",
+          "description": "调用 router.getParams() 获取路由参数 'headerImage' (图片 URL)，并赋值给本地 @State 变量 headerImage。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  private scrollOffset: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {"
+            ]
+          }
+        },
+        {
+          "id": "p403:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 30,
+          "code": "this.title = router.getParams()[\"title\"]",
+          "description": "调用 router.getParams() 获取路由参数 'title' (标题文本)，并赋值给本地 @State 变量 title。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    categoryDetailViewModel.getCategoryDetailList((result) => {"
+            ]
+          }
+        },
+        {
+          "id": "p403:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 31,
+          "code": "this.loadNet()",
+          "description": "调用 loadNet() 方法，基于已获取的参数发起网络请求以加载分类详情数据。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  aboutToAppear() {",
+              "    categoryDetailViewModel.observeState((state) => this.viewState = state)",
+              "    categoryDetailViewModel.id = router.getParams()[\"id\"]",
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    categoryDetailViewModel.getCategoryDetailList((result) => {",
+              "      this.isRefreshing = false"
+            ]
+          }
+        },
+        {
+          "id": "p403:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 34,
+          "code": "loadNet() {",
+          "description": "loadNet 方法定义开始，准备执行网络数据获取逻辑。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "    this.headerImage = router.getParams()[\"headerImage\"]",
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    categoryDetailViewModel.getCategoryDetailList((result) => {",
+              "      this.isRefreshing = false",
+              "      this.showLoading = false",
+              "      if (categoryDetailViewModel.pageIndex == 0) {",
+              "        this.dataList = result"
+            ]
+          }
+        },
+        {
+          "id": "p403:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+          "line": 35,
+          "code": "categoryDetailViewModel.getCategoryDetailList((result) => {",
+          "description": "调用 ViewModel 的 getCategoryDetailList 方法，传入回调函数处理网络返回结果。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    this.title = router.getParams()[\"title\"]",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {",
+              "    categoryDetailViewModel.getCategoryDetailList((result) => {",
+              "      this.isRefreshing = false",
+              "      this.showLoading = false",
+              "      if (categoryDetailViewModel.pageIndex == 0) {",
+              "        this.dataList = result",
+              "      } else {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p403:n1",
+          "to": "p403:n2"
+        },
+        {
+          "from": "p403:n2",
+          "to": "p403:n3"
+        },
+        {
+          "from": "p403:n3",
+          "to": "p403:n4"
+        },
+        {
+          "from": "p403:n4",
+          "to": "p403:n5"
+        },
+        {
+          "from": "p403:n5",
+          "to": "p403:n6"
+        },
+        {
+          "from": "p403:n6",
+          "to": "p403:n7"
+        },
+        {
+          "from": "p403:n7",
+          "to": "p403:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (id)",
+          "页面路由参数 (headerImage)",
+          "页面路由参数 (title)"
+        ],
+        "collectionFrequency": [
+          "一次性 (页面加载时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地内存存储 (@State 状态变量)",
+          "未加密 (明文字符串)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

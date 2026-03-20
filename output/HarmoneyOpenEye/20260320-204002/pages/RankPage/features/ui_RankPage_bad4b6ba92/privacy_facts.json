@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260320-204002",
+    "featureId": "ui_RankPage_bad4b6ba92",
+    "generatedAt": "2026-03-20T14:58:52.740Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-27b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.LOG 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户查看排行榜列表并点击条目跳转至视频详情页时",
+        "dataSources": [
+          "应用内部数据（排行榜列表）",
+          "用户交互行为（点击事件）"
+        ],
+        "dataItems": [
+          {
+            "name": "页面路由 URL",
+            "refs": [
+              {
+                "flowId": "flow:p87",
+                "nodeId": "p87:n5"
+              },
+              {
+                "flowId": "flow:p93",
+                "nodeId": "p93:n10"
+              }
+            ]
+          },
+          {
+            "name": "路由参数对象 (params)",
+            "refs": [
+              {
+                "flowId": "flow:p87",
+                "nodeId": "p87:n5"
+              },
+              {
+                "flowId": "flow:p93",
+                "nodeId": "p93:n10"
+              }
+            ]
+          },
+          {
+            "name": "视频 ID",
+            "refs": [
+              {
+                "flowId": "flow:p93",
+                "nodeId": "p93:n8"
+              },
+              {
+                "flowId": "flow:p96",
+                "nodeId": "p96:n5"
+              }
+            ]
+          },
+          {
+            "name": "视频播放地址",
+            "refs": [
+              {
+                "flowId": "flow:p93",
+                "nodeId": "p93:n8"
+              },
+              {
+                "flowId": "flow:p96",
+                "nodeId": "p96:n5"
+              }
+            ]
+          },
+          {
+            "name": "错误码与错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p87",
+                "nodeId": "p87:n7"
+              },
+              {
+                "flowId": "flow:p88",
+                "nodeId": "p88:n4"
+              }
+            ]
+          },
+          {
+            "name": "操作日志",
+            "refs": [
+              {
+                "flowId": "flow:p87",
+                "nodeId": "p87:n8"
+              },
+              {
+                "flowId": "flow:p92",
+                "nodeId": "p92:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "内存临时传递、字符串拼接格式化、调用系统 API 进行页面导航及日志记录",
+        "storageMethod": "仅内存中临时传递，无持久化存储；日志通过 LogUtils 输出到系统日志缓冲区 (未加密)",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务 (hilog)",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p88",
+                "nodeId": "p88:n6"
+              },
+              {
+                "flowId": "flow:p92",
+                "nodeId": "p92:n9"
+              }
+            ]
+          },
+          {
+            "name": "目标详情页面",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p93",
+                "nodeId": "p93:n10"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现页面间导航跳转以展示视频详情，以及记录路由跳转过程中的成功或失败状态用于调试与监控",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}
