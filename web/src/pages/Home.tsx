@@ -172,15 +172,15 @@ export function HomePage() {
   const [maxDataflowPaths, setMaxDataflowPaths] = useState<string>(
     snapshot?.maxDataflowPaths == null ? '' : String(snapshot.maxDataflowPaths),
   );
-  const [llmProvider, setLlmProvider] = useState(snapshot?.llmProvider ?? 'Qwen');
+  const [llmProvider, setLlmProvider] = useState(snapshot?.llmProvider ?? '');
   const [llmApiKey, setLlmApiKey] = useState('');
-  const [llmModel, setLlmModel] = useState(snapshot?.llmModel ?? 'qwen3.5-397b-a17b');
-  const [uiLlmProvider, setUiLlmProvider] = useState(snapshot?.uiLlmProvider ?? 'Qwen');
+  const [llmModel, setLlmModel] = useState(snapshot?.llmModel ?? '');
+  const [uiLlmProvider, setUiLlmProvider] = useState(snapshot?.uiLlmProvider ?? '');
   const [uiLlmApiKey, setUiLlmApiKey] = useState('');
-  const [uiLlmModel, setUiLlmModel] = useState(snapshot?.uiLlmModel ?? 'qwen3.5-27b');
-  const [privacyReportLlmProvider, setPrivacyReportLlmProvider] = useState(snapshot?.privacyReportLlmProvider ?? 'Qwen');
+  const [uiLlmModel, setUiLlmModel] = useState(snapshot?.uiLlmModel ?? '');
+  const [privacyReportLlmProvider, setPrivacyReportLlmProvider] = useState(snapshot?.privacyReportLlmProvider ?? '');
   const [privacyReportLlmApiKey, setPrivacyReportLlmApiKey] = useState('');
-  const [privacyReportLlmModel, setPrivacyReportLlmModel] = useState(snapshot?.privacyReportLlmModel ?? 'qwen3.5-27b');
+  const [privacyReportLlmModel, setPrivacyReportLlmModel] = useState(snapshot?.privacyReportLlmModel ?? '');
   const [status, setStatus] = useState<StatusState>({ state: 'idle' });
   const [dirPicker, setDirPicker] = useState<DirPickerState>({ open: false });
   const [dirPickerDirs, setDirPickerDirs] = useState<DirPickerDirsState>({ state: 'idle' });
@@ -514,86 +514,91 @@ export function HomePage() {
 
         <div className="llmGrid">
           <label className="field">
-            <div className="label" title="数据流分析的 LLM 提供商名称（默认 Qwen）">
+            <div className="label" title="数据流分析的 LLM 提供商名称（留空使用服务器配置，否则默认 Qwen）">
               数据流 LLM 提供商
             </div>
-            <input className="input" value={llmProvider} onChange={(e) => setLlmProvider(e.target.value)} />
+            <input className="input" placeholder="留空使用服务器配置" value={llmProvider} onChange={(e) => setLlmProvider(e.target.value)} />
           </label>
 
           <label className="field">
-            <div className="label" title="数据流分析的 LLM 提供商 API Key（默认空，不会写入输出文件）">
+            <div className="label" title="数据流分析的 LLM 提供商 API Key（留空使用服务器配置，不会写入输出文件）">
               数据流 LLM API Key
             </div>
             <input
               className="input"
               type="password"
+              placeholder="留空使用服务器配置"
               value={llmApiKey}
               onChange={(e) => setLlmApiKey(e.target.value)}
             />
           </label>
 
           <label className="field">
-            <div className="label" title="数据流分析的模型名称（默认 qwen3.5-397b-a17b）">
+            <div className="label" title="数据流分析的模型名称（留空使用服务器配置，否则使用默认模型）">
               数据流 LLM 模型
             </div>
-            <input className="input" value={llmModel} onChange={(e) => setLlmModel(e.target.value)} />
+            <input className="input" placeholder="留空使用服务器配置" value={llmModel} onChange={(e) => setLlmModel(e.target.value)} />
           </label>
 
           <label className="field">
-            <div className="label" title="描述 UI 的 LLM 提供商名称（默认 Qwen）">
+            <div className="label" title="描述 UI 的 LLM 提供商名称（留空使用服务器配置，否则默认 Qwen）">
               UI LLM 提供商
             </div>
-            <input className="input" value={uiLlmProvider} onChange={(e) => setUiLlmProvider(e.target.value)} />
+            <input className="input" placeholder="留空使用服务器配置" value={uiLlmProvider} onChange={(e) => setUiLlmProvider(e.target.value)} />
           </label>
 
           <label className="field">
-            <div className="label" title="描述 UI 的 LLM 提供商 API Key（默认空，不会写入输出文件）">
+            <div className="label" title="描述 UI 的 LLM 提供商 API Key（留空使用服务器配置，不会写入输出文件）">
               UI LLM API Key
             </div>
             <input
               className="input"
               type="password"
+              placeholder="留空使用服务器配置"
               value={uiLlmApiKey}
               onChange={(e) => setUiLlmApiKey(e.target.value)}
             />
           </label>
 
           <label className="field">
-            <div className="label" title="描述 UI 的模型名称（默认 qwen3.5-27b）">
+            <div className="label" title="描述 UI 的模型名称（留空使用服务器配置，否则使用默认模型）">
               UI LLM 模型
             </div>
-            <input className="input" value={uiLlmModel} onChange={(e) => setUiLlmModel(e.target.value)} />
+            <input className="input" placeholder="留空使用服务器配置" value={uiLlmModel} onChange={(e) => setUiLlmModel(e.target.value)} />
           </label>
 
           <label className="field">
-            <div className="label" title="生成隐私声明报告的 LLM 提供商名称（默认 Qwen）">
+            <div className="label" title="生成隐私声明报告的 LLM 提供商名称（留空使用服务器配置，否则默认 Qwen）">
               报告 LLM 提供商
             </div>
             <input
               className="input"
+              placeholder="留空使用服务器配置"
               value={privacyReportLlmProvider}
               onChange={(e) => setPrivacyReportLlmProvider(e.target.value)}
             />
           </label>
 
           <label className="field">
-            <div className="label" title="生成隐私声明报告的 LLM 提供商 API Key（默认空，不会写入输出文件）">
+            <div className="label" title="生成隐私声明报告的 LLM 提供商 API Key（留空使用服务器配置，不会写入输出文件）">
               报告 LLM API Key
             </div>
             <input
               className="input"
               type="password"
+              placeholder="留空使用服务器配置"
               value={privacyReportLlmApiKey}
               onChange={(e) => setPrivacyReportLlmApiKey(e.target.value)}
             />
           </label>
 
           <label className="field">
-            <div className="label" title="生成隐私声明报告的模型名称（默认 qwen3.5-27b）">
+            <div className="label" title="生成隐私声明报告的模型名称（留空使用服务器配置，否则使用默认模型）">
               报告 LLM 模型
             </div>
             <input
               className="input"
+              placeholder="留空使用服务器配置"
               value={privacyReportLlmModel}
               onChange={(e) => setPrivacyReportLlmModel(e.target.value)}
             />

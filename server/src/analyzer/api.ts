@@ -124,6 +124,15 @@ function emitProgress(stages: readonly string[], stageIndex: number, onProgress?
   onProgress({ stage, percent });
 }
 
+function pickNonEmptyText(...values: Array<string | undefined | null>): string | undefined {
+  for (const value of values) {
+    if (typeof value !== 'string') continue;
+    const trimmed = value.trim();
+    if (trimmed) return trimmed;
+  }
+  return undefined;
+}
+
 function formatTimestampForDir(date: Date): string {
   const yyyy = date.getFullYear();
   const mm = `${date.getMonth() + 1}`.padStart(2, '0');
@@ -256,19 +265,18 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
   const maxDataflowPaths = Number.isFinite(req.maxDataflowPaths)
     ? Math.max(1, Math.floor(req.maxDataflowPaths as number))
     : null;
-  const llmProvider = typeof req.llmProvider === 'string' && req.llmProvider.trim() ? req.llmProvider.trim() : 'Qwen';
-  const llmModel = typeof req.llmModel === 'string' && req.llmModel.trim() ? req.llmModel.trim() : 'qwen3.5-397b-a17b';
-  const llmApiKey = typeof req.llmApiKey === 'string' ? req.llmApiKey : '';
-  const uiLlmProvider = typeof req.uiLlmProvider === 'string' && req.uiLlmProvider.trim() ? req.uiLlmProvider.trim() : 'Qwen';
-  const uiLlmModel = typeof req.uiLlmModel === 'string' && req.uiLlmModel.trim() ? req.uiLlmModel.trim() : 'qwen3.5-27b';
-  const uiLlmApiKey = typeof req.uiLlmApiKey === 'string' ? req.uiLlmApiKey : '';
+  const llmProvider = pickNonEmptyText(req.llmProvider, process.env.LLM_PROVIDER) ?? 'Qwen';
+  const llmModel = pickNonEmptyText(req.llmModel, process.env.LLM_MODEL) ?? 'qwen3.5-397b-a17b';
+  const llmApiKey = pickNonEmptyText(req.llmApiKey, process.env.LLM_API_KEY) ?? '';
+  const uiLlmProvider = pickNonEmptyText(req.uiLlmProvider, process.env.UI_LLM_PROVIDER, process.env.LLM_PROVIDER) ?? 'Qwen';
+  const uiLlmModel = pickNonEmptyText(req.uiLlmModel, process.env.UI_LLM_MODEL, process.env.LLM_MODEL) ?? 'qwen3.5-27b';
+  const uiLlmApiKey = pickNonEmptyText(req.uiLlmApiKey, process.env.UI_LLM_API_KEY, process.env.LLM_API_KEY) ?? '';
   const privacyReportLlmProvider =
-    typeof req.privacyReportLlmProvider === 'string' && req.privacyReportLlmProvider.trim()
-      ? req.privacyReportLlmProvider.trim()
-      : 'Qwen';
+    pickNonEmptyText(req.privacyReportLlmProvider, process.env.PRIVACY_REPORT_LLM_PROVIDER, process.env.LLM_PROVIDER) ?? 'Qwen';
   const privacyReportLlmModel =
-    typeof req.privacyReportLlmModel === 'string' && req.privacyReportLlmModel.trim() ? req.privacyReportLlmModel.trim() : 'qwen3.5-27b';
-  const privacyReportLlmApiKey = typeof req.privacyReportLlmApiKey === 'string' ? req.privacyReportLlmApiKey : '';
+    pickNonEmptyText(req.privacyReportLlmModel, process.env.PRIVACY_REPORT_LLM_MODEL, process.env.LLM_MODEL) ?? 'qwen3.5-27b';
+  const privacyReportLlmApiKey =
+    pickNonEmptyText(req.privacyReportLlmApiKey, process.env.PRIVACY_REPORT_LLM_API_KEY, process.env.LLM_API_KEY) ?? '';
 
   const appAbs = resolveWorkspacePath(repoRoot, appPath);
   const sdkAbs = resolveWorkspacePath(repoRoot, sdkPath);

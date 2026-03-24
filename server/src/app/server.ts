@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import cors from 'cors';
 import express, { type Response } from 'express';
 import fs from 'node:fs/promises';
@@ -9,6 +10,8 @@ import type { AnalyzeResponse } from '../analyzer/api.js';
 import { runAnalysis } from '../analyzer/api.js';
 import { listRunRegistry, readResultJson } from './run.js';
 import { normalizeWorkspaceSubpath, resolveSafeWorkspaceChild } from '../utils/accessWorkspace.js';
+
+dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..', '.env'), quiet: true });
 
 type AnalyzeJobStatus = 'running' | 'done' | 'error';
 

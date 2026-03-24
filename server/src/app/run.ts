@@ -1,9 +1,12 @@
+import dotenv from 'dotenv';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { runAnalysis, type AnalyzeRequest } from '../analyzer/api.js';
 import { ensureDir, readJsonFile, writeJsonFile } from '../utils/accessWorkspace.js';
+
+dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..', '.env'), quiet: true });
 
 type RunRegistryEntry = {
   runId: string;
@@ -176,7 +179,7 @@ function usage(): string {
     'Run one app analysis end-to-end.',
     '',
     'Usage:',
-    '  node --import tsx server/src/app/run.ts --appPath input/app/Test_user_info/ [--sdkPath ...] [--csvDir ...]',
+    '  npm run analyze -- --appPath input/app/Test_user_info/ [--sdkPath ...] [--csvDir ...]',
     '',
     'Options:',
     '  --repoRoot <path>',

@@ -29,6 +29,38 @@ npm run dev
 
 如果 `5173` 被占用，Vite 会自动切换到其它端口。
 
+## `.env` 配置
+
+在仓库根目录创建 `.env`：
+
+```bash
+cp .env.example .env
+```
+
+配置项：
+
+```env
+LLM_PROVIDER=
+LLM_API_KEY=
+LLM_MODEL=
+
+UI_LLM_PROVIDER=
+UI_LLM_API_KEY=
+UI_LLM_MODEL=
+
+PRIVACY_REPORT_LLM_PROVIDER=
+PRIVACY_REPORT_LLM_API_KEY=
+PRIVACY_REPORT_LLM_MODEL=
+
+LLM_BASE_URL=
+LLM_TIMEOUT_MS=
+```
+
+优先级：
+
+- CLI：`命令行参数 > .env > 默认值`
+- 页面：`表单非空值 > .env > 默认值`
+
 ## 页面使用方式
 
 1. 打开前端页面。
@@ -41,12 +73,44 @@ csvDir: input/csv/
 ```
 
 3. 按需填写 `maxDataflowPaths`。
-4. 填写三组 LLM 配置：
-   - 数据流分析 LLM
-   - UI 描述 LLM
-   - 隐私报告 LLM
+4. 填写三组 LLM 配置；留空则使用 `.env`。
 5. 点击开始分析，等待任务完成。
 6. 在页面中查看 sinks、sources、callgraph、dataflows 和 privacy report。
+
+## CLI 使用
+
+查看帮助：
+
+```bash
+npm run analyze -- --help
+```
+
+基础示例：
+
+```bash
+npm run analyze -- \
+  --appPath input/app/Wechat_HarmonyOS/ \
+  --sdkPath input/sdk/default/openharmony/ets/ \
+  --csvDir input/csv/
+```
+
+带 LLM 参数的示例：
+
+```bash
+npm run analyze -- \
+  --appPath input/app/Wechat_HarmonyOS/ \
+  --sdkPath input/sdk/default/openharmony/ets/ \
+  --csvDir input/csv/ \
+  --llmProvider Qwen \
+  --llmApiKey your-qwen-api-key \
+  --llmModel qwen3.5-397b-a17b \
+  --uiLlmProvider Qwen \
+  --uiLlmApiKey your-qwen-api-key \
+  --uiLlmModel qwen3.5-27b \
+  --privacyReportLlmProvider Qwen \
+  --privacyReportLlmApiKey your-qwen-api-key \
+  --privacyReportLlmModel qwen3.5-27b
+```
 
 ## 输出结果位置
 

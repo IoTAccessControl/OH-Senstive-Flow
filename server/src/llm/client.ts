@@ -23,7 +23,7 @@ function normalizeProviderName(provider: string): string {
 }
 
 export function resolveLlmBaseUrls(provider: string): string[] {
-  const override = process.env.CX_OH_LLM_BASE_URL?.trim();
+  const override = process.env.LLM_BASE_URL?.trim();
   if (override) return [override];
 
   const normalizedProvider = normalizeProviderName(provider);
@@ -42,7 +42,7 @@ export function resolveLlmBaseUrls(provider: string): string[] {
   if (normalizedProvider === 'openai') return ['https://api.openai.com/v1'];
 
   throw new Error(
-    `不支持的 LLM provider=${provider}；请使用 Qwen/OpenAI，或通过环境变量 CX_OH_LLM_BASE_URL 指定 OpenAI 兼容 baseURL`,
+    `不支持的 LLM provider=${provider}；请使用 Qwen/OpenAI，或通过环境变量 LLM_BASE_URL 指定 OpenAI 兼容 baseURL`,
   );
 }
 
@@ -73,7 +73,7 @@ function asErrorText(error: unknown): string {
 }
 
 function resolveTimeoutMs(): number {
-  const raw = Number(process.env.CX_OH_LLM_TIMEOUT_MS ?? 300000);
+  const raw = Number(process.env.LLM_TIMEOUT_MS ?? 300000);
   if (!Number.isFinite(raw) || raw <= 0) return 300000;
   return Math.max(1000, Math.floor(raw));
 }
