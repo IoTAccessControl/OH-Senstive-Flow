@@ -1,0 +1,261 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260326-193307",
+    "generatedAt": "2026-03-26T11:42:21.805Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "skipped": false,
+    "counts": {
+      "features": 3
+    }
+  },
+  "sections": {
+    "collectionAndUse": [
+      {
+        "featureId": "ui_HomePage_11ad55420a",
+        "tokens": [
+          {
+            "text": "在“页面展示时初始化计步功能并收集用户运动数据”场景中，"
+          },
+          {
+            "text": "我们会从设备传感器 (计步器)、设备定位服务、本地偏好设置存储收集"
+          },
+          {
+            "text": "步数数据",
+            "jumpTo": {
+              "featureId": "ui_HomePage_11ad55420a",
+              "flowId": "flow:p2",
+              "nodeId": "p2:n8"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "地理位置信息",
+            "jumpTo": {
+              "featureId": "ui_HomePage_11ad55420a",
+              "flowId": "flow:p2",
+              "nodeId": "p2:n9"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "历史步数记录",
+            "jumpTo": {
+              "featureId": "ui_HomePage_11ad55420a",
+              "flowId": "flow:p6",
+              "nodeId": "p6:n5"
+            }
+          },
+          {
+            "text": "和"
+          },
+          {
+            "text": "错误堆栈信息",
+            "jumpTo": {
+              "featureId": "ui_HomePage_11ad55420a",
+              "flowId": "flow:p3",
+              "nodeId": "p3:n5"
+            }
+          },
+          {
+            "text": "，用于实现计步器核心功能，记录用户每日步数及运动轨迹，并提供历史数据查询。"
+          },
+          {
+            "text": "相关数据仅在本地处理。"
+          }
+        ]
+      },
+      {
+        "featureId": "ui_HomePage_41cf9485d4",
+        "tokens": [
+          {
+            "text": "在“用户点击首页开始/停止按钮以启动或停止计步功能时，应用采集设备位置信息用于计算步数，并在本地存储当前进度和步数数据”场景中，"
+          },
+          {
+            "text": "我们会从设备传感器、用户交互收集"
+          },
+          {
+            "text": "设备位置信息 (Location)",
+            "jumpTo": {
+              "featureId": "ui_HomePage_41cf9485d4",
+              "flowId": "flow:p51",
+              "nodeId": "p51:n2"
+            }
+          },
+          {
+            "text": "、"
+          },
+          {
+            "text": "步数数据 (Steps)",
+            "jumpTo": {
+              "featureId": "ui_HomePage_41cf9485d4",
+              "flowId": "flow:p51",
+              "nodeId": "p51:n4"
+            }
+          },
+          {
+            "text": "和"
+          },
+          {
+            "text": "应用启动上下文 (Context)",
+            "jumpTo": {
+              "featureId": "ui_HomePage_41cf9485d4",
+              "flowId": "flow:p51",
+              "nodeId": "p51:n5"
+            }
+          },
+          {
+            "text": "，用于实现计步器核心功能，通过后台服务持续获取位置数据以计算步数并更新显示。"
+          },
+          {
+            "text": "相关数据仅在本地处理。"
+          }
+        ]
+      },
+      {
+        "featureId": "__app_permissions",
+        "tokens": []
+      }
+    ],
+    "permissions": [
+      {
+        "featureId": "ui_HomePage_11ad55420a",
+        "tokens": [
+          {
+            "text": "在“在首页初始化时，通过订阅计步器传感器来实时收集用户的步数数据”场景中，我们会调用"
+          },
+          {
+            "text": "加速度计权限（预授权）",
+            "jumpTo": {
+              "featureId": "ui_HomePage_11ad55420a",
+              "flowId": "flow:p2",
+              "nodeId": "p2:n8"
+            }
+          },
+          {
+            "text": "，用于获取设备的运动状态，以准确记录用户每日的行走步数和运动轨迹。"
+          },
+          {
+            "text": "若您拒绝授权，拒绝授权后，应用将无法获取步数数据，导致计步功能无法正常使用。"
+          },
+          {
+            "text": "此外，"
+          },
+          {
+            "text": "在“在首页展示时，通过监听位置变化事件来实时收集设备的位置信息”场景中，我们会调用"
+          },
+          {
+            "text": "粗略位置信息权限（动态授权）",
+            "jumpTo": {
+              "featureId": "ui_HomePage_11ad55420a",
+              "flowId": "flow:p4",
+              "nodeId": "p4:n8"
+            }
+          },
+          {
+            "text": "，用于结合步数数据计算用户的运动轨迹和距离，完善运动记录功能。"
+          },
+          {
+            "text": "若您拒绝授权，拒绝授权后，应用将无法获取位置信息，导致无法记录运动轨迹和计算运动距离。"
+          },
+          {
+            "text": "此外，"
+          },
+          {
+            "text": "在“在后台持续运行定位服务，以确保应用在非前台状态下也能收集位置和步数数据”场景中，我们会调用"
+          },
+          {
+            "text": "保持后台运行权限（预授权）",
+            "jumpTo": {
+              "featureId": "ui_HomePage_11ad55420a",
+              "flowId": "flow:p14",
+              "nodeId": "p14:n7"
+            }
+          },
+          {
+            "text": "，用于保证计步器和定位功能在用户退出应用或锁屏时仍能持续工作，不中断数据记录。"
+          },
+          {
+            "text": "若您拒绝授权，拒绝授权后，应用在后台运行时可能无法继续收集步数和位置数据，导致运动记录不完整。"
+          },
+          {
+            "text": "此外，"
+          },
+          {
+            "text": "在“页面展示时申请权限以获取位置信息”场景中，我们会调用"
+          },
+          {
+            "text": "位置信息权限（动态授权）",
+            "jumpTo": {
+              "featureId": "ui_HomePage_11ad55420a",
+              "flowId": "flow:p2",
+              "nodeId": "p2:n6"
+            }
+          },
+          {
+            "text": "，用于获取设备的地理位置坐标及地址名称，关联运动轨迹或记录当前位置。"
+          },
+          {
+            "text": "若您拒绝授权，无法获取位置信息，应用将无法记录运动地点或显示当前地址。"
+          }
+        ]
+      },
+      {
+        "featureId": "ui_HomePage_41cf9485d4",
+        "tokens": [
+          {
+            "text": "在“用户点击首页开始/停止按钮以启动或停止计步功能时”场景中，我们会调用"
+          },
+          {
+            "text": "保持后台运行权限（预授权）",
+            "jumpTo": {
+              "featureId": "ui_HomePage_41cf9485d4",
+              "flowId": "flow:p51",
+              "nodeId": "p51:n8"
+            }
+          },
+          {
+            "text": "，用于为了在后台持续获取设备位置信息，以便准确计算步数并更新显示。"
+          },
+          {
+            "text": "若您拒绝授权，拒绝授权后，应用无法在后台运行，可能导致计步功能无法正常启动或数据记录中断。"
+          },
+          {
+            "text": "此外，"
+          },
+          {
+            "text": "在“用户在首页点击开始按钮启动计步任务时”场景中，我们会调用"
+          },
+          {
+            "text": "位置信息权限（动态授权）",
+            "jumpTo": {
+              "featureId": "ui_HomePage_41cf9485d4",
+              "flowId": "flow:p51",
+              "nodeId": "p51:n8"
+            }
+          },
+          {
+            "text": "，用于允许应用在后台模式下获取设备位置信息以计算步数。"
+          },
+          {
+            "text": "若您拒绝授权，无法获取位置数据，导致计步功能无法正常工作，无法记录步数。"
+          }
+        ]
+      },
+      {
+        "featureId": "__app_permissions",
+        "tokens": [
+          {
+            "text": "当前已在应用源码/配置扫描或 SDK API 权限映射中识别到以下权限：运动状态识别权限（动态授权）、后台位置信息权限（预授权）；但尚未定位到可回溯的功能点数据流，因此本章节暂不生成具体权限声明。"
+          }
+        ]
+      }
+    ]
+  }
+}

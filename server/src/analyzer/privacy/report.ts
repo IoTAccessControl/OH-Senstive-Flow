@@ -1048,6 +1048,84 @@ function pickValidRef(
   return null;
 }
 
+type DataHandlingMode = 'local' | 'network' | 'server';
+
+function collectPracticeFlowIds(
+  practice: PrivacyDataPractice,
+  perFlowIndex: Map<string, Set<string>> | undefined,
+): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const item of practice.dataItems ?? []) {
+    for (const ref of Array.isArray(item?.refs) ? item.refs : []) {
+      const flowId = cleanText(ref?.flowId);
+      const nodeId = cleanText(ref?.nodeId);
+      if (!flowId) continue;
+      const nodes = perFlowIndex?.get(flowId);
+      if (nodes && nodeId && !nodes.has(nodeId)) continue;
+      if (seen.has(flowId)) continue;
+      seen.add(flowId);
+      out.push(flowId);
+    }
+  }
+  return out;
+}
+
+function isUncertainCloudUploadText(text: string): boolean {
+  return /(可能|潜在|暗示|取决于|疑似|推测|通常|后续|极大概率|隐含|本质行为)/u.test(text);
+}
+
+function isNegativeCloudUploadText(text: string): boolean {
+  return (
+    /none_detected/iu.test(text) ||
+    /(^无(?:\s|$|[(（]))|仅本地|本地日志|本地输出|本地记录/u.test(text) ||
+    /(无直接|未直接|未检测到|未发现|未在当前片段发现).*(上传|云端|网络发送|网络传输|网络上传|发送至|传输至|请求)/u.test(text)
+  );
+}
+
+function handlingModeFromCloudUpload(texts: string[]): DataHandlingMode {
+  let sawNetwork = false;
+  for (const raw of texts) {
+    const text = cleanText(raw);
+    if (!text) continue;
+    if (isUncertainCloudUploadText(text)) continue;
+    if (isNegativeCloudUploadText(text)) continue;
+    if (/(应用服务端|服务端|服务器|云端|后端|广告服务器|\bserver\b|\bbackend\b|\bcloud\b)/iu.test(text)) return 'server';
+    if (/(上传|上报|发送|传输|提交|同步|\bupload\b|\bsend\b|\btransmit\b|\bpost\b|\bsync\b|网络请求|http|https)/iu.test(text)) {
+      sawNetwork = true;
+    }
+  }
+  return sawNetwork ? 'network' : 'local';
+}
+
+function handlingSentenceForPractice(args: {
+  feature: ReportFeatureInput;
+  practice: PrivacyDataPractice;
+  perFlowIndex: Map<string, Set<string>> | undefined;
+}): string {
+  const referencedFlowIds = collectPracticeFlowIds(args.practice, args.perFlowIndex);
+  const candidateFlowIds =
+    referencedFlowIds.length > 0
+      ? new Set(referencedFlowIds)
+      : (args.feature.dataflows.flows?.length ?? 0) === 1
+        ? new Set([cleanText(args.feature.dataflows.flows[0]?.flowId)])
+        : new Set<string>();
+
+  const cloudUploadTexts =
+    candidateFlowIds.size === 0
+      ? []
+      : args.feature.dataflows.flows.flatMap((flow) => {
+          const flowId = cleanText(flow?.flowId);
+          if (!flowId || !candidateFlowIds.has(flowId)) return [];
+          return Array.isArray(flow.summary?.cloudUpload) ? flow.summary.cloudUpload.map(cleanText).filter(Boolean) : [];
+        });
+
+  const mode = handlingModeFromCloudUpload(cloudUploadTexts);
+  if (mode === 'server') return '相关数据会上传至应用服务端。';
+  if (mode === 'network') return '相关数据会通过网络传输。';
+  return '相关数据仅在本地处理。';
+}
+
 function permissionDisplayName(permissionName: string): string {
   const normalized = normalizePermissionName(permissionName);
   if (!normalized) return '';
@@ -1195,6 +1273,13 @@ function deterministicCollectionAndUseTokens(args: {
     out.push({ text: dataSources.length > 0 ? `我们会从${dataSources.join('、')}收集` : '我们会收集' });
     pushEntityListTokens(out, entityTokens);
     out.push({ text: processingPurpose ? `，用于${processingPurpose}。` : '。' });
+    out.push({
+      text: handlingSentenceForPractice({
+        feature: args.feature,
+        practice,
+        perFlowIndex: args.perFlowIndex,
+      }),
+    });
   }
 
   return out;

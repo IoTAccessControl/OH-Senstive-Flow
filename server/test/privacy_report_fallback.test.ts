@@ -69,9 +69,68 @@ describe('privacy report evidence rules', () => {
     expect(collectionSection?.tokens.some((t) => t.jumpTo)).toBe(false);
     expect(permissionSection?.tokens ?? []).toEqual([]);
     expect(result.text).toContain('头像图片');
+    expect(result.text).toContain('相关数据仅在本地处理。');
     expect(result.text).not.toContain('ohos.permission.READ_MEDIA');
     expect(result.warnings.some((item) => item.includes('权限段落缺少有效跳转引用'))).toBe(false);
     expect(result.warnings.some((item) => item.includes('个人信息段落缺少有效跳转引用'))).toBe(true);
+  });
+
+  it('renders upload-to-server text when referenced flow has explicit cloud upload evidence', async () => {
+    const result = await buildPrivacyReport({
+      runId: 'run1b',
+      appName: 'App',
+      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3-32b' },
+      features: [
+        {
+          featureId: 'feature_avatar_upload',
+          facts: {
+            dataPractices: [
+              {
+                appName: 'App',
+                businessScenario: '用户更新头像',
+                dataSources: ['系统相册'],
+                dataItems: [{ name: '头像图片', refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }] }],
+                processingMethod: '读取并上传图片',
+                storageMethod: '未识别',
+                dataRecipients: [],
+                processingPurpose: '更新用户头像',
+              },
+            ],
+            permissionPractices: [],
+          },
+          dataflows: {
+            meta: {
+              runId: 'run1b',
+              generatedAt: new Date().toISOString(),
+              counts: { flows: 1, nodes: 1, edges: 0 },
+            },
+            flows: [
+              {
+                flowId: 'flow:p1',
+                pathId: 'p1',
+                nodes: [
+                  {
+                    id: 'p1:n1',
+                    filePath: 'app/main.ets',
+                    line: 10,
+                    code: 'uploadAvatar(file)',
+                    description: '上传头像图片',
+                    context: { startLine: 10, lines: ['uploadAvatar(file)'] },
+                  },
+                ],
+                edges: [],
+                summary: {
+                  cloudUpload: ['将头像图片上传至应用服务端以更新用户资料'],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    });
+
+    expect(result.text).toContain('头像图片');
+    expect(result.text).toContain('相关数据会上传至应用服务端。');
   });
 
   it('renders a non-empty fallback sentence for synthetic app-level permissions without refs', async () => {
