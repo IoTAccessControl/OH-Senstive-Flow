@@ -37,6 +37,7 @@ export type PrivacyDataPractice = {
 
 export type PrivacyPermissionPractice = {
   permissionName: string;
+  authorizationMode?: 'preauthorized' | 'dynamic';
   businessScenario: string;
   permissionPurpose: string;
   denyImpact: string;

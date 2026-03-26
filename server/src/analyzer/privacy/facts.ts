@@ -422,6 +422,50 @@ function buildPrompt(args: {
   return { system, user };
 }
 
+function validatePermissionTextRewrites(
+  raw: unknown,
+  feature: PrivacyFactsFeatureContext | null,
+  allowedPermissionNames: Set<string>,
+): {
+  rewrites: Array<{
+    permissionName: string;
+    businessScenario: string;
+    permissionPurpose: string;
+    denyImpact: string;
+  }>;
+  warnings: string[];
+} {
+  const warnings: string[] = [];
+  if (!isRecord(raw)) throw new Error('LLM JSON 不是对象');
+
+  const rewritesRaw = (raw as any).rewrites;
+  const rewrites: Array<{
+    permissionName: string;
+    businessScenario: string;
+    permissionPurpose: string;
+    denyImpact: string;
+  }> = [];
+
+  if (!Array.isArray(rewritesRaw)) return { rewrites, warnings };
+
+  for (const item of rewritesRaw) {
+    if (!isRecord(item)) continue;
+    const permissionName = cleanText(item.permissionName);
+    if (!permissionName || !allowedPermissionNames.has(permissionName)) {
+      if (permissionName) warnings.push(`权限文案补全返回了未请求的 permissionName：${permissionName}`);
+      continue;
+    }
+    rewrites.push({
+      permissionName,
+      businessScenario: normalizeBusinessScenario(item.businessScenario, feature),
+      permissionPurpose: cleanTextOrUnknown(item.permissionPurpose),
+      denyImpact: cleanTextOrUnknown(item.denyImpact),
+    });
+  }
+
+  return { rewrites, warnings };
+}
+
 async function chatJsonWithRetries(args: {
   llm: LlmConfig;
   system: string;
@@ -454,6 +498,91 @@ async function chatJsonWithRetries(args: {
   }
 
   throw lastError instanceof Error ? lastError : new Error(String(lastError));
+}
+
+export async function rewritePermissionPracticeTexts(args: {
+  appName: string;
+  feature: PrivacyFactsFeatureContext | null;
+  llm: LlmConfig;
+  permissions: Array<{
+    permissionName: string;
+    authorizationMode?: PrivacyPermissionPractice['authorizationMode'];
+    businessScenario: string;
+    permissionPurpose: string;
+    denyImpact: string;
+    refs: DataflowNodeRef[];
+    evidence: Array<{
+      flowId: string;
+      nodeId: string;
+      description?: string;
+      code?: string;
+      contextLines?: string[];
+      apiKey?: string;
+      apiDescription?: string;
+      callCode?: string;
+    }>;
+    relatedDataPractices?: Array<{
+      businessScenario: string;
+      processingPurpose: string;
+      dataItems: string[];
+    }>;
+  }>;
+}): Promise<{
+  rewrites: Array<{
+    permissionName: string;
+    businessScenario: string;
+    permissionPurpose: string;
+    denyImpact: string;
+  }>;
+  warnings: string[];
+}> {
+  const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
+  if (!apiKey || args.permissions.length === 0) return { rewrites: [], warnings: [] };
+
+  const system = [
+    '你是一个隐私声明报告撰写助手。',
+    '你将收到某个功能点下若干权限条目的局部证据。',
+    '你的任务不是识别权限，而是仅基于给定证据，把权限相关文案改写得更自然、更具体。',
+    '输出必须是严格 JSON（不要 markdown，不要额外文字）。',
+  ].join('\n');
+
+  const user = [
+    `应用名称(appName)：${args.appName}`,
+    `页面功能点(featureId)：${args.feature?.featureId ?? 'unknown'}`,
+    `功能点标题(title)：${cleanText(args.feature?.title) || '未识别'}`,
+    `所属页面标题(pageTitle)：${cleanText(args.feature?.page?.entry?.description) || '未识别'}`,
+    '',
+    '待补全的权限条目（只能改写 businessScenario / permissionPurpose / denyImpact，禁止改 permissionName / authorizationMode / refs）：',
+    JSON.stringify(args.permissions),
+    '',
+    '请输出 JSON，结构如下：',
+    '{',
+    '  "rewrites": [',
+    '    {',
+    '      "permissionName": string,',
+    '      "businessScenario": string,',
+    '      "permissionPurpose": string,',
+    '      "denyImpact": string',
+    '    }',
+    '  ]',
+    '}',
+    '',
+    '硬性要求：',
+    '1) permissionName 必须与输入中的权限完全一致，不允许新增或删除权限。',
+    '2) businessScenario、permissionPurpose、denyImpact 必须使用简体中文。',
+    '3) 必须严格基于 evidence / relatedDataPractices 中的证据改写，禁止编造新的业务功能、数据项、权限用途或拒绝后果。',
+    '4) permissionPurpose 要写成用户能理解的话，优先明确“为了什么功能而申请该权限”，避免“使用相关系统能力”这类空话。',
+    '5) denyImpact 要写成用户拒绝授权后的实际影响；如果证据不足，可保守描述，但不要夸大。',
+    '6) 如果证据仍不足以改好某条文案，可以保留原有意思，但必须尽量比输入更自然。',
+    '7) 输出必须是严格 JSON（不要多余文本）。',
+  ].join('\n');
+
+  const raw = await chatJsonWithRetries({ llm: { ...args.llm, apiKey }, system, user });
+  return validatePermissionTextRewrites(
+    raw,
+    args.feature,
+    new Set(args.permissions.map((item) => cleanText(item.permissionName)).filter(Boolean)),
+  );
 }
 
 export async function extractFeaturePrivacyFacts(args: {

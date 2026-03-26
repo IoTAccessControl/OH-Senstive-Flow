@@ -87,6 +87,7 @@ describe('privacy report evidence rules', () => {
             permissionPractices: [
               {
                 permissionName: 'ohos.permission.INTERNET',
+                authorizationMode: 'preauthorized',
                 businessScenario: '应用源码/配置声明或 SDK API 使用推断的权限',
                 permissionPurpose: '当前已在应用源码/配置扫描或 SDK API→权限映射中识别到该权限，但尚未定位到具体功能点数据流。',
                 denyImpact: '当前未从已识别的数据流中定位到具体拒绝授权影响。',
@@ -108,8 +109,61 @@ describe('privacy report evidence rules', () => {
 
     const permissionSection = result.report.sections.permissions[0];
     expect(permissionSection?.tokens.length).toBeGreaterThan(0);
-    expect(permissionSection?.tokens[0]?.text).toContain('网络访问权限');
+    expect(permissionSection?.tokens[0]?.text).toContain('网络访问权限（预授权）');
     expect(result.text).toContain('尚未定位到可回溯的功能点数据流');
+  });
+
+  it('renders authorization labels in permission sentences with valid refs', async () => {
+    const result = await buildPrivacyReport({
+      runId: 'run2b',
+      appName: 'App',
+      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3-32b' },
+      features: [
+        {
+          featureId: 'feature_camera',
+          facts: {
+            dataPractices: [],
+            permissionPractices: [
+              {
+                permissionName: 'ohos.permission.CAMERA',
+                authorizationMode: 'dynamic',
+                businessScenario: '用户点击拍照',
+                permissionPurpose: '用于拍照',
+                denyImpact: '无法拍照',
+                refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }],
+              },
+            ],
+          },
+          dataflows: {
+            meta: {
+              runId: 'run2b',
+              generatedAt: new Date().toISOString(),
+              counts: { flows: 1, nodes: 1, edges: 0 },
+            },
+            flows: [
+              {
+                flowId: 'flow:p1',
+                pathId: 'p1',
+                nodes: [
+                  {
+                    id: 'p1:n1',
+                    filePath: 'app/main.ets',
+                    line: 10,
+                    code: 'camera.capture()',
+                    description: '拍照',
+                    context: { startLine: 10, lines: ['camera.capture()'] },
+                  },
+                ],
+                edges: [],
+              },
+            ],
+          },
+        },
+      ],
+    });
+
+    expect(result.text).toContain('相机权限（动态授权）');
+    expect(result.text).toContain('若您拒绝授权，无法拍照。');
   });
 
   it('rewrites english scenarios to chinese context before rendering the report', async () => {
@@ -138,6 +192,7 @@ describe('privacy report evidence rules', () => {
             permissionPractices: [
               {
                 permissionName: 'ohos.permission.GET_NETWORK_INFO',
+                authorizationMode: 'preauthorized',
                 businessScenario: 'Checks whether the default data network is activated.',
                 permissionPurpose: '用于检查网络状态',
                 denyImpact: '无法判断是否联网',

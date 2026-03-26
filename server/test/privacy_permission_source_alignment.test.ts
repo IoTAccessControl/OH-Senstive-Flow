@@ -6,9 +6,11 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { collectPredictedPermissionsFromRun } from '../src/app/run.js';
 
 const mockExtractFeaturePrivacyFacts = vi.fn();
+const mockRewritePermissionPracticeTexts = vi.fn();
 
 vi.mock('../src/analyzer/privacy/facts.js', () => ({
   extractFeaturePrivacyFacts: (...args: unknown[]) => mockExtractFeaturePrivacyFacts(...args),
+  rewritePermissionPracticeTexts: (...args: unknown[]) => mockRewritePermissionPracticeTexts(...args),
 }));
 
 import { generatePrivacyReportArtifacts } from '../src/analyzer/privacy/report.js';
@@ -145,10 +147,12 @@ async function writeMinimalFeatureRun(args: {
 describe('privacy permission alignment with app source', () => {
   beforeEach(() => {
     mockExtractFeaturePrivacyFacts.mockReset();
+    mockRewritePermissionPracticeTexts.mockReset();
     mockExtractFeaturePrivacyFacts.mockResolvedValue({
       content: { dataPractices: [], permissionPractices: [] },
       warnings: [],
     });
+    mockRewritePermissionPracticeTexts.mockResolvedValue({ rewrites: [], warnings: [] });
   });
 
   it('supplements permissions found in app source so predicted coverage reaches the full app set', async () => {
@@ -172,6 +176,7 @@ describe('privacy permission alignment with app source', () => {
 
     const syntheticFacts = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'app_permissions', 'privacy_facts.json'), 'utf8')) as any;
     expect(syntheticFacts.facts.permissionPractices.map((item: any) => item.permissionName)).toEqual(['ohos.permission.CAMERA']);
+    expect(syntheticFacts.facts.permissionPractices[0]?.authorizationMode).toBe('preauthorized');
 
     const report = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'privacy_report.json'), 'utf8')) as any;
     const appPermissionSection = report.sections.permissions.find((section: any) => section.featureId === '__app_permissions');
@@ -180,6 +185,97 @@ describe('privacy permission alignment with app source', () => {
     expect(appPermissionSection.tokens[0]?.text ?? '').toContain('相机权限');
     expect(appPermissionSection.tokens.some((token: any) => token.jumpTo)).toBe(false);
     expect((report.meta.warnings ?? []).some((item: string) => item.includes('权限段落缺少有效跳转引用'))).toBe(false);
+  });
+
+  it('marks runtime requested permissions as dynamic and other permissions as preauthorized', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-perm-'));
+    const { outputDirAbs, appDirAbs, featureDirAbs } = await writeMinimalFeatureRun({
+      repoRoot,
+      appPermissions: ['ohos.permission.INTERNET'],
+      sinkApiKey: '@ohos.router.pushUrl',
+    });
+
+    await fs.mkdir(path.join(appDirAbs, 'entry', 'src', 'main', 'ets', 'pages'), { recursive: true });
+    await fs.writeFile(
+      path.join(appDirAbs, 'entry', 'src', 'main', 'ets', 'pages', 'Index.ets'),
+      `
+import { abilityAccessCtrl } from '@kit.AbilityKit';
+
+const mediaPermissions = ['ohos.permission.READ_MEDIA'];
+
+export function requestAll(context: UIContext) {
+  const atManager = abilityAccessCtrl.createAtManager();
+  atManager.requestPermissionsFromUser(context, ['ohos.permission.CAMERA']);
+  atManager.requestPermissionsFromUser(context, mediaPermissions);
+}
+`,
+      'utf8',
+    );
+
+    await generatePrivacyReportArtifacts({
+      repoRoot,
+      runId: 'App_run1',
+      appName: 'App',
+      outputDirAbs,
+      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3-32b' },
+    });
+
+    const featureFacts = JSON.parse(await fs.readFile(path.join(featureDirAbs, 'privacy_facts.json'), 'utf8')) as any;
+    expect(featureFacts.facts.permissionPractices).toHaveLength(1);
+    expect(featureFacts.facts.permissionPractices[0]?.permissionName).toBe('ohos.permission.INTERNET');
+    expect(featureFacts.facts.permissionPractices[0]?.authorizationMode).toBe('preauthorized');
+
+    const syntheticFacts = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'app_permissions', 'privacy_facts.json'), 'utf8')) as any;
+    expect(syntheticFacts.facts.permissionPractices).toEqual([
+      expect.objectContaining({ permissionName: 'ohos.permission.CAMERA', authorizationMode: 'dynamic' }),
+      expect.objectContaining({ permissionName: 'ohos.permission.READ_MEDIA', authorizationMode: 'dynamic' }),
+    ]);
+
+    const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
+    expect(reportText).toContain('网络访问权限（预授权）');
+    expect(reportText).toContain('动态授权');
+  });
+
+  it('rewrites placeholder deterministic permission text with privacy report llm evidence refinement', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-perm-'));
+    const { outputDirAbs, featureDirAbs } = await writeMinimalFeatureRun({
+      repoRoot,
+      appPermissions: ['ohos.permission.INTERNET'],
+      sinkApiKey: '@ohos.router.pushUrl',
+      sinkDescription: '页面跳转 / 打开目标页面',
+      dataflowNodeCode: "router.pushUrl({ url: 'pages/detail' });",
+      featureTitle: '页面构建入口',
+    });
+
+    mockRewritePermissionPracticeTexts.mockResolvedValue({
+      rewrites: [
+        {
+          permissionName: 'ohos.permission.INTERNET',
+          businessScenario: '用户打开详情页时',
+          permissionPurpose: '用于连接网络并打开目标页面',
+          denyImpact: '无法加载并打开目标页面',
+        },
+      ],
+      warnings: [],
+    });
+
+    await generatePrivacyReportArtifacts({
+      repoRoot,
+      runId: 'App_run1',
+      appName: 'App',
+      outputDirAbs,
+      llm: { provider: 'Qwen', apiKey: 'test-key', model: 'qwen3-32b' },
+    });
+
+    const facts = JSON.parse(await fs.readFile(path.join(featureDirAbs, 'privacy_facts.json'), 'utf8')) as any;
+    expect(facts.facts.permissionPractices[0]?.authorizationMode).toBe('preauthorized');
+    expect(facts.facts.permissionPractices[0]?.businessScenario).toBe('用户打开详情页时');
+    expect(facts.facts.permissionPractices[0]?.permissionPurpose).toBe('用于连接网络并打开目标页面');
+    expect(facts.facts.permissionPractices[0]?.denyImpact).toBe('无法加载并打开目标页面');
+
+    const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
+    expect(reportText).toContain('网络访问权限（预授权），用于连接网络并打开目标页面。');
+    expect(reportText).not.toContain('使用相关系统能力（由 SDK API 权限映射确定）');
   });
 
   it('filters hallucinated permissions that are absent from app source', async () => {

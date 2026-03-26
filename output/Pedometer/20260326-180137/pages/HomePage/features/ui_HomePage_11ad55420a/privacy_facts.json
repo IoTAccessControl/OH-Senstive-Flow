@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260326-180137",
+    "featureId": "ui_HomePage_11ad55420a",
+    "generatedAt": "2026-03-26T10:10:31.080Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACTIVITY_RECOGNITION 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.ROLE_ACTIVITY_TRACKING 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "页面展示时初始化及计步功能运行",
+        "dataSources": [
+          "用户设备传感器 (计步器)",
+          "本地偏好设置存储",
+          "地理位置服务"
+        ],
+        "dataItems": [
+          {
+            "name": "步数数据",
+            "refs": [
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n9"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n5"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n2"
+              }
+            ]
+          },
+          {
+            "name": "应用启动状态",
+            "refs": [
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n4"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n1"
+              }
+            ]
+          },
+          {
+            "name": "地理位置信息",
+            "refs": [
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n9"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n8"
+              }
+            ]
+          },
+          {
+            "name": "错误堆栈信息",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n3"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n9"
+              },
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n1"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "通过系统传感器接口订阅计步数据，从本地偏好设置读取历史数据，调用位置服务获取地址信息，并在发生异常时捕获错误堆栈记录日志。",
+        "storageMethod": "本地存储至设备偏好设置 (Preferences) 及系统日志缓冲区 (HiLog)，未检测到显式加密处理。",
+        "dataRecipients": [],
+        "processingPurpose": "用于统计用户每日步数、恢复上次使用时的状态、显示当前位置信息以及记录系统运行异常以便调试。",
+        "privacyToggleUi": {
+          "where": "首页构建入口组件",
+          "refs": [
+            {
+              "uiNodeId": "ui:599a65fa9471"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCELEROMETER",
+        "businessScenario": "首页计步功能初始化与运行",
+        "permissionPurpose": "用于获取设备加速度传感器数据，以统计用户每日步数并监测运动状态。",
+        "denyImpact": "拒绝授权后，应用将无法获取步数数据，导致计步功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n3"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n4"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.APPROXIMATELY_LOCATION",
+        "businessScenario": "首页位置信息展示与计步辅助",
+        "permissionPurpose": "用于监听设备位置变化，以便在首页显示当前位置信息并辅助计步功能运行。",
+        "denyImpact": "拒绝授权后，应用将无法获取位置信息，导致首页无法显示当前位置且可能影响计步功能的准确性。",
+        "refs": [
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n8"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      },
+      {
+        "permissionName": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "businessScenario": "后台持续采集步数与位置数据",
+        "permissionPurpose": "用于在应用切换至后台时保持定位服务运行，确保持续、准确地记录用户的步数和位置轨迹。",
+        "denyImpact": "拒绝授权后，应用在切换到后台时将停止数据采集，导致无法连续记录步数和位置信息。",
+        "refs": [
+          {
+            "flowId": "flow:p14",
+            "nodeId": "p14:n7"
+          },
+          {
+            "flowId": "flow:p15",
+            "nodeId": "p15:n5"
+          },
+          {
+            "flowId": "flow:p24",
+            "nodeId": "p24:n6"
+          },
+          {
+            "flowId": "flow:p25",
+            "nodeId": "p25:n6"
+          },
+          {
+            "flowId": "flow:p34",
+            "nodeId": "p34:n7"
+          },
+          {
+            "flowId": "flow:p50",
+            "nodeId": "p50:n7"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.LOCATION",
+        "businessScenario": "页面展示时初始化位置服务",
+        "permissionPurpose": "用于获取设备的地理位置信息及地址名称。",
+        "denyImpact": "无法获取位置信息，当前地点展示功能将不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n4"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

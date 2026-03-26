@@ -1,0 +1,223 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260326-170007",
+    "featureId": "ui_HomePage_11ad55420a",
+    "generatedAt": "2026-03-26T09:07:52.647Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ability_access_ctrl 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。",
+      "权限 ohos.permission.ACTIVITY_RECOGNITION 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "页面展示时初始化计步功能及获取用户位置信息",
+        "dataSources": [
+          "设备传感器",
+          "地理位置服务",
+          "本地偏好设置存储"
+        ],
+        "dataItems": [
+          {
+            "name": "用户授权状态",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              }
+            ]
+          },
+          {
+            "name": "位置信息（地点名称）",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n8"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n9"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n9"
+              }
+            ]
+          },
+          {
+            "name": "计步器传感器数据",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n7"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n8"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n5"
+              }
+            ]
+          },
+          {
+            "name": "步数目标与当前步数",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n3"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n8"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n5"
+              }
+            ]
+          },
+          {
+            "name": "错误堆栈与异常详情",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n3"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n7"
+              },
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n7"
+              }
+            ]
+          },
+          {
+            "name": "后台任务运行状态",
+            "refs": [
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n4"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "通过系统 API 请求权限，订阅传感器和位置事件回调，在内存中处理数据并写入本地存储，失败时记录日志",
+        "storageMethod": "本地存储（Preferences/Storage），内存变量存储，系统日志缓冲区",
+        "dataRecipients": [],
+        "processingPurpose": "实现计步器核心功能，记录用户运动步数，显示当前位置信息，并在发生异常时进行调试记录",
+        "privacyToggleUi": {
+          "where": "首页构建入口组件",
+          "refs": [
+            {
+              "uiNodeId": "ui:599a65fa9471"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCELEROMETER",
+        "businessScenario": "页面构建入口",
+        "permissionPurpose": "使用相关系统能力（由 SDK API 权限映射确定）",
+        "denyImpact": "拒绝授权可能导致对应功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n7"
+          },
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n8"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n5"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.APPROXIMATELY_LOCATION",
+        "businessScenario": "页面构建入口",
+        "permissionPurpose": "使用相关系统能力（由 SDK API 权限映射确定）",
+        "denyImpact": "拒绝授权可能导致对应功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n9"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      },
+      {
+        "permissionName": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "businessScenario": "页面构建入口",
+        "permissionPurpose": "使用相关系统能力（由 SDK API 权限映射确定）",
+        "denyImpact": "拒绝授权可能导致对应功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p14",
+            "nodeId": "p14:n5"
+          },
+          {
+            "flowId": "flow:p15",
+            "nodeId": "p15:n5"
+          },
+          {
+            "flowId": "flow:p24",
+            "nodeId": "p24:n6"
+          },
+          {
+            "flowId": "flow:p25",
+            "nodeId": "p25:n7"
+          },
+          {
+            "flowId": "flow:p35",
+            "nodeId": "p35:n7"
+          },
+          {
+            "flowId": "flow:p50",
+            "nodeId": "p50:n7"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.LOCATION",
+        "businessScenario": "页面展示时获取用户当前位置",
+        "permissionPurpose": "获取设备的地理位置信息及地址名称，用于展示当前所在位置",
+        "denyImpact": "无法获取位置信息，页面将无法显示当前地点，相关定位功能失效",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n5"
+          },
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n6"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n5"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}
