@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260330-215218",
+    "featureId": "ui_HomePage_41cf9485d4",
+    "generatedAt": "2026-03-30T13:55:46.972Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "用户点击开始或停止按钮以控制计步功能时",
+        "dataSources": [
+          "用户操作（开始/停止按钮）",
+          "应用内部状态变量"
+        ],
+        "dataItems": [
+          {
+            "name": "计步状态标识",
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n6"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n6"
+              },
+              {
+                "flowId": "flow:p13",
+                "nodeId": "p13:n6"
+              }
+            ]
+          },
+          {
+            "name": "后台任务运行状态",
+            "refs": [
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n8"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n8"
+              },
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "根据用户操作调用后台任务管理器启动或停止连续任务，并将当前状态写入本地持久化存储",
+        "storageMethod": "使用系统偏好设置（Preferences）进行本地存储",
+        "dataRecipients": [],
+        "processingPurpose": "记录用户的计步操作状态并维持后台任务的正常运行",
+        "privacyToggleUi": {
+          "where": "首页 - 开始/停止按钮",
+          "refs": [
+            {
+              "uiNodeId": "ui:b1ce3fc86be8"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "businessScenario": "用户点击首页开始或停止按钮以控制计步功能时",
+        "permissionPurpose": "确保计步服务在后台持续运行，以便准确记录用户的运动数据并维持任务状态",
+        "denyImpact": "拒绝授权可能导致计步服务无法在后台正常运行，从而影响计步数据的连续记录",
+        "refs": [
+          {
+            "flowId": "flow:p9",
+            "nodeId": "p9:n9"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      }
+    ]
+  }
+}

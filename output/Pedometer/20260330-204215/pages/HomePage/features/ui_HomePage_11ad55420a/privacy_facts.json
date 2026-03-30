@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260330-204215",
+    "featureId": "ui_HomePage_11ad55420a",
+    "generatedAt": "2026-03-30T12:44:06.281Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACTIVITY_RECOGNITION 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "页面展示时检查并请求权限，以及应用运行期间收集步数数据",
+        "dataSources": [
+          "用户授权状态",
+          "计步器传感器"
+        ],
+        "dataItems": [
+          {
+            "name": "用户授权状态",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              }
+            ]
+          },
+          {
+            "name": "权限请求结果",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              }
+            ]
+          },
+          {
+            "name": "计步器传感器数据",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n7"
+              }
+            ]
+          },
+          {
+            "name": "用户步数统计",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "通过系统能力访问控制管理器发起权限请求，获取用户授权；在页面显示时初始化并读取本地存储的步数，订阅计步器传感器获取实时数据，在页面隐藏时取消订阅停止采集。",
+        "storageMethod": "本地内存存储（临时变量）及本地持久化存储（StepsUtil.getStorageValue），未明确加密。",
+        "dataRecipients": [],
+        "processingPurpose": "用于实现计步功能，记录用户的运动步数并提供状态展示。",
+        "privacyToggleUi": {
+          "where": "首页构建入口",
+          "refs": [
+            {
+              "uiNodeId": "ui:599a65fa9471"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCELEROMETER",
+        "businessScenario": "在首页构建时，用于获取计步器传感器数据以记录用户运动步数",
+        "permissionPurpose": "为了统计用户的运动步数并在首页展示计步状态，应用需要访问加速度传感器数据",
+        "denyImpact": "拒绝授权后，应用将无法获取计步器数据，导致无法记录步数及在首页展示计步状态",
+        "refs": [
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n7"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.LOCATION",
+        "businessScenario": "页面展示时检查并请求权限",
+        "permissionPurpose": "作为权限列表的一部分被申请，可能用于关联位置信息或作为辅助定位条件。",
+        "denyImpact": "无法获取位置相关权限，可能导致依赖位置的辅助功能不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n5"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

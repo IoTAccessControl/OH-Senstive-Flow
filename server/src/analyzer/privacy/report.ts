@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
+import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/client.js';
 import { readJsonFile, walkFiles, writeJsonFile } from '../../utils/accessWorkspace.js';
 import { loadCsvApiPermissions } from '../extract/csv.js';
 import { collectPermissionsFromApp, extractPermissionNames, normalizePermissionToken } from '../extract/app.js';
@@ -43,6 +44,19 @@ function isRecord(v: unknown): v is Record<string, unknown> {
 function cleanText(v: unknown): string {
   if (typeof v !== 'string') return '';
   return v.replaceAll(/\s+/gu, ' ').trim();
+}
+
+function safeJsonParse(text: string): unknown {
+  try {
+    return JSON.parse(text) as unknown;
+  } catch {
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    if (start >= 0 && end > start) {
+      return JSON.parse(text.slice(start, end + 1)) as unknown;
+    }
+    throw new Error('LLM 返回无法解析为 JSON');
+  }
 }
 
 function isUnknownText(v: unknown): boolean {
@@ -1048,7 +1062,8 @@ function pickValidRef(
   return null;
 }
 
-type DataHandlingMode = 'local' | 'network' | 'server';
+const REPORT_LOCAL_HANDLING_SENTENCE = '相关数据仅在本地处理。';
+const REPORT_SERVER_HANDLING_SENTENCE = '相关数据会上传至应用服务端。';
 
 function collectPracticeFlowIds(
   practice: PrivacyDataPractice,
@@ -1071,59 +1086,135 @@ function collectPracticeFlowIds(
   return out;
 }
 
-function isUncertainCloudUploadText(text: string): boolean {
-  return /(可能|潜在|暗示|取决于|疑似|推测|通常|后续|极大概率|隐含|本质行为)/u.test(text);
-}
-
-function isNegativeCloudUploadText(text: string): boolean {
-  return (
-    /none_detected/iu.test(text) ||
-    /(^无(?:\s|$|[(（]))|仅本地|本地日志|本地输出|本地记录/u.test(text) ||
-    /(无直接|未直接|未检测到|未发现|未在当前片段发现).*(上传|云端|网络发送|网络传输|网络上传|发送至|传输至|请求)/u.test(text)
-  );
-}
-
-function handlingModeFromCloudUpload(texts: string[]): DataHandlingMode {
-  let sawNetwork = false;
-  for (const raw of texts) {
-    const text = cleanText(raw);
-    if (!text) continue;
-    if (isUncertainCloudUploadText(text)) continue;
-    if (isNegativeCloudUploadText(text)) continue;
-    if (/(应用服务端|服务端|服务器|云端|后端|广告服务器|\bserver\b|\bbackend\b|\bcloud\b)/iu.test(text)) return 'server';
-    if (/(上传|上报|发送|传输|提交|同步|\bupload\b|\bsend\b|\btransmit\b|\bpost\b|\bsync\b|网络请求|http|https)/iu.test(text)) {
-      sawNetwork = true;
-    }
-  }
-  return sawNetwork ? 'network' : 'local';
-}
-
-function handlingSentenceForPractice(args: {
+async function decideHandlingSentenceWithReportLlm(args: {
+  llm: LlmConfig;
   feature: ReportFeatureInput;
   practice: PrivacyDataPractice;
   perFlowIndex: Map<string, Set<string>> | undefined;
-}): string {
+}): Promise<string> {
+  const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
+  if (!apiKey) return REPORT_LOCAL_HANDLING_SENTENCE;
+
   const referencedFlowIds = collectPracticeFlowIds(args.practice, args.perFlowIndex);
   const candidateFlowIds =
     referencedFlowIds.length > 0
       ? new Set(referencedFlowIds)
       : (args.feature.dataflows.flows?.length ?? 0) === 1
-        ? new Set([cleanText(args.feature.dataflows.flows[0]?.flowId)])
+      ? new Set([cleanText(args.feature.dataflows.flows[0]?.flowId)])
         : new Set<string>();
 
-  const cloudUploadTexts =
+  const relatedFlows =
     candidateFlowIds.size === 0
       ? []
-      : args.feature.dataflows.flows.flatMap((flow) => {
-          const flowId = cleanText(flow?.flowId);
-          if (!flowId || !candidateFlowIds.has(flowId)) return [];
-          return Array.isArray(flow.summary?.cloudUpload) ? flow.summary.cloudUpload.map(cleanText).filter(Boolean) : [];
-        });
+      : args.feature.dataflows.flows
+          .filter((flow) => {
+            const flowId = cleanText(flow?.flowId);
+            return flowId && candidateFlowIds.has(flowId);
+          })
+          .map((flow) => ({
+            flowId: cleanText(flow.flowId),
+            pathId: cleanText(flow.pathId),
+            summary: {
+              dataItems: Array.isArray(flow.summary?.dataItems) ? flow.summary?.dataItems.map(cleanText).filter(Boolean) : [],
+              collectionFrequency: Array.isArray(flow.summary?.collectionFrequency)
+                ? flow.summary?.collectionFrequency.map(cleanText).filter(Boolean)
+                : [],
+              cloudUpload: Array.isArray(flow.summary?.cloudUpload) ? flow.summary?.cloudUpload.map(cleanText).filter(Boolean) : [],
+              storageAndEncryption: Array.isArray(flow.summary?.storageAndEncryption)
+                ? flow.summary?.storageAndEncryption.map(cleanText).filter(Boolean)
+                : [],
+              permissions: Array.isArray(flow.summary?.permissions) ? flow.summary?.permissions.map(cleanText).filter(Boolean) : [],
+            },
+            evidenceNodes: (flow.nodes ?? [])
+              .slice(0, 10)
+              .map((node) => ({
+                filePath: cleanText(node.filePath),
+                line: Number(node.line ?? 0) || 0,
+                code: cleanText(node.code),
+                description: cleanText(node.description),
+              }))
+              .filter((node) => node.filePath && node.line > 0 && (node.code || node.description)),
+          }));
 
-  const mode = handlingModeFromCloudUpload(cloudUploadTexts);
-  if (mode === 'server') return '相关数据会上传至应用服务端。';
-  if (mode === 'network') return '相关数据会通过网络传输。';
-  return '相关数据仅在本地处理。';
+  const system = [
+    '你是隐私合规报告助手。',
+    '你只做一个二选一判断：相关数据是否会上传至应用服务端。',
+    '你必须严格基于提供的证据判断。',
+    '只要证据没有明确指向上传至应用服务端，就输出“相关数据仅在本地处理。”',
+    '输出必须是严格 JSON，且 sentence 只能是以下两句之一：',
+    `1) ${REPORT_SERVER_HANDLING_SENTENCE}`,
+    `2) ${REPORT_LOCAL_HANDLING_SENTENCE}`,
+  ].join('\n');
+
+  const user = [
+    `featureId: ${cleanText(args.feature.featureId)}`,
+    `featureTitle: ${cleanText(args.feature.featureTitle) || '未识别'}`,
+    `pageTitle: ${cleanText(args.feature.pageTitle) || '未识别'}`,
+    '当前数据实践证据：',
+    JSON.stringify(
+      {
+        businessScenario: cleanText(args.practice.businessScenario),
+        dataSources: uniq((args.practice.dataSources ?? []).map(clauseText).filter(Boolean)),
+        dataItems: uniq((args.practice.dataItems ?? []).map((item) => clauseText(item?.name)).filter(Boolean)),
+        processingMethod: cleanText(args.practice.processingMethod),
+        storageMethod: cleanText(args.practice.storageMethod),
+        dataRecipients: (args.practice.dataRecipients ?? []).map((recipient) => ({
+          name: cleanText(recipient?.name),
+          inferred: Boolean(recipient?.inferred),
+        })),
+        processingPurpose: cleanText(args.practice.processingPurpose),
+        relatedFlows,
+      },
+      null,
+      2,
+    ),
+    '',
+    '判断规则：',
+    `- 只有在证据明确显示数据会发送、提交、同步到应用自己的服务端/后端时，才能输出“${REPORT_SERVER_HANDLING_SENTENCE}”`,
+    `- 只要证据是本地日志、本地存储、系统能力调用、权限申请、监听回调，或者证据不足，都输出“${REPORT_LOCAL_HANDLING_SENTENCE}”`,
+    '',
+    '请输出：{"sentence":"..."}',
+  ].join('\n');
+
+  const baseUrls = resolveLlmBaseUrls(args.llm.provider);
+  let lastError: unknown = null;
+  for (const baseUrl of baseUrls) {
+    try {
+      const res = await openAiCompatibleChat({
+        baseUrl,
+        apiKey,
+        model: args.llm.model,
+        messages: [
+          { role: 'system', content: system },
+          { role: 'user', content: user },
+        ],
+        temperature: 0,
+        jsonMode: true,
+      });
+      const parsed = safeJsonParse(res.content);
+      const sentence = cleanText((parsed as any)?.sentence);
+      return sentence === REPORT_SERVER_HANDLING_SENTENCE ? REPORT_SERVER_HANDLING_SENTENCE : REPORT_LOCAL_HANDLING_SENTENCE;
+    } catch (error) {
+      lastError = error;
+      const canRetry =
+        baseUrls.length > 1 &&
+        (error instanceof LlmNetworkError ||
+          (error instanceof LlmHttpError && (error.status === 401 || error.status === 404 || error.status >= 500)));
+      if (!canRetry) break;
+    }
+  }
+
+  void lastError;
+  return REPORT_LOCAL_HANDLING_SENTENCE;
+}
+
+async function handlingSentenceForPractice(args: {
+  llm: LlmConfig;
+  feature: ReportFeatureInput;
+  practice: PrivacyDataPractice;
+  perFlowIndex: Map<string, Set<string>> | undefined;
+}): Promise<string> {
+  return decideHandlingSentenceWithReportLlm(args);
 }
 
 function permissionDisplayName(permissionName: string): string {
@@ -1232,11 +1323,12 @@ function pushEntityListTokens(out: PrivacyReportToken[], entities: PrivacyReport
   }
 }
 
-function deterministicCollectionAndUseTokens(args: {
+async function deterministicCollectionAndUseTokens(args: {
+  llm: LlmConfig;
   feature: ReportFeatureInput;
   facts: FeaturePrivacyFactsContent;
   perFlowIndex: Map<string, Set<string>> | undefined;
-}): PrivacyReportToken[] {
+}): Promise<PrivacyReportToken[]> {
   const practices = asDataPractices(args.facts);
   if (practices.length === 0) return [];
 
@@ -1273,12 +1365,14 @@ function deterministicCollectionAndUseTokens(args: {
     out.push({ text: dataSources.length > 0 ? `我们会从${dataSources.join('、')}收集` : '我们会收集' });
     pushEntityListTokens(out, entityTokens);
     out.push({ text: processingPurpose ? `，用于${processingPurpose}。` : '。' });
+    const handlingSentence = await handlingSentenceForPractice({
+      llm: args.llm,
+      feature: args.feature,
+      practice,
+      perFlowIndex: args.perFlowIndex,
+    });
     out.push({
-      text: handlingSentenceForPractice({
-        feature: args.feature,
-        practice,
-        perFlowIndex: args.perFlowIndex,
-      }),
+      text: handlingSentence,
     });
   }
 
@@ -1297,14 +1391,17 @@ export async function buildPrivacyReport(args: {
 
   const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
 
-  const collectionAndUse: PrivacyReportSection[] = args.features.map((feature) => ({
-    featureId: feature.featureId,
-    tokens: deterministicCollectionAndUseTokens({
-      feature,
-      facts: feature.facts,
-      perFlowIndex: flowIndexes.get(feature.featureId),
-    }),
-  }));
+  const collectionAndUse: PrivacyReportSection[] = await Promise.all(
+    args.features.map(async (feature) => ({
+      featureId: feature.featureId,
+      tokens: await deterministicCollectionAndUseTokens({
+        llm: args.llm,
+        feature,
+        facts: feature.facts,
+        perFlowIndex: flowIndexes.get(feature.featureId),
+      }),
+    })),
+  );
 
   const permissions: PrivacyReportSection[] = args.features.map((feature) => ({
     featureId: feature.featureId,

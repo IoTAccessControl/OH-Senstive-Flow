@@ -2,6 +2,7 @@ import path from 'node:path';
 
 import { buildCallGraph } from './callgraph/build.js';
 import type { CallGraph } from './callgraph/types.js';
+import { buildCallGraphAndPathsFromCpg } from './cpg/pipeline.js';
 import { buildDataflows } from './dataflow/build.js';
 import { extractPaths } from './dataflow/paths.js';
 import type { DataflowsResult } from './dataflow/types.js';
@@ -36,7 +37,9 @@ type AnalyzePipelineRequest = {
   appRootAbs: string;
   sdkRootAbs: string;
   csvDirAbs: string;
+  outputDirAbs: string;
   maxDataflowPaths: number | null;
+  graphBackend: GraphBackend;
   llm: LlmConfig;
   uiLlm: LlmConfig;
 };
@@ -56,6 +59,7 @@ export type AnalyzeRequest = {
   sdkPath?: string;
   csvDir?: string;
   maxDataflowPaths?: number | null;
+  graphBackend?: GraphBackend;
   llmProvider?: string;
   llmApiKey?: string;
   llmModel?: string;
@@ -86,6 +90,8 @@ export type AnalyzeProgress = {
 export type RunAnalysisOptions = {
   onProgress?: (p: AnalyzeProgress) => void;
 };
+
+export type GraphBackend = 'heuristic' | 'cpg';
 
 export const DEFAULT_APP_PATH = 'input/app/Wechat_HarmonyOS/';
 export const DEFAULT_SDK_PATH = 'input/sdk/default/openharmony/ets/';
@@ -131,6 +137,10 @@ function pickNonEmptyText(...values: Array<string | undefined | null>): string |
     if (trimmed) return trimmed;
   }
   return undefined;
+}
+
+function normalizeGraphBackend(value: unknown): GraphBackend {
+  return value === 'cpg' ? 'cpg' : 'heuristic';
 }
 
 function formatTimestampForDir(date: Date): string {
@@ -181,15 +191,30 @@ async function analyzeProject(req: AnalyzePipelineRequest, options: RunAnalysisO
 
   emitProgress(ANALYZE_PIPELINE_STAGES, 5, options.onProgress);
 
-  const callGraph = await buildCallGraph({
-    repoRoot: req.repoRoot,
-    runId: req.runId,
-    appFiles,
-    sinks,
-    sources,
-    llm: req.llm,
-  });
-  const paths = extractPaths({ callGraph, maxPaths: req.maxDataflowPaths });
+  const { callGraph, paths } =
+    req.graphBackend === 'cpg'
+      ? await buildCallGraphAndPathsFromCpg({
+          repoRoot: req.repoRoot,
+          runId: req.runId,
+          appRootAbs: req.appRootAbs,
+          appFiles,
+          sinks,
+          sources,
+          maxPaths: req.maxDataflowPaths,
+          outputDirAbs: req.outputDirAbs,
+        })
+      : await (async () => {
+          const callGraph = await buildCallGraph({
+            repoRoot: req.repoRoot,
+            runId: req.runId,
+            appFiles,
+            sinks,
+            sources,
+            llm: req.llm,
+          });
+          const paths = extractPaths({ callGraph, maxPaths: req.maxDataflowPaths });
+          return { callGraph, paths };
+        })();
 
   emitProgress(ANALYZE_PIPELINE_STAGES, 6, options.onProgress);
 
@@ -265,6 +290,7 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
   const maxDataflowPaths = Number.isFinite(req.maxDataflowPaths)
     ? Math.max(1, Math.floor(req.maxDataflowPaths as number))
     : null;
+  const graphBackend = normalizeGraphBackend(req.graphBackend);
   const llmProvider = pickNonEmptyText(req.llmProvider, process.env.LLM_PROVIDER) ?? 'Qwen';
   const llmModel = pickNonEmptyText(req.llmModel, process.env.LLM_MODEL) ?? 'qwen3.5-397b-a17b';
   const llmApiKey = pickNonEmptyText(req.llmApiKey, process.env.LLM_API_KEY) ?? '';
@@ -301,7 +327,9 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
     appRootAbs: appAbs,
     sdkRootAbs: sdkAbs,
     csvDirAbs: csvAbs,
+    outputDirAbs,
     maxDataflowPaths,
+    graphBackend,
     llm: { provider: llmProvider, apiKey: llmApiKey, model: llmModel },
     uiLlm: { provider: uiLlmProvider, apiKey: uiLlmApiKey, model: uiLlmModel },
   };
@@ -323,6 +351,7 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
       sdkPath,
       csvDir,
       maxDataflowPaths,
+      graphBackend,
       llmProvider,
       llmModel,
       uiLlmProvider,

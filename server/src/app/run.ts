@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-import { runAnalysis, type AnalyzeRequest } from '../analyzer/api.js';
+import { runAnalysis, type AnalyzeRequest, type GraphBackend } from '../analyzer/api.js';
 import { ensureDir, readJsonFile, writeJsonFile } from '../utils/accessWorkspace.js';
 
 dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..', '.env'), quiet: true });
@@ -187,6 +187,7 @@ function usage(): string {
     '  --sdkPath <path>',
     '  --csvDir <path>',
     '  --maxDataflowPaths <n>',
+    '  --graphBackend <heuristic|cpg>',
     '  --llmProvider <name>',
     '  --llmApiKey <key>',
     '  --llmModel <name>',
@@ -197,6 +198,10 @@ function usage(): string {
     '  --privacyReportLlmApiKey <key>',
     '  --privacyReportLlmModel <name>',
     '  -h, --help',
+    '',
+    'Outputs:',
+    '  output/<appName>/<timestamp>/',
+    '  cpg 模式会额外写入 output/<appName>/<timestamp>/cpg.json',
     '',
   ].join('\n');
 }
@@ -223,6 +228,7 @@ function parseDirectRunArgs(argv: string[]): DirectRunArgs {
     else if (key === '--sdkPath') out.sdkPath = value;
     else if (key === '--csvDir') out.csvDir = value;
     else if (key === '--maxDataflowPaths') out.maxDataflowPaths = Number(value);
+    else if (key === '--graphBackend') out.graphBackend = value as GraphBackend;
     else if (key === '--llmProvider') out.llmProvider = value;
     else if (key === '--llmApiKey') out.llmApiKey = value;
     else if (key === '--llmModel') out.llmModel = value;
@@ -253,6 +259,7 @@ async function main(): Promise<void> {
     sdkPath: args.sdkPath,
     csvDir: args.csvDir,
     maxDataflowPaths: args.maxDataflowPaths,
+    graphBackend: args.graphBackend,
     llmProvider: args.llmProvider,
     llmApiKey: args.llmApiKey,
     llmModel: args.llmModel,

@@ -1,0 +1,141 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260330-215218",
+    "featureId": "ui_HomePage_11ad55420a",
+    "generatedAt": "2026-03-30T13:55:41.099Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACTIVITY_RECOGNITION 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "页面展示时启动计步功能及位置服务，页面隐藏时停止数据收集",
+        "dataSources": [
+          "设备传感器 (计步器)",
+          "设备定位信息"
+        ],
+        "dataItems": [
+          {
+            "name": "计步器传感器数据流",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n8"
+              },
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n2"
+              }
+            ]
+          },
+          {
+            "name": "地理位置信息",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n10"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n11"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "在页面显示时通过系统 API 订阅计步器传感器数据和监听位置变化事件进行实时采集；在页面隐藏时取消传感器订阅和位置监听以停止采集。",
+        "storageMethod": "无直接存储操作，仅涉及本地资源释放。",
+        "dataRecipients": [],
+        "processingPurpose": "用于实现计步器核心功能（记录步数）及基于位置的辅助功能（如获取地址信息）。",
+        "privacyToggleUi": {
+          "where": "首页构建入口组件",
+          "refs": [
+            {
+              "uiNodeId": "ui:599a65fa9471"
+            }
+          ]
+        }
+      },
+      {
+        "appName": "Pedometer",
+        "businessScenario": "应用初始化时读取本地存储的计步状态",
+        "dataSources": [
+          "本地偏好设置存储"
+        ],
+        "dataItems": [
+          {
+            "name": "计步器运行状态标识",
+            "refs": [
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "调用本地偏好设置接口读取键值对数据。",
+        "storageMethod": "从本地持久化存储中读取数据。",
+        "dataRecipients": [],
+        "processingPurpose": "恢复用户上次的计步器运行状态。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCELEROMETER",
+        "businessScenario": "在首页展示时启动计步功能，通过传感器数据记录用户步数；页面隐藏时停止收集。",
+        "permissionPurpose": "用于获取加速度传感器数据以计算和记录用户的步数。",
+        "denyImpact": "拒绝授权后，应用将无法获取加速度数据，导致计步功能无法正常使用。",
+        "refs": [
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n8"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n2"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.APPROXIMATELY_LOCATION",
+        "businessScenario": "在首页展示时启动位置服务，结合计步功能提供基于位置的辅助服务（如地址信息）；页面隐藏时停止收集。",
+        "permissionPurpose": "用于监听位置变化，以便在计步过程中提供基于地理位置的辅助功能（如获取地址信息）。",
+        "denyImpact": "拒绝授权后，应用将无法获取位置信息，导致基于位置的辅助功能无法使用。",
+        "refs": [
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n11"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      },
+      {
+        "permissionName": "ohos.permission.LOCATION",
+        "businessScenario": "页面展示时请求获取位置权限",
+        "permissionPurpose": "用于获取设备当前位置信息及监听位置变化。",
+        "denyImpact": "无法获取位置信息，相关位置服务功能不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n4"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n4"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

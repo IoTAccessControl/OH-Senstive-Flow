@@ -1,0 +1,1722 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260330-231204",
+    "generatedAt": "2026-03-30T15:14:28.998Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "warnings": [
+      "数据流 p12 LLM 分析失败，已回退到锚点数据流：LLM 输出缺少锚点节点 input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets:62"
+    ],
+    "counts": {
+      "flows": 6,
+      "nodes": 58,
+      "edges": 52,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "HomePage",
+      "entry": {
+        "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+        "structName": "HomePage",
+        "line": 36,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_HomePage_41cf9485d4",
+      "kind": "ui",
+      "title": "开始/停止按钮"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p8",
+      "pathId": "p8",
+      "nodes": [
+        {
+          "id": "p8:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 170,
+          "code": "build() {",
+          "description": "UI 构建入口 build()，开始渲染页面组件。",
+          "context": {
+            "startLine": 165,
+            "lines": [
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.TopStart }) {",
+              "      CompletionStatus({",
+              "        progressValue: $progressValue",
+              "      })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p8:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 182,
+          "code": "Row() {",
+          "description": "定义 Row 布局容器，包含控制按钮。",
+          "context": {
+            "startLine": 177,
+            "lines": [
+              "        currentSteps: this.currentSteps,",
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))"
+            ]
+          }
+        },
+        {
+          "id": "p8:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 183,
+          "code": "Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+          "description": "渲染 Button 组件，根据 isStart 状态显示“开始”或“停止”文本。",
+          "context": {
+            "startLine": 178,
+            "lines": [
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))"
+            ]
+          }
+        },
+        {
+          "id": "p8:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 191,
+          "code": ".onClick(() => {",
+          "description": "绑定 onClick 事件监听器，当用户点击按钮时触发回调函数。",
+          "context": {
+            "startLine": 186,
+            "lines": [
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))",
+              "          .fontColor(Color.White)",
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);"
+            ]
+          }
+        },
+        {
+          "id": "p8:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 192,
+          "code": "if (this.isStart) {",
+          "description": "判断当前是否处于计步状态 (this.isStart)，决定执行停止还是开始逻辑。",
+          "context": {
+            "startLine": 187,
+            "lines": [
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))",
+              "          .fontColor(Color.White)",
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);",
+              "            } else {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 198,
+          "code": "if (this.stepGoal === '' || this.currentLocation === '') {",
+          "description": "检查步数目标 (stepGoal) 和当前位置 (currentLocation) 是否为空，验证开始计步的合法性。",
+          "context": {
+            "startLine": 193,
+            "lines": [
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);",
+              "            } else {",
+              "              if (this.stepGoal === '' || this.currentLocation === '') {",
+              "                this.getUIContext().getPromptAction().showToast({ message: CommonConstants.WAIT });",
+              "              } else {",
+              "                this.isStart = true;",
+              "                this.startPosition = this.currentLocation;",
+              "                StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);"
+            ]
+          }
+        },
+        {
+          "id": "p8:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 202,
+          "code": "this.startPosition = this.currentLocation;",
+          "description": "将当前获取到的用户位置 (currentLocation) 赋值给 startPosition，作为计步起点数据。",
+          "context": {
+            "startLine": 197,
+            "lines": [
+              "            } else {",
+              "              if (this.stepGoal === '' || this.currentLocation === '') {",
+              "                this.getUIContext().getPromptAction().showToast({ message: CommonConstants.WAIT });",
+              "              } else {",
+              "                this.isStart = true;",
+              "                this.startPosition = this.currentLocation;",
+              "                StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);",
+              "                this.currentSteps = CommonConstants.INITIALIZATION_VALUE;",
+              "                this.progressValue = 0;",
+              "                BackgroundUtil.startContinuousTask(this.context);",
+              "              }"
+            ]
+          }
+        },
+        {
+          "id": "p8:n8",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 203,
+          "code": "StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);",
+          "description": "调用 StepsUtil.putStorageValue 将起始位置数据存储到本地持久化存储中。",
+          "context": {
+            "startLine": 198,
+            "lines": [
+              "              if (this.stepGoal === '' || this.currentLocation === '') {",
+              "                this.getUIContext().getPromptAction().showToast({ message: CommonConstants.WAIT });",
+              "              } else {",
+              "                this.isStart = true;",
+              "                this.startPosition = this.currentLocation;",
+              "                StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);",
+              "                this.currentSteps = CommonConstants.INITIALIZATION_VALUE;",
+              "                this.progressValue = 0;",
+              "                BackgroundUtil.startContinuousTask(this.context);",
+              "              }",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p8:n9",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 206,
+          "code": "BackgroundUtil.startContinuousTask(this.context);",
+          "description": "调用 BackgroundUtil.startContinuousTask 方法，请求启动后台连续任务以进行持续定位和计步。",
+          "context": {
+            "startLine": 201,
+            "lines": [
+              "                this.isStart = true;",
+              "                this.startPosition = this.currentLocation;",
+              "                StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);",
+              "                this.currentSteps = CommonConstants.INITIALIZATION_VALUE;",
+              "                this.progressValue = 0;",
+              "                BackgroundUtil.startContinuousTask(this.context);",
+              "              }",
+              "            }",
+              "            StepsUtil.putStorageValue(CommonConstants.IS_START, String(this.isStart));",
+              "          })",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p8:n10",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/BackgroundUtil.ets",
+          "line": 42,
+          "code": "wantAgent.getWantAgent(wantAgentInfo).then((wantAgentObj) => {",
+          "description": "Sink 节点：调用 getWantAgent 接口，获取 WantAgent 对象以便后续启动后台运行任务。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "      operationType: wantAgent.OperationType.START_ABILITY,",
+              "      requestCode: 0,",
+              "      wantAgentFlags: [wantAgent.WantAgentFlags.UPDATE_PRESENT_FLAG]",
+              "    };",
+              "",
+              "    wantAgent.getWantAgent(wantAgentInfo).then((wantAgentObj) => {",
+              "      try {",
+              "        backgroundTaskManager.startBackgroundRunning(context,",
+              "          backgroundTaskManager.BackgroundMode.LOCATION, wantAgentObj).then(() => {",
+              "          Logger.info(TAG, 'startBackgroundRunning succeeded');",
+              "        }).catch((err: Error) => {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p8:n1",
+          "to": "p8:n2"
+        },
+        {
+          "from": "p8:n2",
+          "to": "p8:n3"
+        },
+        {
+          "from": "p8:n3",
+          "to": "p8:n4"
+        },
+        {
+          "from": "p8:n4",
+          "to": "p8:n5"
+        },
+        {
+          "from": "p8:n5",
+          "to": "p8:n6"
+        },
+        {
+          "from": "p8:n6",
+          "to": "p8:n7"
+        },
+        {
+          "from": "p8:n7",
+          "to": "p8:n8"
+        },
+        {
+          "from": "p8:n8",
+          "to": "p8:n9"
+        },
+        {
+          "from": "p8:n9",
+          "to": "p8:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "currentLocation (用户当前位置)",
+          "stepGoal (步数目标)",
+          "isStart (计步状态)",
+          "startPosition (起始位置)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (点击按钮时)"
+        ],
+        "cloudUpload": [
+          "无明确云端上传行为，仅启动后台定位任务"
+        ],
+        "storageAndEncryption": [
+          "本地存储 (StepsUtil.putStorageValue)",
+          "未检测到加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.LOCATION (隐含需求，用于获取 currentLocation)",
+          "ohos.permission.INTERNET (隐含需求，用于网络通信或后台服务)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 170,
+          "code": "build() {",
+          "description": "UI 构建入口 build()，开始渲染页面组件。",
+          "context": {
+            "startLine": 165,
+            "lines": [
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.TopStart }) {",
+              "      CompletionStatus({",
+              "        progressValue: $progressValue",
+              "      })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 182,
+          "code": "Row() {",
+          "description": "定义 Row 布局容器，包含控制按钮。",
+          "context": {
+            "startLine": 177,
+            "lines": [
+              "        currentSteps: this.currentSteps,",
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))"
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 183,
+          "code": "Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+          "description": "创建 Button 组件，显示文本内容取决于 isStart 状态。",
+          "context": {
+            "startLine": 178,
+            "lines": [
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))"
+            ]
+          }
+        },
+        {
+          "id": "p9:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 191,
+          "code": ".onClick(() => {",
+          "description": "绑定 onClick 事件处理函数，监听用户点击操作。",
+          "context": {
+            "startLine": 186,
+            "lines": [
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))",
+              "          .fontColor(Color.White)",
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);"
+            ]
+          }
+        },
+        {
+          "id": "p9:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 192,
+          "code": "if (this.isStart) {",
+          "description": "判断当前是否处于运动状态 (this.isStart)。",
+          "context": {
+            "startLine": 187,
+            "lines": [
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))",
+              "          .fontColor(Color.White)",
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);",
+              "            } else {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 198,
+          "code": "if (this.stepGoal === '' || this.currentLocation === '') {",
+          "description": "检查步数目标和当前位置是否为空，验证启动条件。",
+          "context": {
+            "startLine": 193,
+            "lines": [
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);",
+              "            } else {",
+              "              if (this.stepGoal === '' || this.currentLocation === '') {",
+              "                this.getUIContext().getPromptAction().showToast({ message: CommonConstants.WAIT });",
+              "              } else {",
+              "                this.isStart = true;",
+              "                this.startPosition = this.currentLocation;",
+              "                StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);"
+            ]
+          }
+        },
+        {
+          "id": "p9:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 202,
+          "code": "this.startPosition = this.currentLocation;",
+          "description": "将当前获取的位置信息赋值给 startPosition 变量。",
+          "context": {
+            "startLine": 197,
+            "lines": [
+              "            } else {",
+              "              if (this.stepGoal === '' || this.currentLocation === '') {",
+              "                this.getUIContext().getPromptAction().showToast({ message: CommonConstants.WAIT });",
+              "              } else {",
+              "                this.isStart = true;",
+              "                this.startPosition = this.currentLocation;",
+              "                StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);",
+              "                this.currentSteps = CommonConstants.INITIALIZATION_VALUE;",
+              "                this.progressValue = 0;",
+              "                BackgroundUtil.startContinuousTask(this.context);",
+              "              }"
+            ]
+          }
+        },
+        {
+          "id": "p9:n8",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 203,
+          "code": "StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);",
+          "description": "调用 StepsUtil.putStorageValue 将 startPosition 本地持久化存储。",
+          "context": {
+            "startLine": 198,
+            "lines": [
+              "              if (this.stepGoal === '' || this.currentLocation === '') {",
+              "                this.getUIContext().getPromptAction().showToast({ message: CommonConstants.WAIT });",
+              "              } else {",
+              "                this.isStart = true;",
+              "                this.startPosition = this.currentLocation;",
+              "                StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);",
+              "                this.currentSteps = CommonConstants.INITIALIZATION_VALUE;",
+              "                this.progressValue = 0;",
+              "                BackgroundUtil.startContinuousTask(this.context);",
+              "              }",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p9:n9",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 206,
+          "code": "BackgroundUtil.startContinuousTask(this.context);",
+          "description": "调用 BackgroundUtil.startContinuousTask 请求开启后台连续任务。",
+          "context": {
+            "startLine": 201,
+            "lines": [
+              "                this.isStart = true;",
+              "                this.startPosition = this.currentLocation;",
+              "                StepsUtil.putStorageValue(CommonConstants.START_POSITION, this.startPosition);",
+              "                this.currentSteps = CommonConstants.INITIALIZATION_VALUE;",
+              "                this.progressValue = 0;",
+              "                BackgroundUtil.startContinuousTask(this.context);",
+              "              }",
+              "            }",
+              "            StepsUtil.putStorageValue(CommonConstants.IS_START, String(this.isStart));",
+              "          })",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p9:n10",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/BackgroundUtil.ets",
+          "line": 44,
+          "code": "backgroundTaskManager.startBackgroundRunning(context,",
+          "description": "Sink 节点：调用系统 API startBackgroundRunning 申请后台定位服务权限。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "      wantAgentFlags: [wantAgent.WantAgentFlags.UPDATE_PRESENT_FLAG]",
+              "    };",
+              "",
+              "    wantAgent.getWantAgent(wantAgentInfo).then((wantAgentObj) => {",
+              "      try {",
+              "        backgroundTaskManager.startBackgroundRunning(context,",
+              "          backgroundTaskManager.BackgroundMode.LOCATION, wantAgentObj).then(() => {",
+              "          Logger.info(TAG, 'startBackgroundRunning succeeded');",
+              "        }).catch((err: Error) => {",
+              "          Logger.error(TAG, `startBackgroundRunning failed Cause:  ${JSON.stringify(err)}`);",
+              "        });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        },
+        {
+          "from": "p9:n3",
+          "to": "p9:n4"
+        },
+        {
+          "from": "p9:n4",
+          "to": "p9:n5"
+        },
+        {
+          "from": "p9:n5",
+          "to": "p9:n6"
+        },
+        {
+          "from": "p9:n6",
+          "to": "p9:n7"
+        },
+        {
+          "from": "p9:n7",
+          "to": "p9:n8"
+        },
+        {
+          "from": "p9:n8",
+          "to": "p9:n9"
+        },
+        {
+          "from": "p9:n9",
+          "to": "p9:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "currentLocation (当前位置)",
+          "stepGoal (步数目标)",
+          "startPosition (起始位置)",
+          "isStart (运动状态标志)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮时)"
+        ],
+        "cloudUpload": [
+          "无明确云端上传行为，仅请求后台运行权限"
+        ],
+        "storageAndEncryption": [
+          "本地存储：StepsUtil.putStorageValue 存储 startPosition",
+          "加密情况未知 (依赖 StepsUtil 实现)"
+        ],
+        "permissions": [
+          "ohos.permission.LOCATION (隐含需求，用于获取 currentLocation)",
+          "ohos.permission.INTERNET (隐含需求，用于网络通信或后台任务)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 170,
+          "code": "build() {",
+          "description": "UI 构建入口 build()，初始化页面组件树",
+          "context": {
+            "startLine": 165,
+            "lines": [
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.TopStart }) {",
+              "      CompletionStatus({",
+              "        progressValue: $progressValue",
+              "      })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 182,
+          "code": "Row() {",
+          "description": "构建 Row 容器，包含开始/停止按钮",
+          "context": {
+            "startLine": 177,
+            "lines": [
+              "        currentSteps: this.currentSteps,",
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 183,
+          "code": "Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+          "description": "渲染 Button 组件，根据 isStart 状态显示不同文本",
+          "context": {
+            "startLine": 178,
+            "lines": [
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))"
+            ]
+          }
+        },
+        {
+          "id": "p10:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 191,
+          "code": ".onClick(() => {",
+          "description": "绑定 onClick 事件监听器，定义点击后的回调逻辑",
+          "context": {
+            "startLine": 186,
+            "lines": [
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))",
+              "          .fontColor(Color.White)",
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);"
+            ]
+          }
+        },
+        {
+          "id": "p10:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 192,
+          "code": "if (this.isStart) {",
+          "description": "判断当前是否为运动状态 (this.isStart)，决定执行停止流程",
+          "context": {
+            "startLine": 187,
+            "lines": [
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))",
+              "          .fontColor(Color.White)",
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);",
+              "            } else {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 194,
+          "code": "this.oldSteps = '';",
+          "description": "重置旧步数变量，准备清除历史数据",
+          "context": {
+            "startLine": 189,
+            "lines": [
+              "          .fontColor(Color.White)",
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);",
+              "            } else {",
+              "              if (this.stepGoal === '' || this.currentLocation === '') {",
+              "                this.getUIContext().getPromptAction().showToast({ message: CommonConstants.WAIT });"
+            ]
+          }
+        },
+        {
+          "id": "p10:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 195,
+          "code": "StepsUtil.CleanStepsData();",
+          "description": "调用工具类清除本地存储的步数数据 (隐私数据清理)",
+          "context": {
+            "startLine": 190,
+            "lines": [
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);",
+              "            } else {",
+              "              if (this.stepGoal === '' || this.currentLocation === '') {",
+              "                this.getUIContext().getPromptAction().showToast({ message: CommonConstants.WAIT });",
+              "              } else {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n8",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 196,
+          "code": "BackgroundUtil.stopContinuousTask(this.context);",
+          "description": "调用 BackgroundUtil 停止后台任务，涉及系统资源调度",
+          "context": {
+            "startLine": 191,
+            "lines": [
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);",
+              "            } else {",
+              "              if (this.stepGoal === '' || this.currentLocation === '') {",
+              "                this.getUIContext().getPromptAction().showToast({ message: CommonConstants.WAIT });",
+              "              } else {",
+              "                this.isStart = true;"
+            ]
+          }
+        },
+        {
+          "id": "p10:n9",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/BackgroundUtil.ets",
+          "line": 63,
+          "code": "backgroundTaskManager.stopBackgroundRunning(context).then(() => {",
+          "description": "Sink 节点：调用系统 API stopBackgroundRunning 请求停止后台运行服务",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "   *",
+              "   * @param context",
+              "   */",
+              "  public static stopContinuousTask(context: common.UIAbilityContext): void {",
+              "    try {",
+              "      backgroundTaskManager.stopBackgroundRunning(context).then(() => {",
+              "        Logger.info(TAG, 'stopBackgroundRunning succeeded');",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, `stopBackgroundRunning failed Cause:  ${JSON.stringify(err)}`);",
+              "      });",
+              "    } catch (error) {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        },
+        {
+          "from": "p10:n3",
+          "to": "p10:n4"
+        },
+        {
+          "from": "p10:n4",
+          "to": "p10:n5"
+        },
+        {
+          "from": "p10:n5",
+          "to": "p10:n6"
+        },
+        {
+          "from": "p10:n6",
+          "to": "p10:n7"
+        },
+        {
+          "from": "p10:n7",
+          "to": "p10:n8"
+        },
+        {
+          "from": "p10:n8",
+          "to": "p10:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户操作状态 (isStart)",
+          "步数数据 (currentSteps, oldSteps)",
+          "位置信息 (startPosition, currentLocation)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (点击按钮)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地存储清理 (StepsUtil.CleanStepsData)",
+          "本地存储写入 (putStorageValue - 仅在启动时)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 170,
+          "code": "build() {",
+          "description": "UI 构建入口 build()，开始渲染页面组件。",
+          "context": {
+            "startLine": 165,
+            "lines": [
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.TopStart }) {",
+              "      CompletionStatus({",
+              "        progressValue: $progressValue",
+              "      })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 182,
+          "code": "Row() {",
+          "description": "定义 Row 布局容器，包含开始/停止按钮。",
+          "context": {
+            "startLine": 177,
+            "lines": [
+              "        currentSteps: this.currentSteps,",
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 183,
+          "code": "Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+          "description": "渲染 Button 组件，文本内容根据 this.isStart 状态动态切换（显示 start 或 stop）。",
+          "context": {
+            "startLine": 178,
+            "lines": [
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))"
+            ]
+          }
+        },
+        {
+          "id": "p11:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 191,
+          "code": ".onClick(() => {",
+          "description": "绑定 onClick 事件监听器，当用户点击按钮时触发回调函数。",
+          "context": {
+            "startLine": 186,
+            "lines": [
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))",
+              "          .fontColor(Color.White)",
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);"
+            ]
+          }
+        },
+        {
+          "id": "p11:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 209,
+          "code": "StepsUtil.putStorageValue(CommonConstants.IS_START, String(this.isStart));",
+          "description": "在点击事件回调末尾，获取当前 isStart 布尔值并转换为字符串，作为数据项准备写入存储。",
+          "context": {
+            "startLine": 204,
+            "lines": [
+              "                this.currentSteps = CommonConstants.INITIALIZATION_VALUE;",
+              "                this.progressValue = 0;",
+              "                BackgroundUtil.startContinuousTask(this.context);",
+              "              }",
+              "            }",
+              "            StepsUtil.putStorageValue(CommonConstants.IS_START, String(this.isStart));",
+              "          })",
+              "      }",
+              "      .width(CommonConstants.FULL_WIDTH)",
+              "      .height($r('app.float.button_height'))",
+              "      .margin({ top: $r('app.float.button_margin_top') })"
+            ]
+          }
+        },
+        {
+          "id": "p11:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 209,
+          "code": "StepsUtil.putStorageValue(CommonConstants.IS_START, String(this.isStart));",
+          "description": "调用 StepsUtil.putStorageValue 方法，传入键名 CommonConstants.IS_START 和转换后的状态字符串。",
+          "context": {
+            "startLine": 204,
+            "lines": [
+              "                this.currentSteps = CommonConstants.INITIALIZATION_VALUE;",
+              "                this.progressValue = 0;",
+              "                BackgroundUtil.startContinuousTask(this.context);",
+              "              }",
+              "            }",
+              "            StepsUtil.putStorageValue(CommonConstants.IS_START, String(this.isStart));",
+              "          })",
+              "      }",
+              "      .width(CommonConstants.FULL_WIDTH)",
+              "      .height($r('app.float.button_height'))",
+              "      .margin({ top: $r('app.float.button_margin_top') })"
+            ]
+          }
+        },
+        {
+          "id": "p11:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 55,
+          "code": "putStorageValue(key: string, value: string) {",
+          "description": "putStorageValue 函数入口，接收 key 和 value 参数，准备进行持久化操作。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "   * Put preferences value.",
+              "   *",
+              "   * @param {string} key",
+              "   * @param {string} value",
+              "   */",
+              "  putStorageValue(key: string, value: string) {",
+              "    GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+              "      preferences.put(key, value).then(() => {",
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));"
+            ]
+          }
+        },
+        {
+          "id": "p11:n8",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 56,
+          "code": "GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+          "description": "通过 GlobalContext 获取 Preferences 实例对象，用于访问本地偏好设置存储。",
+          "context": {
+            "startLine": 51,
+            "lines": [
+              "   *",
+              "   * @param {string} key",
+              "   * @param {string} value",
+              "   */",
+              "  putStorageValue(key: string, value: string) {",
+              "    GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+              "      preferences.put(key, value).then(() => {",
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p11:n9",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 57,
+          "code": "preferences.put(key, value).then(() => {",
+          "description": "执行 preferences.put(key, value) 操作，将 key-value 对写入本地存储文件。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "   * @param {string} key",
+              "   * @param {string} value",
+              "   */",
+              "  putStorageValue(key: string, value: string) {",
+              "    GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+              "      preferences.put(key, value).then(() => {",
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));",
+              "      })",
+              "    }).catch((err: Error) => {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n10",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 58,
+          "code": "Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+          "description": "存储成功后，调用 Logger.info 记录日志，包含写入的 key 信息。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "   * @param {string} value",
+              "   */",
+              "  putStorageValue(key: string, value: string) {",
+              "    GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+              "      preferences.put(key, value).then(() => {",
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));",
+              "      })",
+              "    }).catch((err: Error) => {",
+              "      Logger.error(TAG, 'Failed to get the storage with err:' + JSON.stringify(err));"
+            ]
+          }
+        },
+        {
+          "id": "p11:n11",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/Logger.ets",
+          "line": 39,
+          "code": "hilog.info(this.domain, this.prefix, this.format, args);",
+          "description": "Sink 节点：调用 hilog.info 将日志信息输出到系统日志缓冲区，完成数据流闭环。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "  debug(...args: string[]): void {",
+              "    hilog.debug(this.domain, this.prefix, this.format, args);",
+              "  }",
+              "",
+              "  info(...args: string[]): void {",
+              "    hilog.info(this.domain, this.prefix, this.format, args);",
+              "  }",
+              "",
+              "  warn(...args: string[]): void {",
+              "    hilog.warn(this.domain, this.prefix, this.format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        },
+        {
+          "from": "p11:n3",
+          "to": "p11:n4"
+        },
+        {
+          "from": "p11:n4",
+          "to": "p11:n5"
+        },
+        {
+          "from": "p11:n5",
+          "to": "p11:n6"
+        },
+        {
+          "from": "p11:n6",
+          "to": "p11:n7"
+        },
+        {
+          "from": "p11:n7",
+          "to": "p11:n8"
+        },
+        {
+          "from": "p11:n8",
+          "to": "p11:n9"
+        },
+        {
+          "from": "p11:n9",
+          "to": "p11:n10"
+        },
+        {
+          "from": "p11:n10",
+          "to": "p11:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "步数状态 (isStart)",
+          "起始位置 (startPosition)",
+          "应用启动/停止状态标识"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地存储 (Preferences)",
+          "未检测到显式加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 170,
+          "code": "build() {",
+          "description": "ArkUI 组件的 UI 构建入口函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 165,
+            "lines": [
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.TopStart }) {",
+              "      CompletionStatus({",
+              "        progressValue: $progressValue",
+              "      })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 182,
+          "code": "Row() {",
+          "description": "Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 177,
+            "lines": [
+              "        currentSteps: this.currentSteps,",
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))"
+            ]
+          }
+        },
+        {
+          "id": "p12:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 183,
+          "code": "Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+          "description": "onClick Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 178,
+            "lines": [
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))"
+            ]
+          }
+        },
+        {
+          "id": "p12:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 191,
+          "code": ".onClick(() => {",
+          "description": "Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 186,
+            "lines": [
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))",
+              "          .fontColor(Color.White)",
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);"
+            ]
+          }
+        },
+        {
+          "id": "p12:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 209,
+          "code": "StepsUtil.putStorageValue(CommonConstants.IS_START, String(this.isStart));",
+          "description": "putStorageValue Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 204,
+            "lines": [
+              "                this.currentSteps = CommonConstants.INITIALIZATION_VALUE;",
+              "                this.progressValue = 0;",
+              "                BackgroundUtil.startContinuousTask(this.context);",
+              "              }",
+              "            }",
+              "            StepsUtil.putStorageValue(CommonConstants.IS_START, String(this.isStart));",
+              "          })",
+              "      }",
+              "      .width(CommonConstants.FULL_WIDTH)",
+              "      .height($r('app.float.button_height'))",
+              "      .margin({ top: $r('app.float.button_margin_top') })"
+            ]
+          }
+        },
+        {
+          "id": "p12:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 55,
+          "code": "putStorageValue(key: string, value: string) {",
+          "description": "putStorageValue Declaration/ValueDeclaration（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "   * Put preferences value.",
+              "   *",
+              "   * @param {string} key",
+              "   * @param {string} value",
+              "   */",
+              "  putStorageValue(key: string, value: string) {",
+              "    GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+              "      preferences.put(key, value).then(() => {",
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));"
+            ]
+          }
+        },
+        {
+          "id": "p12:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 56,
+          "code": "GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+          "description": "catch Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 51,
+            "lines": [
+              "   *",
+              "   * @param {string} key",
+              "   * @param {string} value",
+              "   */",
+              "  putStorageValue(key: string, value: string) {",
+              "    GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+              "      preferences.put(key, value).then(() => {",
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p12:n8",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 62,
+          "code": "}).catch((err: Error) => {",
+          "description": "Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "      preferences.put(key, value).then(() => {",
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));",
+              "      })",
+              "    }).catch((err: Error) => {",
+              "      Logger.error(TAG, 'Failed to get the storage with err:' + JSON.stringify(err));",
+              "    })",
+              "  }",
+              "",
+              "  /**"
+            ]
+          }
+        },
+        {
+          "id": "p12:n9",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 63,
+          "code": "Logger.error(TAG, 'Failed to get the storage with err:' + JSON.stringify(err));",
+          "description": "Logger Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));",
+              "      })",
+              "    }).catch((err: Error) => {",
+              "      Logger.error(TAG, 'Failed to get the storage with err:' + JSON.stringify(err));",
+              "    })",
+              "  }",
+              "",
+              "  /**",
+              "   * Get preferences value."
+            ]
+          }
+        },
+        {
+          "id": "p12:n10",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/Logger.ets",
+          "line": 47,
+          "code": "hilog.error(this.domain, this.prefix, this.format, args);",
+          "description": "Outputs error-level logs.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "  warn(...args: string[]): void {",
+              "    hilog.warn(this.domain, this.prefix, this.format, args);",
+              "  }",
+              "",
+              "  error(...args: string[]): void {",
+              "    hilog.error(this.domain, this.prefix, this.format, args);",
+              "  }",
+              "}",
+              "",
+              "export default new Logger('StepsDemo', 0xFF00)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        },
+        {
+          "from": "p12:n2",
+          "to": "p12:n3"
+        },
+        {
+          "from": "p12:n3",
+          "to": "p12:n4"
+        },
+        {
+          "from": "p12:n4",
+          "to": "p12:n5"
+        },
+        {
+          "from": "p12:n5",
+          "to": "p12:n6"
+        },
+        {
+          "from": "p12:n6",
+          "to": "p12:n7"
+        },
+        {
+          "from": "p12:n7",
+          "to": "p12:n8"
+        },
+        {
+          "from": "p12:n8",
+          "to": "p12:n9"
+        },
+        {
+          "from": "p12:n9",
+          "to": "p12:n10"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p12 LLM 分析失败，已回退到锚点数据流：LLM 输出缺少锚点节点 input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets:62"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p13",
+      "pathId": "p13",
+      "nodes": [
+        {
+          "id": "p13:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 170,
+          "code": "build() {",
+          "description": "UI 构建入口 build()，开始渲染页面组件。",
+          "context": {
+            "startLine": 165,
+            "lines": [
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.TopStart }) {",
+              "      CompletionStatus({",
+              "        progressValue: $progressValue",
+              "      })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p13:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 182,
+          "code": "Row() {",
+          "description": "定义 Row 布局容器，包含控制按钮。",
+          "context": {
+            "startLine": 177,
+            "lines": [
+              "        currentSteps: this.currentSteps,",
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))"
+            ]
+          }
+        },
+        {
+          "id": "p13:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 183,
+          "code": "Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+          "description": "创建 Button 组件，显示开始/停止文本，绑定 onClick 事件处理逻辑。",
+          "context": {
+            "startLine": 178,
+            "lines": [
+              "        startPosition: this.startPosition,",
+              "        currentLocation: this.currentLocation",
+              "      })",
+              "",
+              "      Row() {",
+              "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+              "          .width($r('app.float.start_button_width'))",
+              "          .height($r('app.float.start_button_height'))",
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))"
+            ]
+          }
+        },
+        {
+          "id": "p13:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 191,
+          "code": ".onClick(() => {",
+          "description": "定义 onClick 回调函数，当用户点击按钮时触发。",
+          "context": {
+            "startLine": 186,
+            "lines": [
+              "          .borderRadius($r('app.float.start_button_radius'))",
+              "          .backgroundColor($r('app.color.button_background'))",
+              "          .fontSize($r('app.float.start_font_size'))",
+              "          .fontColor(Color.White)",
+              "          .fontWeight(CommonConstants.BIG_FONT_WEIGHT)",
+              "          .onClick(() => {",
+              "            if (this.isStart) {",
+              "              this.isStart = false;",
+              "              this.oldSteps = '';",
+              "              StepsUtil.CleanStepsData();",
+              "              BackgroundUtil.stopContinuousTask(this.context);"
+            ]
+          }
+        },
+        {
+          "id": "p13:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 209,
+          "code": "StepsUtil.putStorageValue(CommonConstants.IS_START, String(this.isStart));",
+          "description": "调用 StepsUtil.putStorageValue 方法，将当前的启动状态 this.isStart 转换为字符串并作为参数传入。",
+          "context": {
+            "startLine": 204,
+            "lines": [
+              "                this.currentSteps = CommonConstants.INITIALIZATION_VALUE;",
+              "                this.progressValue = 0;",
+              "                BackgroundUtil.startContinuousTask(this.context);",
+              "              }",
+              "            }",
+              "            StepsUtil.putStorageValue(CommonConstants.IS_START, String(this.isStart));",
+              "          })",
+              "      }",
+              "      .width(CommonConstants.FULL_WIDTH)",
+              "      .height($r('app.float.button_height'))",
+              "      .margin({ top: $r('app.float.button_margin_top') })"
+            ]
+          }
+        },
+        {
+          "id": "p13:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 55,
+          "code": "putStorageValue(key: string, value: string) {",
+          "description": "putStorageValue 函数定义，接收 key 和 value 参数，准备写入本地存储。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "   * Put preferences value.",
+              "   *",
+              "   * @param {string} key",
+              "   * @param {string} value",
+              "   */",
+              "  putStorageValue(key: string, value: string) {",
+              "    GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+              "      preferences.put(key, value).then(() => {",
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));"
+            ]
+          }
+        },
+        {
+          "id": "p13:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 56,
+          "code": "GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+          "description": "通过 GlobalContext 获取 Preferences 实例对象，用于后续的数据持久化操作。",
+          "context": {
+            "startLine": 51,
+            "lines": [
+              "   *",
+              "   * @param {string} key",
+              "   * @param {string} value",
+              "   */",
+              "  putStorageValue(key: string, value: string) {",
+              "    GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+              "      preferences.put(key, value).then(() => {",
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p13:n8",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 57,
+          "code": "preferences.put(key, value).then(() => {",
+          "description": "执行 preferences.put(key, value) 操作，将数据项（如步数状态）写入本地 Preferences 存储，这是数据流的最终 Sink 点。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "   * @param {string} key",
+              "   * @param {string} value",
+              "   */",
+              "  putStorageValue(key: string, value: string) {",
+              "    GlobalContext.getContext().getObject('getStepsPreferences')?.then((preferences: preferences.Preferences) => {",
+              "      preferences.put(key, value).then(() => {",
+              "        Logger.info(TAG, 'Storage put succeeded, key:' + key);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'Failed to put the value of startup with err: ' + JSON.stringify(err));",
+              "      })",
+              "    }).catch((err: Error) => {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p13:n1",
+          "to": "p13:n2"
+        },
+        {
+          "from": "p13:n2",
+          "to": "p13:n3"
+        },
+        {
+          "from": "p13:n3",
+          "to": "p13:n4"
+        },
+        {
+          "from": "p13:n4",
+          "to": "p13:n5"
+        },
+        {
+          "from": "p13:n5",
+          "to": "p13:n6"
+        },
+        {
+          "from": "p13:n6",
+          "to": "p13:n7"
+        },
+        {
+          "from": "p13:n7",
+          "to": "p13:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "步数状态 (isStart)",
+          "起始位置 (startPosition)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地存储 (Preferences)",
+          "未检测到显式加密"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

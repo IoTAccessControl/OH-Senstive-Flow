@@ -172,6 +172,7 @@ export function HomePage() {
   const [maxDataflowPaths, setMaxDataflowPaths] = useState<string>(
     snapshot?.maxDataflowPaths == null ? '' : String(snapshot.maxDataflowPaths),
   );
+  const [graphBackend, setGraphBackend] = useState<'heuristic' | 'cpg'>(snapshot?.graphBackend ?? 'heuristic');
   const [llmProvider, setLlmProvider] = useState(snapshot?.llmProvider ?? '');
   const [llmApiKey, setLlmApiKey] = useState('');
   const [llmModel, setLlmModel] = useState(snapshot?.llmModel ?? '');
@@ -343,6 +344,7 @@ export function HomePage() {
         sdkPath,
         csvDir,
         maxDataflowPaths: safeMax,
+        graphBackend,
         llmProvider: llmProvider.trim() || 'Qwen',
         llmApiKey,
         llmModel: llmModel.trim() || 'qwen3.5-397b-a17b',
@@ -407,6 +409,7 @@ export function HomePage() {
             sdkPath,
             csvDir,
             maxDataflowPaths: safeMax,
+            graphBackend,
             llmProvider: llmProvider.trim() || 'Qwen',
             llmModel: llmModel.trim() || 'qwen3.5-397b-a17b',
             uiLlmProvider: uiLlmProvider.trim() || 'Qwen',
@@ -510,6 +513,20 @@ export function HomePage() {
             value={maxDataflowPaths}
             onChange={(e) => setMaxDataflowPaths(e.target.value)}
           />
+        </label>
+
+        <label className="field">
+          <div className="label" title="heuristic 使用现有启发式流程；cpg 每次从源码生成 cpg.json 再分析路径">
+            图分析模式
+          </div>
+          <select className="input" value={graphBackend} onChange={(e) => setGraphBackend(e.target.value as 'heuristic' | 'cpg')}>
+            <option value="heuristic">heuristic</option>
+            <option value="cpg">cpg</option>
+          </select>
+          <div className="status">
+            结果会写入 <code>output/&lt;appName&gt;/&lt;timestamp&gt;/</code>
+            {graphBackend === 'cpg' ? '，并额外保存 cpg.json' : ''}
+          </div>
         </label>
 
         <div className="llmGrid">

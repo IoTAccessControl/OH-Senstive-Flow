@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260330-193428",
+    "featureId": "ui_HomePage_11ad55420a",
+    "generatedAt": "2026-03-30T11:36:12.631Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACTIVITY_RECOGNITION 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "页面展示时初始化应用状态并启动计步功能，页面隐藏时停止数据采集",
+        "dataSources": [
+          "设备计步器传感器"
+        ],
+        "dataItems": [
+          {
+            "name": "计步器传感器数据 (Pedometer Sensor Data)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n4"
+              }
+            ]
+          },
+          {
+            "name": "用户步数统计 (Step Count)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n2"
+              },
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "事件触发采集（页面显示时开始，页面隐藏时停止），本地读取与更新",
+        "storageMethod": "本地存储 (StepsUtil.getStorageValue)，未明确加密",
+        "dataRecipients": [],
+        "processingPurpose": "用于记录用户的运动步数并提供完成度状态展示",
+        "privacyToggleUi": {
+          "where": "首页构建入口",
+          "refs": [
+            {
+              "uiNodeId": "ui:599a65fa9471"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCELEROMETER",
+        "businessScenario": "在首页初始化时启动计步功能，并在页面隐藏时停止数据采集以保护隐私",
+        "permissionPurpose": "用于获取用户的运动步数数据，以便记录步数并展示完成度状态",
+        "denyImpact": "拒绝授权可能导致无法获取计步器数据，从而无法记录步数或展示相关状态",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n4"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      }
+    ]
+  }
+}

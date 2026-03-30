@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 
-import type { AnalyzeResponse } from '../analyzer/api.js';
+import type { AnalyzeResponse, GraphBackend } from '../analyzer/api.js';
 import { runAnalysis } from '../analyzer/api.js';
 import { listRunRegistry, readResultJson } from './run.js';
 import { normalizeWorkspaceSubpath, resolveSafeWorkspaceChild } from '../utils/accessWorkspace.js';
@@ -257,6 +257,7 @@ export function startServer(): void {
         sdkPath: body.sdkPath as string | undefined,
         csvDir: body.csvDir as string | undefined,
         maxDataflowPaths: body.maxDataflowPaths as number | null | undefined,
+        graphBackend: body.graphBackend as GraphBackend | undefined,
         llmProvider: body.llmProvider as string | undefined,
         llmApiKey: body.llmApiKey as string | undefined,
         llmModel: body.llmModel as string | undefined,
@@ -293,6 +294,7 @@ export function startServer(): void {
               sdkPath: body.sdkPath as string | undefined,
               csvDir: body.csvDir as string | undefined,
               maxDataflowPaths: body.maxDataflowPaths as number | null | undefined,
+              graphBackend: body.graphBackend as GraphBackend | undefined,
               llmProvider: body.llmProvider as string | undefined,
               llmApiKey: body.llmApiKey as string | undefined,
               llmModel: body.llmModel as string | undefined,

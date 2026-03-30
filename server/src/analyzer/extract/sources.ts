@@ -20,14 +20,19 @@ const SOURCE_FUNCTION_DESCRIPTIONS: Record<string, string> = {
   onWindowStageInactive: 'WindowStage 失去焦点时触发的生命周期函数',
   onNewWant: '收到新的 Want 时触发的生命周期函数',
   onConfigurationUpdate: '系统配置更新时触发的生命周期函数',
+  onBackup: 'BackupExtensionAbility 执行备份时触发的生命周期函数',
+  onRestore: 'BackupExtensionAbility 执行恢复时触发的生命周期函数',
 };
 
 const TARGET_NAMES = new Set(Object.keys(SOURCE_FUNCTION_DESCRIPTIONS));
 
 function isFunctionDefinitionLine(line: string, functionName: string): boolean {
-  // Matches: build() { ... } , async aboutToAppear() { ... }, private onCreate(...) { ... }
+  // Matches:
+  // build() { ... }
+  // async aboutToAppear() { ... }
+  // private onCreate(...): void { ... }
   const pattern = new RegExp(
-    String.raw`^\s*(?:public|private|protected)?\s*(?:async\s+)?${functionName}\s*\([^)]*\)\s*\{`,
+    String.raw`^\s*(?:public|private|protected)?\s*(?:async\s+)?${functionName}\s*\([^)]*\)\s*(?::\s*[^{}=]+)?\s*\{`,
     'u',
   );
   return pattern.test(line);
@@ -56,6 +61,8 @@ function normalizeSourceRefDescription(functionName: string, description: string
   if (fn === 'onBackground') return '应用切到后台时';
   if (fn === 'onWindowStageCreate') return '应用窗口创建时';
   if (fn === 'onWindowStageDestroy') return '应用窗口销毁时';
+  if (fn === 'onBackup') return '执行备份时';
+  if (fn === 'onRestore') return '执行恢复时';
 
   return desc;
 }

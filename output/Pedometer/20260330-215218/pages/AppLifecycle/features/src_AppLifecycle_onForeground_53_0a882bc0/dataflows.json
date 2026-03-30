@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260330-215218",
+    "generatedAt": "2026-03-30T13:55:10.771Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onForeground_53_0a882bc0",
+      "kind": "source",
+      "title": "应用切到前台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p21",
+      "pathId": "p21",
+      "nodes": [
+        {
+          "id": "p21:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 53,
+          "code": "onForeground(): void {",
+          "description": "定义 onForeground 生命周期函数入口，当 UIAbility 从后台切换至前台时触发此逻辑。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p21:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 54,
+          "code": "// Ability has brought to foreground",
+          "description": "注释行，说明当前代码块执行时的上下文：应用已恢复至前台。",
+          "context": {
+            "startLine": 49,
+            "lines": [
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background"
+            ]
+          }
+        },
+        {
+          "id": "p21:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 55,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+          "description": "调用 hilog.info 接口，将应用进入前台的状态信息作为日志数据输出到系统日志缓冲区，这是数据流的最终汇聚点（Sink）。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p21:n1",
+          "to": "p21:n2"
+        },
+        {
+          "from": "p21:n2",
+          "to": "p21:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态 (Ability Foreground)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (当应用切换到前台时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出，未涉及网络传输)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (日志通常由系统临时处理或写入日志缓冲区，非应用级加密存储)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

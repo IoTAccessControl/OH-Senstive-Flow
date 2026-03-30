@@ -28,22 +28,11 @@ export function resolveLlmBaseUrls(provider: string): string[] {
 
   const normalizedProvider = normalizeProviderName(provider);
   if (normalizedProvider === 'qwen' || normalizedProvider === 'dashscope') {
-    return [
-      'https://dashscope.aliyuncs.com/compatible-mode/v1',
-      'https://dashscope-us.aliyuncs.com/compatible-mode/v1',
-    ];
-  }
-  if (normalizedProvider === 'qwen-us' || normalizedProvider === 'dashscope-us') {
-    return [
-      'https://dashscope-us.aliyuncs.com/compatible-mode/v1',
-      'https://dashscope.aliyuncs.com/compatible-mode/v1',
-    ];
+    return ['https://dashscope.aliyuncs.com/compatible-mode/v1'];
   }
   if (normalizedProvider === 'openai') return ['https://api.openai.com/v1'];
 
-  throw new Error(
-    `不支持的 LLM provider=${provider}；请使用 Qwen/OpenAI，或通过环境变量 LLM_BASE_URL 指定 OpenAI 兼容 baseURL`,
-  );
+  throw new Error(`不支持的 LLM provider=${provider}；请使用 Qwen/OpenAI，或通过环境变量 LLM_BASE_URL 指定 OpenAI 兼容 baseURL`);
 }
 
 export function resolveLlmBaseUrl(provider: string): string {

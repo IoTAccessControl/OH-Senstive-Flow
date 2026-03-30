@@ -7,6 +7,7 @@ export type AnalysisSnapshot = {
   sdkPath: string;
   csvDir: string;
   maxDataflowPaths: number | null;
+  graphBackend: 'heuristic' | 'cpg';
   llmProvider: string;
   llmModel: string;
   uiLlmProvider: string;

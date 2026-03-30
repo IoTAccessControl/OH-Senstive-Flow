@@ -121,6 +121,18 @@ function buildPathAnchors(callGraph: CallGraph, path: CallGraphPath): CallGraphN
   return path.nodeIds.map((id) => byId.get(id)).filter((n): n is CallGraphNode => Boolean(n));
 }
 
+function normalizeAnchors(anchors: CallGraphNode[]): CallGraphNode[] {
+  const out: CallGraphNode[] = [];
+  const seen = new Set<string>();
+  for (const anchor of anchors) {
+    const key = nodeKey(anchor);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(anchor);
+  }
+  return out;
+}
+
 function formatAnchorsForPrompt(anchors: CallGraphNode[]): string {
   return anchors
     .map((a, idx) => {
@@ -167,6 +179,8 @@ function buildLlmPrompt(args: {
     '1) 你的输出 JSON 中 nodes 必须包含所有锚点（同 filePath + line）。可以在锚点之间插入更多节点。',
     '2) 每个 node 必须有：filePath（工作区相对路径）、line（1-based）、description（中文，说明该行在数据流中的作用）。',
     '3) edges 用数组表示，元素为 {from,to}，from/to 为 nodes 数组下标（0-based）。如果你无法确定，可按 nodes 顺序连成链。',
+    '4) 禁止跨到当前锚点路径之外的其他 source/生命周期函数；不要把 onPageShow、onPageHide、onCreate 等不同入口拼成同一条数据流。',
+    '5) 最终 sink 锚点必须出现在 nodes 中，且它必须是最后一个节点；不要越过当前 sink 锚点继续扩展后续判断或分支。',
     '',
     '输出 JSON 结构：',
     '{',
@@ -407,6 +421,60 @@ async function buildFlowFromLlmResult(args: {
   };
 }
 
+function buildSourceLineKeySet(sources: SourceRecord[]): Set<string> {
+  const set = new Set<string>();
+  for (const source of sources) {
+    set.add(`${source['App源码文件路径']}:${source['行号']}`);
+  }
+  return set;
+}
+
+function findLastSinkAnchor(anchors: CallGraphNode[]): CallGraphNode | null {
+  for (let i = anchors.length - 1; i >= 0; i -= 1) {
+    if (anchors[i]!.type === 'sinkCall') return anchors[i]!;
+  }
+  return null;
+}
+
+function validateLlmResultAgainstAnchors(args: {
+  repoRoot: string;
+  anchors: CallGraphNode[];
+  llmResult: LlmResult;
+  sourceLineKeys: Set<string>;
+}): string | null {
+  const llmKeys = args.llmResult.nodes.map((node) =>
+    nodeKey({
+      filePath: normalizeWorkspacePath(args.repoRoot, node.filePath),
+      line: Math.max(1, Math.floor(node.line)),
+    }),
+  );
+
+  const anchorKeys = args.anchors.map((anchor) => nodeKey(anchor));
+  let previousAnchorIndex = -1;
+  for (const anchorKey of anchorKeys) {
+    const idx = llmKeys.findIndex((key, index) => index > previousAnchorIndex && key === anchorKey);
+    if (idx < 0) return `LLM 输出缺少锚点节点 ${anchorKey}`;
+    if (idx <= previousAnchorIndex) return `LLM 输出中的锚点顺序异常：${anchorKey}`;
+    previousAnchorIndex = idx;
+  }
+
+  const anchorSourceKeys = new Set(args.anchors.filter((anchor) => anchor.type === 'source').map((anchor) => nodeKey(anchor)));
+  for (const key of llmKeys) {
+    if (args.sourceLineKeys.has(key) && !anchorSourceKeys.has(key)) {
+      return `LLM 输出跨入了当前路径之外的 source：${key}`;
+    }
+  }
+
+  const sinkAnchor = findLastSinkAnchor(args.anchors);
+  if (!sinkAnchor) return null;
+  const sinkIndex = llmKeys.indexOf(nodeKey(sinkAnchor));
+  if (sinkIndex >= 0 && sinkIndex !== llmKeys.length - 1) {
+    return `LLM 输出在最终 sink 锚点 ${sinkAnchor.filePath}:${sinkAnchor.line} 之后继续扩展`;
+  }
+
+  return null;
+}
+
 function fallbackDescriptionForAnchor(anchor: CallGraphNode): string {
   const suffix = '（LLM 失败，使用锚点回退）';
   const detail = anchor.description?.trim();
@@ -480,6 +548,7 @@ export async function buildDataflows(options: BuildDataflowsOptions): Promise<Da
   const baseUrls = resolveLlmBaseUrls(options.llm.provider);
   const sinkMap = groupSinkRecordsByCallsite(options.sinks);
   const sourceMap = groupSourceRecordsByKey(options.sources);
+  const sourceLineKeys = buildSourceLineKeySet(options.sources);
 
   const flows: Dataflow[] = [];
   const warnings: string[] = [];
@@ -489,7 +558,7 @@ export async function buildDataflows(options: BuildDataflowsOptions): Promise<Da
   let fallbackFlows = 0;
 
   for (const p of options.paths) {
-    const anchors = buildPathAnchors(options.callGraph, p);
+    const anchors = normalizeAnchors(buildPathAnchors(options.callGraph, p));
     if (anchors.length === 0) continue;
 
     let sinkAnchor = anchors[anchors.length - 1]!;
@@ -519,6 +588,13 @@ export async function buildDataflows(options: BuildDataflowsOptions): Promise<Da
         system: prompt.system,
         user: prompt.user,
       });
+      const invalidReason = validateLlmResultAgainstAnchors({
+        repoRoot: options.repoRoot,
+        anchors,
+        llmResult,
+        sourceLineKeys,
+      });
+      if (invalidReason) throw new Error(invalidReason);
       const flow = await buildFlowFromLlmResult({
         repoRoot: options.repoRoot,
         radius,
