@@ -516,17 +516,13 @@ export function HomePage() {
         </label>
 
         <label className="field">
-          <div className="label" title="heuristic 使用现有启发式流程；cpg 每次从源码生成 cpg.json 再分析路径">
+          <div className="label" title="TypeScript AST 模式：基于 TypeScript AST 扫描函数和调用关系；CPG 模式：先生成 CPG 再分析路径">
             图分析模式
           </div>
           <select className="input" value={graphBackend} onChange={(e) => setGraphBackend(e.target.value as 'heuristic' | 'cpg')}>
-            <option value="heuristic">heuristic</option>
-            <option value="cpg">cpg</option>
+            <option value="heuristic">TypeScript AST 模式</option>
+            <option value="cpg">CPG 模式</option>
           </select>
-          <div className="status">
-            结果会写入 <code>output/&lt;appName&gt;/&lt;timestamp&gt;/</code>
-            {graphBackend === 'cpg' ? '，并额外保存 cpg.json' : ''}
-          </div>
         </label>
 
         <div className="llmGrid">
