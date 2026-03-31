@@ -1,0 +1,568 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260331-172042",
+    "generatedAt": "2026-03-31T09:26:52.269Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "warnings": [
+      "数据流 p24 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets:261 之后继续扩展",
+      "数据流 p25 LLM 分析失败，已回退到锚点数据流：LLM 输出缺少锚点节点 input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets:260",
+      "数据流 p26 LLM 分析失败，已回退到锚点数据流：LLM 输出缺少锚点节点 input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets:261"
+    ],
+    "counts": {
+      "flows": 5,
+      "nodes": 17,
+      "edges": 12,
+      "failedPaths": 3,
+      "fallbackFlows": 3
+    },
+    "page": {
+      "pageId": "ChatPage",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+        "structName": "ChatPage",
+        "line": 99,
+        "description": "聊天页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_ChatPage_167415b026",
+      "kind": "ui",
+      "title": "功能入口"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p23",
+      "pathId": "p23",
+      "nodes": [
+        {
+          "id": "p23:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 259,
+          "code": "async aboutToAppear() {",
+          "description": "组件生命周期入口 aboutToAppear，在页面即将显示时触发，开始执行数据初始化逻辑。",
+          "context": {
+            "startLine": 254,
+            "lines": [
+              "        this.postVoice(res)",
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  async aboutToAppear() {",
+              "    this.name = (router.getParams() as ChatPageParam).name",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p23:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 260,
+          "code": "this.name = (router.getParams() as ChatPageParam).name",
+          "description": "调用 router.getParams() 获取路由跳转时传递的参数对象，并提取其中的 'name' 字段赋值给组件状态变量 this.name。",
+          "context": {
+            "startLine": 255,
+            "lines": [
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  async aboutToAppear() {",
+              "    this.name = (router.getParams() as ChatPageParam).name",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p23:n1",
+          "to": "p23:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面传递参数 (name)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面加载时)"
+        ],
+        "cloudUpload": [
+          "未检测到网络上传行为"
+        ],
+        "storageAndEncryption": [
+          "内存存储 (组件状态变量 this.name)，未检测到本地持久化或加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p24",
+      "pathId": "p24",
+      "nodes": [
+        {
+          "id": "p24:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 259,
+          "code": "async aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 254,
+            "lines": [
+              "        this.postVoice(res)",
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  async aboutToAppear() {",
+              "    this.name = (router.getParams() as ChatPageParam).name",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p24:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 261,
+          "code": "await window.getLastWindow(getContext(this)).then(currentWindow => {",
+          "description": "Get the final show window.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  async aboutToAppear() {",
+              "    this.name = (router.getParams() as ChatPageParam).name",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p24:n1",
+          "to": "p24:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p24 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets:261 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p25",
+      "pathId": "p25",
+      "nodes": [
+        {
+          "id": "p25:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 268,
+          "code": "onBackPress() {",
+          "description": "返回键事件回调（页面/组件）（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 263,
+            "lines": [
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }",
+              "",
+              "  onBackPress() {",
+              "    return this.keyboardHeight > 0",
+              "  }",
+              "",
+              "  // 开始录音",
+              "  onStartRecord = () => {"
+            ]
+          }
+        },
+        {
+          "id": "p25:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 260,
+          "code": "this.name = (router.getParams() as ChatPageParam).name",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 255,
+            "lines": [
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  async aboutToAppear() {",
+              "    this.name = (router.getParams() as ChatPageParam).name",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p25:n1",
+          "to": "p25:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p25 LLM 分析失败，已回退到锚点数据流：LLM 输出缺少锚点节点 input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets:260"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p26",
+      "pathId": "p26",
+      "nodes": [
+        {
+          "id": "p26:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 268,
+          "code": "onBackPress() {",
+          "description": "返回键事件回调（页面/组件）（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 263,
+            "lines": [
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }",
+              "",
+              "  onBackPress() {",
+              "    return this.keyboardHeight > 0",
+              "  }",
+              "",
+              "  // 开始录音",
+              "  onStartRecord = () => {"
+            ]
+          }
+        },
+        {
+          "id": "p26:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 261,
+          "code": "await window.getLastWindow(getContext(this)).then(currentWindow => {",
+          "description": "Get the final show window.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 256,
+            "lines": [
+              "    }",
+              "  }",
+              "",
+              "  async aboutToAppear() {",
+              "    this.name = (router.getParams() as ChatPageParam).name",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p26:n1",
+          "to": "p26:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p26 LLM 分析失败，已回退到锚点数据流：LLM 输出缺少锚点节点 input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets:261"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p27",
+      "pathId": "p27",
+      "nodes": [
+        {
+          "id": "p27:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 330,
+          "code": "build() {",
+          "description": "UI 构建入口 build()，初始化聊天页面布局，包含语音输入按钮的渲染逻辑。",
+          "context": {
+            "startLine": 325,
+            "lines": [
+              "    const TextChat = new ChatMessage(MessageType.text, this.voiceToText)",
+              "    //   插入到消息数组中",
+              "    this.chatList.push(TextChat)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Toolbar({ title: this.name })",
+              "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+              "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+              "          ListItem() {"
+            ]
+          }
+        },
+        {
+          "id": "p27:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 354,
+          "code": "if (this.inputType == WXInputType.keyboard) {",
+          "description": "判断当前输入模式是否为键盘模式，决定是否显示语音输入切换按钮。",
+          "context": {
+            "startLine": 349,
+            "lines": [
+              "      // .divider({ strokeWidth: 0.8, color: '#f0f0f0', startMargin: 90, endMargin: 0 }) // 每行之间的分界线",
+              "      .layoutWeight(1)",
+              "",
+              "      Row() {",
+              "",
+              "        if (this.inputType == WXInputType.keyboard) {",
+              "          Image($r(\"app.media.ic_use_voice\"))",
+              "            .width(33)",
+              "            .height(33)",
+              "            .borderRadius(4)",
+              "            .margin({ left: 15, right: 15 })"
+            ]
+          }
+        },
+        {
+          "id": "p27:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 361,
+          "code": ".onClick(async () => {",
+          "description": "定义语音输入图标的点击事件监听器，触发异步权限检查流程。",
+          "context": {
+            "startLine": 356,
+            "lines": [
+              "            .width(33)",
+              "            .height(33)",
+              "            .borderRadius(4)",
+              "            .margin({ left: 15, right: 15 })",
+              "            .objectFit(ImageFit.Cover)",
+              "            .onClick(async () => {",
+              "              const result = await PermissionUtils.request([\"ohos.permission.MICROPHONE\"])",
+              "              if (!result) {",
+              "                Toast.show(\"请先授权麦克风权限\")",
+              "              }",
+              "              this.inputType = WXInputType.voice"
+            ]
+          }
+        },
+        {
+          "id": "p27:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 362,
+          "code": "const result = await PermissionUtils.request([\"ohos.permission.MICROPHONE\"])",
+          "description": "调用 PermissionUtils.request 请求获取麦克风权限，这是敏感数据的访问前置条件。",
+          "context": {
+            "startLine": 357,
+            "lines": [
+              "            .height(33)",
+              "            .borderRadius(4)",
+              "            .margin({ left: 15, right: 15 })",
+              "            .objectFit(ImageFit.Cover)",
+              "            .onClick(async () => {",
+              "              const result = await PermissionUtils.request([\"ohos.permission.MICROPHONE\"])",
+              "              if (!result) {",
+              "                Toast.show(\"请先授权麦克风权限\")",
+              "              }",
+              "              this.inputType = WXInputType.voice",
+              "              this.showFuncBarWithAnim(false)"
+            ]
+          }
+        },
+        {
+          "id": "p27:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 363,
+          "code": "if (!result) {",
+          "description": "检查权限请求结果，如果未授权则进入错误处理分支。",
+          "context": {
+            "startLine": 358,
+            "lines": [
+              "            .borderRadius(4)",
+              "            .margin({ left: 15, right: 15 })",
+              "            .objectFit(ImageFit.Cover)",
+              "            .onClick(async () => {",
+              "              const result = await PermissionUtils.request([\"ohos.permission.MICROPHONE\"])",
+              "              if (!result) {",
+              "                Toast.show(\"请先授权麦克风权限\")",
+              "              }",
+              "              this.inputType = WXInputType.voice",
+              "              this.showFuncBarWithAnim(false)",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p27:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+          "line": 364,
+          "code": "Toast.show(\"请先授权麦克风权限\")",
+          "description": "调用 Toast.show 方法，向用户展示“请先授权麦克风权限”的提示信息。",
+          "context": {
+            "startLine": 359,
+            "lines": [
+              "            .margin({ left: 15, right: 15 })",
+              "            .objectFit(ImageFit.Cover)",
+              "            .onClick(async () => {",
+              "              const result = await PermissionUtils.request([\"ohos.permission.MICROPHONE\"])",
+              "              if (!result) {",
+              "                Toast.show(\"请先授权麦克风权限\")",
+              "              }",
+              "              this.inputType = WXInputType.voice",
+              "              this.showFuncBarWithAnim(false)",
+              "            })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p27:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/Toast.ets",
+          "line": 7,
+          "code": "static show(msg: Msg) {",
+          "description": "Toast 工具类的静态 show 方法入口，接收消息参数并设置默认显示时长。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import Log from './Log';",
+              "",
+              "type Msg = string | Resource | number | boolean",
+              "",
+              "export class Toast {",
+              "  static show(msg: Msg) {",
+              "    Toast.showTime(msg, 2000)",
+              "  }",
+              "",
+              "  static showLong(msg: Msg) {",
+              "    Toast.showTime(msg, 4000)"
+            ]
+          }
+        },
+        {
+          "id": "p27:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/Toast.ets",
+          "line": 8,
+          "code": "Toast.showTime(msg, 2000)",
+          "description": "内部调用 showTime 方法，将消息和固定时长 2000ms 传递给底层实现。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "type Msg = string | Resource | number | boolean",
+              "",
+              "export class Toast {",
+              "  static show(msg: Msg) {",
+              "    Toast.showTime(msg, 2000)",
+              "  }",
+              "",
+              "  static showLong(msg: Msg) {",
+              "    Toast.showTime(msg, 4000)",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p27:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/Toast.ets",
+          "line": 17,
+          "code": "promptAction.showToast({",
+          "description": "最终 Sink 点：调用 @ohos.promptAction.showToast API，在系统 UI 层显示通知文本。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "    Toast.showTime(msg, 4000)",
+              "  }",
+              "",
+              "  static showTime(msg: Msg, duration: number = 4000) {",
+              "    try {",
+              "      promptAction.showToast({",
+              "        message: (typeof msg === \"number\" || typeof msg === \"boolean\") ?",
+              "          String(msg) as string : msg,",
+              "        duration: duration,",
+              "        bottom: \"center\",",
+              "      })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p27:n1",
+          "to": "p27:n2"
+        },
+        {
+          "from": "p27:n2",
+          "to": "p27:n3"
+        },
+        {
+          "from": "p27:n3",
+          "to": "p27:n4"
+        },
+        {
+          "from": "p27:n4",
+          "to": "p27:n5"
+        },
+        {
+          "from": "p27:n5",
+          "to": "p27:n6"
+        },
+        {
+          "from": "p27:n6",
+          "to": "p27:n7"
+        },
+        {
+          "from": "p27:n7",
+          "to": "p27:n8"
+        },
+        {
+          "from": "p27:n8",
+          "to": "p27:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "麦克风权限状态",
+          "用户交互事件（点击语音按钮）"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户点击语音输入图标时）"
+        ],
+        "cloudUpload": [
+          "无网络上传行为，仅本地显示提示"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储，数据仅在内存中临时处理"
+        ],
+        "permissions": [
+          "ohos.permission.MICROPHONE"
+        ]
+      }
+    }
+  ]
+}

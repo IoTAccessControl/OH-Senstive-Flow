@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260331-172042",
+    "featureId": "ui_ChatPage_167415b026",
+    "generatedAt": "2026-03-31T09:27:18.004Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "聊天页面加载时获取用户名称",
+        "dataSources": [
+          "路由跳转参数"
+        ],
+        "dataItems": [
+          {
+            "name": "用户名称",
+            "refs": [
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "内存存储",
+        "storageMethod": "组件状态变量（内存），未检测到本地持久化或加密操作",
+        "dataRecipients": [],
+        "processingPurpose": "初始化聊天页面显示内容",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户点击语音输入按钮时检查麦克风权限",
+        "dataSources": [
+          "用户交互事件",
+          "系统权限状态"
+        ],
+        "dataItems": [
+          {
+            "name": "麦克风权限状态",
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n4"
+              }
+            ]
+          },
+          {
+            "name": "用户交互事件（点击语音按钮）",
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "权限请求与校验",
+        "storageMethod": "无持久化存储，数据仅在内存中临时处理",
+        "dataRecipients": [],
+        "processingPurpose": "确保用户授权后方可使用语音输入功能",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.MICROPHONE",
+        "businessScenario": "用户点击语音输入按钮时",
+        "permissionPurpose": "获取麦克风权限以支持语音输入功能",
+        "denyImpact": "若拒绝授权，将提示“请先授权麦克风权限”，无法使用语音输入功能",
+        "refs": [
+          {
+            "flowId": "flow:p27",
+            "nodeId": "p27:n4"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

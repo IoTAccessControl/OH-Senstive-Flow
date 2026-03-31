@@ -1,0 +1,204 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260331-165211",
+    "generatedAt": "2026-03-31T08:55:01.156Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "warnings": [
+      "数据流 p14 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets:25 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 2,
+      "nodes": 5,
+      "edges": 3,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onCreate_24_d1d8db04",
+      "kind": "source",
+      "title": "应用创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p14",
+      "pathId": "p14",
+      "nodes": [
+        {
+          "id": "p14:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "UIAbility 创建时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "import { window } from '@kit.ArkUI';",
+              "import StepsUtil from '../common/utils/StepsUtil';",
+              "",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    StepsUtil.createStepsPreferences(this.context);",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {"
+            ]
+          }
+        },
+        {
+          "id": "p14:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 25,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "Outputs info-level logs.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "import StepsUtil from '../common/utils/StepsUtil';",
+              "",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    StepsUtil.createStepsPreferences(this.context);",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p14:n1",
+          "to": "p14:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p14 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets:25 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p15",
+      "pathId": "p15",
+      "nodes": [
+        {
+          "id": "p15:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "UIAbility 生命周期 onCreate 入口，触发应用初始化流程",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "import { window } from '@kit.ArkUI';",
+              "import StepsUtil from '../common/utils/StepsUtil';",
+              "",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    StepsUtil.createStepsPreferences(this.context);",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {"
+            ]
+          }
+        },
+        {
+          "id": "p15:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 26,
+          "code": "StepsUtil.createStepsPreferences(this.context);",
+          "description": "调用 StepsUtil.createStepsPreferences 方法，传入当前上下文以初始化步数偏好设置",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    StepsUtil.createStepsPreferences(this.context);",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p15:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 30,
+          "code": "let preference: Promise<preferences.Preferences> = preferences.getPreferences(context, PREFERENCES_NAME);",
+          "description": "调用 preferences.getPreferences API，尝试从本地获取或创建名为 myPreferences 的配置文件实例（Sink）",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "/**",
+              " * Steps util function.",
+              " */",
+              "export class StepsUtil {",
+              "  createStepsPreferences(context: common.UIAbilityContext) {",
+              "    let preference: Promise<preferences.Preferences> = preferences.getPreferences(context, PREFERENCES_NAME);",
+              "    GlobalContext.getContext().setObject('getStepsPreferences', preference);",
+              "  }",
+              "",
+              "  /**",
+              "   * Get the progress value."
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p15:n1",
+          "to": "p15:n2"
+        },
+        {
+          "from": "p15:n2",
+          "to": "p15:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户步数偏好设置数据",
+          "应用配置信息"
+        ],
+        "collectionFrequency": [
+          "应用启动时一次性初始化"
+        ],
+        "cloudUpload": [
+          "无云端上传行为，仅本地内存加载"
+        ],
+        "storageAndEncryption": [
+          "本地存储 (Preferences)",
+          "未检测到显式加密处理，依赖系统级安全存储"
+        ],
+        "permissions": [
+          "ohos.permission.WRITE_SETTINGS (隐含在 Preferences 操作中)"
+        ]
+      }
+    }
+  ]
+}

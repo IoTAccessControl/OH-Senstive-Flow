@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260331-172042",
+    "generatedAt": "2026-03-31T09:26:52.269Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onBackground_42_122e7749",
+      "kind": "source",
+      "title": "应用切到后台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p35",
+      "pathId": "p35",
+      "nodes": [
+        {
+          "id": "p35:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 42,
+          "code": "onBackground() {",
+          "description": "UIAbility 生命周期回调 onBackground 被触发，表示应用从前台切换到后台，此处为数据流起点。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "  onForeground() {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p35:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 43,
+          "code": "// Ability has back to background",
+          "description": "注释说明当前状态为应用返回后台，未涉及具体敏感数据采集。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p35:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 44,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+          "description": "调用 hilog.info 将固定的字符串 'Ability onBackground' 输出到系统日志，作为数据流终点（Sink）。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p35:n1",
+          "to": "p35:n2"
+        },
+        {
+          "from": "p35:n2",
+          "to": "p35:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态（后台切换事件）"
+        ],
+        "collectionFrequency": [
+          "事件触发（应用进入后台时）"
+        ],
+        "cloudUpload": [
+          "无网络上传行为，仅本地日志输出"
+        ],
+        "storageAndEncryption": [
+          "数据未持久化存储，仅作为临时日志参数传递，无加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

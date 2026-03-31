@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260331-165211",
+    "featureId": "ui_HomePage_41cf9485d4",
+    "generatedAt": "2026-03-31T08:55:37.168Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.INTERNET 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "用户点击开始/停止按钮以启动或结束计步运动时",
+        "dataSources": [
+          "用户当前位置",
+          "用户设定的步数目标",
+          "应用内部状态变量"
+        ],
+        "dataItems": [
+          {
+            "name": "用户当前位置",
+            "refs": [
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n7"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n8"
+              }
+            ]
+          },
+          {
+            "name": "起始位置",
+            "refs": [
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n7"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n8"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n8"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n9"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n5"
+              },
+              {
+                "flowId": "flow:p13",
+                "nodeId": "p13:n5"
+              }
+            ]
+          },
+          {
+            "name": "运动状态标志",
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n7"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n6"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n9"
+              },
+              {
+                "flowId": "flow:p13",
+                "nodeId": "p13:n6"
+              }
+            ]
+          },
+          {
+            "name": "日志信息",
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n10"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n11"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "在本地获取并校验位置数据，将起始位置和运动状态写入本地存储，调用系统接口启动或停止后台连续定位任务",
+        "storageMethod": "本地持久化存储",
+        "dataRecipients": [],
+        "processingPurpose": "记录运动轨迹起点、保存当前运动状态以便恢复，以及维持后台定位服务以持续采集步数和位置数据",
+        "privacyToggleUi": {
+          "where": "首页 - 开始/停止按钮",
+          "refs": [
+            {
+              "uiNodeId": "ui:b1ce3fc86be8"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "businessScenario": "用户点击首页的“开始”或“停止”按钮以启动或结束计步运动时",
+        "permissionPurpose": "为了在应用处于后台时持续运行定位服务，从而准确记录运动轨迹起点、保存当前运动状态并实时采集步数与位置数据",
+        "denyImpact": "拒绝授权后，应用可能无法在后台维持定位服务，导致计步运动过程中无法持续记录步数和位置数据，或无法正确保存运动状态",
+        "refs": [
+          {
+            "flowId": "flow:p9",
+            "nodeId": "p9:n11"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.LOCATION",
+        "businessScenario": "用户点击开始按钮启动计步功能时",
+        "permissionPurpose": "获取用户当前位置信息以计算步数轨迹和起始点",
+        "denyImpact": "无法获取位置信息，导致无法记录运动轨迹，计步功能可能无法正常使用或数据不完整",
+        "refs": [
+          {
+            "flowId": "flow:p8",
+            "nodeId": "p8:n10"
+          },
+          {
+            "flowId": "flow:p9",
+            "nodeId": "p9:n11"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

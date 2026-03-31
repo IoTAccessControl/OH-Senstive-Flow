@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260331-165211",
+    "generatedAt": "2026-03-31T08:55:01.154Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-flash"
+    },
+    "counts": {
+      "nodes": 5,
+      "edges": 4,
+      "pages": 1,
+      "elements": 4
+    }
+  },
+  "roots": [
+    "page:b80c5bcb850e"
+  ],
+  "nodes": {
+    "page:b80c5bcb850e": {
+      "id": "page:b80c5bcb850e",
+      "category": "Page",
+      "name": "HomePage",
+      "description": "首页",
+      "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+      "line": 36,
+      "code": "struct HomePage {",
+      "context": {
+        "startLine": 31,
+        "lines": [
+          "const TAG: string = 'HomePage';",
+          "const uiContext: UIContext | undefined = AppStorage.get('uiContext');",
+          "",
+          "@Entry",
+          "@Component",
+          "struct HomePage {",
+          "  @State currentSteps: string = CommonConstants.INITIALIZATION_VALUE;",
+          "  @Provide stepGoal: string = '';",
+          "  @State oldSteps: string = '';",
+          "  @State startPosition: string = '';",
+          "  @State currentLocation: string = '';"
+        ]
+      }
+    },
+    "ui:599a65fa9471": {
+      "id": "ui:599a65fa9471",
+      "category": "Component",
+      "name": "build",
+      "description": "页面构建入口",
+      "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+      "line": 170,
+      "code": "build() {",
+      "context": {
+        "startLine": 165,
+        "lines": [
+          "    } catch (err) {",
+          "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack({ alignContent: Alignment.TopStart }) {",
+          "      CompletionStatus({",
+          "        progressValue: $progressValue",
+          "      })",
+          ""
+        ]
+      }
+    },
+    "ui:6fb8ff8b9616": {
+      "id": "ui:6fb8ff8b9616",
+      "category": "Component",
+      "name": "CompletionStatus",
+      "description": "完成度状态组件",
+      "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+      "line": 172,
+      "code": "CompletionStatus({",
+      "context": {
+        "startLine": 167,
+        "lines": [
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack({ alignContent: Alignment.TopStart }) {",
+          "      CompletionStatus({",
+          "        progressValue: $progressValue",
+          "      })",
+          "",
+          "      CurrentSituation({",
+          "        currentSteps: this.currentSteps,"
+        ]
+      }
+    },
+    "ui:31b3ecd5a170": {
+      "id": "ui:31b3ecd5a170",
+      "category": "Component",
+      "name": "CurrentSituation",
+      "description": "当前状态展示",
+      "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+      "line": 176,
+      "code": "CurrentSituation({",
+      "context": {
+        "startLine": 171,
+        "lines": [
+          "    Stack({ alignContent: Alignment.TopStart }) {",
+          "      CompletionStatus({",
+          "        progressValue: $progressValue",
+          "      })",
+          "",
+          "      CurrentSituation({",
+          "        currentSteps: this.currentSteps,",
+          "        startPosition: this.startPosition,",
+          "        currentLocation: this.currentLocation",
+          "      })",
+          ""
+        ]
+      }
+    },
+    "ui:b1ce3fc86be8": {
+      "id": "ui:b1ce3fc86be8",
+      "category": "Button",
+      "name": "Button",
+      "description": "开始/停止按钮",
+      "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+      "line": 183,
+      "code": "Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+      "context": {
+        "startLine": 178,
+        "lines": [
+          "        startPosition: this.startPosition,",
+          "        currentLocation: this.currentLocation",
+          "      })",
+          "",
+          "      Row() {",
+          "        Button(this.isStart ? $r('app.string.stop') : $r('app.string.start'))",
+          "          .width($r('app.float.start_button_width'))",
+          "          .height($r('app.float.start_button_height'))",
+          "          .borderRadius($r('app.float.start_button_radius'))",
+          "          .backgroundColor($r('app.color.button_background'))",
+          "          .fontSize($r('app.float.start_font_size'))"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:b80c5bcb850e",
+      "to": "ui:599a65fa9471",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b80c5bcb850e",
+      "to": "ui:6fb8ff8b9616",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b80c5bcb850e",
+      "to": "ui:31b3ecd5a170",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b80c5bcb850e",
+      "to": "ui:b1ce3fc86be8",
+      "kind": "contains"
+    }
+  ]
+}

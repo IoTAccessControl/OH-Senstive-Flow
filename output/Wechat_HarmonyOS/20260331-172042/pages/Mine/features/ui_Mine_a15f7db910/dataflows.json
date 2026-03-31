@@ -1,0 +1,400 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260331-172042",
+    "generatedAt": "2026-03-31T09:26:52.269Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 12,
+      "edges": 10,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "Mine",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+        "structName": "Mine",
+        "line": 9,
+        "description": "我的页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Mine_a15f7db910",
+      "kind": "ui",
+      "title": "点击操作"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p18",
+      "pathId": "p18",
+      "nodes": [
+        {
+          "id": "p18:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 12,
+          "code": "build() {",
+          "description": "UI构建入口函数 build()，初始化页面结构。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "@Preview",
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)"
+            ]
+          }
+        },
+        {
+          "id": "p18:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 16,
+          "code": "Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+          "description": "渲染 Image 组件，显示当前用户头像路径 (this.imgPath) 或默认资源。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p18:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 21,
+          "code": ".onClick(() => {",
+          "description": "定义 Image 组件的点击事件回调 onClick，触发头像更换逻辑。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)"
+            ]
+          }
+        },
+        {
+          "id": "p18:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 22,
+          "code": "PhotoPickerUtils.openGallery(",
+          "description": "调用 PhotoPickerUtils.openGallery 打开系统相册选择器，请求获取用户选择的图片 URI。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "          .width(70)",
+              "          .height(70)",
+              "          .margin({ left: 25, right: 10 })",
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p18:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 25,
+          "code": "}, errMsg => {",
+          "description": "定义 openGallery 的错误回调函数，接收选择失败时的错误信息 errMsg。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "          .borderRadius(8)",
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)",
+              "            })",
+              "          })",
+              "",
+              "        Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p18:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 26,
+          "code": "Toast.show(errMsg)",
+          "description": "调用 Toast.show 方法，将错误信息作为参数传入，准备向用户展示提示。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "          .onClick(() => {",
+              "            PhotoPickerUtils.openGallery(",
+              "              uri => {",
+              "                this.imgPath = uri;",
+              "              }, errMsg => {",
+              "              Toast.show(errMsg)",
+              "            })",
+              "          })",
+              "",
+              "        Column() {",
+              "          Text(\"亚瑟王\")"
+            ]
+          }
+        },
+        {
+          "id": "p18:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/Toast.ets",
+          "line": 7,
+          "code": "static show(msg: Msg) {",
+          "description": "Toast 工具类的静态 show 方法入口，接收消息参数 msg。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import Log from './Log';",
+              "",
+              "type Msg = string | Resource | number | boolean",
+              "",
+              "export class Toast {",
+              "  static show(msg: Msg) {",
+              "    Toast.showTime(msg, 2000)",
+              "  }",
+              "",
+              "  static showLong(msg: Msg) {",
+              "    Toast.showTime(msg, 4000)"
+            ]
+          }
+        },
+        {
+          "id": "p18:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/Toast.ets",
+          "line": 8,
+          "code": "Toast.showTime(msg, 2000)",
+          "description": "内部调用 showTime 方法，设置默认显示时长为 2000 毫秒。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "type Msg = string | Resource | number | boolean",
+              "",
+              "export class Toast {",
+              "  static show(msg: Msg) {",
+              "    Toast.showTime(msg, 2000)",
+              "  }",
+              "",
+              "  static showLong(msg: Msg) {",
+              "    Toast.showTime(msg, 4000)",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p18:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/utils/Toast.ets",
+          "line": 17,
+          "code": "promptAction.showToast({",
+          "description": "调用 @ohos.promptAction.showToast API，将错误信息以系统弹窗形式展示给用户（Sink点）。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "    Toast.showTime(msg, 4000)",
+              "  }",
+              "",
+              "  static showTime(msg: Msg, duration: number = 4000) {",
+              "    try {",
+              "      promptAction.showToast({",
+              "        message: (typeof msg === \"number\" || typeof msg === \"boolean\") ?",
+              "          String(msg) as string : msg,",
+              "        duration: duration,",
+              "        bottom: \"center\",",
+              "      })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p18:n1",
+          "to": "p18:n2"
+        },
+        {
+          "from": "p18:n2",
+          "to": "p18:n3"
+        },
+        {
+          "from": "p18:n3",
+          "to": "p18:n4"
+        },
+        {
+          "from": "p18:n4",
+          "to": "p18:n5"
+        },
+        {
+          "from": "p18:n5",
+          "to": "p18:n6"
+        },
+        {
+          "from": "p18:n6",
+          "to": "p18:n7"
+        },
+        {
+          "from": "p18:n7",
+          "to": "p18:n8"
+        },
+        {
+          "from": "p18:n8",
+          "to": "p18:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户头像图片URI (imgPath)",
+          "相册选择错误信息 (errMsg)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击头像时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (State变量 imgPath)",
+          "未检测到加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.READ_MEDIA (隐含于PhotoPickerUtils.openGallery调用中，用于访问相册)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p19",
+      "pathId": "p19",
+      "nodes": [
+        {
+          "id": "p19:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 12,
+          "code": "build() {",
+          "description": "构建 UI 界面入口，初始化页面结构，准备接收用户交互事件。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "@Preview",
+              "@Component",
+              "export default struct Mine {",
+              "  @State imgPath: string = \"\"",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      Row() {",
+              "        Image(this.imgPath ? this.imgPath : $r('app.media.ic_user_head1'))",
+              "          .width(70)"
+            ]
+          }
+        },
+        {
+          "id": "p19:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 73,
+          "code": ".onClick(() => {",
+          "description": "定义点击事件监听器，当用户点击该区域时触发回调函数。",
+          "context": {
+            "startLine": 68,
+            "lines": [
+              "",
+              "      }.width(\"100%\")",
+              "      .height(203)",
+              "      .backgroundColor(Color.White)",
+              "      .padding({ top: WindowManager.statusBarHeight })",
+              "      .onClick(() => {",
+              "        router.pushUrl({ url: 'pages/qrcode/MyQrCodePage' })",
+              "      })",
+              "",
+              "      Divider()",
+              "        .vertical(false)"
+            ]
+          }
+        },
+        {
+          "id": "p19:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/mine/Mine.ets",
+          "line": 74,
+          "code": "router.pushUrl({ url: 'pages/qrcode/MyQrCodePage' })",
+          "description": "调用 router.pushUrl API，执行页面导航逻辑，将当前上下文跳转到 'pages/qrcode/MyQrCodePage' 页面。",
+          "context": {
+            "startLine": 69,
+            "lines": [
+              "      }.width(\"100%\")",
+              "      .height(203)",
+              "      .backgroundColor(Color.White)",
+              "      .padding({ top: WindowManager.statusBarHeight })",
+              "      .onClick(() => {",
+              "        router.pushUrl({ url: 'pages/qrcode/MyQrCodePage' })",
+              "      })",
+              "",
+              "      Divider()",
+              "        .vertical(false)",
+              "        .color(\"#f3f3f3\")"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p19:n1",
+          "to": "p19:n2"
+        },
+        {
+          "from": "p19:n2",
+          "to": "p19:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 交互事件（点击操作）",
+          "页面路由参数（目标页面路径）"
+        ],
+        "collectionFrequency": [
+          "用户触发（事件驱动）"
+        ],
+        "cloudUpload": [
+          "无网络上传行为，仅进行本地页面跳转"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储，数据仅在内存中传递用于路由控制"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

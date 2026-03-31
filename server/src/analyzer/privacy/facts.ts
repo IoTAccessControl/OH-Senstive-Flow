@@ -163,11 +163,79 @@ function normalizeBusinessScenario(raw: unknown, feature: PrivacyFactsFeatureCon
   return fallbackScenario(feature);
 }
 
+const USER_FACING_IDENTIFIER_LABELS: Record<string, string> = {
+  currentlocation: '当前位置',
+  startposition: '起始位置',
+  isstart: '计步状态',
+  stepgoal: '步数目标',
+  build: '页面构建入口',
+  foreground: '前台状态',
+  background: '后台状态',
+};
+
+function normalizeUserFacingIdentifier(text: string): string {
+  const compact = text.replaceAll(/\s+/gu, '').trim().toLowerCase();
+  if (!compact) return '';
+  const strippedThis = compact.startsWith('this.') ? compact.slice(5) : compact;
+  return USER_FACING_IDENTIFIER_LABELS[strippedThis] ?? '';
+}
+
+function normalizeUserFacingText(raw: unknown): string {
+  const text = cleanText(raw);
+  if (!text || text === '未识别') return text;
+
+  const mappedWhole = normalizeUserFacingIdentifier(text);
+  if (mappedWhole) return mappedWhole;
+
+  const identifierWithChineseHint = /^([A-Za-z_$][\w$.]*)\s*[（(]\s*([^()（）]*[\u4e00-\u9fff][^()（）]*)\s*[）)]$/u.exec(text);
+  if (identifierWithChineseHint) {
+    const hinted = cleanText(identifierWithChineseHint[2]);
+    if (hinted) return hinted;
+  }
+
+  let normalized = text;
+  if (hasCjk(normalized)) {
+    normalized = normalized.replace(/\s*[（(]\s*[^()（）]*[A-Za-z][^()（）]*\s*[）)]/gu, '');
+  }
+  normalized = cleanText(normalized);
+
+  const mappedNormalized = normalizeUserFacingIdentifier(normalized);
+  return mappedNormalized || normalized || text;
+}
+
+function normalizeUserFacingTextArray(values: string[] | undefined): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const value of values ?? []) {
+    const normalized = normalizeUserFacingText(value);
+    if (!normalized || seen.has(normalized)) continue;
+    seen.add(normalized);
+    out.push(normalized);
+  }
+  return out;
+}
+
 function normalizeExtractedContent(content: FeaturePrivacyFactsContent, feature: PrivacyFactsFeatureContext | null): FeaturePrivacyFactsContent {
   return {
     dataPractices: (content.dataPractices ?? []).map((p) => ({
       ...p,
       businessScenario: normalizeBusinessScenario(p.businessScenario, feature),
+      dataSources: normalizeUserFacingTextArray(p.dataSources),
+      dataItems: (p.dataItems ?? []).map((item) => ({
+        ...item,
+        name: normalizeUserFacingText(item.name) || item.name,
+      })),
+      storageMethod: normalizeUserFacingText(p.storageMethod) || p.storageMethod,
+      dataRecipients: (p.dataRecipients ?? []).map((recipient) => ({
+        ...recipient,
+        name: normalizeUserFacingText(recipient.name) || recipient.name,
+      })),
+      privacyToggleUi: p.privacyToggleUi
+        ? {
+            ...p.privacyToggleUi,
+            where: normalizeUserFacingText(p.privacyToggleUi.where) || p.privacyToggleUi.where,
+          }
+        : undefined,
     })),
     permissionPractices: (content.permissionPractices ?? []).map((p) => ({
       ...p,
@@ -416,7 +484,8 @@ function buildPrompt(args: {
     '2) 禁止凭空编造接收方/权限/数据项；允许对“处理方式/存储方式/处理目的/拒绝影响”等做弱推断，但必须与提供的证据一致。',
     '3) 输出必须是严格 JSON（不要多余文本）。',
     '4) businessScenario 必须写成用户或应用可理解的业务场景，禁止直接输出“build”“onForeground”“onBackground”“onDestroy”“生命周期函数”“UIAbility”“WindowStage”等框架术语；若只能判断到框架阶段，请改写为“页面展示时”“应用切到前台时”“应用退出时”等自然表述。',
-    '5) businessScenario、processingPurpose、permissionPurpose、denyImpact 必须使用简体中文；即使证据文本是英文，也必须翻译或改写成中文，禁止直接复用英文 SDK 注释原文。',
+    '5) businessScenario、dataSources、dataItems[].name、dataRecipients[].name、storageMethod、privacyToggleUi.where 必须优先使用面向用户的简体中文；即使证据文本是英文，也必须翻译或改写成中文。',
+    '6) 禁止直接输出 currentLocation、startPosition、isStart、stepGoal、build、Foreground、Background 等代码变量名或框架术语；若证据里同时出现“英文标识（中文解释）”，应优先保留中文解释。',
   ].join('\n');
 
   return { system, user };
