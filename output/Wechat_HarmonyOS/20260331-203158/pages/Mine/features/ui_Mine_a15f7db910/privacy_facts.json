@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260331-203158",
+    "featureId": "ui_Mine_a15f7db910",
+    "generatedAt": "2026-03-31T12:40:16.262Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户点击头像更换个人图片",
+        "dataSources": [
+          "系统相册"
+        ],
+        "dataItems": [
+          {
+            "name": "用户头像图片URI",
+            "refs": [
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n4"
+              }
+            ]
+          },
+          {
+            "name": "相册选择错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "本地读取并展示",
+        "storageMethod": "本地内存存储，未检测到加密或持久化存储操作",
+        "dataRecipients": [],
+        "processingPurpose": "更新用户在“我的”页面显示的头像",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户点击二维码图标进入个人二维码页面",
+        "dataSources": [],
+        "dataItems": [
+          {
+            "name": "页面导航指令",
+            "refs": [
+              {
+                "flowId": "flow:p19",
+                "nodeId": "p19:n3"
+              }
+            ]
+          },
+          {
+            "name": "目标页面标识符",
+            "refs": [
+              {
+                "flowId": "flow:p19",
+                "nodeId": "p19:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "本地页面跳转",
+        "storageMethod": "无持久化存储操作，数据仅在内存中传递",
+        "dataRecipients": [],
+        "processingPurpose": "导航至个人二维码展示页面",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "用户点击头像更换个人图片",
+        "permissionPurpose": "访问系统相册以获取用户选择的图片",
+        "denyImpact": "无法打开相册选择器，导致用户无法更换头像",
+        "refs": [
+          {
+            "flowId": "flow:p18",
+            "nodeId": "p18:n4"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

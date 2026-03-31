@@ -1,0 +1,408 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260331-203158",
+    "generatedAt": "2026-03-31T12:38:39.580Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "counts": {
+      "nodes": 13,
+      "edges": 12,
+      "pages": 1,
+      "elements": 12
+    }
+  },
+  "roots": [
+    "page:552a436ed1c7"
+  ],
+  "nodes": {
+    "page:552a436ed1c7": {
+      "id": "page:552a436ed1c7",
+      "category": "Page",
+      "name": "SearchPage",
+      "description": "搜索页面",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 10,
+      "code": "export default struct SearchPage {",
+      "context": {
+        "startLine": 5,
+        "lines": [
+          "import { Toast } from '../../utils/Toast';",
+          "import WindowManager from '../../utils/WindowManager';",
+          "",
+          "@Entry",
+          "@Component",
+          "export default struct SearchPage {",
+          "  private context = getContext(this) as common.UIAbilityContext;",
+          "  private controller: TextInputController = new TextInputController()",
+          "  private keyboardHeight: number = 0",
+          "  @State private searchText: string = ''",
+          ""
+        ]
+      }
+    },
+    "ui:fedc9dc27d26": {
+      "id": "ui:fedc9dc27d26",
+      "category": "Component",
+      "name": "build",
+      "description": "搜索",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 28,
+      "code": "build() {",
+      "context": {
+        "startLine": 23,
+        "lines": [
+          "",
+          "  onBackPress() {",
+          "    return this.keyboardHeight > 0",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Row() {",
+          "        Stack() {",
+          "          TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+          "            .placeholderFont({ size: 20, weight: 400 })"
+        ]
+      }
+    },
+    "ui:45b1017c1092": {
+      "id": "ui:45b1017c1092",
+      "category": "Input",
+      "name": "TextInput",
+      "description": "搜索",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 32,
+      "code": "TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+      "context": {
+        "startLine": 27,
+        "lines": [
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Row() {",
+          "        Stack() {",
+          "          TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+          "            .placeholderFont({ size: 20, weight: 400 })",
+          "            .caretColor(Color.Green)",
+          "            .placeholderColor(Color.Grey)",
+          "            .width('100%')",
+          "            .height(\"100%\")"
+        ]
+      }
+    },
+    "ui:324b439ea00d": {
+      "id": "ui:324b439ea00d",
+      "category": "Button",
+      "name": "Image",
+      "description": "搜索",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 60,
+      "code": "Image($r(\"app.media.ic_search\"))",
+      "context": {
+        "startLine": 55,
+        "lines": [
+          "            .onSubmit(() => {",
+          "              prompt.showToast({ message: this.searchText })",
+          "            })",
+          "",
+          "          Row() {",
+          "            Image($r(\"app.media.ic_search\"))",
+          "              .colorBlend(Color.Grey)",
+          "              .width(20)",
+          "              .height(20)",
+          "            if (this.searchText.length != 0) {",
+          "              Image($r('app.media.ic_delete'))"
+        ]
+      }
+    },
+    "ui:7ab1f01f7dd2": {
+      "id": "ui:7ab1f01f7dd2",
+      "category": "Button",
+      "name": "Image",
+      "description": "清除搜索",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 65,
+      "code": "Image($r('app.media.ic_delete'))",
+      "context": {
+        "startLine": 60,
+        "lines": [
+          "            Image($r(\"app.media.ic_search\"))",
+          "              .colorBlend(Color.Grey)",
+          "              .width(20)",
+          "              .height(20)",
+          "            if (this.searchText.length != 0) {",
+          "              Image($r('app.media.ic_delete'))",
+          "                .width(20)",
+          "                .height(20)",
+          "                .colorBlend(Color.Gray)",
+          "                .onClick(() => {",
+          "                  this.searchText = \"\""
+        ]
+      }
+    },
+    "ui:ff691ae9cafd": {
+      "id": "ui:ff691ae9cafd",
+      "category": "Display",
+      "name": "Image",
+      "description": "语音",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 73,
+      "code": "Image($r(\"app.media.ic_voice\"))",
+      "context": {
+        "startLine": 68,
+        "lines": [
+          "                .colorBlend(Color.Gray)",
+          "                .onClick(() => {",
+          "                  this.searchText = \"\"",
+          "                })",
+          "            } else {",
+          "              Image($r(\"app.media.ic_voice\"))",
+          "                .width(23)",
+          "                .height(23)",
+          "            }",
+          "          }",
+          "          .width(\"100%\")"
+        ]
+      }
+    },
+    "ui:8e8504a0ca2e": {
+      "id": "ui:8e8504a0ca2e",
+      "category": "Button",
+      "name": "Text",
+      "description": "取消",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 105,
+      "code": "Text(\"取消\")",
+      "context": {
+        "startLine": 100,
+        "lines": [
+          "          //   .borderRadius(8)",
+          "        }",
+          "        .margin({ left: 20 })",
+          "        .layoutWeight(1)",
+          "",
+          "        Text(\"取消\")",
+          "          .fontColor(\"#5f6c8a\")",
+          "          .width(70)",
+          "          .height(\"100%\")",
+          "          .fontWeight(400)",
+          "          .textAlign(TextAlign.Center)"
+        ]
+      }
+    },
+    "ui:df4ec983c685": {
+      "id": "ui:df4ec983c685",
+      "category": "Display",
+      "name": "Text",
+      "description": "搜索指定内容",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 131,
+      "code": "Text(\"搜索指定内容\")",
+      "context": {
+        "startLine": 126,
+        "lines": [
+          "      .height(40)",
+          "      .justifyContent(FlexAlign.SpaceBetween)",
+          "      .margin({ top: 10 })",
+          "",
+          "",
+          "      Text(\"搜索指定内容\")",
+          "        .fontColor(Color.Gray)",
+          "        .margin({ left: 25, top: 25 })",
+          "        .fontSize(15)",
+          "",
+          "      Divider()"
+        ]
+      }
+    },
+    "ui:ec385b1dd4e5": {
+      "id": "ui:ec385b1dd4e5",
+      "category": "Button",
+      "name": "Text",
+      "description": "朋友圈",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 142,
+      "code": "Text(\"朋友圈\")",
+      "context": {
+        "startLine": 137,
+        "lines": [
+          "        .margin({ left: 25, right: 25, top: 12 })",
+          "        .height(0.6)",
+          "        .color(\"#e6e6e6\")",
+          "",
+          "      Row() {",
+          "        Text(\"朋友圈\")",
+          "          .width(\"25%\")",
+          "          .fontColor(\"#5f6c8a\")",
+          "          .fontSize(17)",
+          "          .fontWeight(500)",
+          "          .onClick(unDevTip)"
+        ]
+      }
+    },
+    "ui:4a566e3fe368": {
+      "id": "ui:4a566e3fe368",
+      "category": "Button",
+      "name": "Text",
+      "description": "公众号",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 150,
+      "code": "Text(\"公众号\")",
+      "context": {
+        "startLine": 145,
+        "lines": [
+          "          .fontSize(17)",
+          "          .fontWeight(500)",
+          "          .onClick(unDevTip)",
+          "          .textAlign(TextAlign.Center)",
+          "",
+          "        Text(\"公众号\")",
+          "          .width(\"25%\")",
+          "          .fontColor(\"#5f6c8a\")",
+          "          .fontSize(17)",
+          "          .fontWeight(500)",
+          "          .textAlign(TextAlign.Center)"
+        ]
+      }
+    },
+    "ui:46509d64943c": {
+      "id": "ui:46509d64943c",
+      "category": "Button",
+      "name": "Text",
+      "description": "小程序",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 158,
+      "code": "Text(\"小程序\")",
+      "context": {
+        "startLine": 153,
+        "lines": [
+          "          .fontSize(17)",
+          "          .fontWeight(500)",
+          "          .textAlign(TextAlign.Center)",
+          "          .onClick(unDevTip)",
+          "",
+          "        Text(\"小程序\")",
+          "          .width(\"25%\")",
+          "          .fontColor(\"#5f6c8a\")",
+          "          .fontSize(17)",
+          "          .fontWeight(500)",
+          "          .textAlign(TextAlign.Center)"
+        ]
+      }
+    },
+    "ui:9351d91d948f": {
+      "id": "ui:9351d91d948f",
+      "category": "Button",
+      "name": "Text",
+      "description": "视频号",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 166,
+      "code": "Text(\"视频号\")",
+      "context": {
+        "startLine": 161,
+        "lines": [
+          "          .fontSize(17)",
+          "          .fontWeight(500)",
+          "          .textAlign(TextAlign.Center)",
+          "          .onClick(unDevTip)",
+          "",
+          "        Text(\"视频号\")",
+          "          .width(\"25%\")",
+          "          .fontWeight(500)",
+          "          .fontColor(\"#5f6c8a\")",
+          "          .fontSize(17)",
+          "          .textAlign(TextAlign.Center)"
+        ]
+      }
+    },
+    "ui:8ecd3609fc5b": {
+      "id": "ui:8ecd3609fc5b",
+      "category": "Button",
+      "name": "Text",
+      "description": "页面设置",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+      "line": 178,
+      "code": "Text(\"页面设置\")",
+      "context": {
+        "startLine": 173,
+        "lines": [
+          "      }",
+          "      .margin({ top: 12 })",
+          "",
+          "      Blank()",
+          "",
+          "      Text(\"页面设置\")",
+          "        .fontColor(\"#5f6c8a\")",
+          "        .fontSize(17)",
+          "        .fontWeight(500)",
+          "        .onClick(unDevTip)",
+          "        .alignSelf(ItemAlign.Center)"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:fedc9dc27d26",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:45b1017c1092",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:324b439ea00d",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:7ab1f01f7dd2",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:ff691ae9cafd",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:8e8504a0ca2e",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:df4ec983c685",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:ec385b1dd4e5",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:4a566e3fe368",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:46509d64943c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:9351d91d948f",
+      "kind": "contains"
+    },
+    {
+      "from": "page:552a436ed1c7",
+      "to": "ui:8ecd3609fc5b",
+      "kind": "contains"
+    }
+  ]
+}

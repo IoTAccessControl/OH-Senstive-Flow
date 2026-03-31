@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260331-205128",
+    "featureId": "ui_HomePage_03ad5d65fc",
+    "generatedAt": "2026-03-31T12:54:57.376Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "用户点击开始或停止按钮以控制计步服务的运行状态",
+        "dataSources": [
+          "用户交互操作"
+        ],
+        "dataItems": [
+          {
+            "name": "应用运行状态标识",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n3"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n5"
+              }
+            ]
+          },
+          {
+            "name": "步数数据",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n1"
+              }
+            ]
+          },
+          {
+            "name": "位置信息",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n1"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "本地逻辑处理与状态切换",
+        "storageMethod": "本地持久化存储",
+        "dataRecipients": [],
+        "processingPurpose": "记录用户是否正在计步，以便在应用重启后恢复之前的运行状态",
+        "privacyToggleUi": {
+          "where": "首页开始/停止按钮",
+          "refs": [
+            {
+              "uiNodeId": "ui:b1ce3fc86be8"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "businessScenario": "开始/停止计步服务",
+        "permissionPurpose": "为了在您点击开始或停止按钮后，让计步功能能在后台持续运行并记录步数，即使应用切换到后台或屏幕关闭也能正常工作。",
+        "denyImpact": "若拒绝授权，计步服务可能无法在后台持续运行，导致您在切换应用或锁屏后无法继续准确记录步数。",
+        "refs": [
+          {
+            "flowId": "flow:p9",
+            "nodeId": "p9:n8"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      }
+    ]
+  }
+}

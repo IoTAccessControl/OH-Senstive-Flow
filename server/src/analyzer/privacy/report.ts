@@ -46,19 +46,6 @@ function cleanText(v: unknown): string {
   return v.replaceAll(/\s+/gu, ' ').trim();
 }
 
-function safeJsonParse(text: string): unknown {
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    const start = text.indexOf('{');
-    const end = text.lastIndexOf('}');
-    if (start >= 0 && end > start) {
-      return JSON.parse(text.slice(start, end + 1)) as unknown;
-    }
-    throw new Error('LLM 返回无法解析为 JSON');
-  }
-}
-
 function isUnknownText(v: unknown): boolean {
   const t = cleanText(v);
   return !t || t === '未识别';
@@ -1086,94 +1073,163 @@ function collectPracticeFlowIds(
   return out;
 }
 
-async function decideHandlingSentenceWithReportLlm(args: {
-  llm: LlmConfig;
+type CollectionParagraphAnchor = {
+  name: string;
+  jumpTo: { featureId: string; flowId: string; nodeId: string };
+};
+
+function relatedFlowsForPractice(args: {
   feature: ReportFeatureInput;
   practice: PrivacyDataPractice;
   perFlowIndex: Map<string, Set<string>> | undefined;
-}): Promise<string> {
-  const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
-  if (!apiKey) return REPORT_LOCAL_HANDLING_SENTENCE;
-
+}): Array<{
+  flowId: string;
+  pathId: string;
+  summary: {
+    dataItems: string[];
+    collectionFrequency: string[];
+    cloudUpload: string[];
+    storageAndEncryption: string[];
+    permissions: string[];
+  };
+  evidenceNodes: Array<{ filePath: string; line: number; code: string; description: string }>;
+}> {
   const referencedFlowIds = collectPracticeFlowIds(args.practice, args.perFlowIndex);
   const candidateFlowIds =
     referencedFlowIds.length > 0
       ? new Set(referencedFlowIds)
       : (args.feature.dataflows.flows?.length ?? 0) === 1
-      ? new Set([cleanText(args.feature.dataflows.flows[0]?.flowId)])
+        ? new Set([cleanText(args.feature.dataflows.flows[0]?.flowId)])
         : new Set<string>();
 
-  const relatedFlows =
-    candidateFlowIds.size === 0
-      ? []
-      : args.feature.dataflows.flows
-          .filter((flow) => {
-            const flowId = cleanText(flow?.flowId);
-            return flowId && candidateFlowIds.has(flowId);
-          })
-          .map((flow) => ({
-            flowId: cleanText(flow.flowId),
-            pathId: cleanText(flow.pathId),
-            summary: {
-              dataItems: Array.isArray(flow.summary?.dataItems) ? flow.summary?.dataItems.map(cleanText).filter(Boolean) : [],
-              collectionFrequency: Array.isArray(flow.summary?.collectionFrequency)
-                ? flow.summary?.collectionFrequency.map(cleanText).filter(Boolean)
-                : [],
-              cloudUpload: Array.isArray(flow.summary?.cloudUpload) ? flow.summary?.cloudUpload.map(cleanText).filter(Boolean) : [],
-              storageAndEncryption: Array.isArray(flow.summary?.storageAndEncryption)
-                ? flow.summary?.storageAndEncryption.map(cleanText).filter(Boolean)
-                : [],
-              permissions: Array.isArray(flow.summary?.permissions) ? flow.summary?.permissions.map(cleanText).filter(Boolean) : [],
-            },
-            evidenceNodes: (flow.nodes ?? [])
-              .slice(0, 10)
-              .map((node) => ({
-                filePath: cleanText(node.filePath),
-                line: Number(node.line ?? 0) || 0,
-                code: cleanText(node.code),
-                description: cleanText(node.description),
-              }))
-              .filter((node) => node.filePath && node.line > 0 && (node.code || node.description)),
-          }));
+  if (candidateFlowIds.size === 0) return [];
+
+  return args.feature.dataflows.flows
+    .filter((flow) => {
+      const flowId = cleanText(flow?.flowId);
+      return flowId && candidateFlowIds.has(flowId);
+    })
+    .map((flow) => ({
+      flowId: cleanText(flow.flowId),
+      pathId: cleanText(flow.pathId),
+      summary: {
+        dataItems: Array.isArray(flow.summary?.dataItems) ? flow.summary.dataItems.map(cleanText).filter(Boolean) : [],
+        collectionFrequency: Array.isArray(flow.summary?.collectionFrequency)
+          ? flow.summary.collectionFrequency.map(cleanText).filter(Boolean)
+          : [],
+        cloudUpload: Array.isArray(flow.summary?.cloudUpload) ? flow.summary.cloudUpload.map(cleanText).filter(Boolean) : [],
+        storageAndEncryption: Array.isArray(flow.summary?.storageAndEncryption)
+          ? flow.summary.storageAndEncryption.map(cleanText).filter(Boolean)
+          : [],
+        permissions: Array.isArray(flow.summary?.permissions) ? flow.summary.permissions.map(cleanText).filter(Boolean) : [],
+      },
+      evidenceNodes: (flow.nodes ?? [])
+        .slice(0, 10)
+        .map((node) => ({
+          filePath: cleanText(node.filePath),
+          line: Number(node.line ?? 0) || 0,
+          code: cleanText(node.code),
+          description: cleanText(node.description),
+        }))
+        .filter((node) => node.filePath && node.line > 0 && (node.code || node.description)),
+    }));
+}
+
+function collectionParagraphAnchors(args: {
+  feature: ReportFeatureInput;
+  practice: PrivacyDataPractice;
+  perFlowIndex: Map<string, Set<string>> | undefined;
+}): CollectionParagraphAnchor[] {
+  const out: CollectionParagraphAnchor[] = [];
+  const seen = new Set<string>();
+  for (const dataItem of args.practice.dataItems ?? []) {
+    const name = clauseText(dataItem?.name);
+    if (!name || seen.has(name)) continue;
+    const picked = pickValidRef(dataItem?.refs as Array<{ flowId: string; nodeId: string }> | undefined, args.perFlowIndex);
+    if (!picked) continue;
+    seen.add(name);
+    out.push({
+      name,
+      jumpTo: { featureId: args.feature.featureId, flowId: picked.flowId, nodeId: picked.nodeId },
+    });
+  }
+  return out;
+}
+
+function normalizeCollectionParagraphResponse(text: string): string {
+  let normalized = typeof text === 'string' ? text.trim() : '';
+  normalized = normalized.replace(/^```[\w-]*\s*/u, '').replace(/\s*```$/u, '').trim();
+  if (
+    (normalized.startsWith('"') && normalized.endsWith('"')) ||
+    (normalized.startsWith("'") && normalized.endsWith("'")) ||
+    (normalized.startsWith('“') && normalized.endsWith('”'))
+  ) {
+    normalized = normalized.slice(1, -1).trim();
+  }
+  return normalized.replaceAll(/\s+/gu, ' ').trim();
+}
+
+async function collectionParagraphForPractice(args: {
+  llm: LlmConfig;
+  feature: ReportFeatureInput;
+  practice: PrivacyDataPractice;
+  perFlowIndex: Map<string, Set<string>> | undefined;
+  anchors: CollectionParagraphAnchor[];
+}): Promise<string> {
+  const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
+  if (!apiKey || args.anchors.length === 0) return 'SKIP';
+
+  const scenario = clauseText(
+    normalizeScenarioForReport(args.practice.businessScenario, {
+      featureId: args.feature.featureId,
+      featureTitle: args.feature.featureTitle,
+      pageTitle: args.feature.pageTitle,
+    }),
+  );
+  const dataSources = uniq((args.practice.dataSources ?? []).map(clauseText).filter(Boolean));
+  const allDataItems = uniq((args.practice.dataItems ?? []).map((item) => clauseText(item?.name)).filter(Boolean));
+  const processingPurpose = purposeClauseText(args.practice.processingPurpose);
+  const relatedFlows = relatedFlowsForPractice(args);
 
   const system = [
-    '你是隐私合规报告助手。',
-    '你只做一个二选一判断：相关数据是否会上传至应用服务端。',
-    '你必须严格基于提供的证据判断。',
-    '只要证据没有明确指向上传至应用服务端，就输出“相关数据仅在本地处理。”',
-    '输出必须是严格 JSON，且 sentence 只能是以下两句之一：',
-    `1) ${REPORT_SERVER_HANDLING_SENTENCE}`,
-    `2) ${REPORT_LOCAL_HANDLING_SENTENCE}`,
+    '你是隐私声明报告助手。',
+    '你的任务是为“我们如何收集和使用您的个人信息”判断并生成一段正式中文。',
+    '如果当前数据实践不涉及应披露的个人信息/隐私数据，必须只输出 SKIP。',
+    '如果生成正文，必须只输出一段中文，不要输出 JSON、标题、解释或 Markdown。',
+    '如果正文提到数据项，必须直接使用候选数据项名称中的原文，不得改写、翻译、拆分、合并或新增名称。',
+    '日志、生命周期状态、页面控制状态、路由参数、权限状态、设备参数、索引、内部状态变量等，不应写入个人信息段。',
+    `关于数据处理位置，请严格基于证据表述；若证据不足或未明确上传服务端，应表述为“${REPORT_LOCAL_HANDLING_SENTENCE}”；只有证据明确指向应用服务端上传时，才能表述为“${REPORT_SERVER_HANDLING_SENTENCE}”`,
   ].join('\n');
 
   const user = [
-    `featureId: ${cleanText(args.feature.featureId)}`,
-    `featureTitle: ${cleanText(args.feature.featureTitle) || '未识别'}`,
-    `pageTitle: ${cleanText(args.feature.pageTitle) || '未识别'}`,
-    '当前数据实践证据：',
+    '请基于以下证据生成隐私声明段落，或输出 SKIP：',
     JSON.stringify(
       {
-        businessScenario: cleanText(args.practice.businessScenario),
-        dataSources: uniq((args.practice.dataSources ?? []).map(clauseText).filter(Boolean)),
-        dataItems: uniq((args.practice.dataItems ?? []).map((item) => clauseText(item?.name)).filter(Boolean)),
+        featureId: cleanText(args.feature.featureId),
+        featureTitle: cleanText(args.feature.featureTitle),
+        pageTitle: cleanText(args.feature.pageTitle),
+        businessScenario: scenario || '未识别',
+        dataSources,
+        candidateDataItems: args.anchors.map((anchor) => anchor.name),
+        allRecognizedDataItems: allDataItems,
         processingMethod: cleanText(args.practice.processingMethod),
         storageMethod: cleanText(args.practice.storageMethod),
         dataRecipients: (args.practice.dataRecipients ?? []).map((recipient) => ({
           name: cleanText(recipient?.name),
           inferred: Boolean(recipient?.inferred),
         })),
-        processingPurpose: cleanText(args.practice.processingPurpose),
+        processingPurpose,
         relatedFlows,
       },
       null,
       2,
     ),
     '',
-    '判断规则：',
-    `- 只有在证据明确显示数据会发送、提交、同步到应用自己的服务端/后端时，才能输出“${REPORT_SERVER_HANDLING_SENTENCE}”`,
-    `- 只要证据是本地日志、本地存储、系统能力调用、权限申请、监听回调，或者证据不足，都输出“${REPORT_LOCAL_HANDLING_SENTENCE}”`,
-    '',
-    '请输出：{"sentence":"..."}',
+    '写作要求：',
+    '- 如果没有合适的候选数据项可以写入个人信息段，输出 SKIP',
+    '- 如果生成正文，至少提到一个 candidateDataItems 中的原始名称',
+    '- 正文应自然、正式、通顺，可直接放入隐私声明',
+    '- 不要写源码术语、路径、函数名、变量名、日志信息或技术调试细节',
   ].join('\n');
 
   const baseUrls = resolveLlmBaseUrls(args.llm.provider);
@@ -1189,11 +1245,10 @@ async function decideHandlingSentenceWithReportLlm(args: {
           { role: 'user', content: user },
         ],
         temperature: 0,
-        jsonMode: true,
       });
-      const parsed = safeJsonParse(res.content);
-      const sentence = cleanText((parsed as any)?.sentence);
-      return sentence === REPORT_SERVER_HANDLING_SENTENCE ? REPORT_SERVER_HANDLING_SENTENCE : REPORT_LOCAL_HANDLING_SENTENCE;
+      const paragraph = normalizeCollectionParagraphResponse(res.content);
+      if (!paragraph) return 'SKIP';
+      return /^SKIP[。.!！?？]*$/iu.test(paragraph) ? 'SKIP' : paragraph;
     } catch (error) {
       lastError = error;
       const canRetry =
@@ -1205,16 +1260,40 @@ async function decideHandlingSentenceWithReportLlm(args: {
   }
 
   void lastError;
-  return REPORT_LOCAL_HANDLING_SENTENCE;
+  return 'SKIP';
 }
 
-async function handlingSentenceForPractice(args: {
-  llm: LlmConfig;
-  feature: ReportFeatureInput;
-  practice: PrivacyDataPractice;
-  perFlowIndex: Map<string, Set<string>> | undefined;
-}): Promise<string> {
-  return decideHandlingSentenceWithReportLlm(args);
+function collectionParagraphTokens(args: {
+  paragraph: string;
+  anchors: CollectionParagraphAnchor[];
+}): PrivacyReportToken[] {
+  const normalizedParagraph = normalizeCollectionParagraphResponse(args.paragraph);
+  if (!normalizedParagraph || /^SKIP[。.!！?？]*$/iu.test(normalizedParagraph)) return [];
+
+  const anchors = [...args.anchors].sort((a, b) => b.name.length - a.name.length);
+  const out: PrivacyReportToken[] = [];
+  let buffer = '';
+  let cursor = 0;
+  let anchored = false;
+
+  while (cursor < normalizedParagraph.length) {
+    const matched = anchors.find((anchor) => normalizedParagraph.startsWith(anchor.name, cursor));
+    if (!matched) {
+      buffer += normalizedParagraph[cursor];
+      cursor += 1;
+      continue;
+    }
+    if (buffer) {
+      out.push({ text: buffer });
+      buffer = '';
+    }
+    out.push({ text: matched.name, jumpTo: matched.jumpTo });
+    anchored = true;
+    cursor += matched.name.length;
+  }
+
+  if (buffer) out.push({ text: buffer });
+  return anchored ? out : [];
 }
 
 function permissionDisplayName(permissionName: string): string {
@@ -1314,15 +1393,6 @@ function ensurePermissionsSectionTokens(args: {
   return merged;
 }
 
-function pushEntityListTokens(out: PrivacyReportToken[], entities: PrivacyReportToken[]): void {
-  for (let i = 0; i < entities.length; i += 1) {
-    out.push(entities[i]!);
-    if (i === entities.length - 1) continue;
-    if (entities.length === 2 || i === entities.length - 2) out.push({ text: '和' });
-    else out.push({ text: '、' });
-  }
-}
-
 async function deterministicCollectionAndUseTokens(args: {
   llm: LlmConfig;
   feature: ReportFeatureInput;
@@ -1334,46 +1404,23 @@ async function deterministicCollectionAndUseTokens(args: {
 
   const out: PrivacyReportToken[] = [];
   for (const practice of practices) {
-    const dataSources = uniq((Array.isArray(practice.dataSources) ? practice.dataSources : []).map(clauseText).filter(Boolean));
-
-    const entityTokens: PrivacyReportToken[] = [];
-    for (const dataItem of practice.dataItems ?? []) {
-      const name = clauseText(dataItem?.name);
-      if (!name) continue;
-      const picked = pickValidRef(dataItem?.refs as Array<{ flowId: string; nodeId: string }> | undefined, args.perFlowIndex);
-      if (picked) {
-        entityTokens.push({
-          text: name,
-          jumpTo: { featureId: args.feature.featureId, flowId: picked.flowId, nodeId: picked.nodeId },
-        });
-      } else {
-        entityTokens.push({ text: name });
-      }
-    }
-    if (entityTokens.length === 0) continue;
-
-    const processingPurpose = purposeClauseText(practice.processingPurpose);
-    if (out.length > 0) out.push({ text: '此外，' });
-    const scenario = clauseText(
-      normalizeScenarioForReport(practice.businessScenario, {
-        featureId: args.feature.featureId,
-        featureTitle: args.feature.featureTitle,
-        pageTitle: args.feature.pageTitle,
-      }),
-    );
-    if (scenario) out.push({ text: `在“${scenario}”场景中，` });
-    out.push({ text: dataSources.length > 0 ? `我们会从${dataSources.join('、')}收集` : '我们会收集' });
-    pushEntityListTokens(out, entityTokens);
-    out.push({ text: processingPurpose ? `，用于${processingPurpose}。` : '。' });
-    const handlingSentence = await handlingSentenceForPractice({
-      llm: args.llm,
+    const anchors = collectionParagraphAnchors({
       feature: args.feature,
       practice,
       perFlowIndex: args.perFlowIndex,
     });
-    out.push({
-      text: handlingSentence,
+    if (anchors.length === 0) continue;
+
+    const paragraph = await collectionParagraphForPractice({
+      llm: args.llm,
+      feature: args.feature,
+      practice,
+      perFlowIndex: args.perFlowIndex,
+      anchors,
     });
+    const tokens = collectionParagraphTokens({ paragraph, anchors });
+    if (tokens.length === 0) continue;
+    for (const token of tokens) out.push(token);
   }
 
   return out;

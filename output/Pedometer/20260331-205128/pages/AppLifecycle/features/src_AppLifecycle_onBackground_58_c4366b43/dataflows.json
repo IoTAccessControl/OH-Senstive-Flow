@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260331-205128",
+    "generatedAt": "2026-03-31T12:54:20.822Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onBackground_58_c4366b43",
+      "kind": "source",
+      "title": "应用切到后台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p22",
+      "pathId": "p22",
+      "nodes": [
+        {
+          "id": "p22:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 58,
+          "code": "onBackground(): void {",
+          "description": "定义 onBackground 生命周期函数入口，当 UIAbility 切换到后台时被系统调用。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p22:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 60,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+          "description": "调用 hilog.info 将固定的字符串 'Ability onBackground' 输出到系统日志，标记应用已转入后台状态。",
+          "context": {
+            "startLine": 55,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p22:n1",
+          "to": "p22:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态（后台切换事件）"
+        ],
+        "collectionFrequency": [
+          "事件触发（UIAbility 进入后台时）"
+        ],
+        "cloudUpload": [
+          "无（仅本地日志输出，未检测到网络发送或云端上传逻辑）"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储（数据仅作为日志参数在内存中处理并输出到系统日志缓冲区，未写入文件或数据库）"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

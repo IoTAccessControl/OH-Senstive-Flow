@@ -1,0 +1,761 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260331-203158",
+    "generatedAt": "2026-03-31T12:38:39.485Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "warnings": [
+      "数据流 p9 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets:17 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 6,
+      "nodes": 23,
+      "edges": 17,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "SearchPage",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+        "structName": "SearchPage",
+        "line": 10,
+        "description": "搜索页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_SearchPage_6cf242c69d",
+      "kind": "ui",
+      "title": "搜索"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 16,
+          "code": "async aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  private context = getContext(this) as common.UIAbilityContext;",
+              "  private controller: TextInputController = new TextInputController()",
+              "  private keyboardHeight: number = 0",
+              "  @State private searchText: string = ''",
+              "",
+              "  async aboutToAppear() {",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 17,
+          "code": "await window.getLastWindow(getContext(this)).then(currentWindow => {",
+          "description": "Get the final show window.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  private controller: TextInputController = new TextInputController()",
+              "  private keyboardHeight: number = 0",
+              "  @State private searchText: string = ''",
+              "",
+              "  async aboutToAppear() {",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p9 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets:17 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 24,
+          "code": "onBackPress() {",
+          "description": "定义 onBackPress 回调函数，用于处理返回键逻辑，此处作为数据流分析的起始锚点（尽管主要数据流在 build 中）。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }",
+              "",
+              "  onBackPress() {",
+              "    return this.keyboardHeight > 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 32,
+          "code": "TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+          "description": "创建 TextInput 组件，绑定 this.searchText 变量，用于接收用户输入的搜索内容。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Stack() {",
+              "          TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+              "            .placeholderFont({ size: 20, weight: 400 })",
+              "            .caretColor(Color.Green)",
+              "            .placeholderColor(Color.Grey)",
+              "            .width('100%')",
+              "            .height(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 52,
+          "code": ".onChange((value: string) => {",
+          "description": "监听 TextInput 的 onChange 事件，当用户输入变化时更新 this.searchText 状态变量。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "              clicked: {.backgroundColor(Color.White)",
+              "              },",
+              "              focused: {.backgroundColor(Color.White)",
+              "              }",
+              "            })",
+              "            .onChange((value: string) => {",
+              "              this.searchText = value",
+              "            })",
+              "            .onSubmit(() => {",
+              "              prompt.showToast({ message: this.searchText })",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p10:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 55,
+          "code": ".onSubmit(() => {",
+          "description": "监听 TextInput 的 onSubmit 事件，当用户提交搜索时触发回调。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "              }",
+              "            })",
+              "            .onChange((value: string) => {",
+              "              this.searchText = value",
+              "            })",
+              "            .onSubmit(() => {",
+              "              prompt.showToast({ message: this.searchText })",
+              "            })",
+              "",
+              "          Row() {",
+              "            Image($r(\"app.media.ic_search\"))"
+            ]
+          }
+        },
+        {
+          "id": "p10:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 56,
+          "code": "prompt.showToast({ message: this.searchText })",
+          "description": "调用 prompt.showToast 显示消息，将用户输入的搜索关键词 (this.searchText) 作为参数传入，构成隐私数据流的终点。",
+          "context": {
+            "startLine": 51,
+            "lines": [
+              "            })",
+              "            .onChange((value: string) => {",
+              "              this.searchText = value",
+              "            })",
+              "            .onSubmit(() => {",
+              "              prompt.showToast({ message: this.searchText })",
+              "            })",
+              "",
+              "          Row() {",
+              "            Image($r(\"app.media.ic_search\"))",
+              "              .colorBlend(Color.Grey)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        },
+        {
+          "from": "p10:n3",
+          "to": "p10:n4"
+        },
+        {
+          "from": "p10:n4",
+          "to": "p10:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户搜索关键词 (searchText)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (onSubmit)"
+        ],
+        "cloudUpload": [
+          "无网络上传行为"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (this.searchText)，未涉及持久化或加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p14",
+      "pathId": "p14",
+      "nodes": [
+        {
+          "id": "p14:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 28,
+          "code": "build() {",
+          "description": "UI 构建入口 build()，初始化页面布局并绑定 TextInput 组件。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "",
+              "  onBackPress() {",
+              "    return this.keyboardHeight > 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Stack() {",
+              "          TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+              "            .placeholderFont({ size: 20, weight: 400 })"
+            ]
+          }
+        },
+        {
+          "id": "p14:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 32,
+          "code": "TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+          "description": "创建 TextInput 输入框，将用户输入的文本双向绑定到状态变量 this.searchText。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Stack() {",
+              "          TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+              "            .placeholderFont({ size: 20, weight: 400 })",
+              "            .caretColor(Color.Green)",
+              "            .placeholderColor(Color.Grey)",
+              "            .width('100%')",
+              "            .height(\"100%\")"
+            ]
+          }
+        },
+        {
+          "id": "p14:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 52,
+          "code": ".onChange((value: string) => {",
+          "description": "监听输入框内容变化 (.onChange)，实时更新 this.searchText 变量以保存当前输入内容。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "              clicked: {.backgroundColor(Color.White)",
+              "              },",
+              "              focused: {.backgroundColor(Color.White)",
+              "              }",
+              "            })",
+              "            .onChange((value: string) => {",
+              "              this.searchText = value",
+              "            })",
+              "            .onSubmit(() => {",
+              "              prompt.showToast({ message: this.searchText })",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p14:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 55,
+          "code": ".onSubmit(() => {",
+          "description": "监听输入框提交事件 (.onSubmit)，当用户点击搜索按钮或回车时触发回调。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "              }",
+              "            })",
+              "            .onChange((value: string) => {",
+              "              this.searchText = value",
+              "            })",
+              "            .onSubmit(() => {",
+              "              prompt.showToast({ message: this.searchText })",
+              "            })",
+              "",
+              "          Row() {",
+              "            Image($r(\"app.media.ic_search\"))"
+            ]
+          }
+        },
+        {
+          "id": "p14:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 56,
+          "code": "prompt.showToast({ message: this.searchText })",
+          "description": "数据流终点：调用 prompt.showToast 将用户输入的搜索关键词 (this.searchText) 作为消息在屏幕底部显示。",
+          "context": {
+            "startLine": 51,
+            "lines": [
+              "            })",
+              "            .onChange((value: string) => {",
+              "              this.searchText = value",
+              "            })",
+              "            .onSubmit(() => {",
+              "              prompt.showToast({ message: this.searchText })",
+              "            })",
+              "",
+              "          Row() {",
+              "            Image($r(\"app.media.ic_search\"))",
+              "              .colorBlend(Color.Grey)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p14:n1",
+          "to": "p14:n2"
+        },
+        {
+          "from": "p14:n2",
+          "to": "p14:n3"
+        },
+        {
+          "from": "p14:n3",
+          "to": "p14:n4"
+        },
+        {
+          "from": "p14:n4",
+          "to": "p14:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户搜索关键词 (searchText)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户提交搜索时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地 UI 展示)"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (State 变量)，未涉及持久化或加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p15",
+      "pathId": "p15",
+      "nodes": [
+        {
+          "id": "p15:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 28,
+          "code": "build() {",
+          "description": "UI 构建入口 build()，初始化页面组件结构，为后续交互逻辑提供上下文。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "",
+              "  onBackPress() {",
+              "    return this.keyboardHeight > 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Stack() {",
+              "          TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+              "            .placeholderFont({ size: 20, weight: 400 })"
+            ]
+          }
+        },
+        {
+          "id": "p15:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 116,
+          "code": ".onClick(() => {",
+          "description": "定义取消按钮的点击事件回调函数，当用户点击该按钮时触发数据流检查。",
+          "context": {
+            "startLine": 111,
+            "lines": [
+              "          .fontSize(19)// .alignRules({",
+              "            //   top: { anchor: \"__container__\", align: VerticalAlign.Top },",
+              "            //   right: { anchor: \"__container__\", align: HorizontalAlign.End }",
+              "            // })",
+              "            // .id(\"cancel\")",
+              "          .onClick(() => {",
+              "            if (\"1\" === router.getLength()) {",
+              "              // app退出，一般不会走这里",
+              "              this.context.terminateSelf()",
+              "            } else {",
+              "              router.back()"
+            ]
+          }
+        },
+        {
+          "id": "p15:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 117,
+          "code": "if (\"1\" === router.getLength()) {",
+          "description": "调用 router.getLength() 获取当前页面栈中的页面数量，用于判断是否处于应用根页面（隐私合规检查点：读取路由状态）。",
+          "context": {
+            "startLine": 112,
+            "lines": [
+              "            //   top: { anchor: \"__container__\", align: VerticalAlign.Top },",
+              "            //   right: { anchor: \"__container__\", align: HorizontalAlign.End }",
+              "            // })",
+              "            // .id(\"cancel\")",
+              "          .onClick(() => {",
+              "            if (\"1\" === router.getLength()) {",
+              "              // app退出，一般不会走这里",
+              "              this.context.terminateSelf()",
+              "            } else {",
+              "              router.back()",
+              "            }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p15:n1",
+          "to": "p15:n2"
+        },
+        {
+          "from": "p15:n2",
+          "to": "p15:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面栈深度 (Page Stack Depth)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (点击取消按钮时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p16",
+      "pathId": "p16",
+      "nodes": [
+        {
+          "id": "p16:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 28,
+          "code": "build() {",
+          "description": "build() 函数入口，构建搜索页面的 UI 结构，初始化界面组件。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "",
+              "  onBackPress() {",
+              "    return this.keyboardHeight > 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Stack() {",
+              "          TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+              "            .placeholderFont({ size: 20, weight: 400 })"
+            ]
+          }
+        },
+        {
+          "id": "p16:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 116,
+          "code": ".onClick(() => {",
+          "description": "定义点击事件处理函数，当用户点击取消/返回按钮时触发。",
+          "context": {
+            "startLine": 111,
+            "lines": [
+              "          .fontSize(19)// .alignRules({",
+              "            //   top: { anchor: \"__container__\", align: VerticalAlign.Top },",
+              "            //   right: { anchor: \"__container__\", align: HorizontalAlign.End }",
+              "            // })",
+              "            // .id(\"cancel\")",
+              "          .onClick(() => {",
+              "            if (\"1\" === router.getLength()) {",
+              "              // app退出，一般不会走这里",
+              "              this.context.terminateSelf()",
+              "            } else {",
+              "              router.back()"
+            ]
+          }
+        },
+        {
+          "id": "p16:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 117,
+          "code": "if (\"1\" === router.getLength()) {",
+          "description": "检查当前路由栈长度，判断是否为应用启动后的第一页。",
+          "context": {
+            "startLine": 112,
+            "lines": [
+              "            //   top: { anchor: \"__container__\", align: VerticalAlign.Top },",
+              "            //   right: { anchor: \"__container__\", align: HorizontalAlign.End }",
+              "            // })",
+              "            // .id(\"cancel\")",
+              "          .onClick(() => {",
+              "            if (\"1\" === router.getLength()) {",
+              "              // app退出，一般不会走这里",
+              "              this.context.terminateSelf()",
+              "            } else {",
+              "              router.back()",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p16:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 121,
+          "code": "router.back()",
+          "description": "调用 router.back() 返回上一页，执行页面导航操作，不涉及数据收集或传输。",
+          "context": {
+            "startLine": 116,
+            "lines": [
+              "          .onClick(() => {",
+              "            if (\"1\" === router.getLength()) {",
+              "              // app退出，一般不会走这里",
+              "              this.context.terminateSelf()",
+              "            } else {",
+              "              router.back()",
+              "            }",
+              "          })",
+              "      }",
+              "      .width(\"100%\")",
+              "      .height(40)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p16:n1",
+          "to": "p16:n2"
+        },
+        {
+          "from": "p16:n2",
+          "to": "p16:n3"
+        },
+        {
+          "from": "p16:n3",
+          "to": "p16:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "无敏感数据项（仅涉及页面导航控制）"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户点击返回按钮时）"
+        ],
+        "cloudUpload": [
+          "无网络上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储或加密操作"
+        ],
+        "permissions": [
+          "无需特殊权限（router.back 为系统基础路由功能）"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p17",
+      "pathId": "p17",
+      "nodes": [
+        {
+          "id": "p17:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 28,
+          "code": "build() {",
+          "description": "build() 函数入口，初始化页面 UI 结构，为后续事件监听器绑定提供上下文环境。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "",
+              "  onBackPress() {",
+              "    return this.keyboardHeight > 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Stack() {",
+              "          TextInput({ text: this.searchText, placeholder: '搜索', controller: this.controller })",
+              "            .placeholderFont({ size: 20, weight: 400 })"
+            ]
+          }
+        },
+        {
+          "id": "p17:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 192,
+          "code": ".onKeyEvent((event: KeyEvent) => {",
+          "description": "注册 onKeyEvent 事件监听器，当用户触发键盘事件时捕获 KeyEvent 对象，包含按键类型等输入数据。",
+          "context": {
+            "startLine": 187,
+            "lines": [
+              "    .width(\"100%\")",
+              "    .height(\"100%\")",
+              "    .alignItems(HorizontalAlign.Start)",
+              "    .backgroundColor(\"#f3f3f3\")",
+              "    .padding({ top: WindowManager.statusBarHeight, bottom: WindowManager.navBarHeight })",
+              "    .onKeyEvent((event: KeyEvent) => {",
+              "      if (event.type === KeyType.Up) {",
+              "        prompt.showToast({",
+              "          message: \"按了返回键\"",
+              "        });",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p17:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 193,
+          "code": "if (event.type === KeyType.Up) {",
+          "description": "判断按键类型是否为 KeyType.Up（上方向键或返回键），决定后续是否执行提示逻辑。",
+          "context": {
+            "startLine": 188,
+            "lines": [
+              "    .height(\"100%\")",
+              "    .alignItems(HorizontalAlign.Start)",
+              "    .backgroundColor(\"#f3f3f3\")",
+              "    .padding({ top: WindowManager.statusBarHeight, bottom: WindowManager.navBarHeight })",
+              "    .onKeyEvent((event: KeyEvent) => {",
+              "      if (event.type === KeyType.Up) {",
+              "        prompt.showToast({",
+              "          message: \"按了返回键\"",
+              "        });",
+              "      }",
+              "      event.stopPropagation()"
+            ]
+          }
+        },
+        {
+          "id": "p17:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 194,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast API 作为 Sink 点，将硬编码的提示文本 '按了返回键' 渲染到屏幕底部，完成数据流闭环。",
+          "context": {
+            "startLine": 189,
+            "lines": [
+              "    .alignItems(HorizontalAlign.Start)",
+              "    .backgroundColor(\"#f3f3f3\")",
+              "    .padding({ top: WindowManager.statusBarHeight, bottom: WindowManager.navBarHeight })",
+              "    .onKeyEvent((event: KeyEvent) => {",
+              "      if (event.type === KeyType.Up) {",
+              "        prompt.showToast({",
+              "          message: \"按了返回键\"",
+              "        });",
+              "      }",
+              "      event.stopPropagation()",
+              "    })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p17:n1",
+          "to": "p17:n2"
+        },
+        {
+          "from": "p17:n2",
+          "to": "p17:n3"
+        },
+        {
+          "from": "p17:n3",
+          "to": "p17:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户按键事件类型 (KeyType)",
+          "UI 交互反馈文本"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户按下物理/虚拟按键时)"
+        ],
+        "cloudUpload": [
+          "无 (数据仅在本地处理并显示)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (仅内存中临时处理)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

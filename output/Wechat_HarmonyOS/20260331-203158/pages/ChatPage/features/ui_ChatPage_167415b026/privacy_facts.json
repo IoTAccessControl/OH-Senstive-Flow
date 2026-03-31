@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260331-203158",
+    "featureId": "ui_ChatPage_167415b026",
+    "generatedAt": "2026-03-31T12:39:12.516Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 麦克风权限 (ohos.permission.MICROPHONE) 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "聊天页面加载时获取并显示聊天对象名称",
+        "dataSources": [
+          "路由参数"
+        ],
+        "dataItems": [
+          {
+            "name": "用户昵称",
+            "refs": [
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "从路由参数中提取并赋值给组件变量用于界面展示",
+        "storageMethod": "本地组件状态存储，未检测到加密操作",
+        "dataRecipients": [],
+        "processingPurpose": "在聊天页面顶部显示当前对话对象的名称",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户点击语音输入按钮时的权限检查与提示",
+        "dataSources": [
+          "系统权限状态",
+          "用户交互事件"
+        ],
+        "dataItems": [
+          {
+            "name": "麦克风权限状态",
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n4"
+              }
+            ]
+          },
+          {
+            "name": "用户交互事件（点击语音按钮）",
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "检测权限状态，若未授权则向用户展示提示信息",
+        "storageMethod": "无持久化存储，数据仅在内存中临时处理",
+        "dataRecipients": [],
+        "processingPurpose": "确保用户在拥有麦克风权限的前提下使用语音输入功能，并在缺失权限时告知用户",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

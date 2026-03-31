@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260331-191635",
+    "generatedAt": "2026-03-31T11:23:41.420Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_14_891864d5",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p29",
+      "pathId": "p29",
+      "nodes": [
+        {
+          "id": "p29:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 14,
+          "code": "onDestroy() {",
+          "description": "UIAbility 生命周期函数 onDestroy 被调用，标志着应用实例即将销毁，此处作为数据流的起始节点。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)"
+            ]
+          }
+        },
+        {
+          "id": "p29:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 15,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 将固定的字符串 'Ability onDestroy' 输出到系统日志，作为数据流的结束节点（Sink），未涉及敏感隐私数据的收集或传输。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    WindowManager.immerseFullScreenSync(windowStage)",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p29:n1",
+          "to": "p29:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态（销毁事件）"
+        ],
+        "collectionFrequency": [
+          "事件触发（应用销毁时）"
+        ],
+        "cloudUpload": [
+          "无网络上传行为"
+        ],
+        "storageAndEncryption": [
+          "仅输出至系统日志，未进行本地持久化存储或加密"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

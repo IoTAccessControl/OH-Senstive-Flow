@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260331-205128",
+    "featureId": "ui_HomePage_11ad55420a",
+    "generatedAt": "2026-03-31T12:54:52.011Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-122b-a10b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 活动运动感知权限 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。",
+      "权限 粗略位置权限 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。",
+      "权限 精确位置权限 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "页面展示时启动定位服务以获取用户当前位置及地址信息",
+        "dataSources": [
+          "系统位置服务"
+        ],
+        "dataItems": [
+          {
+            "name": "地理位置 (经纬度)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n5"
+              }
+            ]
+          },
+          {
+            "name": "地址信息 (逆地理编码结果)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "本地内存处理与回调接收",
+        "storageMethod": "本地内存存储，未检测到加密或持久化存储",
+        "dataRecipients": [],
+        "processingPurpose": "提供基于位置的计步辅助功能",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "Pedometer",
+        "businessScenario": "页面展示时订阅计步器传感器数据以记录运动步数",
+        "dataSources": [
+          "计步器传感器"
+        ],
+        "dataItems": [
+          {
+            "name": "计步器传感器数据",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "周期性采集与本地内存处理",
+        "storageMethod": "未检测到当前路径中的持久化存储或加密操作",
+        "dataRecipients": [],
+        "processingPurpose": "统计用户日常运动步数",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "Pedometer",
+        "businessScenario": "页面展示时读取本地存储的历史步数状态与数值",
+        "dataSources": [
+          "本地偏好设置文件"
+        ],
+        "dataItems": [
+          {
+            "name": "步数启动状态",
+            "refs": [
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n3"
+              },
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n4"
+              }
+            ]
+          },
+          {
+            "name": "当前步数",
+            "refs": [
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "从本地文件读取并加载至内存",
+        "storageMethod": "使用本地偏好设置进行存储，源码中未体现加密处理",
+        "dataRecipients": [],
+        "processingPurpose": "恢复用户之前的计步进度与状态",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCELEROMETER",
+        "businessScenario": "首页展示时订阅计步器传感器数据以记录运动步数",
+        "permissionPurpose": "为了统计您的日常运动步数，需要访问计步器传感器数据流",
+        "denyImpact": "若拒绝授权，应用将无法获取传感器数据，导致无法记录和显示您的运动步数。",
+        "refs": [
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n6"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n2"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.APPROXIMATELY_LOCATION",
+        "businessScenario": "首页展示时启动定位服务以获取用户当前位置及地址信息",
+        "permissionPurpose": "为了提供基于位置的计步辅助功能（如结合位置分析运动轨迹），需要获取您的近似位置信息",
+        "denyImpact": "若拒绝授权，应用将无法获取您的位置信息，导致无法使用基于位置的计步辅助功能。",
+        "refs": [
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n6"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}
