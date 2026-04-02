@@ -1,0 +1,408 @@
+{
+  "meta": {
+    "runId": "ArkTS-wphui1.0_20260401-132325",
+    "generatedAt": "2026-04-01T05:26:25.620Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 13,
+      "edges": 12,
+      "pages": 1,
+      "elements": 12
+    }
+  },
+  "roots": [
+    "page:5803fba41112"
+  ],
+  "nodes": {
+    "page:5803fba41112": {
+      "id": "page:5803fba41112",
+      "category": "Page",
+      "name": "Shop",
+      "description": "Shop页面",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 6,
+      "code": "export default struct Shop {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "import CommonConstants from '../constants/CommonConstants'",
+          "import { getShopCardInfo } from '../datasource/DataUtils';",
+          "import { CardInfo } from '../viewmodel/DataModels';",
+          "",
+          "@Component",
+          "export default struct Shop {",
+          "",
+          "  private shopCardInfo: Array<CardInfo> = getShopCardInfo();",
+          "  @State shopNums : number = 0;",
+          "  @State allMoney : number = 0;",
+          ""
+        ]
+      }
+    },
+    "ui:2e8430d50662": {
+      "id": "ui:2e8430d50662",
+      "category": "Component",
+      "name": "build",
+      "description": "购物车",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 22,
+      "code": "build(){",
+      "context": {
+        "startLine": 17,
+        "lines": [
+          "  deleteShopCardInfo(price : number, size : number){",
+          "    this.allMoney = this.allMoney - price;",
+          "    this.shopNums = this.shopNums - size;",
+          "  }",
+          "",
+          "  build(){",
+          "    Scroll() {",
+          "      Column({ space: CommonConstants.COMMON_SPACE }) {",
+          "        /*购物车*/",
+          "        Column() {",
+          "          Text($r('app.string.shopping_cart'))"
+        ]
+      }
+    },
+    "ui:c87a80197741": {
+      "id": "ui:c87a80197741",
+      "category": "Display",
+      "name": "Text",
+      "description": "购物车标题",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 27,
+      "code": "Text($r('app.string.shopping_cart'))",
+      "context": {
+        "startLine": 22,
+        "lines": [
+          "  build(){",
+          "    Scroll() {",
+          "      Column({ space: CommonConstants.COMMON_SPACE }) {",
+          "        /*购物车*/",
+          "        Column() {",
+          "          Text($r('app.string.shopping_cart'))",
+          "            .fontWeight(FontWeight.Medium)",
+          "            .fontSize($r('app.float.page_title_text_size'))",
+          "            .margin({ top: $r('app.float.mainPage_tabTitles_margin') })",
+          "            .padding({ left: $r('app.float.mainPage_tabTitles_padding') })",
+          "        }"
+        ]
+      }
+    },
+    "ui:976c46340f4c": {
+      "id": "ui:976c46340f4c",
+      "category": "Component",
+      "name": "ForEach",
+      "description": "商品列表",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 37,
+      "code": "ForEach(this.shopCardInfo, (cardInfo: CardInfo) => {",
+      "context": {
+        "startLine": 32,
+        "lines": [
+          "        }",
+          "        .width(CommonConstants.FULL_PARENT)",
+          "        .alignItems(HorizontalAlign.Start)",
+          "",
+          "        List({ space: 20, initialIndex: 0 }) {",
+          "          ForEach(this.shopCardInfo, (cardInfo: CardInfo) => {",
+          "            ListItem() {",
+          "              Flex({ direction: FlexDirection.Row  }) {//行布局",
+          "                Checkbox({ name: 'checkbox1', group: 'checkboxGroup' })",
+          "                  .selectedColor('#007DFF')",
+          "                  .borderRadius($r('app.float.home_swiper_borderRadius'))"
+        ]
+      }
+    },
+    "ui:845dcbb93bb1": {
+      "id": "ui:845dcbb93bb1",
+      "category": "Component",
+      "name": "Checkbox",
+      "description": "商品勾选框",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 40,
+      "code": "Checkbox({ name: 'checkbox1', group: 'checkboxGroup' })",
+      "context": {
+        "startLine": 35,
+        "lines": [
+          "",
+          "        List({ space: 20, initialIndex: 0 }) {",
+          "          ForEach(this.shopCardInfo, (cardInfo: CardInfo) => {",
+          "            ListItem() {",
+          "              Flex({ direction: FlexDirection.Row  }) {//行布局",
+          "                Checkbox({ name: 'checkbox1', group: 'checkboxGroup' })",
+          "                  .selectedColor('#007DFF')",
+          "                  .borderRadius($r('app.float.home_swiper_borderRadius'))",
+          "                  .onChange((value: boolean) => {",
+          "                    console.info('Checkbox1 change is' + value)",
+          "                    if (value) {"
+        ]
+      }
+    },
+    "ui:47470844e980": {
+      "id": "ui:47470844e980",
+      "category": "Display",
+      "name": "Image",
+      "description": "商品图片",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 51,
+      "code": "Image(cardInfo.image)",
+      "context": {
+        "startLine": 46,
+        "lines": [
+          "                      this.addShopCardInfo(cardInfo.price, cardInfo.numb);",
+          "                    } else {",
+          "                      this.deleteShopCardInfo(cardInfo.price, cardInfo.numb);",
+          "                    }",
+          "                  })",
+          "                Image(cardInfo.image)",
+          "                  .objectFit(ImageFit.Cover)",
+          "                  .width('70vp')",
+          "                  .borderRadius($r('app.float.home_swiper_borderRadius'))",
+          "                Flex({ direction: FlexDirection.Column  }) {",
+          "                  Text(cardInfo.desc)"
+        ]
+      }
+    },
+    "ui:b6c171ff6f91": {
+      "id": "ui:b6c171ff6f91",
+      "category": "Display",
+      "name": "Text",
+      "description": "商品描述信息",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 56,
+      "code": "Text(cardInfo.desc)",
+      "context": {
+        "startLine": 51,
+        "lines": [
+          "                Image(cardInfo.image)",
+          "                  .objectFit(ImageFit.Cover)",
+          "                  .width('70vp')",
+          "                  .borderRadius($r('app.float.home_swiper_borderRadius'))",
+          "                Flex({ direction: FlexDirection.Column  }) {",
+          "                  Text(cardInfo.desc)",
+          "                    .fontSize('15')",
+          "                    .width('200vp')",
+          "                  Select([{ value: cardInfo.proper+':'+cardInfo.size },",
+          "                    { value: 'bbb'},",
+          "                    { value: 'ccc'},"
+        ]
+      }
+    },
+    "ui:07f4da051922": {
+      "id": "ui:07f4da051922",
+      "category": "Component",
+      "name": "Select",
+      "description": "规格选择",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 59,
+      "code": "Select([{ value: cardInfo.proper+':'+cardInfo.size },",
+      "context": {
+        "startLine": 54,
+        "lines": [
+          "                  .borderRadius($r('app.float.home_swiper_borderRadius'))",
+          "                Flex({ direction: FlexDirection.Column  }) {",
+          "                  Text(cardInfo.desc)",
+          "                    .fontSize('15')",
+          "                    .width('200vp')",
+          "                  Select([{ value: cardInfo.proper+':'+cardInfo.size },",
+          "                    { value: 'bbb'},",
+          "                    { value: 'ccc'},",
+          "                    { value: 'ddd'}])//打开商品详情页",
+          "                    .selected(2)",
+          "                    .value(cardInfo.proper+':'+cardInfo.size)"
+        ]
+      }
+    },
+    "ui:57acd3ff1bef": {
+      "id": "ui:57acd3ff1bef",
+      "category": "Display",
+      "name": "Text",
+      "description": "商品价格",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 70,
+      "code": "Text('¥' +cardInfo.price)",
+      "context": {
+        "startLine": 65,
+        "lines": [
+          "                    .font({ size: 12, weight: 500 })",
+          "                    .fontColor('#182431')",
+          "                    .selectedOptionFont({ size: 12, weight: 400 })",
+          "                    .optionFont({ size: 12, weight: 400 })",
+          "",
+          "                  Text('¥' +cardInfo.price)",
+          "                    .fontSize('15')",
+          "                    .fontColor(Color.Red)",
+          "",
+          "                  Text('X' +cardInfo.numb)",
+          "                    .fontSize('12').padding({left:'80%'})"
+        ]
+      }
+    },
+    "ui:fbcd018dbb65": {
+      "id": "ui:fbcd018dbb65",
+      "category": "Display",
+      "name": "Text",
+      "description": "商品数量",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 74,
+      "code": "Text('X' +cardInfo.numb)",
+      "context": {
+        "startLine": 69,
+        "lines": [
+          "",
+          "                  Text('¥' +cardInfo.price)",
+          "                    .fontSize('15')",
+          "                    .fontColor(Color.Red)",
+          "",
+          "                  Text('X' +cardInfo.numb)",
+          "                    .fontSize('12').padding({left:'80%'})",
+          "                }.margin({left:'15vp'})",
+          "",
+          "              }",
+          "            }.backgroundColor(Color.White)"
+        ]
+      }
+    },
+    "ui:bf517986408c": {
+      "id": "ui:bf517986408c",
+      "category": "Button",
+      "name": "Text",
+      "description": "已选商品数量",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 96,
+      "code": "Text('已选' + this.shopNums)",
+      "context": {
+        "startLine": 91,
+        "lines": [
+          "        .width(CommonConstants.FULL_PARENT)",
+          "        .height('70%')",
+          "",
+          "        /*结算*/",
+          "        Row(){",
+          "          Text('已选' + this.shopNums)",
+          "",
+          "          Text('总计：¥' + this.allMoney).fontColor(Color.Red).padding({left:'20vp'})",
+          "",
+          "          Button(('结算'), { type: ButtonType.Capsule })",
+          "            .width('40%')"
+        ]
+      }
+    },
+    "ui:53933df7a9ef": {
+      "id": "ui:53933df7a9ef",
+      "category": "Button",
+      "name": "Text",
+      "description": "总计金额",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 98,
+      "code": "Text('总计：¥' + this.allMoney).fontColor(Color.Red).padding({left:'20vp'})",
+      "context": {
+        "startLine": 93,
+        "lines": [
+          "",
+          "        /*结算*/",
+          "        Row(){",
+          "          Text('已选' + this.shopNums)",
+          "",
+          "          Text('总计：¥' + this.allMoney).fontColor(Color.Red).padding({left:'20vp'})",
+          "",
+          "          Button(('结算'), { type: ButtonType.Capsule })",
+          "            .width('40%')",
+          "            .height($r('app.float.login_button_height')).fontSize($r('app.float.normal_text_size')).fontColor($r('app.color.red')).fontWeight(FontWeight.Medium)",
+          "            .backgroundColor($r('app.color.grey'))"
+        ]
+      }
+    },
+    "ui:26dc03ef62ea": {
+      "id": "ui:26dc03ef62ea",
+      "category": "Button",
+      "name": "Button",
+      "description": "结算",
+      "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/pages/Shop.ets",
+      "line": 100,
+      "code": "Button(('结算'), { type: ButtonType.Capsule })",
+      "context": {
+        "startLine": 95,
+        "lines": [
+          "        Row(){",
+          "          Text('已选' + this.shopNums)",
+          "",
+          "          Text('总计：¥' + this.allMoney).fontColor(Color.Red).padding({left:'20vp'})",
+          "",
+          "          Button(('结算'), { type: ButtonType.Capsule })",
+          "            .width('40%')",
+          "            .height($r('app.float.login_button_height')).fontSize($r('app.float.normal_text_size')).fontColor($r('app.color.red')).fontWeight(FontWeight.Medium)",
+          "            .backgroundColor($r('app.color.grey'))",
+          "            .onClick(()=>{",
+          "              AlertDialog.show({"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:2e8430d50662",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:c87a80197741",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:976c46340f4c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:845dcbb93bb1",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:47470844e980",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:b6c171ff6f91",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:07f4da051922",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:57acd3ff1bef",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:fbcd018dbb65",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:bf517986408c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:53933df7a9ef",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5803fba41112",
+      "to": "ui:26dc03ef62ea",
+      "kind": "contains"
+    }
+  ]
+}

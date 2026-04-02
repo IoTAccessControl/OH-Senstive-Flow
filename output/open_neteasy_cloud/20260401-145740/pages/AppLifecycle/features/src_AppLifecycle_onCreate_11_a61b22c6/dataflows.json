@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "runId": "open_neteasy_cloud_20260401-145740",
+    "generatedAt": "2026-04-01T07:01:04.883Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onCreate_11_a61b22c6",
+      "kind": "source",
+      "title": "应用创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 11,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "定义 EntryAbility 的 onCreate 生命周期回调函数，作为数据流的起点，在 UIAbility 实例创建时被系统调用。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * Lift cycle management of Ability.",
+              " */",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 12,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "调用 hilog.info 接口，将字符串常量 'Ability onCreate' 格式化后输出到系统日志，标记应用创建事件，未涉及敏感隐私数据的采集或传输。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * Lift cycle management of Ability.",
+              " */",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识 (Ability onCreate)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (系统日志缓冲区)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,670 @@
+{
+  "meta": {
+    "runId": "Test_user_info_20260401-141331",
+    "generatedAt": "2026-04-01T06:16:03.324Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 3,
+      "nodes": 21,
+      "edges": 18,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "ComprehensiveInfoForm",
+      "entry": {
+        "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+        "structName": "ComprehensiveInfoForm",
+        "line": 5,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_ComprehensiveInfoForm_12f5230c13",
+      "kind": "ui",
+      "title": "提交完整信息"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化包含个人敏感信息（身高、体重、婚姻、家庭、教育）的界面组件状态。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 167,
+          "code": "Button('提交完整信息', { type: ButtonType.Capsule })",
+          "description": "渲染‘提交完整信息’按钮组件，作为用户触发数据提交操作的交互入口。",
+          "context": {
+            "startLine": 162,
+            "lines": [
+              "        Text('家庭与教育').fontSize(20).fontWeight(FontWeight.Bold).margin({ top: 20, bottom: 10 })",
+              "        this.buildTextAreaRow('家庭成员：', this.familyMembers, (v) => { this.familyMembers = v })",
+              "        this.buildTextAreaRow('教育背景：', this.education, (v) => { this.education = v })",
+              "",
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 171,
+          "code": ".onClick(() => {",
+          "description": "注册按钮点击事件监听器 onClick，定义当用户点击按钮时执行的回调逻辑。",
+          "context": {
+            "startLine": 166,
+            "lines": [
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 172,
+          "code": "this.submitForm()",
+          "description": "在点击回调中调用 submitForm 方法，启动表单数据验证与提交流程。",
+          "context": {
+            "startLine": 167,
+            "lines": [
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm 私有方法，开始执行对用户填写的个人隐私数据（如姓名、家庭成员等）的逻辑处理。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "读取并校验成员变量 this.name（姓名），判断用户是否已输入该敏感个人信息。",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 407,
+          "code": "prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+          "description": "调用系统提示接口 prompt.showToast 向用户显示‘请输入姓名’的提示信息，此为当前数据流分析的终点（Sink）。",
+          "context": {
+            "startLine": 402,
+            "lines": [
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        },
+        {
+          "from": "p1:n6",
+          "to": "p1:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "身高 (height1)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员 (familyMembers)",
+          "教育背景 (education)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存临时存储 (@State 装饰的组件状态)",
+          "未观察到加密存储行为",
+          "未观察到本地持久化存储行为"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化包含个人敏感信息的界面组件。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 167,
+          "code": "Button('提交完整信息', { type: ButtonType.Capsule })",
+          "description": "渲染‘提交完整信息’按钮组件，作为用户触发数据提交操作的交互点。",
+          "context": {
+            "startLine": 162,
+            "lines": [
+              "        Text('家庭与教育').fontSize(20).fontWeight(FontWeight.Bold).margin({ top: 20, bottom: 10 })",
+              "        this.buildTextAreaRow('家庭成员：', this.familyMembers, (v) => { this.familyMembers = v })",
+              "        this.buildTextAreaRow('教育背景：', this.education, (v) => { this.education = v })",
+              "",
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()"
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 171,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 事件回调箭头函数，准备执行提交逻辑。",
+          "context": {
+            "startLine": 166,
+            "lines": [
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 172,
+          "code": "this.submitForm()",
+          "description": "在回调中调用 submitForm 方法，将控制流转向数据处理逻辑。",
+          "context": {
+            "startLine": 167,
+            "lines": [
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p2:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "submitForm 方法定义开始，进入表单数据完整性校验流程。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "读取并校验姓名 (name) 数据项是否为空，判断用户是否已输入姓名。",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "读取并校验家庭成员信息 (familyMembers) 数据项是否为空，判断用户是否已输入家庭情况。",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p2:n8",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "调用 prompt.showToast API 显示错误提示，告知用户需填写家庭成员信息，此为当前数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        },
+        {
+          "from": "p2:n4",
+          "to": "p2:n5"
+        },
+        {
+          "from": "p2:n5",
+          "to": "p2:n6"
+        },
+        {
+          "from": "p2:n6",
+          "to": "p2:n7"
+        },
+        {
+          "from": "p2:n7",
+          "to": "p2:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "家庭成员信息 (familyMembers)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮)"
+        ],
+        "cloudUpload": [
+          "无 (当前路径仅进行本地校验和提示，未执行网络发送)"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (@State 状态变量)，未加密，未持久化"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化个人信息登记页面的视图结构。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 167,
+          "code": "Button('提交完整信息', { type: ButtonType.Capsule })",
+          "description": "创建‘提交完整信息’按钮组件，作为用户触发数据收集操作的交互入口。",
+          "context": {
+            "startLine": 162,
+            "lines": [
+              "        Text('家庭与教育').fontSize(20).fontWeight(FontWeight.Bold).margin({ top: 20, bottom: 10 })",
+              "        this.buildTextAreaRow('家庭成员：', this.familyMembers, (v) => { this.familyMembers = v })",
+              "        this.buildTextAreaRow('教育背景：', this.education, (v) => { this.education = v })",
+              "",
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 171,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 事件监听器，准备响应用户的点击动作。",
+          "context": {
+            "startLine": 166,
+            "lines": [
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 172,
+          "code": "this.submitForm()",
+          "description": "在点击事件中调用 submitForm 方法，启动表单数据的处理流程。",
+          "context": {
+            "startLine": 167,
+            "lines": [
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p3:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "submitForm 方法定义开始，执行数据有效性校验并聚合所有隐私数据项。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p3:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 437,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 接口显示提交成功提示，将姓名和年龄等敏感数据渲染至 UI 通知栏（数据流出终点）。",
+          "context": {
+            "startLine": 432,
+            "lines": [
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({",
+              "      message: `信息提交成功！\\n姓名：${this.name}\\n年龄：${this.age}岁`,",
+              "      duration: 3000",
+              "    });",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n4",
+          "to": "p3:n5"
+        },
+        {
+          "from": "p3:n5",
+          "to": "p3:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名",
+          "年龄",
+          "身高",
+          "体重",
+          "婚姻状况",
+          "家庭成员信息",
+          "教育背景",
+          "房产数据"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户点击提交按钮）"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为（当前仅本地日志输出/提示）"
+        ],
+        "storageAndEncryption": [
+          "数据暂存于组件内存状态（@State），未检测到持久化存储或加密操作"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

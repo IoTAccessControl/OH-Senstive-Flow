@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "featureId": "ui_Feedback_8e85dafbb8",
+    "generatedAt": "2026-04-01T06:56:41.164Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.WRITE_MEDIA 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户在反馈页面查看或调试应用运行日志时",
+        "dataSources": [
+          "应用沙箱本地文件系统"
+        ],
+        "dataItems": [
+          {
+            "name": "本地日志文件列表",
+            "refs": [
+              {
+                "flowId": "flow:p14",
+                "nodeId": "p14:n3"
+              },
+              {
+                "flowId": "flow:p15",
+                "nodeId": "p15:n9"
+              },
+              {
+                "flowId": "flow:p16",
+                "nodeId": "p16:n9"
+              }
+            ]
+          },
+          {
+            "name": "日志文件元数据（文件大小）",
+            "refs": [
+              {
+                "flowId": "flow:p14",
+                "nodeId": "p14:n6"
+              },
+              {
+                "flowId": "flow:p16",
+                "nodeId": "p16:n10"
+              }
+            ]
+          },
+          {
+            "name": "日志文件路径",
+            "refs": [
+              {
+                "flowId": "flow:p14",
+                "nodeId": "p14:n5"
+              }
+            ]
+          },
+          {
+            "name": "应用唯一标识",
+            "refs": [
+              {
+                "flowId": "flow:p14",
+                "nodeId": "p14:n1"
+              }
+            ]
+          },
+          {
+            "name": "调试模式状态",
+            "refs": [
+              {
+                "flowId": "flow:p14",
+                "nodeId": "p14:n1"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取并遍历本地文件目录，同步获取文件元数据",
+        "storageMethod": "暂存于应用内存状态中用于界面展示",
+        "dataRecipients": [
+          {
+            "name": "代码托管平台",
+            "inferred": true
+          }
+        ],
+        "processingPurpose": "用于用户查看应用运行记录、排查问题或进行故障反馈",
+        "privacyToggleUi": {
+          "where": "反馈页面中的“切换 Debug 日志”按钮",
+          "refs": [
+            {
+              "uiNodeId": "ui:47097712e5bf"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "应用读取本地存储的日志文件列表及元数据时",
+        "permissionPurpose": "允许应用访问媒体文件以获取日志信息",
+        "denyImpact": "若拒绝，应用无法读取日志文件列表，导致无法查看调试日志或进行故障反馈",
+        "refs": [
+          {
+            "flowId": "flow:p14",
+            "nodeId": "p14:n3"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

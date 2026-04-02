@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p13 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/HarmoneyOpenEye/entry/src/main/ets/pages/topicDetail/TopicDetailPage.ets:24 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "TopicDetailPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/topicDetail/TopicDetailPage.ets",
+        "structName": "TopicDetailPage",
+        "line": 13,
+        "description": "TopicDetail页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_TopicDetailPage_eda60c982a",
+      "kind": "ui",
+      "title": "专题详情页面"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p13",
+      "pathId": "p13",
+      "nodes": [
+        {
+          "id": "p13:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/topicDetail/TopicDetailPage.ets",
+          "line": 23,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "  @State isAutoPlay: boolean = true",
+              "  @State showControls: boolean = true",
+              "  @State playUrl: string = \"\"",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    TopicDetailViewModel.topicId = router.getParams()[\"id\"]",
+              "    TopicDetailViewModel.observeState((state) => this.viewState = state)",
+              "    this.loadNet()",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p13:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/topicDetail/TopicDetailPage.ets",
+          "line": 24,
+          "code": "TopicDetailViewModel.topicId = router.getParams()[\"id\"]",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  @State showControls: boolean = true",
+              "  @State playUrl: string = \"\"",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    TopicDetailViewModel.topicId = router.getParams()[\"id\"]",
+              "    TopicDetailViewModel.observeState((state) => this.viewState = state)",
+              "    this.loadNet()",
+              "  }",
+              "",
+              "  loadNet() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p13:n1",
+          "to": "p13:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p13 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/HarmoneyOpenEye/entry/src/main/ets/pages/topicDetail/TopicDetailPage.ets:24 之后继续扩展"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "runId": "IntentsKit-codelab-Clientdemo-ArkTS_20260401-134916",
+    "generatedAt": "2026-04-01T05:51:02.920Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onWindowStageDestroy_39_e9fe89b9",
+      "kind": "source",
+      "title": "主窗口销毁时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "onWindowStageDestroy(): void {",
+          "description": "定义 onWindowStageDestroy 生命周期回调函数入口，当主窗口阶段被销毁时触发。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "      }, (err: BusinessError) => {",
+              "        Logger.info(TAG, `onWindowStageCreate failes: ${JSON.stringify(err)}`);",
+              "      })",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    Logger.info(TAG, `onWindowStageDestroy`);",
+              "  }",
+              "",
+              "  onForeground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 41,
+          "code": "Logger.info(TAG, `onWindowStageDestroy`);",
+          "description": "在窗口销毁事件中调用 Logger.info 方法，传入固定标签 TAG 和描述窗口销毁状态的字符串模板。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "      })",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    Logger.info(TAG, `onWindowStageDestroy`);",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    Logger.info(TAG, `onForeground`);"
+            ]
+          }
+        },
+        {
+          "id": "p5:n3",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 11,
+          "code": "public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+          "description": "进入 Logger 工具类的 info 静态方法，接收来自调用方的 logTag 和 messageFormat 参数。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "  public static debug(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.debug(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static warn(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.warn(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);"
+            ]
+          }
+        },
+        {
+          "id": "p5:n4",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 12,
+          "code": "hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+          "description": "调用系统 hilog.info 接口，将拼接后的日志内容（包含域、标签、消息）输出到系统日志缓冲区，此为数据流终点。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  public static debug(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.debug(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static warn(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.warn(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        },
+        {
+          "from": "p5:n2",
+          "to": "p5:n3"
+        },
+        {
+          "from": "p5:n3",
+          "to": "p5:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "生命周期事件标识 (onWindowStageDestroy)",
+          "应用包名/标签 (com.example.insightintentdemo)",
+          "日志域标识 (0x0000)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 销毁时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅调用系统日志接口)"
+        ],
+        "storageAndEncryption": [
+          "由系统 hilog 服务决定存储策略，源码中未体现本地文件或加密操作"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "runId": "Test_login_in_try_20260401-141033",
+    "generatedAt": "2026-04-01T06:12:36.873Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "RowPage",
+      "entry": {
+        "filePath": "input/app/Test_login_in_try/entry/src/main/ets/pages/Index.ets",
+        "structName": "RowPage",
+        "line": 10,
+        "description": "登录页面"
+      }
+    },
+    "feature": {
+      "featureId": "src_RowPage_onBackup_7_ab9b4a7a",
+      "kind": "source",
+      "title": "登录页面逻辑：onBackup"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/Test_login_in_try/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets",
+          "line": 7,
+          "code": "async onBackup() {",
+          "description": "定义 onBackup 异步函数，作为备份扩展能力的生命周期入口，当系统触发备份流程时执行",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import { BackupExtensionAbility, BundleVersion } from '@kit.CoreFileKit';",
+              "",
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryBackupAbility extends BackupExtensionAbility {",
+              "  async onBackup() {",
+              "    hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+              "    await Promise.resolve();",
+              "  }",
+              "",
+              "  async onRestore(bundleVersion: BundleVersion) {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/Test_login_in_try/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets",
+          "line": 8,
+          "code": "hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+          "description": "调用 hilog.info 输出静态日志信息 'onBackup ok'，未包含任何用户隐私数据或设备标识，仅用于调试标记备份流程开始",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryBackupAbility extends BackupExtensionAbility {",
+              "  async onBackup() {",
+              "    hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+              "    await Promise.resolve();",
+              "  }",
+              "",
+              "  async onRestore(bundleVersion: BundleVersion) {",
+              "    hilog.info(DOMAIN, 'testTag', 'onRestore ok %{public}s', JSON.stringify(bundleVersion));"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储操作",
+          "无加密操作"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

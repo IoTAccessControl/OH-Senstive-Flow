@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "featureId": "ui_Splash_c3e78967b3",
+    "generatedAt": "2026-04-01T06:57:22.534Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "应用启动时生成并保存设备唯一标识，用于后续业务初始化",
+        "dataSources": [
+          "本地存储",
+          "系统随机数生成器"
+        ],
+        "dataItems": [
+          {
+            "name": "设备唯一标识",
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n2"
+              },
+              {
+                "flowId": "flow:p28",
+                "nodeId": "p28:n4"
+              },
+              {
+                "flowId": "flow:p29",
+                "nodeId": "p29:n4"
+              },
+              {
+                "flowId": "flow:p30",
+                "nodeId": "p30:n7"
+              }
+            ]
+          },
+          {
+            "name": "调试日志信息",
+            "refs": [
+              {
+                "flowId": "flow:p28",
+                "nodeId": "p28:n5"
+              },
+              {
+                "flowId": "flow:p29",
+                "nodeId": "p29:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "自动生成随机 UUID 并记录日志",
+        "storageMethod": "本地持久化存储，未加密明文存储",
+        "dataRecipients": [],
+        "processingPurpose": "标识当前设备或应用实例，用于业务初始化和状态追踪",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.MEDIA_LOCATION",
+        "businessScenario": "应用启动时检查或请求访问媒体文件位置信息的权限",
+        "permissionPurpose": "获取用户媒体文件的位置信息以支持相关业务功能",
+        "denyImpact": "若拒绝授权，可能无法执行依赖媒体位置信息的初始化任务，但应用仍可跳转至首页",
+        "refs": [
+          {
+            "flowId": "flow:p28",
+            "nodeId": "p28:n2"
+          },
+          {
+            "flowId": "flow:p28",
+            "nodeId": "p28:n6"
+          },
+          {
+            "flowId": "flow:p29",
+            "nodeId": "p29:n2"
+          },
+          {
+            "flowId": "flow:p29",
+            "nodeId": "p29:n9"
+          },
+          {
+            "flowId": "flow:p30",
+            "nodeId": "p30:n3"
+          },
+          {
+            "flowId": "flow:p30",
+            "nodeId": "p30:n9"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      },
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "应用启动时检查或请求读取用户媒体文件的权限",
+        "permissionPurpose": "读取用户媒体文件以支持相关业务功能",
+        "denyImpact": "若拒绝授权，可能无法执行依赖媒体读取的初始化任务，但应用仍可跳转至首页",
+        "refs": [
+          {
+            "flowId": "flow:p28",
+            "nodeId": "p28:n2"
+          },
+          {
+            "flowId": "flow:p29",
+            "nodeId": "p29:n2"
+          },
+          {
+            "flowId": "flow:p29",
+            "nodeId": "p29:n9"
+          },
+          {
+            "flowId": "flow:p30",
+            "nodeId": "p30:n4"
+          },
+          {
+            "flowId": "flow:p30",
+            "nodeId": "p30:n9"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

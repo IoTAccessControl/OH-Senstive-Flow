@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "runId": "PaymentKit-CodelabDemo_20260401-135840",
+    "featureId": "src_AppLifecycle_onWindowStageCreate_14_2e8ebbce",
+    "generatedAt": "2026-04-01T06:01:43.133Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "PaymentKit-CodelabDemo",
+        "businessScenario": "应用启动并加载主页面时记录运行状态与错误信息",
+        "dataSources": [
+          "系统生命周期事件",
+          "页面加载回调结果"
+        ],
+        "dataItems": [
+          {
+            "name": "应用生命周期事件标识",
+            "refs": [
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n2"
+              }
+            ]
+          },
+          {
+            "name": "页面加载错误详情",
+            "refs": [
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n4"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n4"
+              }
+            ]
+          },
+          {
+            "name": "页面加载成功返回数据",
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "序列化为字符串并以明文格式写入系统日志",
+        "storageMethod": "本地存储（由系统日志服务管理，非应用私有文件）",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n2"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n4"
+              },
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n5"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于开发调试与监控应用启动及页面加载过程中的异常状态",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260401-140248",
+    "featureId": "src_AppLifecycle_onCreate_24_d1d8db04",
+    "generatedAt": "2026-04-01T06:09:00.724Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "应用启动初始化时记录运行状态",
+        "dataSources": [
+          "系统日志接口"
+        ],
+        "dataItems": [
+          {
+            "name": "应用生命周期状态标识",
+            "refs": [
+              {
+                "flowId": "flow:p14",
+                "nodeId": "p14:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "本地日志记录",
+        "storageMethod": "本地日志存储（系统级，未加密）",
+        "dataRecipients": [
+          {
+            "name": "系统日志缓冲区",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p14",
+                "nodeId": "p14:n2"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于调试和监控应用启动流程",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "Pedometer",
+        "businessScenario": "应用启动时加载用户计步偏好设置",
+        "dataSources": [
+          "本地偏好设置文件"
+        ],
+        "dataItems": [
+          {
+            "name": "应用偏好设置数据",
+            "refs": [
+              {
+                "flowId": "flow:p15",
+                "nodeId": "p15:n3"
+              }
+            ]
+          },
+          {
+            "name": "计步器历史数据",
+            "refs": [
+              {
+                "flowId": "flow:p15",
+                "nodeId": "p15:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "内存加载与读取",
+        "storageMethod": "本地存储",
+        "dataRecipients": [
+          {
+            "name": "应用内部内存",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p15",
+                "nodeId": "p15:n3"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "恢复用户之前的计步器配置和历史记录以支持功能正常使用",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

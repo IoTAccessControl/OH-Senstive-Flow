@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "runId": "WebCookie_20260401-142348",
+    "generatedAt": "2026-04-01T06:25:19.742Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onForeground_47_031b9db7",
+      "kind": "source",
+      "title": "应用切到前台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/WebCookie/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 47,
+          "code": "onForeground() {",
+          "description": "定义 onForeground 生命周期回调函数，作为数据流的起点，当应用界面切换到前台时被系统触发。",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/WebCookie/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 48,
+          "code": "// Ability has brought to foreground.",
+          "description": "代码注释行，说明该函数用于处理应用进入前台的逻辑，不涉及实际数据操作。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "    // Main window is destroyed, release UI related resources.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {",
+              "    // Ability has back to background."
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/WebCookie/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 49,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onForeground' 格式化后输出到系统信息日志，此为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {",
+              "    // Ability has back to background.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "日志文本字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发（当 UIAbility 切换到前台时）"
+        ],
+        "cloudUpload": [
+          "无云端上传行为，仅本地日志输出"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储，数据仅在内存中处理后输出到系统日志流"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

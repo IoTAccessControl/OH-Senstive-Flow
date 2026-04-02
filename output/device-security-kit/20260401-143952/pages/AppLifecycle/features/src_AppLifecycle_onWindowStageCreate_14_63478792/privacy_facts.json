@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "runId": "device-security-kit_20260401-143952",
+    "featureId": "src_AppLifecycle_onWindowStageCreate_14_63478792",
+    "generatedAt": "2026-04-01T06:41:20.227Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "device-security-kit",
+        "businessScenario": "应用启动并加载主页面时",
+        "dataSources": [
+          "系统日志模块"
+        ],
+        "dataItems": [
+          {
+            "name": "应用生命周期事件标识",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n3"
+              }
+            ]
+          },
+          {
+            "name": "页面加载错误详情",
+            "refs": [
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n4"
+              }
+            ]
+          },
+          {
+            "name": "页面加载成功回调数据",
+            "refs": [
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "序列化后写入系统日志",
+        "storageMethod": "无本地持久化存储",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n3"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n4"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "记录应用运行状态及页面加载结果用于调试",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

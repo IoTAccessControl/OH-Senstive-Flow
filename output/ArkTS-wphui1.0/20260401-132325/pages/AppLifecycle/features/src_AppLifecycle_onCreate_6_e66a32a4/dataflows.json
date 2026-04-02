@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "runId": "ArkTS-wphui1.0_20260401-132325",
+    "generatedAt": "2026-04-01T05:26:25.500Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onCreate_6_e66a32a4",
+      "kind": "source",
+      "title": "应用创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 6,
+          "code": "onCreate(want, launchParam) {",
+          "description": "UIAbility 生命周期入口 onCreate 被触发，标志着应用实例开始创建，接收 want 和 launchParam 参数。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import UIAbility from '@ohos.app.ability.UIAbility';",
+              "import hilog from '@ohos.hilog';",
+              "import window from '@ohos.window';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want, launchParam) {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 7,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onCreate' 作为公开信息 (%{public}s) 写入系统日志，用于调试或记录启动事件。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import hilog from '@ohos.hilog';",
+              "import window from '@ohos.window';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want, launchParam) {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识 (Ability onCreate)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (系统日志缓冲区)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.732Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "About",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/About.ets",
+        "structName": "About",
+        "line": 19,
+        "description": "关于页面"
+      }
+    },
+    "feature": {
+      "featureId": "src_About_build_24_3078da3e",
+      "kind": "source",
+      "title": "关于页面展示与交互"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/RecommendItem.ets",
+          "line": 24,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化组件渲染上下文。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "",
+              "@Component",
+              "export struct RecommendItemView {",
+              "  private item: BaseVideo = EmptyBaseVideo('')",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Stack() {",
+              "        /*ImageKnifeComponent({ imageKnifeOption: this.getImageKnifeOption()})",
+              "          .width('100%')",
+              "          .height('100%')*/"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/RecommendItem.ets",
+          "line": 30,
+          "code": "Image(this.item.pic ? this.item.pic : $r('app.media.bg_default_show'))",
+          "description": "读取组件私有变量 this.item 中的 pic 字段（视频封面地址），用于 Image 组件渲染，涉及视频元数据访问。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "    Column() {",
+              "      Stack() {",
+              "        /*ImageKnifeComponent({ imageKnifeOption: this.getImageKnifeOption()})",
+              "          .width('100%')",
+              "          .height('100%')*/",
+              "        Image(this.item.pic ? this.item.pic : $r('app.media.bg_default_show'))",
+              "          .width('100%')",
+              "          .height('100%')",
+              "          .borderRadius({ topLeft: 4, topRight: 4 })",
+              "        Row() {",
+              "          Image($r('app.media.ic_play_count_white'))"
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/RecommendItem.ets",
+          "line": 83,
+          "code": ".onClick(() => {",
+          "description": "定义 Column 容器的 onClick 事件监听器，等待用户点击操作以触发数据流转。",
+          "context": {
+            "startLine": 78,
+            "lines": [
+              "          .fontColor('#aaaaaa')",
+              "          .height(30)",
+              "          .width('100%')",
+              "      }",
+              "    }",
+              "    .onClick(() => {",
+              "      router.pushUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "    })",
+              "    .borderRadius(4)",
+              "    .backgroundColor('#ffffff')",
+              "    .shadow({radius: 3, color: \"#ff6d6d6d\"})"
+            ]
+          }
+        },
+        {
+          "id": "p7:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/view/home/RecommendItem.ets",
+          "line": 84,
+          "code": "router.pushUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+          "description": "调用 router.pushUrl 进行页面跳转，将完整的视频对象 this.item 作为参数 vInfo 传递至 Video 页面，完成敏感数据（视频详情）的跨页面传输。",
+          "context": {
+            "startLine": 79,
+            "lines": [
+              "          .height(30)",
+              "          .width('100%')",
+              "      }",
+              "    }",
+              "    .onClick(() => {",
+              "      router.pushUrl({ url: 'pages/Video', params: { vInfo: this.item } });",
+              "    })",
+              "    .borderRadius(4)",
+              "    .backgroundColor('#ffffff')",
+              "    .shadow({radius: 3, color: \"#ff6d6d6d\"})",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        },
+        {
+          "from": "p7:n3",
+          "to": "p7:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "视频对象 (BaseVideo)",
+          "视频封面 URL (pic)",
+          "视频标题/描述信息"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存暂存 (组件私有变量)",
+          "路由参数传递 (未加密)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

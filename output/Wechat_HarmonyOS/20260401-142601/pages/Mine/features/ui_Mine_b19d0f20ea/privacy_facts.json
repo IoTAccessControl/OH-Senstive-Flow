@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260401-142601",
+    "featureId": "ui_Mine_b19d0f20ea",
+    "generatedAt": "2026-04-01T06:36:52.026Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户在个人中心点击头像尝试更换头像，但操作失败时",
+        "dataSources": [
+          "系统相册选择器错误回调"
+        ],
+        "dataItems": [
+          {
+            "name": "错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n5"
+              },
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "接收错误回调参数并调用系统提示接口进行临时展示",
+        "storageMethod": "无持久化存储，仅在内存中临时传递用于界面提示",
+        "dataRecipients": [
+          {
+            "name": "用户（通过屏幕气泡通知）",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n9"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "告知用户头像更换操作失败的具体原因",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "用户在个人中心点击头像以从系统相册选择新图片",
+        "permissionPurpose": "允许应用访问用户媒体库以读取选中的头像图片路径",
+        "denyImpact": "用户无法从相册选择图片来更换头像，只能使用默认头像或取消操作",
+        "refs": [
+          {
+            "flowId": "flow:p18",
+            "nodeId": "p18:n4"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

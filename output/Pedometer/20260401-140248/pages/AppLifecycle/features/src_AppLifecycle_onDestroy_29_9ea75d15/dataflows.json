@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260401-140248",
+    "generatedAt": "2026-04-01T06:08:49.922Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_29_9ea75d15",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p16",
+      "pathId": "p16",
+      "nodes": [
+        {
+          "id": "p16:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 29,
+          "code": "onDestroy(): void | Promise<void> {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，在 UIAbility 实例销毁时被系统触发。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    StepsUtil.createStepsPreferences(this.context);",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p16:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 30,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口记录'Ability onDestroy'日志，将应用销毁的状态信息输出到系统日志缓冲区，此处为数据流终点。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    StepsUtil.createStepsPreferences(this.context);",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p16:n1",
+          "to": "p16:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件"
+        ],
+        "collectionFrequency": [
+          "事件触发（UIAbility 销毁时）"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "featureId": "src_AppLifecycle_onWindowStageCreate_42_0ae998a3",
+    "generatedAt": "2026-04-01T06:56:04.579Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACCESS_NETWORK_STATE 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "应用启动并初始化主窗口时",
+        "dataSources": [
+          "系统上下文",
+          "页面加载回调",
+          "网络状态监测"
+        ],
+        "dataItems": [
+          {
+            "name": "应用文件目录路径",
+            "refs": [
+              {
+                "flowId": "flow:p37",
+                "nodeId": "p37:n2"
+              },
+              {
+                "flowId": "flow:p38",
+                "nodeId": "p38:n2"
+              },
+              {
+                "flowId": "flow:p39",
+                "nodeId": "p39:n2"
+              }
+            ]
+          },
+          {
+            "name": "网络状态标志",
+            "refs": [
+              {
+                "flowId": "flow:p37",
+                "nodeId": "p37:n4"
+              },
+              {
+                "flowId": "flow:p38",
+                "nodeId": "p38:n3"
+              },
+              {
+                "flowId": "flow:p39",
+                "nodeId": "p39:n4"
+              }
+            ]
+          },
+          {
+            "name": "错误对象信息",
+            "refs": [
+              {
+                "flowId": "flow:p37",
+                "nodeId": "p37:n7"
+              }
+            ]
+          },
+          {
+            "name": "页面加载回调数据",
+            "refs": [
+              {
+                "flowId": "flow:p38",
+                "nodeId": "p38:n5"
+              }
+            ]
+          },
+          {
+            "name": "网络连接配置信息",
+            "refs": [
+              {
+                "flowId": "flow:p39",
+                "nodeId": "p39:n6"
+              },
+              {
+                "flowId": "flow:p39",
+                "nodeId": "p39:n7"
+              },
+              {
+                "flowId": "flow:p39",
+                "nodeId": "p39:n9"
+              }
+            ]
+          },
+          {
+            "name": "应用包信息",
+            "refs": [
+              {
+                "flowId": "flow:p40",
+                "nodeId": "p40:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "收集、本地存储、日志记录、网络连接建立",
+        "storageMethod": "全局变量存储、AppStorage 键值对存储、系统日志明文输出",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p37",
+                "nodeId": "p37:n7"
+              },
+              {
+                "flowId": "flow:p38",
+                "nodeId": "p38:n5"
+              }
+            ]
+          },
+          {
+            "name": "内部日志模块",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p37",
+                "nodeId": "p37:n3"
+              },
+              {
+                "flowId": "flow:p39",
+                "nodeId": "p39:n3"
+              }
+            ]
+          },
+          {
+            "name": "网络连接管理器",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p39",
+                "nodeId": "p39:n9"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "初始化应用运行环境、记录启动日志、检测网络可用性、加载首页内容、获取应用自身信息",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "应用启动时建立网络连接以准备后续数据交互",
+        "permissionPurpose": "允许应用访问互联网，用于创建网络连接通道",
+        "denyImpact": "应用无法建立网络连接，可能导致依赖网络的功能不可用",
+        "refs": [
+          {
+            "flowId": "flow:p39",
+            "nodeId": "p39:n9"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      }
+    ]
+  }
+}

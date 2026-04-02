@@ -1,0 +1,2288 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260401-141653",
+    "generatedAt": "2026-04-01T06:22:19.942Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 79,
+      "edges": 60,
+      "pages": 19,
+      "elements": 60
+    }
+  },
+  "roots": [
+    "page:76939a1235bf",
+    "page:3f5e6f08715a",
+    "page:9bff0bbc69a4",
+    "page:096938cc37f5",
+    "page:47ab555a65dd",
+    "page:7d61f0cdf868",
+    "page:64c5231aa06a",
+    "page:70bb46cdd41d",
+    "page:2fa9bc7d96dc",
+    "page:8c6fcb4b6713",
+    "page:3c912fb9ba4d"
+  ],
+  "nodes": {
+    "page:76939a1235bf": {
+      "id": "page:76939a1235bf",
+      "category": "Page",
+      "name": "Index",
+      "description": "视频首页",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/Index.ets",
+      "line": 3,
+      "code": "struct Index {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {"
+        ]
+      }
+    },
+    "ui:d539041cd2d0": {
+      "id": "ui:d539041cd2d0",
+      "category": "Component",
+      "name": "build",
+      "description": "欢迎页面",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/Index.ets",
+      "line": 6,
+      "code": "build() {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)"
+        ]
+      }
+    },
+    "ui:b5ca0b9e737a": {
+      "id": "ui:b5ca0b9e737a",
+      "category": "Display",
+      "name": "Text",
+      "description": "视频页标题",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/Index.ets",
+      "line": 9,
+      "code": "Text(this.message)",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)",
+          "      }",
+          "      .width('100%')",
+          "    }"
+        ]
+      }
+    },
+    "page:d13e5154834b": {
+      "id": "page:d13e5154834b",
+      "category": "Page",
+      "name": "VideoPage",
+      "description": "Video页面",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/VideoPage.ets",
+      "line": 7,
+      "code": "export struct VideoPage {",
+      "context": {
+        "startLine": 2,
+        "lines": [
+          "import { initializeOnStartup, VideoItem } from '../viewModel/VideoViewModel';",
+          "import { PageState } from 'common/src/main/ets/constants/Constants';",
+          "import { videoPlayView } from '../view/videoPlayView';",
+          "",
+          "@Component",
+          "export struct VideoPage {",
+          "  @Link @Watch(\"tabIndexChange\") tabCurrentIndex: number;",
+          "  @State videoArray: Array<VideoItem> = [];",
+          "  @State pageState: PageState = PageState.Loading;",
+          "",
+          "  @State play:boolean = false;"
+        ]
+      }
+    },
+    "ui:f1ed0f0c1f80": {
+      "id": "ui:f1ed0f0c1f80",
+      "category": "Component",
+      "name": "build",
+      "description": "视频播放页",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/VideoPage.ets",
+      "line": 26,
+      "code": "build() {",
+      "context": {
+        "startLine": 21,
+        "lines": [
+          "    } else {",
+          "      this.play = false;",
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "",
+          "    Column() {",
+          "",
+          "      if (this.pageState === PageState.Loading) {",
+          "        // 加载页面"
+        ]
+      }
+    },
+    "ui:0b2d8efefca0": {
+      "id": "ui:0b2d8efefca0",
+      "category": "Component",
+      "name": "LoadingLayout",
+      "description": "视频加载态",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/VideoPage.ets",
+      "line": 32,
+      "code": "LoadingLayout()",
+      "context": {
+        "startLine": 27,
+        "lines": [
+          "",
+          "    Column() {",
+          "",
+          "      if (this.pageState === PageState.Loading) {",
+          "        // 加载页面",
+          "        LoadingLayout()",
+          "",
+          "      } else if (this.pageState === PageState.Success) {",
+          "",
+          "        // 视频页面",
+          "        videoPlayView({ videoArray: $videoArray,play:$play })"
+        ]
+      }
+    },
+    "ui:4c04c016a2e1": {
+      "id": "ui:4c04c016a2e1",
+      "category": "Component",
+      "name": "videoPlayView",
+      "description": "视频播放区域",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/VideoPage.ets",
+      "line": 37,
+      "code": "videoPlayView({ videoArray: $videoArray,play:$play })",
+      "context": {
+        "startLine": 32,
+        "lines": [
+          "        LoadingLayout()",
+          "",
+          "      } else if (this.pageState === PageState.Success) {",
+          "",
+          "        // 视频页面",
+          "        videoPlayView({ videoArray: $videoArray,play:$play })",
+          "",
+          "      } else {",
+          "        // 加载失败页面",
+          "        FailureLayout({ reloadAction: () => {}})",
+          "      }"
+        ]
+      }
+    },
+    "ui:bf1be2e32d3d": {
+      "id": "ui:bf1be2e32d3d",
+      "category": "Component",
+      "name": "FailureLayout",
+      "description": "加载失败提示",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/VideoPage.ets",
+      "line": 41,
+      "code": "FailureLayout({ reloadAction: () => {}})",
+      "context": {
+        "startLine": 36,
+        "lines": [
+          "        // 视频页面",
+          "        videoPlayView({ videoArray: $videoArray,play:$play })",
+          "",
+          "      } else {",
+          "        // 加载失败页面",
+          "        FailureLayout({ reloadAction: () => {}})",
+          "      }",
+          "",
+          "    }",
+          "",
+          "  }"
+        ]
+      }
+    },
+    "page:3f5e6f08715a": {
+      "id": "page:3f5e6f08715a",
+      "category": "Page",
+      "name": "Index",
+      "description": "我的首页",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/Index.ets",
+      "line": 3,
+      "code": "struct Index {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {"
+        ]
+      }
+    },
+    "ui:9e9e57f47fd0": {
+      "id": "ui:9e9e57f47fd0",
+      "category": "Component",
+      "name": "build",
+      "description": "我的页面",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/Index.ets",
+      "line": 6,
+      "code": "build() {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)"
+        ]
+      }
+    },
+    "ui:1e6d9a793300": {
+      "id": "ui:1e6d9a793300",
+      "category": "Display",
+      "name": "Text",
+      "description": "HelloWorld",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/Index.ets",
+      "line": 9,
+      "code": "Text(this.message)",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)",
+          "      }",
+          "      .width('100%')",
+          "    }"
+        ]
+      }
+    },
+    "page:9bff0bbc69a4": {
+      "id": "page:9bff0bbc69a4",
+      "category": "Page",
+      "name": "MinePage",
+      "description": "我的页面",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/MinePage.ets",
+      "line": 9,
+      "code": "export struct MinePage {",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "import { navBarView, topBackgroundView } from '../view/topBackgroundView'",
+          "import { memberButton, swiperImage } from '../viewmodel/mineData'",
+          "",
+          "@Entry",
+          "@Component",
+          "export struct MinePage {",
+          "  private arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]",
+          "  scroller: Scroller = new Scroller()",
+          "  @State colorNavBar: string = 'rgba(255,255,255,0)'",
+          "  @State offsetY: number = 0",
+          "  @State opNav: number = 0;"
+        ]
+      }
+    },
+    "ui:0dae73072d41": {
+      "id": "ui:0dae73072d41",
+      "category": "Component",
+      "name": "build",
+      "description": "我的页面主体",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/MinePage.ets",
+      "line": 42,
+      "code": "build() {",
+      "context": {
+        "startLine": 37,
+        "lines": [
+          "    .indicatorStyle({ selectedColor: Color.White, right: 10 })",
+          "    .height(100)",
+          "    .margin({ left: 15, right: 15, bottom: 10 })",
+          "  }",
+          "",
+          "  build() {",
+          "",
+          "    Stack({ alignContent: Alignment.Top }) {",
+          "",
+          "",
+          "      navBarView({ opNav: this.opNav, colorNavBar: this.colorNavBar })"
+        ]
+      }
+    },
+    "ui:71cf0f46f9a2": {
+      "id": "ui:71cf0f46f9a2",
+      "category": "Component",
+      "name": "navBarView",
+      "description": "导航栏",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/MinePage.ets",
+      "line": 47,
+      "code": "navBarView({ opNav: this.opNav, colorNavBar: this.colorNavBar })",
+      "context": {
+        "startLine": 42,
+        "lines": [
+          "  build() {",
+          "",
+          "    Stack({ alignContent: Alignment.Top }) {",
+          "",
+          "",
+          "      navBarView({ opNav: this.opNav, colorNavBar: this.colorNavBar })",
+          "",
+          "      TabBarLayout({",
+          "        titleArr: $titleArr,",
+          "        currentIndex: $currentIndex,",
+          "        tabBarHeight: this.tabHeight,"
+        ]
+      }
+    },
+    "ui:2c471860065c": {
+      "id": "ui:2c471860065c",
+      "category": "Component",
+      "name": "TabBarLayout",
+      "description": "底部导航栏",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/MinePage.ets",
+      "line": 49,
+      "code": "TabBarLayout({",
+      "context": {
+        "startLine": 44,
+        "lines": [
+          "    Stack({ alignContent: Alignment.Top }) {",
+          "",
+          "",
+          "      navBarView({ opNav: this.opNav, colorNavBar: this.colorNavBar })",
+          "",
+          "      TabBarLayout({",
+          "        titleArr: $titleArr,",
+          "        currentIndex: $currentIndex,",
+          "        tabBarHeight: this.tabHeight,",
+          "        flexAlign:FlexAlign.Center,",
+          "        barStyle:BarSelectStyle.normal,"
+        ]
+      }
+    },
+    "ui:01fd02c008d9": {
+      "id": "ui:01fd02c008d9",
+      "category": "Component",
+      "name": "topBackgroundView",
+      "description": "顶部背景区",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/MinePage.ets",
+      "line": 69,
+      "code": "topBackgroundView({ scaleValue: this.scaleValue })",
+      "context": {
+        "startLine": 64,
+        "lines": [
+          "",
+          "",
+          "      Scroll(this.scroller) {",
+          "        Column() {",
+          "",
+          "          topBackgroundView({ scaleValue: this.scaleValue })",
+          "          iconDockView({ buttons: memberButton })",
+          "          this.CustomSwiper()",
+          "",
+          "          Row().height(10)",
+          "            .backgroundColor(0xF2F1F2)"
+        ]
+      }
+    },
+    "ui:f030244acfaf": {
+      "id": "ui:f030244acfaf",
+      "category": "Component",
+      "name": "iconDockView",
+      "description": "会员功能入口",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/MinePage.ets",
+      "line": 70,
+      "code": "iconDockView({ buttons: memberButton })",
+      "context": {
+        "startLine": 65,
+        "lines": [
+          "",
+          "      Scroll(this.scroller) {",
+          "        Column() {",
+          "",
+          "          topBackgroundView({ scaleValue: this.scaleValue })",
+          "          iconDockView({ buttons: memberButton })",
+          "          this.CustomSwiper()",
+          "",
+          "          Row().height(10)",
+          "            .backgroundColor(0xF2F1F2)",
+          "            .width('100%')"
+        ]
+      }
+    },
+    "ui:591035c33b05": {
+      "id": "ui:591035c33b05",
+      "category": "Component",
+      "name": "ForEach",
+      "description": "内容列表项",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/MinePage.ets",
+      "line": 79,
+      "code": "ForEach(this.titleArr, (item) => {",
+      "context": {
+        "startLine": 74,
+        "lines": [
+          "            .backgroundColor(0xF2F1F2)",
+          "            .width('100%')",
+          "",
+          "",
+          "          Swiper(this.swiperController) {",
+          "            ForEach(this.titleArr, (item) => {",
+          "              Column() {",
+          "                // Text('Page ' + item).fontSize(25).margin(10)",
+          "                productLayout({ currentIndex: $currentIndex })",
+          "              }",
+          ""
+        ]
+      }
+    },
+    "ui:7b243e9a9524": {
+      "id": "ui:7b243e9a9524",
+      "category": "Component",
+      "name": "productLayout",
+      "description": "页面内容",
+      "filePath": "input/app/TodayNews_harmony/mine/src/main/ets/pages/MinePage.ets",
+      "line": 82,
+      "code": "productLayout({ currentIndex: $currentIndex })",
+      "context": {
+        "startLine": 77,
+        "lines": [
+          "",
+          "          Swiper(this.swiperController) {",
+          "            ForEach(this.titleArr, (item) => {",
+          "              Column() {",
+          "                // Text('Page ' + item).fontSize(25).margin(10)",
+          "                productLayout({ currentIndex: $currentIndex })",
+          "              }",
+          "",
+          "            }, item => item)",
+          "          }",
+          "          .index(0)"
+        ]
+      }
+    },
+    "page:096938cc37f5": {
+      "id": "page:096938cc37f5",
+      "category": "Page",
+      "name": "DetailPage",
+      "description": "Detail页面",
+      "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+      "line": 11,
+      "code": "struct DetailPage {",
+      "context": {
+        "startLine": 6,
+        "lines": [
+          "import { ResManager, ResponseResult } from 'common';",
+          "",
+          "",
+          "@Entry",
+          "@Component",
+          "struct DetailPage {",
+          "  @State htmlStr: string = ''",
+          "  @State article: DataModel = new DataModel();",
+          "  @State pageState: PageState = PageState.Loading;",
+          "  @State mediaInfo: MediaInfo = new MediaInfo();",
+          "  controller: webview.WebviewController = new webview.WebviewController()"
+        ]
+      }
+    },
+    "ui:3e69fe9ea7c9": {
+      "id": "ui:3e69fe9ea7c9",
+      "category": "Component",
+      "name": "build",
+      "description": "新闻详情页面",
+      "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+      "line": 116,
+      "code": "build() {",
+      "context": {
+        "startLine": 111,
+        "lines": [
+          "    .width('100%')",
+          "    .height(56)",
+          "    .backgroundColor(Color.White)",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "",
+          "      this.NavBar()",
+          "",
+          "      Web({"
+        ]
+      }
+    },
+    "ui:d458fc8c1de3": {
+      "id": "ui:d458fc8c1de3",
+      "category": "Component",
+      "name": "Web",
+      "description": "文章详情页",
+      "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+      "line": 121,
+      "code": "Web({",
+      "context": {
+        "startLine": 116,
+        "lines": [
+          "  build() {",
+          "    Column() {",
+          "",
+          "      this.NavBar()",
+          "",
+          "      Web({",
+          "        src: this.article.article_url, controller: this.controller",
+          "      })",
+          "        .javaScriptAccess(true)",
+          "        .height('90%')",
+          "        .width('100%')"
+        ]
+      }
+    },
+    "page:47ab555a65dd": {
+      "id": "page:47ab555a65dd",
+      "category": "Page",
+      "name": "HomePage",
+      "description": "新闻首页",
+      "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/HomePage.ets",
+      "line": 14,
+      "code": "export struct HomePage {",
+      "context": {
+        "startLine": 9,
+        "lines": [
+          "  \"马航MH370\"",
+          "]",
+          "",
+          "@Entry",
+          "@Component",
+          "export struct HomePage {",
+          "",
+          "  @State needChange:boolean = false;",
+          "  @Builder",
+          "  SearchTitle() {",
+          ""
+        ]
+      }
+    },
+    "ui:6062956c19e3": {
+      "id": "ui:6062956c19e3",
+      "category": "Component",
+      "name": "build",
+      "description": "首页内容区",
+      "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/HomePage.ets",
+      "line": 72,
+      "code": "build() {",
+      "context": {
+        "startLine": 67,
+        "lines": [
+          "    .padding(10)",
+          "    .backgroundColor(ResManager.getDefaultColor())",
+          "",
+          "  }",
+          "",
+          "  build() {",
+          "",
+          "    Flex({ direction: FlexDirection.Column }) {",
+          "",
+          "      this.SearchTitle()",
+          ""
+        ]
+      }
+    },
+    "ui:6946f97ffebd": {
+      "id": "ui:6946f97ffebd",
+      "category": "Component",
+      "name": "CategoryTabBar",
+      "description": "分类标签栏",
+      "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/HomePage.ets",
+      "line": 78,
+      "code": "CategoryTabBar({needChange:$needChange})",
+      "context": {
+        "startLine": 73,
+        "lines": [
+          "",
+          "    Flex({ direction: FlexDirection.Column }) {",
+          "",
+          "      this.SearchTitle()",
+          "",
+          "      CategoryTabBar({needChange:$needChange})",
+          "    }",
+          "    .backgroundColor(this.needChange?ResManager.getDefaultColor():Color.White)",
+          "",
+          "  }",
+          "}"
+        ]
+      }
+    },
+    "page:7d61f0cdf868": {
+      "id": "page:7d61f0cdf868",
+      "category": "Page",
+      "name": "Index",
+      "description": "资讯首页",
+      "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/Index.ets",
+      "line": 3,
+      "code": "struct Index {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {"
+        ]
+      }
+    },
+    "ui:0372f6558937": {
+      "id": "ui:0372f6558937",
+      "category": "Component",
+      "name": "build",
+      "description": "首页内容",
+      "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/Index.ets",
+      "line": 6,
+      "code": "build() {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)"
+        ]
+      }
+    },
+    "ui:df148c6702bb": {
+      "id": "ui:df148c6702bb",
+      "category": "Display",
+      "name": "Text",
+      "description": "欢迎标语",
+      "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/Index.ets",
+      "line": 9,
+      "code": "Text(this.message)",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)",
+          "      }",
+          "      .width('100%')",
+          "    }"
+        ]
+      }
+    },
+    "page:64c5231aa06a": {
+      "id": "page:64c5231aa06a",
+      "category": "Page",
+      "name": "Index",
+      "description": "启动首页",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/Index.ets",
+      "line": 3,
+      "code": "struct Index {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {"
+        ]
+      }
+    },
+    "ui:8e21c7b5bb25": {
+      "id": "ui:8e21c7b5bb25",
+      "category": "Component",
+      "name": "build",
+      "description": "首页欢迎语",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/Index.ets",
+      "line": 6,
+      "code": "build() {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)"
+        ]
+      }
+    },
+    "ui:035402d0cb50": {
+      "id": "ui:035402d0cb50",
+      "category": "Display",
+      "name": "Text",
+      "description": "HelloWorld",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/Index.ets",
+      "line": 9,
+      "code": "Text(this.message)",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "  @State message: string = 'Hello World'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)",
+          "      }",
+          "      .width('100%')",
+          "    }"
+        ]
+      }
+    },
+    "page:70bb46cdd41d": {
+      "id": "page:70bb46cdd41d",
+      "category": "Page",
+      "name": "LaunchPage",
+      "description": "启动页",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/LaunchPage.ets",
+      "line": 6,
+      "code": "struct LaunchPage {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "",
+          "import router from '@ohos.router'",
+          "import {ResManager} from \"common\"",
+          "@Entry",
+          "@Component",
+          "struct LaunchPage {",
+          "",
+          "  aboutToAppear(){",
+          "    setTimeout(()=>{",
+          "      router.replaceUrl({url:\"pages/MainPage\"})",
+          "    },2000)"
+        ]
+      }
+    },
+    "ui:c710706bffcf": {
+      "id": "ui:c710706bffcf",
+      "category": "Component",
+      "name": "build",
+      "description": "看见更大的世界",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/LaunchPage.ets",
+      "line": 14,
+      "code": "build() {",
+      "context": {
+        "startLine": 9,
+        "lines": [
+          "    setTimeout(()=>{",
+          "      router.replaceUrl({url:\"pages/MainPage\"})",
+          "    },2000)",
+          "  }",
+          "",
+          "  build() {",
+          "",
+          "    Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {",
+          "      Column() {",
+          "        Text('看见更大的世界')",
+          "          .fontSize(36)"
+        ]
+      }
+    },
+    "ui:7bec80e6fbd2": {
+      "id": "ui:7bec80e6fbd2",
+      "category": "Display",
+      "name": "Text",
+      "description": "看见更大的世界",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/LaunchPage.ets",
+      "line": 18,
+      "code": "Text('看见更大的世界')",
+      "context": {
+        "startLine": 13,
+        "lines": [
+          "",
+          "  build() {",
+          "",
+          "    Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center }) {",
+          "      Column() {",
+          "        Text('看见更大的世界')",
+          "          .fontSize(36)",
+          "          .fontColor(ResManager.getDefaultColor())",
+          "      }",
+          "      .flexGrow(1)",
+          "      .justifyContent(FlexAlign.Center)"
+        ]
+      }
+    },
+    "ui:bdbcdd1832b7": {
+      "id": "ui:bdbcdd1832b7",
+      "category": "Display",
+      "name": "Image",
+      "description": "应用图标",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/LaunchPage.ets",
+      "line": 26,
+      "code": "Image($r('app.media.icon_29_Normal'))",
+      "context": {
+        "startLine": 21,
+        "lines": [
+          "      }",
+          "      .flexGrow(1)",
+          "      .justifyContent(FlexAlign.Center)",
+          "",
+          "      Row() {",
+          "        Image($r('app.media.icon_29_Normal'))",
+          "          .width(48)",
+          "          .height(48)",
+          "          .objectFit(ImageFit.Contain)",
+          "          .borderWidth(0.5)",
+          "          .borderRadius(10)"
+        ]
+      }
+    },
+    "ui:3850d1b8a23b": {
+      "id": "ui:3850d1b8a23b",
+      "category": "Display",
+      "name": "Image",
+      "description": "应用标识图标",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/LaunchPage.ets",
+      "line": 33,
+      "code": "Image($r('app.media.logo_label'))",
+      "context": {
+        "startLine": 28,
+        "lines": [
+          "          .height(48)",
+          "          .objectFit(ImageFit.Contain)",
+          "          .borderWidth(0.5)",
+          "          .borderRadius(10)",
+          "          .borderColor($r('app.color.border_color'))",
+          "        Image($r('app.media.logo_label'))",
+          "          .width(100)",
+          "          .height(40)",
+          "          .objectFit(ImageFit.Contain)",
+          "          .padding({ left: 10 })",
+          "      }"
+        ]
+      }
+    },
+    "ui:88a835cd316a": {
+      "id": "ui:88a835cd316a",
+      "category": "Display",
+      "name": "Text",
+      "description": "火山引擎提供计算服务",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/LaunchPage.ets",
+      "line": 41,
+      "code": "Text('火山引擎提供计算服务')",
+      "context": {
+        "startLine": 36,
+        "lines": [
+          "          .objectFit(ImageFit.Contain)",
+          "          .padding({ left: 10 })",
+          "      }",
+          "      .padding({bottom:10})",
+          "",
+          "      Text('火山引擎提供计算服务')",
+          "        .fontSize(10)",
+          "        .margin({ bottom: 40 })",
+          "        .fontColor(0xAAABAB)",
+          "",
+          "    }"
+        ]
+      }
+    },
+    "page:2fa9bc7d96dc": {
+      "id": "page:2fa9bc7d96dc",
+      "category": "Page",
+      "name": "MainPage",
+      "description": "首页",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/MainPage.ets",
+      "line": 8,
+      "code": "struct MainPage {",
+      "context": {
+        "startLine": 3,
+        "lines": [
+          "import { MinePage } from 'mine'",
+          "import { HomePage } from 'home'",
+          "",
+          "@Entry",
+          "@Component",
+          "struct MainPage {",
+          "  @State currentPageIndex: number = 0;",
+          "",
+          "  build() {",
+          "",
+          "    Column() {"
+        ]
+      }
+    },
+    "ui:963c7d1a9f11": {
+      "id": "ui:963c7d1a9f11",
+      "category": "Component",
+      "name": "build",
+      "description": "主页面",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/MainPage.ets",
+      "line": 11,
+      "code": "build() {",
+      "context": {
+        "startLine": 6,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct MainPage {",
+          "  @State currentPageIndex: number = 0;",
+          "",
+          "  build() {",
+          "",
+          "    Column() {",
+          "",
+          "      Tabs({ barPosition: BarPosition.End }) {",
+          "        ForEach(tabBarInfoList, (item: TabBarInfoModel, index: number) => {"
+        ]
+      }
+    },
+    "ui:71ceee44373c": {
+      "id": "ui:71ceee44373c",
+      "category": "Component",
+      "name": "ForEach",
+      "description": "主标签页切换",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/MainPage.ets",
+      "line": 16,
+      "code": "ForEach(tabBarInfoList, (item: TabBarInfoModel, index: number) => {",
+      "context": {
+        "startLine": 11,
+        "lines": [
+          "  build() {",
+          "",
+          "    Column() {",
+          "",
+          "      Tabs({ barPosition: BarPosition.End }) {",
+          "        ForEach(tabBarInfoList, (item: TabBarInfoModel, index: number) => {",
+          "          TabContent() {",
+          "            if (index === 0) {",
+          "              HomePage()",
+          "            } else if (index === 1) {",
+          "              VideoPage({ tabCurrentIndex: $currentPageIndex })"
+        ]
+      }
+    },
+    "ui:d0c7cbf48469": {
+      "id": "ui:d0c7cbf48469",
+      "category": "Component",
+      "name": "HomePage",
+      "description": "首页内容",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/MainPage.ets",
+      "line": 19,
+      "code": "HomePage()",
+      "context": {
+        "startLine": 14,
+        "lines": [
+          "",
+          "      Tabs({ barPosition: BarPosition.End }) {",
+          "        ForEach(tabBarInfoList, (item: TabBarInfoModel, index: number) => {",
+          "          TabContent() {",
+          "            if (index === 0) {",
+          "              HomePage()",
+          "            } else if (index === 1) {",
+          "              VideoPage({ tabCurrentIndex: $currentPageIndex })",
+          "            } else if (index === 2) {",
+          "",
+          "            } else if (index === 3) {"
+        ]
+      }
+    },
+    "ui:35bc93687f12": {
+      "id": "ui:35bc93687f12",
+      "category": "Component",
+      "name": "VideoPage",
+      "description": "视频页面",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/MainPage.ets",
+      "line": 21,
+      "code": "VideoPage({ tabCurrentIndex: $currentPageIndex })",
+      "context": {
+        "startLine": 16,
+        "lines": [
+          "        ForEach(tabBarInfoList, (item: TabBarInfoModel, index: number) => {",
+          "          TabContent() {",
+          "            if (index === 0) {",
+          "              HomePage()",
+          "            } else if (index === 1) {",
+          "              VideoPage({ tabCurrentIndex: $currentPageIndex })",
+          "            } else if (index === 2) {",
+          "",
+          "            } else if (index === 3) {",
+          "              MinePage()",
+          "            }"
+        ]
+      }
+    },
+    "ui:bbf6c296ee2a": {
+      "id": "ui:bbf6c296ee2a",
+      "category": "Component",
+      "name": "MinePage",
+      "description": "我的页面",
+      "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/pages/MainPage.ets",
+      "line": 25,
+      "code": "MinePage()",
+      "context": {
+        "startLine": 20,
+        "lines": [
+          "            } else if (index === 1) {",
+          "              VideoPage({ tabCurrentIndex: $currentPageIndex })",
+          "            } else if (index === 2) {",
+          "",
+          "            } else if (index === 3) {",
+          "              MinePage()",
+          "            }",
+          "",
+          "          }.tabBar(this.BottomNavigation(tabBarInfoList[index]))",
+          "        }, item => JSON.stringify(item))",
+          "      }"
+        ]
+      }
+    },
+    "page:d67393f08fa9": {
+      "id": "page:d67393f08fa9",
+      "category": "Page",
+      "name": "EmptyPage",
+      "description": "空页面",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/EmptyPage.ets",
+      "line": 4,
+      "code": "export struct EmptyPage {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "",
+          "import { ResManager } from '../constants/ResManager'",
+          "@Component",
+          "export struct EmptyPage {",
+          "  @State message: string = '空页面'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {"
+        ]
+      }
+    },
+    "ui:d70c30fefe19": {
+      "id": "ui:d70c30fefe19",
+      "category": "Component",
+      "name": "build",
+      "description": "空页面",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/EmptyPage.ets",
+      "line": 7,
+      "code": "build() {",
+      "context": {
+        "startLine": 2,
+        "lines": [
+          "import { ResManager } from '../constants/ResManager'",
+          "@Component",
+          "export struct EmptyPage {",
+          "  @State message: string = '空页面'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)"
+        ]
+      }
+    },
+    "ui:f996c3a4034a": {
+      "id": "ui:f996c3a4034a",
+      "category": "Display",
+      "name": "Text",
+      "description": "空页面提示",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/EmptyPage.ets",
+      "line": 10,
+      "code": "Text(this.message)",
+      "context": {
+        "startLine": 5,
+        "lines": [
+          "  @State message: string = '空页面'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)",
+          "          .fontColor(ResManager.getDefaultColor())",
+          "",
+          "      }"
+        ]
+      }
+    },
+    "page:ffdde268100a": {
+      "id": "page:ffdde268100a",
+      "category": "Page",
+      "name": "FailureLayout",
+      "description": "加载失败页",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/FailureLayout.ets",
+      "line": 7,
+      "code": "export  struct FailureLayout {",
+      "context": {
+        "startLine": 2,
+        "lines": [
+          "import { Constants } from '../constants/Constants';",
+          "import { ResManager } from '../constants/ResManager';",
+          "",
+          "",
+          "@Component",
+          "export  struct FailureLayout {",
+          "  reloadAction = () => {};",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Image($r('app.media.wifi_Normal'))"
+        ]
+      }
+    },
+    "ui:346da4519eeb": {
+      "id": "ui:346da4519eeb",
+      "category": "Component",
+      "name": "build",
+      "description": "加载失败提示",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/FailureLayout.ets",
+      "line": 10,
+      "code": "build() {",
+      "context": {
+        "startLine": 5,
+        "lines": [
+          "",
+          "@Component",
+          "export  struct FailureLayout {",
+          "  reloadAction = () => {};",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Image($r('app.media.wifi_Normal'))",
+          "        .height(80)",
+          "        .width(80)",
+          "        .objectFit(ImageFit.Contain)"
+        ]
+      }
+    },
+    "ui:d0b4aca5c3c6": {
+      "id": "ui:d0b4aca5c3c6",
+      "category": "Display",
+      "name": "Image",
+      "description": "网络不给力",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/FailureLayout.ets",
+      "line": 12,
+      "code": "Image($r('app.media.wifi_Normal'))",
+      "context": {
+        "startLine": 7,
+        "lines": [
+          "export  struct FailureLayout {",
+          "  reloadAction = () => {};",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Image($r('app.media.wifi_Normal'))",
+          "        .height(80)",
+          "        .width(80)",
+          "        .objectFit(ImageFit.Contain)",
+          "      Text('网络不给力')",
+          "        .opacity(0.6)"
+        ]
+      }
+    },
+    "ui:95a6b6440b0c": {
+      "id": "ui:95a6b6440b0c",
+      "category": "Button",
+      "name": "Text",
+      "description": "网络不给力",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/FailureLayout.ets",
+      "line": 16,
+      "code": "Text('网络不给力')",
+      "context": {
+        "startLine": 11,
+        "lines": [
+          "    Column() {",
+          "      Image($r('app.media.wifi_Normal'))",
+          "        .height(80)",
+          "        .width(80)",
+          "        .objectFit(ImageFit.Contain)",
+          "      Text('网络不给力')",
+          "        .opacity(0.6)",
+          "        .fontSize(12)",
+          "        .fontColor(0x182431)",
+          "        .margin({ top: 12 ,bottom:12})",
+          "      Text('重试')"
+        ]
+      }
+    },
+    "ui:209f3e4a8dd6": {
+      "id": "ui:209f3e4a8dd6",
+      "category": "Button",
+      "name": "Text",
+      "description": "重试",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/FailureLayout.ets",
+      "line": 21,
+      "code": "Text('重试')",
+      "context": {
+        "startLine": 16,
+        "lines": [
+          "      Text('网络不给力')",
+          "        .opacity(0.6)",
+          "        .fontSize(12)",
+          "        .fontColor(0x182431)",
+          "        .margin({ top: 12 ,bottom:12})",
+          "      Text('重试')",
+          "        .borderRadius(3)",
+          "        .borderWidth(1)",
+          "        .borderColor(ResManager.getDefaultColor())",
+          "        .fontSize(12)",
+          "        .fontColor(ResManager.getDefaultColor())"
+        ]
+      }
+    },
+    "page:8c6fcb4b6713": {
+      "id": "page:8c6fcb4b6713",
+      "category": "Page",
+      "name": "Index",
+      "description": "通用测试页",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/Index.ets",
+      "line": 4,
+      "code": "struct Index {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "import router from '@ohos.router'",
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  @State message: string = 'Test'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {"
+        ]
+      }
+    },
+    "ui:7d0aa41a1594": {
+      "id": "ui:7d0aa41a1594",
+      "category": "Button",
+      "name": "build",
+      "description": "点击跳转msy",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/Index.ets",
+      "line": 7,
+      "code": "build() {",
+      "context": {
+        "startLine": 2,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  @State message: string = 'Test'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Button('点击跳转msy')",
+          "          .onClick(()=>{",
+          ""
+        ]
+      }
+    },
+    "ui:23b6d9633737": {
+      "id": "ui:23b6d9633737",
+      "category": "Button",
+      "name": "Button",
+      "description": "点击跳转msy",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/Index.ets",
+      "line": 10,
+      "code": "Button('点击跳转msy')",
+      "context": {
+        "startLine": 5,
+        "lines": [
+          "  @State message: string = 'Test'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Button('点击跳转msy')",
+          "          .onClick(()=>{",
+          "",
+          "            router.pushUrl({",
+          "              url: '@bundle:com.news.today/library/ets/components/homepage/HomePage'",
+          "            }).then(() => {"
+        ]
+      }
+    },
+    "page:e3f3e5ab5bc8": {
+      "id": "page:e3f3e5ab5bc8",
+      "category": "Page",
+      "name": "LoadMoreLayout",
+      "description": "LoadMoreLayout页面",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/LoadMoreLayout.ets",
+      "line": 6,
+      "code": "export  struct LoadMoreLayout {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "",
+          "import { Constants } from '../constants/Constants';",
+          "",
+          "",
+          "@Component",
+          "export  struct LoadMoreLayout {",
+          "  @State offsetX: number = -60;",
+          "  aboutToAppear() {",
+          "",
+          "    setTimeout(()=>{",
+          "      this.offsetX+=100;"
+        ]
+      }
+    },
+    "ui:33aa3027a340": {
+      "id": "ui:33aa3027a340",
+      "category": "Component",
+      "name": "build",
+      "description": "正在努力加载",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/LoadMoreLayout.ets",
+      "line": 17,
+      "code": "build() {",
+      "context": {
+        "startLine": 12,
+        "lines": [
+          "",
+          "    },10)",
+          "",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "",
+          "",
+          "      Text('正在努力加载')",
+          "        .fontSize(12)"
+        ]
+      }
+    },
+    "ui:b83ab06605be": {
+      "id": "ui:b83ab06605be",
+      "category": "Display",
+      "name": "Text",
+      "description": "正在努力加载",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/LoadMoreLayout.ets",
+      "line": 21,
+      "code": "Text('正在努力加载')",
+      "context": {
+        "startLine": 16,
+        "lines": [
+          "",
+          "  build() {",
+          "    Stack() {",
+          "",
+          "",
+          "      Text('正在努力加载')",
+          "        .fontSize(12)",
+          "        .textAlign(TextAlign.Center)",
+          "",
+          "      Image($r('app.media.load_more_light_Normal'))",
+          "        .width(100)"
+        ]
+      }
+    },
+    "ui:9cfd82fb89e6": {
+      "id": "ui:9cfd82fb89e6",
+      "category": "Display",
+      "name": "Image",
+      "description": "正在努力加载",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/LoadMoreLayout.ets",
+      "line": 25,
+      "code": "Image($r('app.media.load_more_light_Normal'))",
+      "context": {
+        "startLine": 20,
+        "lines": [
+          "",
+          "      Text('正在努力加载')",
+          "        .fontSize(12)",
+          "        .textAlign(TextAlign.Center)",
+          "",
+          "      Image($r('app.media.load_more_light_Normal'))",
+          "        .width(100)",
+          "        .height(52)",
+          "        .objectFit(ImageFit.Contain)",
+          "        .opacity(1)",
+          "        .offset({ x: this.offsetX })"
+        ]
+      }
+    },
+    "page:5b8739436bac": {
+      "id": "page:5b8739436bac",
+      "category": "Page",
+      "name": "LoadingLayout",
+      "description": "LoadingLayout页面",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/LoadingLayout.ets",
+      "line": 5,
+      "code": "export struct LoadingLayout {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "import { Constants } from '../constants/Constants'",
+          "",
+          "",
+          "@Component",
+          "export struct LoadingLayout {",
+          "  @State offsetX: number = -60;",
+          "",
+          "  aboutToAppear() {",
+          "",
+          "    setTimeout(()=>{"
+        ]
+      }
+    },
+    "ui:143ccba1fa6a": {
+      "id": "ui:143ccba1fa6a",
+      "category": "Component",
+      "name": "build",
+      "description": "应用启动加载",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/LoadingLayout.ets",
+      "line": 17,
+      "code": "build() {",
+      "context": {
+        "startLine": 12,
+        "lines": [
+          "",
+          "    },10)",
+          "",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "      Image($r('app.media.app_icon_old_3x_dark_Normal'))",
+          "        .width('30%')",
+          "        .height(100)",
+          "        .objectFit(ImageFit.Contain)"
+        ]
+      }
+    },
+    "ui:b8b65bdf1b62": {
+      "id": "ui:b8b65bdf1b62",
+      "category": "Display",
+      "name": "Image",
+      "description": "应用图标",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/LoadingLayout.ets",
+      "line": 19,
+      "code": "Image($r('app.media.app_icon_old_3x_dark_Normal'))",
+      "context": {
+        "startLine": 14,
+        "lines": [
+          "",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "      Image($r('app.media.app_icon_old_3x_dark_Normal'))",
+          "        .width('30%')",
+          "        .height(100)",
+          "        .objectFit(ImageFit.Contain)",
+          "        .opacity(0.7)",
+          ""
+        ]
+      }
+    },
+    "ui:9ec2ce6b5e54": {
+      "id": "ui:9ec2ce6b5e54",
+      "category": "Display",
+      "name": "Image",
+      "description": "加载动画",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/LoadingLayout.ets",
+      "line": 25,
+      "code": "Image($r('app.media.novel_icon_load_mask'))",
+      "context": {
+        "startLine": 20,
+        "lines": [
+          "        .width('30%')",
+          "        .height(100)",
+          "        .objectFit(ImageFit.Contain)",
+          "        .opacity(0.7)",
+          "",
+          "      Image($r('app.media.novel_icon_load_mask'))",
+          "        .width('30%')",
+          "        .height(52)",
+          "        .objectFit(ImageFit.Contain)",
+          "        .opacity(0.06)",
+          "        .offset({ x: this.offsetX })"
+        ]
+      }
+    },
+    "page:3c912fb9ba4d": {
+      "id": "page:3c912fb9ba4d",
+      "category": "Page",
+      "name": "Msy",
+      "description": "测试页面",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/Msy.ets",
+      "line": 3,
+      "code": "struct Msy {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Msy {",
+          "  @State message: string = 'msy'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {"
+        ]
+      }
+    },
+    "ui:c302d0f7b398": {
+      "id": "ui:c302d0f7b398",
+      "category": "Component",
+      "name": "build",
+      "description": "消息展示页",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/Msy.ets",
+      "line": 6,
+      "code": "build() {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "@Entry",
+          "@Component",
+          "struct Msy {",
+          "  @State message: string = 'msy'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)"
+        ]
+      }
+    },
+    "ui:014934531603": {
+      "id": "ui:014934531603",
+      "category": "Display",
+      "name": "Text",
+      "description": "msy",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/Msy.ets",
+      "line": 9,
+      "code": "Text(this.message)",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "  @State message: string = 'msy'",
+          "",
+          "  build() {",
+          "    Row() {",
+          "      Column() {",
+          "        Text(this.message)",
+          "          .fontSize(50)",
+          "          .fontWeight(FontWeight.Bold)",
+          "      }",
+          "      .width('100%')",
+          "    }"
+        ]
+      }
+    },
+    "page:f69f1ce00489": {
+      "id": "page:f69f1ce00489",
+      "category": "Page",
+      "name": "NoMoreLayout",
+      "description": "NoMoreLayout页面",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/NoMoreLayout.ets",
+      "line": 6,
+      "code": "export  struct NoMoreLayout {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "",
+          "import { Constants } from '../constants/Constants'",
+          "",
+          "",
+          "@Component",
+          "export  struct NoMoreLayout {",
+          "  build() {",
+          "    Row() {",
+          "      Text('没有更多数据了')",
+          "",
+          "        .fontSize(12)"
+        ]
+      }
+    },
+    "ui:51efa287cd31": {
+      "id": "ui:51efa287cd31",
+      "category": "Component",
+      "name": "build",
+      "description": "没有更多数据了",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/NoMoreLayout.ets",
+      "line": 7,
+      "code": "build() {",
+      "context": {
+        "startLine": 2,
+        "lines": [
+          "import { Constants } from '../constants/Constants'",
+          "",
+          "",
+          "@Component",
+          "export  struct NoMoreLayout {",
+          "  build() {",
+          "    Row() {",
+          "      Text('没有更多数据了')",
+          "",
+          "        .fontSize(12)",
+          "        .textAlign(TextAlign.Center)"
+        ]
+      }
+    },
+    "ui:1f3f7a97f6e6": {
+      "id": "ui:1f3f7a97f6e6",
+      "category": "Display",
+      "name": "Text",
+      "description": "没有更多数据了",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/NoMoreLayout.ets",
+      "line": 9,
+      "code": "Text('没有更多数据了')",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "",
+          "@Component",
+          "export  struct NoMoreLayout {",
+          "  build() {",
+          "    Row() {",
+          "      Text('没有更多数据了')",
+          "",
+          "        .fontSize(12)",
+          "        .textAlign(TextAlign.Center)",
+          "    }",
+          "    .width(Constants.FULL_PERCENT)"
+        ]
+      }
+    },
+    "page:1afb56cfbe0f": {
+      "id": "page:1afb56cfbe0f",
+      "category": "Page",
+      "name": "RefreshPullView",
+      "description": "RefreshPull页面",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+      "line": 8,
+      "code": "export struct RefreshPullView {",
+      "context": {
+        "startLine": 3,
+        "lines": [
+          "import { ResManager } from '../constants/ResManager';",
+          "import { LoadMoreLayout } from './LoadMoreLayout';",
+          "",
+          "",
+          "@Component",
+          "export struct RefreshPullView {",
+          "",
+          "  // 列表数据个数",
+          "  dataCount: number = 0;",
+          "  // 控制器",
+          "  scroller: Scroller = new Scroller();"
+        ]
+      }
+    },
+    "ui:16105d172819": {
+      "id": "ui:16105d172819",
+      "category": "Component",
+      "name": "build",
+      "description": "下拉刷新视图",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+      "line": 86,
+      "code": "build() {",
+      "context": {
+        "startLine": 81,
+        "lines": [
+          "    this.canvasRefresh.strokeStyle = this.ldColor as string;",
+          "    this.canvasRefresh.lineWidth = 1;",
+          "  }",
+          "",
+          "",
+          "  build() {",
+          "",
+          "    Stack({ alignContent: Alignment.TopStart }) {",
+          "      Stack() {",
+          "        // 刷新视图",
+          "        Canvas(this.canvasRefresh)"
+        ]
+      }
+    },
+    "ui:abdc0c161cee": {
+      "id": "ui:abdc0c161cee",
+      "category": "Component",
+      "name": "Canvas",
+      "description": "下拉刷新视图",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+      "line": 91,
+      "code": "Canvas(this.canvasRefresh)",
+      "context": {
+        "startLine": 86,
+        "lines": [
+          "  build() {",
+          "",
+          "    Stack({ alignContent: Alignment.TopStart }) {",
+          "      Stack() {",
+          "        // 刷新视图",
+          "        Canvas(this.canvasRefresh)",
+          "          .width('100%')",
+          "          .height('100%')",
+          "          .onReady(() => {",
+          "            this.initCanvas()",
+          "          })"
+        ]
+      }
+    },
+    "ui:d42898884603": {
+      "id": "ui:d42898884603",
+      "category": "Display",
+      "name": "Text",
+      "description": "数据更新提示",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+      "line": 99,
+      "code": "Text(this.tipStr?this.tipStr:`免流中，今日头条推荐引擎数据有${this.dataCount}条更新`)",
+      "context": {
+        "startLine": 94,
+        "lines": [
+          "          .onReady(() => {",
+          "            this.initCanvas()",
+          "          })",
+          "          .opacity(this.canvasOpacity)",
+          "",
+          "        Text(this.tipStr?this.tipStr:`免流中，今日头条推荐引擎数据有${this.dataCount}条更新`)",
+          "          .fontSize(10)",
+          "          .backgroundColor(0xf1f3f5)",
+          "          .borderRadius(20)",
+          "          .padding({ left: 10, right: 10, top: 8, bottom: 8 })",
+          "          .opacity(this.tipOpacity)"
+        ]
+      }
+    },
+    "ui:758b96037acb": {
+      "id": "ui:758b96037acb",
+      "category": "Component",
+      "name": "LoadMoreLayout",
+      "description": "加载更多",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+      "line": 121,
+      "code": "LoadMoreLayout()",
+      "context": {
+        "startLine": 116,
+        "lines": [
+          "              this.customList()",
+          "            }",
+          "          }",
+          "          .offset({ y: this.listOffsetY })",
+          "          // 底部的正在加载",
+          "          LoadMoreLayout()",
+          "        }",
+          "      }",
+          "      .edgeEffect(EdgeEffect.Spring)",
+          "      .onScrollEdge((side: Edge) => {",
+          "        // 滚动到底部，显示底部的正在加载"
+        ]
+      }
+    },
+    "ui:be3cf45de557": {
+      "id": "ui:be3cf45de557",
+      "category": "Component",
+      "name": "PanGesture",
+      "description": "下拉刷新手势",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+      "line": 151,
+      "code": "PanGesture(this.panOption)",
+      "context": {
+        "startLine": 146,
+        "lines": [
+          "    }",
+          "    .backgroundColor(this.bgColor)",
+          "    .height('100%')",
+          "    .parallelGesture(",
+          "      // 下拉手势处理",
+          "      PanGesture(this.panOption)",
+          "        .onActionUpdate((event: GestureEvent) => {",
+          "          // 下拉滑动中处理",
+          "          if (event !== undefined) {",
+          "            if (this.refreshState === RefreshState.Refreshing) {",
+          "              return;"
+        ]
+      }
+    },
+    "page:b4daa0515412": {
+      "id": "page:b4daa0515412",
+      "category": "Page",
+      "name": "TabBarLayout",
+      "description": "TabBarLayout页面",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/TabBarLayout.ets",
+      "line": 7,
+      "code": "export struct TabBarLayout {",
+      "context": {
+        "startLine": 2,
+        "lines": [
+          "import display from '@ohos.display';",
+          "import { ResManager } from '../constants/ResManager';",
+          "import { TabBarDataSource } from '../utils/TabBarDataSource';",
+          "",
+          "@Component",
+          "export struct TabBarLayout {",
+          "",
+          "  // // 模型数据",
+          "  @State private  tabDataArr: TabBarDataSource = new TabBarDataSource();",
+          "  // 顶部tabBar滚动控制器",
+          "  private tabBarScroller: Scroller = new Scroller()"
+        ]
+      }
+    },
+    "ui:48f125c2609e": {
+      "id": "ui:48f125c2609e",
+      "category": "Component",
+      "name": "build",
+      "description": "顶部标签栏",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/TabBarLayout.ets",
+      "line": 184,
+      "code": "build() {",
+      "context": {
+        "startLine": 179,
+        "lines": [
+          "",
+          "    }).catch((err) => {",
+          "    });",
+          "  }",
+          "",
+          "  build() {",
+          "",
+          "    Column() {",
+          "      // ----顶部tabBar内容开始------",
+          "      Stack({ alignContent: Alignment.End }) {",
+          ""
+        ]
+      }
+    },
+    "ui:b702c5615328": {
+      "id": "ui:b702c5615328",
+      "category": "Component",
+      "name": "ForEach",
+      "description": "标签栏列表",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/TabBarLayout.ets",
+      "line": 200,
+      "code": "ForEach(this.tabDataArr.getDataArr(), (item: TabModel, index: number) => {",
+      "context": {
+        "startLine": 195,
+        "lines": [
+          "        Scroll(this.tabBarScroller) {",
+          "          Flex({ direction: FlexDirection.Column, justifyContent: FlexAlign.Start }) {",
+          "",
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "",
+          "              ForEach(this.tabDataArr.getDataArr(), (item: TabModel, index: number) => {",
+          "                Flex({",
+          "                  direction: FlexDirection.Row,",
+          "                  justifyContent: FlexAlign.Center,",
+          "                  alignItems: ItemAlign.Center",
+          "                }) {"
+        ]
+      }
+    },
+    "ui:282404322705": {
+      "id": "ui:282404322705",
+      "category": "Button",
+      "name": "Text",
+      "description": "标签标题",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/TabBarLayout.ets",
+      "line": 207,
+      "code": "Text(item.content)",
+      "context": {
+        "startLine": 202,
+        "lines": [
+          "                  direction: FlexDirection.Row,",
+          "                  justifyContent: FlexAlign.Center,",
+          "                  alignItems: ItemAlign.Center",
+          "                }) {",
+          "                  // 标题",
+          "                  Text(item.content)",
+          "                    .fontSize(this.fontSizeNormal)",
+          "                    .fontColor(this.currentIndex == item.index ? (this.changeAllColor ? this.fontChangeSelectedColor : this.fontDefaultSelectedColor) : (this.changeAllColor ? this.fontChangeNormalColor : this.fontDefaultNormalColor))",
+          "                    .fontWeight(FontWeight.Normal)",
+          "                    .textAlign(TextAlign.Center)",
+          "                    .height(20)"
+        ]
+      }
+    },
+    "ui:cfb46fdbc3c0": {
+      "id": "ui:cfb46fdbc3c0",
+      "category": "Component",
+      "name": "LazyForEach",
+      "description": "标签列表滚动区",
+      "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/TabBarLayout.ets",
+      "line": 251,
+      "code": "LazyForEach(this.tabDataArr, (item: TabModel, index: number) => {",
+      "context": {
+        "startLine": 246,
+        "lines": [
+          "      // ----内容部分 开始------",
+          "      if (this.customList !== undefined) {",
+          "        Scroll(this.contentScroller) {",
+          "          // 横向滚动的List",
+          "          List() {",
+          "            LazyForEach(this.tabDataArr, (item: TabModel, index: number) => {",
+          "              ListItem() {",
+          "                Scroll() {",
+          "                  Column() {",
+          "                    this.customList({ index: index })",
+          "                  }"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:76939a1235bf",
+      "to": "ui:d539041cd2d0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:76939a1235bf",
+      "to": "ui:b5ca0b9e737a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d13e5154834b",
+      "to": "ui:f1ed0f0c1f80",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d13e5154834b",
+      "to": "ui:0b2d8efefca0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d13e5154834b",
+      "to": "ui:4c04c016a2e1",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d13e5154834b",
+      "to": "ui:bf1be2e32d3d",
+      "kind": "contains"
+    },
+    {
+      "from": "page:3f5e6f08715a",
+      "to": "ui:9e9e57f47fd0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:3f5e6f08715a",
+      "to": "ui:1e6d9a793300",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9bff0bbc69a4",
+      "to": "ui:0dae73072d41",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9bff0bbc69a4",
+      "to": "ui:71cf0f46f9a2",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9bff0bbc69a4",
+      "to": "ui:2c471860065c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9bff0bbc69a4",
+      "to": "ui:01fd02c008d9",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9bff0bbc69a4",
+      "to": "ui:f030244acfaf",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9bff0bbc69a4",
+      "to": "ui:591035c33b05",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9bff0bbc69a4",
+      "to": "ui:7b243e9a9524",
+      "kind": "contains"
+    },
+    {
+      "from": "page:096938cc37f5",
+      "to": "ui:3e69fe9ea7c9",
+      "kind": "contains"
+    },
+    {
+      "from": "page:096938cc37f5",
+      "to": "ui:d458fc8c1de3",
+      "kind": "contains"
+    },
+    {
+      "from": "page:47ab555a65dd",
+      "to": "ui:6062956c19e3",
+      "kind": "contains"
+    },
+    {
+      "from": "page:47ab555a65dd",
+      "to": "ui:6946f97ffebd",
+      "kind": "contains"
+    },
+    {
+      "from": "page:7d61f0cdf868",
+      "to": "ui:0372f6558937",
+      "kind": "contains"
+    },
+    {
+      "from": "page:7d61f0cdf868",
+      "to": "ui:df148c6702bb",
+      "kind": "contains"
+    },
+    {
+      "from": "page:64c5231aa06a",
+      "to": "ui:8e21c7b5bb25",
+      "kind": "contains"
+    },
+    {
+      "from": "page:64c5231aa06a",
+      "to": "ui:035402d0cb50",
+      "kind": "contains"
+    },
+    {
+      "from": "page:70bb46cdd41d",
+      "to": "ui:c710706bffcf",
+      "kind": "contains"
+    },
+    {
+      "from": "page:70bb46cdd41d",
+      "to": "ui:7bec80e6fbd2",
+      "kind": "contains"
+    },
+    {
+      "from": "page:70bb46cdd41d",
+      "to": "ui:bdbcdd1832b7",
+      "kind": "contains"
+    },
+    {
+      "from": "page:70bb46cdd41d",
+      "to": "ui:3850d1b8a23b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:70bb46cdd41d",
+      "to": "ui:88a835cd316a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:2fa9bc7d96dc",
+      "to": "ui:963c7d1a9f11",
+      "kind": "contains"
+    },
+    {
+      "from": "page:2fa9bc7d96dc",
+      "to": "ui:71ceee44373c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:2fa9bc7d96dc",
+      "to": "ui:d0c7cbf48469",
+      "kind": "contains"
+    },
+    {
+      "from": "page:2fa9bc7d96dc",
+      "to": "ui:35bc93687f12",
+      "kind": "contains"
+    },
+    {
+      "from": "page:2fa9bc7d96dc",
+      "to": "ui:bbf6c296ee2a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d67393f08fa9",
+      "to": "ui:d70c30fefe19",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d67393f08fa9",
+      "to": "ui:f996c3a4034a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:ffdde268100a",
+      "to": "ui:346da4519eeb",
+      "kind": "contains"
+    },
+    {
+      "from": "page:ffdde268100a",
+      "to": "ui:d0b4aca5c3c6",
+      "kind": "contains"
+    },
+    {
+      "from": "page:ffdde268100a",
+      "to": "ui:95a6b6440b0c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:ffdde268100a",
+      "to": "ui:209f3e4a8dd6",
+      "kind": "contains"
+    },
+    {
+      "from": "page:8c6fcb4b6713",
+      "to": "ui:7d0aa41a1594",
+      "kind": "contains"
+    },
+    {
+      "from": "page:8c6fcb4b6713",
+      "to": "ui:23b6d9633737",
+      "kind": "contains"
+    },
+    {
+      "from": "page:e3f3e5ab5bc8",
+      "to": "ui:33aa3027a340",
+      "kind": "contains"
+    },
+    {
+      "from": "page:e3f3e5ab5bc8",
+      "to": "ui:b83ab06605be",
+      "kind": "contains"
+    },
+    {
+      "from": "page:e3f3e5ab5bc8",
+      "to": "ui:9cfd82fb89e6",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5b8739436bac",
+      "to": "ui:143ccba1fa6a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5b8739436bac",
+      "to": "ui:b8b65bdf1b62",
+      "kind": "contains"
+    },
+    {
+      "from": "page:5b8739436bac",
+      "to": "ui:9ec2ce6b5e54",
+      "kind": "contains"
+    },
+    {
+      "from": "page:3c912fb9ba4d",
+      "to": "ui:c302d0f7b398",
+      "kind": "contains"
+    },
+    {
+      "from": "page:3c912fb9ba4d",
+      "to": "ui:014934531603",
+      "kind": "contains"
+    },
+    {
+      "from": "page:f69f1ce00489",
+      "to": "ui:51efa287cd31",
+      "kind": "contains"
+    },
+    {
+      "from": "page:f69f1ce00489",
+      "to": "ui:1f3f7a97f6e6",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1afb56cfbe0f",
+      "to": "ui:16105d172819",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1afb56cfbe0f",
+      "to": "ui:abdc0c161cee",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1afb56cfbe0f",
+      "to": "ui:d42898884603",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1afb56cfbe0f",
+      "to": "ui:758b96037acb",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1afb56cfbe0f",
+      "to": "ui:be3cf45de557",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b4daa0515412",
+      "to": "ui:48f125c2609e",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b4daa0515412",
+      "to": "ui:b702c5615328",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b4daa0515412",
+      "to": "ui:282404322705",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b4daa0515412",
+      "to": "ui:cfb46fdbc3c0",
+      "kind": "contains"
+    }
+  ]
+}

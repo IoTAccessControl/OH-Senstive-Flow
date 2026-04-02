@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260401-141653",
+    "generatedAt": "2026-04-01T06:22:19.943Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_10_4b79f8fd",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p14",
+      "pathId": "p14",
+      "nodes": [
+        {
+          "id": "p14:n1",
+          "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 10,
+          "code": "onDestroy() {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时由系统自动触发。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want, launchParam) {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p14:n2",
+          "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 11,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onDestroy' 作为公开日志 (%{public}s) 输出到系统日志缓冲区，标记应用组件销毁事件。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "  onCreate(want, launchParam) {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage) {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p14:n1",
+          "to": "p14:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态字符串 (Ability onDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无 (未进行持久化存储)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

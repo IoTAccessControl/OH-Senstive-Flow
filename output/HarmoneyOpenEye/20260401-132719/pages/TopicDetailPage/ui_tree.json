@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:30.064Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 5,
+      "edges": 4,
+      "pages": 1,
+      "elements": 4
+    }
+  },
+  "roots": [
+    "page:be2f76771ec6"
+  ],
+  "nodes": {
+    "page:be2f76771ec6": {
+      "id": "page:be2f76771ec6",
+      "category": "Page",
+      "name": "TopicDetailPage",
+      "description": "TopicDetail页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/topicDetail/TopicDetailPage.ets",
+      "line": 13,
+      "code": "struct TopicDetailPage {",
+      "context": {
+        "startLine": 8,
+        "lines": [
+          "import TopicDetailViewModel from '../../viewmodel/TopicDetailViewModel'",
+          "",
+          "",
+          "@Entry",
+          "@Component",
+          "struct TopicDetailPage {",
+          "  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING",
+          "  @State title: string = \"\"",
+          "  @State detailData: TopicDetailModel = {}",
+          "  @State playIndex: number = -1",
+          "  @State isAutoPlay: boolean = true"
+        ]
+      }
+    },
+    "ui:620524888ab0": {
+      "id": "ui:620524888ab0",
+      "category": "Component",
+      "name": "build",
+      "description": "专题详情页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/topicDetail/TopicDetailPage.ets",
+      "line": 36,
+      "code": "build() {",
+      "context": {
+        "startLine": 31,
+        "lines": [
+          "      this.detailData = result",
+          "      this.title = this.detailData.brief",
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      CommonTopBar({ title: this.title, alpha: 1 })",
+          "      Stack() {",
+          "        StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "          this.loadNet()"
+        ]
+      }
+    },
+    "ui:0a264839c178": {
+      "id": "ui:0a264839c178",
+      "category": "Component",
+      "name": "CommonTopBar",
+      "description": "顶部导航栏",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/topicDetail/TopicDetailPage.ets",
+      "line": 38,
+      "code": "CommonTopBar({ title: this.title, alpha: 1 })",
+      "context": {
+        "startLine": 33,
+        "lines": [
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      CommonTopBar({ title: this.title, alpha: 1 })",
+          "      Stack() {",
+          "        StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "          this.loadNet()",
+          "        } }) {",
+          "          List() {"
+        ]
+      }
+    },
+    "ui:c72dff2ba00e": {
+      "id": "ui:c72dff2ba00e",
+      "category": "Component",
+      "name": "StateComponent",
+      "description": "详情页加载",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/topicDetail/TopicDetailPage.ets",
+      "line": 40,
+      "code": "StateComponent({ viewState: this.viewState, retryCallback: () => {",
+      "context": {
+        "startLine": 35,
+        "lines": [
+          "",
+          "  build() {",
+          "    Column() {",
+          "      CommonTopBar({ title: this.title, alpha: 1 })",
+          "      Stack() {",
+          "        StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "          this.loadNet()",
+          "        } }) {",
+          "          List() {",
+          "            ListItem() {",
+          "              this.topicHeader()"
+        ]
+      }
+    },
+    "ui:145d5a1278b9": {
+      "id": "ui:145d5a1278b9",
+      "category": "Component",
+      "name": "ForEach",
+      "description": "专题内容列表",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/topicDetail/TopicDetailPage.ets",
+      "line": 48,
+      "code": "ForEach(this.detailData.itemList, (item: TopicDetailModelItemList, index: number) => {",
+      "context": {
+        "startLine": 43,
+        "lines": [
+          "          List() {",
+          "            ListItem() {",
+          "              this.topicHeader()",
+          "            }",
+          "",
+          "            ForEach(this.detailData.itemList, (item: TopicDetailModelItemList, index: number) => {",
+          "              ListItem() {",
+          "                this.itemContent(item, index)",
+          "              }",
+          "            })",
+          "          }"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:be2f76771ec6",
+      "to": "ui:620524888ab0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:be2f76771ec6",
+      "to": "ui:0a264839c178",
+      "kind": "contains"
+    },
+    {
+      "from": "page:be2f76771ec6",
+      "to": "ui:c72dff2ba00e",
+      "kind": "contains"
+    },
+    {
+      "from": "page:be2f76771ec6",
+      "to": "ui:145d5a1278b9",
+      "kind": "contains"
+    }
+  ]
+}

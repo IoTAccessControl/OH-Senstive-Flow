@@ -1,0 +1,289 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 8,
+      "edges": 6,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "MainPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+        "structName": "MainPage",
+        "line": 15,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_MainPage_04f7f779be",
+      "kind": "ui",
+      "title": "我的页面"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+          "line": 85,
+          "code": "onPageShow() {",
+          "description": "onPageShow 生命周期函数入口，当页面变为可见状态时被系统触发，作为数据流的起始源点。",
+          "context": {
+            "startLine": 80,
+            "lines": [
+              "        this.homeTabSelected = index",
+              "      })",
+              "    }",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    LogUtils.error(\"页面可见>>>>>>>>>>>>>>>>>>>>>>>>>>>>\")",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    LogUtils.error(\"页面不可见>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\")"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+          "line": 86,
+          "code": "LogUtils.error(\"页面可见>>>>>>>>>>>>>>>>>>>>>>>>>>>>\")",
+          "description": "调用 LogUtils.error 方法，传入固定的中文提示字符串，将页面可见的状态事件传递给日志工具类。",
+          "context": {
+            "startLine": 81,
+            "lines": [
+              "      })",
+              "    }",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    LogUtils.error(\"页面可见>>>>>>>>>>>>>>>>>>>>>>>>>>>>\")",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    LogUtils.error(\"页面不可见>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\")",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "LogUtils.error 静态方法定义处，接收来自页面的参数并准备调用底层日志接口。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p10:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用 ohos.hilog.error 原生接口，将格式化后的日志数据写入系统错误日志流，此为数据流的最终汇聚点（Sink）。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        },
+        {
+          "from": "p10:n3",
+          "to": "p10:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面生命周期状态事件",
+          "静态日志字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发（页面显示时）"
+        ],
+        "cloudUpload": [
+          "无直接网络发送行为，数据输出至系统日志服务"
+        ],
+        "storageAndEncryption": [
+          "由系统日志服务（hilog）接管存储，源码层未涉及本地文件或加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+          "line": 89,
+          "code": "onPageHide() {",
+          "description": "onPageHide 生命周期函数入口，当页面变为不可见状态时被系统触发",
+          "context": {
+            "startLine": 84,
+            "lines": [
+              "",
+              "  onPageShow() {",
+              "    LogUtils.error(\"页面可见>>>>>>>>>>>>>>>>>>>>>>>>>>>>\")",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    LogUtils.error(\"页面不可见>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\")",
+              "  }",
+              "",
+              "  @Builder TabBottom(item: TabItem, index: number) {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+          "line": 90,
+          "code": "LogUtils.error(\"页面不可见>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\")",
+          "description": "调用 LogUtils.error 方法，传入描述页面不可见的静态字符串参数，开始数据流转",
+          "context": {
+            "startLine": 85,
+            "lines": [
+              "  onPageShow() {",
+              "    LogUtils.error(\"页面可见>>>>>>>>>>>>>>>>>>>>>>>>>>>>\")",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    LogUtils.error(\"页面不可见>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\")",
+              "  }",
+              "",
+              "  @Builder TabBottom(item: TabItem, index: number) {",
+              "    Column() {",
+              "      Image(this.selectedIndex == index ? item.imageActivated : item.imageOriginal)"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "LogUtils.error 静态方法定义入口，接收可变参数并准备调用底层日志接口",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p11:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用 ohos.hilog.error 原生接口，将错误级别日志写入系统日志流，作为数据流的终点（Sink）",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        },
+        {
+          "from": "p11:n3",
+          "to": "p11:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面生命周期状态（可见/不可见）",
+          "静态日志文本"
+        ],
+        "collectionFrequency": [
+          "事件触发（页面隐藏时）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（仅调用系统日志接口）"
+        ],
+        "storageAndEncryption": [
+          "由系统 hilog 服务处理，可能存储于系统日志缓冲区，应用层未显式加密或持久化"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

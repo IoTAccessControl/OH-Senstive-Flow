@@ -1,0 +1,427 @@
+{
+  "meta": {
+    "runId": "codeLab_API_20260401-143720",
+    "generatedAt": "2026-04-01T06:39:02.277Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/codeLab_API/entry/src/main/ets/pages/Index.ets:31 之后继续扩展",
+      "数据流 p3 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/codeLab_API/entry/src/main/ets/pages/Index.ets:42 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 3,
+      "nodes": 13,
+      "edges": 10,
+      "failedPaths": 2,
+      "fallbackFlows": 2
+    },
+    "page": {
+      "pageId": "FunctionalAPIPage",
+      "entry": {
+        "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+        "structName": "FunctionalAPIPage",
+        "line": 5,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_FunctionalAPIPage_11bb1ed653",
+      "kind": "ui",
+      "title": "页面操作区"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 10,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化页面布局结构。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "struct FunctionalAPIPage {",
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 12,
+          "code": "Button(this.systemInfo)",
+          "description": "创建 Button 组件，绑定显示文本为 systemInfo 状态变量，作为数据收集的触发器。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 17,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 事件回调函数，当用户点击时触发内部逻辑。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+          "description": "定义请求参数数组 arr，指定需要获取的系统信息类型为 'windowWidth'（窗口宽度）。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "atomicService.getSystemInfo(arr).then((result) => {",
+          "description": "调用 atomicService.getSystemInfo 异步接口，传入参数数组，发起获取系统窗口宽度的请求。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              "",
+              "      Button(this.systemInfoSync)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "窗口宽度 (windowWidth)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "仅存储在组件内存状态 (@State) 中，未持久化，未加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 10,
+          "code": "build() {",
+          "description": "ArkUI 组件的 UI 构建入口函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "struct FunctionalAPIPage {",
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 24,
+          "code": "Button(this.systemInfoSync)",
+          "description": "onClick Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              "",
+              "      Button(this.systemInfoSync)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 29,
+          "code": ".onClick(() => {",
+          "description": "Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      Button(this.systemInfoSync)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 31,
+          "code": "let result = atomicService.getSystemInfoSync(arr);",
+          "description": "未提取到SDK注释；请在 input/csv/sdk_api_description_override.csv 补充该 API 描述（api=@kit.ScenarioFusionKit.atomicService.getSystemInfoSync）（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              "",
+              "      Button(this.systemSettings)",
+              "        .type(ButtonType.Capsule)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/codeLab_API/entry/src/main/ets/pages/Index.ets:31 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 10,
+          "code": "build() {",
+          "description": "ArkUI 组件的 UI 构建入口函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "struct FunctionalAPIPage {",
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 35,
+          "code": "Button(this.systemSettings)",
+          "description": "onClick Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              "",
+              "      Button(this.systemSettings)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 40,
+          "code": ".onClick(() => {",
+          "description": "Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "      Button(this.systemSettings)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemSettingType> = ['deviceOrientation'];",
+              "          let result = atomicService.getSystemSetting(arr);",
+              "          this.systemSettings = String(result.deviceOrientation);",
+              "        })",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 42,
+          "code": "let result = atomicService.getSystemSetting(arr);",
+          "description": "未提取到SDK注释；请在 input/csv/sdk_api_description_override.csv 补充该 API 描述（api=@kit.ScenarioFusionKit.atomicService.getSystemSetting）（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemSettingType> = ['deviceOrientation'];",
+              "          let result = atomicService.getSystemSetting(arr);",
+              "          this.systemSettings = String(result.deviceOrientation);",
+              "        })",
+              "    }",
+              "    .justifyContent(FlexAlign.Center)",
+              "    .width('100%')"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p3 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/codeLab_API/entry/src/main/ets/pages/Index.ets:42 之后继续扩展"
+        ]
+      }
+    }
+  ]
+}

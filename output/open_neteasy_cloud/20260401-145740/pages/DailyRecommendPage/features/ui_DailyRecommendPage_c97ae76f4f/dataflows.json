@@ -1,0 +1,200 @@
+{
+  "meta": {
+    "runId": "open_neteasy_cloud_20260401-145740",
+    "generatedAt": "2026-04-01T07:01:04.883Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets:14 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 2,
+      "nodes": 5,
+      "edges": 3,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "DailyRecommendPage",
+      "entry": {
+        "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+        "structName": "DailyRecommendPage",
+        "line": 10,
+        "description": "DailyRecommend页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_DailyRecommendPage_c97ae76f4f",
+      "kind": "ui",
+      "title": "页面内容"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 13,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct DailyRecommendPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 14,
+          "code": "if (router.getParams()) {",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "@Component",
+              "struct DailyRecommendPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets:14 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 13,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，在组件即将显示时触发，作为数据流的起点。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct DailyRecommendPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 14,
+          "code": "if (router.getParams()) {",
+          "description": "调用 router.getParams() 检查是否存在路由跳转携带的参数对象。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "@Component",
+              "struct DailyRecommendPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 15,
+          "code": "this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+          "description": "从路由参数中提取键为 KEY_PARAM_DATA 的数据项，并强制转换为 Resource 类型赋值给成员变量 titleParam，完成敏感数据的接收与本地内存存储。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "struct DailyRecommendPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Route Params)",
+          "业务数据对象 (KEY_PARAM_DATA)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件显示前触发)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存存储 (组件实例变量 titleParam)",
+          "未加密 (明文传递)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

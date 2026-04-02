@@ -1,0 +1,290 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 8,
+      "edges": 6,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "HotPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/HotPage.ets",
+        "structName": "HotPage",
+        "line": 10,
+        "description": "热门页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_HotPage_8f5486129d",
+      "kind": "ui",
+      "title": "热门排行"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p28",
+      "pathId": "p28",
+      "nodes": [
+        {
+          "id": "p28:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/HotPage.ets",
+          "line": 35,
+          "code": "onPageShow() {",
+          "description": "onPageShow 生命周期函数入口，当 Hot 页面变为可见状态时自动触发，作为数据流的起始点。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "        })",
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    LogUtils.error(\"页面可见>>Hot\")",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    LogUtils.error(\"页面不可见>>Hot\")"
+            ]
+          }
+        },
+        {
+          "id": "p28:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/HotPage.ets",
+          "line": 36,
+          "code": "LogUtils.error(\"页面可见>>Hot\")",
+          "description": "调用 LogUtils.error 方法，传入静态字符串参数 \"页面可见>>Hot\"，将页面可见事件标记为错误级别日志进行记录。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "      }",
+              "    }",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    LogUtils.error(\"页面可见>>Hot\")",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    LogUtils.error(\"页面不可见>>Hot\")",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p28:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "LogUtils 类的 error 静态方法定义，接收可变参数并准备将其转发至底层 hilog 接口。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p28:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 API hilog.error，将预设的 domain、prefix 及传入的日志内容输出到系统日志缓冲区，作为数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p28:n1",
+          "to": "p28:n2"
+        },
+        {
+          "from": "p28:n2",
+          "to": "p28:n3"
+        },
+        {
+          "from": "p28:n3",
+          "to": "p28:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面可见性状态事件",
+          "静态日志字符串 (\"页面可见>>Hot\")"
+        ],
+        "collectionFrequency": [
+          "事件触发 (onPageShow 生命周期)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地系统日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (写入系统日志缓冲区)",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p29",
+      "pathId": "p29",
+      "nodes": [
+        {
+          "id": "p29:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/HotPage.ets",
+          "line": 39,
+          "code": "onPageHide() {",
+          "description": "onPageHide 生命周期函数入口，当页面变为不可见状态时被系统触发",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "",
+              "  onPageShow() {",
+              "    LogUtils.error(\"页面可见>>Hot\")",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    LogUtils.error(\"页面不可见>>Hot\")",
+              "  }",
+              "",
+              "  @Builder TabBuilder(index: number, name: string) {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p29:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/HotPage.ets",
+          "line": 40,
+          "code": "LogUtils.error(\"页面不可见>>Hot\")",
+          "description": "调用 LogUtils.error 方法，传入描述页面隐藏状态的静态字符串参数",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "  onPageShow() {",
+              "    LogUtils.error(\"页面可见>>Hot\")",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    LogUtils.error(\"页面不可见>>Hot\")",
+              "  }",
+              "",
+              "  @Builder TabBuilder(index: number, name: string) {",
+              "    Column() {",
+              "      Text(name)"
+            ]
+          }
+        },
+        {
+          "id": "p29:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 23,
+          "code": "static error(...args: string[]) {",
+          "description": "进入 LogUtils 类的 error 静态方法定义，接收可变参数",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);"
+            ]
+          }
+        },
+        {
+          "id": "p29:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "调用系统 hilog.error 接口，将日志内容写入系统错误日志流，作为数据流终点",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p29:n1",
+          "to": "p29:n2"
+        },
+        {
+          "from": "p29:n2",
+          "to": "p29:n3"
+        },
+        {
+          "from": "p29:n3",
+          "to": "p29:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面可见性状态事件",
+          "静态日志字符串常量"
+        ],
+        "collectionFrequency": [
+          "事件触发（页面隐藏生命周期）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（仅本地系统日志输出）"
+        ],
+        "storageAndEncryption": [
+          "写入系统日志缓冲区（hilog），非应用私有文件存储，无应用层加密"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

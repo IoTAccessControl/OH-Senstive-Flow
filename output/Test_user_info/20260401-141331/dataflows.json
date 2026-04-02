@@ -1,0 +1,1642 @@
+{
+  "meta": {
+    "runId": "Test_user_info_20260401-141331",
+    "generatedAt": "2026-04-01T06:15:52.897Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p5 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets:13 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 13,
+      "nodes": 51,
+      "edges": 38,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化包含个人敏感信息（身高、体重、婚姻、家庭、教育）的界面组件状态。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 167,
+          "code": "Button('提交完整信息', { type: ButtonType.Capsule })",
+          "description": "渲染‘提交完整信息’按钮组件，作为用户触发数据提交操作的交互入口。",
+          "context": {
+            "startLine": 162,
+            "lines": [
+              "        Text('家庭与教育').fontSize(20).fontWeight(FontWeight.Bold).margin({ top: 20, bottom: 10 })",
+              "        this.buildTextAreaRow('家庭成员：', this.familyMembers, (v) => { this.familyMembers = v })",
+              "        this.buildTextAreaRow('教育背景：', this.education, (v) => { this.education = v })",
+              "",
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 171,
+          "code": ".onClick(() => {",
+          "description": "注册按钮点击事件监听器 onClick，定义当用户点击按钮时执行的回调逻辑。",
+          "context": {
+            "startLine": 166,
+            "lines": [
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 172,
+          "code": "this.submitForm()",
+          "description": "在点击回调中调用 submitForm 方法，启动表单数据验证与提交流程。",
+          "context": {
+            "startLine": 167,
+            "lines": [
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "定义 submitForm 私有方法，开始执行对用户填写的个人隐私数据（如姓名、家庭成员等）的逻辑处理。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "读取并校验成员变量 this.name（姓名），判断用户是否已输入该敏感个人信息。",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 407,
+          "code": "prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+          "description": "调用系统提示接口 prompt.showToast 向用户显示‘请输入姓名’的提示信息，此为当前数据流分析的终点（Sink）。",
+          "context": {
+            "startLine": 402,
+            "lines": [
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        },
+        {
+          "from": "p1:n6",
+          "to": "p1:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "身高 (height1)",
+          "体重 (weight)",
+          "婚姻状况 (maritalStatus)",
+          "家庭成员 (familyMembers)",
+          "教育背景 (education)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存临时存储 (@State 装饰的组件状态)",
+          "未观察到加密存储行为",
+          "未观察到本地持久化存储行为"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化包含个人敏感信息的界面组件。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 167,
+          "code": "Button('提交完整信息', { type: ButtonType.Capsule })",
+          "description": "渲染‘提交完整信息’按钮组件，作为用户触发数据提交操作的交互点。",
+          "context": {
+            "startLine": 162,
+            "lines": [
+              "        Text('家庭与教育').fontSize(20).fontWeight(FontWeight.Bold).margin({ top: 20, bottom: 10 })",
+              "        this.buildTextAreaRow('家庭成员：', this.familyMembers, (v) => { this.familyMembers = v })",
+              "        this.buildTextAreaRow('教育背景：', this.education, (v) => { this.education = v })",
+              "",
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()"
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 171,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 事件回调箭头函数，准备执行提交逻辑。",
+          "context": {
+            "startLine": 166,
+            "lines": [
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 172,
+          "code": "this.submitForm()",
+          "description": "在回调中调用 submitForm 方法，将控制流转向数据处理逻辑。",
+          "context": {
+            "startLine": 167,
+            "lines": [
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p2:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "submitForm 方法定义开始，进入表单数据完整性校验流程。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 406,
+          "code": "if (!this.name) {",
+          "description": "读取并校验姓名 (name) 数据项是否为空，判断用户是否已输入姓名。",
+          "context": {
+            "startLine": 401,
+            "lines": [
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n7",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 411,
+          "code": "if (!this.familyMembers) {",
+          "description": "读取并校验家庭成员信息 (familyMembers) 数据项是否为空，判断用户是否已输入家庭情况。",
+          "context": {
+            "startLine": 406,
+            "lines": [
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器"
+            ]
+          }
+        },
+        {
+          "id": "p2:n8",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 412,
+          "code": "prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+          "description": "调用 prompt.showToast API 显示错误提示，告知用户需填写家庭成员信息，此为当前数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 407,
+            "lines": [
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    if (!this.familyMembers) {",
+              "      prompt.showToast({ message: '请填写家庭成员信息', duration: 2000 });",
+              "      return;",
+              "    }",
+              "",
+              "    // 实际应用中这里会提交数据到服务器",
+              "    console.log('完整个人信息提交：', JSON.stringify({"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        },
+        {
+          "from": "p2:n4",
+          "to": "p2:n5"
+        },
+        {
+          "from": "p2:n5",
+          "to": "p2:n6"
+        },
+        {
+          "from": "p2:n6",
+          "to": "p2:n7"
+        },
+        {
+          "from": "p2:n7",
+          "to": "p2:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名 (name)",
+          "家庭成员信息 (familyMembers)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击提交按钮)"
+        ],
+        "cloudUpload": [
+          "无 (当前路径仅进行本地校验和提示，未执行网络发送)"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (@State 状态变量)，未加密，未持久化"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 26,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化个人信息登记页面的视图结构。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  @State familyMembers: string = ''; // 家庭成员",
+              "  @State education: string = ''; // 教育背景",
+              "  @State heightInput: string = '170'; // 专门用于输入的字符串",
+              "  @State weightInput: string = ''; // 专门用于输入的字符串",
+              "",
+              "  build() {",
+              "    Scroll() {",
+              "      Column() {",
+              "        // 标题",
+              "        Text('个人信息登记表')",
+              "          .fontSize(24)"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 167,
+          "code": "Button('提交完整信息', { type: ButtonType.Capsule })",
+          "description": "创建‘提交完整信息’按钮组件，作为用户触发数据收集操作的交互入口。",
+          "context": {
+            "startLine": 162,
+            "lines": [
+              "        Text('家庭与教育').fontSize(20).fontWeight(FontWeight.Bold).margin({ top: 20, bottom: 10 })",
+              "        this.buildTextAreaRow('家庭成员：', this.familyMembers, (v) => { this.familyMembers = v })",
+              "        this.buildTextAreaRow('教育背景：', this.education, (v) => { this.education = v })",
+              "",
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 171,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 事件监听器，准备响应用户的点击动作。",
+          "context": {
+            "startLine": 166,
+            "lines": [
+              "        // 提交按钮",
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 172,
+          "code": "this.submitForm()",
+          "description": "在点击事件中调用 submitForm 方法，启动表单数据的处理流程。",
+          "context": {
+            "startLine": 167,
+            "lines": [
+              "        Button('提交完整信息', { type: ButtonType.Capsule })",
+              "          .width('80%')",
+              "          .height(50)",
+              "          .margin(30)",
+              "          .onClick(() => {",
+              "            this.submitForm()",
+              "          })",
+              "      }",
+              "      .padding(20)",
+              "      .width('100%')",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p3:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 405,
+          "code": "private submitForm() {",
+          "description": "submitForm 方法定义开始，执行数据有效性校验并聚合所有隐私数据项。",
+          "context": {
+            "startLine": 400,
+            "lines": [
+              "",
+              "  // 婚姻状况选择",
+              "",
+              "",
+              "  // 提交表单方法",
+              "  private submitForm() {",
+              "    if (!this.name) {",
+              "      prompt.showToast({ message: '请输入姓名', duration: 2000 });",
+              "      return;",
+              "    }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p3:n6",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+          "line": 437,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast 接口显示提交成功提示，将姓名和年龄等敏感数据渲染至 UI 通知栏（数据流出终点）。",
+          "context": {
+            "startLine": 432,
+            "lines": [
+              "      maritalStatus: this.maritalStatus,",
+              "      familyMembers: this.familyMembers,",
+              "      education: this.education",
+              "    }));",
+              "",
+              "    prompt.showToast({",
+              "      message: `信息提交成功！\\n姓名：${this.name}\\n年龄：${this.age}岁`,",
+              "      duration: 3000",
+              "    });",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n4",
+          "to": "p3:n5"
+        },
+        {
+          "from": "p3:n5",
+          "to": "p3:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "姓名",
+          "年龄",
+          "身高",
+          "体重",
+          "婚姻状况",
+          "家庭成员信息",
+          "教育背景",
+          "房产数据"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户点击提交按钮）"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为（当前仅本地日志输出/提示）"
+        ],
+        "storageAndEncryption": [
+          "数据暂存于组件内存状态（@State），未检测到持久化存储或加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets",
+          "line": 7,
+          "code": "async onBackup() {",
+          "description": "定义 onBackup 异步函数，作为备份扩展能力的生命周期入口点，由系统在触发应用备份时调用。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import { BackupExtensionAbility, BundleVersion } from '@kit.CoreFileKit';",
+              "",
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryBackupAbility extends BackupExtensionAbility {",
+              "  async onBackup() {",
+              "    hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+              "    await Promise.resolve();",
+              "  }",
+              "",
+              "  async onRestore(bundleVersion: BundleVersion) {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets",
+          "line": 8,
+          "code": "hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+          "description": "调用 hilog.info 输出调试日志，记录备份流程开始，该操作仅写入系统日志缓冲区，不涉及敏感数据收集或网络传输。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryBackupAbility extends BackupExtensionAbility {",
+              "  async onBackup() {",
+              "    hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+              "    await Promise.resolve();",
+              "  }",
+              "",
+              "  async onRestore(bundleVersion: BundleVersion) {",
+              "    hilog.info(DOMAIN, 'testTag', 'onRestore ok %{public}s', JSON.stringify(bundleVersion));"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "未检测到本地存储操作",
+          "未检测到加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets",
+          "line": 12,
+          "code": "async onRestore(bundleVersion: BundleVersion) {",
+          "description": "BackupExtensionAbility 执行恢复时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  async onBackup() {",
+              "    hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+              "    await Promise.resolve();",
+              "  }",
+              "",
+              "  async onRestore(bundleVersion: BundleVersion) {",
+              "    hilog.info(DOMAIN, 'testTag', 'onRestore ok %{public}s', JSON.stringify(bundleVersion));",
+              "    await Promise.resolve();",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets",
+          "line": 13,
+          "code": "hilog.info(DOMAIN, 'testTag', 'onRestore ok %{public}s', JSON.stringify(bundleVersion));",
+          "description": "Outputs info-level logs.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "    hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+              "    await Promise.resolve();",
+              "  }",
+              "",
+              "  async onRestore(bundleVersion: BundleVersion) {",
+              "    hilog.info(DOMAIN, 'testTag', 'onRestore ok %{public}s', JSON.stringify(bundleVersion));",
+              "    await Promise.resolve();",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p5 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets:13 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 8,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "定义 UIAbility 的 onCreate 生命周期入口函数，当应用实例创建时被系统调用。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 9,
+          "code": "this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);",
+          "description": "获取应用上下文并设置颜色模式配置，此操作不涉及敏感隐私数据收集。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 10,
+          "code": "hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "调用 hilog.info 接口将'Ability onCreate'字符串作为公开日志写入系统日志缓冲区，构成数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识",
+          "日志标签 (testTag)",
+          "日志内容 (Ability onCreate)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "写入系统日志缓冲区 (hilog)",
+          "未加密 (使用 %{public}s 标记为公开)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 13,
+          "code": "onDestroy(): void {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时由系统自动触发。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 14,
+          "code": "hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onDestroy' 作为公开日志 (%{public}s) 写入系统日志，标记应用销毁事件。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态标识 (Ability onDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储行为",
+          "数据仅输出至系统日志缓冲区，未加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p8",
+      "pathId": "p8",
+      "nodes": [
+        {
+          "id": "p8:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 17,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "定义 onWindowStageCreate 生命周期回调函数，作为数据流的起点，当应用主窗口阶段创建时被系统触发。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 18,
+          "code": "// Main window is created, set main page for this ability",
+          "description": "代码注释行，说明即将执行的操作是为主能力设置主页面。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  onDestroy(): void {",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));"
+            ]
+          }
+        },
+        {
+          "id": "p8:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 19,
+          "code": "hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "调用 hilog.info 接口，将字符串 'Ability onWindowStageCreate' 作为公开信息 (%{public}s) 写入系统日志，这是当前数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));",
+              "        return;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p8:n1",
+          "to": "p8:n2"
+        },
+        {
+          "from": "p8:n2",
+          "to": "p8:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "生命周期事件标识 (Ability onWindowStageCreate)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 创建时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储行为",
+          "数据未加密 (以明文形式输出至系统日志)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 17,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，作为数据流的起始点。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "windowStage.loadContent('pages/Index', (err) => {",
+          "description": "调用 windowStage.loadContent 加载主页面 'pages/Index'，并注册回调函数以接收加载结果（成功或错误）。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));",
+              "        return;",
+              "      }",
+              "      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');"
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 22,
+          "code": "if (err.code) {",
+          "description": "在加载回调中判断 err.code 是否存在，若存在则表明页面加载失败，进入错误处理分支。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));",
+              "        return;",
+              "      }",
+              "      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p9:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 23,
+          "code": "hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));",
+          "description": "将错误对象 err 序列化为 JSON 字符串，并通过 hilog.error 接口输出包含错误详情的日志，此为数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));",
+              "        return;",
+              "      }",
+              "      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');",
+              "    });",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        },
+        {
+          "from": "p9:n3",
+          "to": "p9:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "错误对象 (err)",
+          "错误码 (err.code)",
+          "错误详情字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面加载失败时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "非持久化存储 (系统日志缓冲区)",
+          "未加密 (明文日志)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 17,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期回调函数 onWindowStageCreate 的入口，当 WindowStage 创建时被系统触发，作为数据流的起始源点。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 19,
+          "code": "hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "调用 hilog.info 记录 Ability 生命周期状态日志，输出固定字符串 'Ability onWindowStageCreate'，不涉及用户隐私数据。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));",
+              "        return;"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "windowStage.loadContent('pages/Index', (err) => {",
+          "description": "调用 windowStage.loadContent 加载应用主页面 'pages/Index'，并注册异步回调函数处理加载结果。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));",
+              "        return;",
+              "      }",
+              "      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');"
+            ]
+          }
+        },
+        {
+          "id": "p10:n4",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 22,
+          "code": "if (err.code) {",
+          "description": "在加载内容的回调函数中，判断返回的错误对象 err 是否包含 code 属性，用于检测加载是否失败。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));",
+              "        return;",
+              "      }",
+              "      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p10:n5",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 26,
+          "code": "hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');",
+          "description": "数据流汇点（Sink），在内容加载成功后调用 hilog.info 输出成功日志 'Succeeded in loading the content.'，未传输任何敏感数据。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));",
+              "        return;",
+              "      }",
+              "      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        },
+        {
+          "from": "p10:n3",
+          "to": "p10:n4"
+        },
+        {
+          "from": "p10:n4",
+          "to": "p10:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储操作",
+          "无加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 30,
+          "code": "onWindowStageDestroy(): void {",
+          "description": "定义 onWindowStageDestroy 生命周期回调函数，作为数据流的起点，当应用窗口阶段销毁时被系统触发。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "      }",
+              "      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 31,
+          "code": "// Main window is destroyed, release UI related resources",
+          "description": "代码注释行，说明此处逻辑旨在释放 UI 相关资源，不涉及实际数据操作。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 32,
+          "code": "hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onWindowStageDestroy' 格式化后写入系统 Info 级别日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "生命周期事件标识 (Ability onWindowStageDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 销毁时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "数据仅输出至系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 35,
+          "code": "onForeground(): void {",
+          "description": "定义 onForeground 生命周期回调函数，作为数据流的起点，当 UIAbility 切换到前台时被系统触发。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 36,
+          "code": "// Ability has brought to foreground",
+          "description": "代码注释行，说明当前上下文为应用进入前台状态，无实际数据操作。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background"
+            ]
+          }
+        },
+        {
+          "id": "p12:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 37,
+          "code": "hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onForeground' 作为公开日志（%{public}s）输出到系统日志流，构成数据流的终点（Sink）。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        },
+        {
+          "from": "p12:n2",
+          "to": "p12:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "日志文本字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发（每次应用切换至前台时）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（仅本地日志输出）"
+        ],
+        "storageAndEncryption": [
+          "写入系统日志缓冲区（hilog），未加密，依赖系统日志轮转策略"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p13",
+      "pathId": "p13",
+      "nodes": [
+        {
+          "id": "p13:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 40,
+          "code": "onBackground(): void {",
+          "description": "定义 onBackground 生命周期回调函数，作为数据流的起点，当 UIAbility 切换到后台时被系统触发。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p13:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 41,
+          "code": "// Ability has back to background",
+          "description": "行内注释，说明当前处于应用回到后台的逻辑分支，不涉及实际数据处理。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "    // Ability has brought to foreground",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p13:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 42,
+          "code": "hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');",
+          "description": "调用 hilog.info 接口，将固定的字符串常量 'Ability onBackground' 格式化后写入系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p13:n1",
+          "to": "p13:n2"
+        },
+        {
+          "from": "p13:n2",
+          "to": "p13:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件"
+        ],
+        "collectionFrequency": [
+          "事件触发（应用切换至后台时）"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "数据仅输出至系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

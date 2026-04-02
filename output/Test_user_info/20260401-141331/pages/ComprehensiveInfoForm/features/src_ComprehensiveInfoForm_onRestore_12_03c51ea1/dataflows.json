@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "runId": "Test_user_info_20260401-141331",
+    "generatedAt": "2026-04-01T06:16:03.324Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p5 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets:13 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "ComprehensiveInfoForm",
+      "entry": {
+        "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+        "structName": "ComprehensiveInfoForm",
+        "line": 5,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "src_ComprehensiveInfoForm_onRestore_12_03c51ea1",
+      "kind": "source",
+      "title": "首页逻辑：onRestore"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets",
+          "line": 12,
+          "code": "async onRestore(bundleVersion: BundleVersion) {",
+          "description": "BackupExtensionAbility 执行恢复时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  async onBackup() {",
+              "    hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+              "    await Promise.resolve();",
+              "  }",
+              "",
+              "  async onRestore(bundleVersion: BundleVersion) {",
+              "    hilog.info(DOMAIN, 'testTag', 'onRestore ok %{public}s', JSON.stringify(bundleVersion));",
+              "    await Promise.resolve();",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets",
+          "line": 13,
+          "code": "hilog.info(DOMAIN, 'testTag', 'onRestore ok %{public}s', JSON.stringify(bundleVersion));",
+          "description": "Outputs info-level logs.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "    hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+              "    await Promise.resolve();",
+              "  }",
+              "",
+              "  async onRestore(bundleVersion: BundleVersion) {",
+              "    hilog.info(DOMAIN, 'testTag', 'onRestore ok %{public}s', JSON.stringify(bundleVersion));",
+              "    await Promise.resolve();",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p5 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets:13 之后继续扩展"
+        ]
+      }
+    }
+  ]
+}

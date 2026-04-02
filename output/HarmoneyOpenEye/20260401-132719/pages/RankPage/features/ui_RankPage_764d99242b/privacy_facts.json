@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "featureId": "ui_RankPage_764d99242b",
+    "generatedAt": "2026-04-01T05:45:35.182Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在排行榜页面点击视频列表项，查看视频详情",
+        "dataSources": [
+          "排行榜列表数据源"
+        ],
+        "dataItems": [
+          {
+            "name": "视频内容 ID",
+            "refs": [
+              {
+                "flowId": "flow:p30",
+                "nodeId": "p30:n6"
+              },
+              {
+                "flowId": "flow:p31",
+                "nodeId": "p31:n6"
+              }
+            ]
+          },
+          {
+            "name": "视频播放地址",
+            "refs": [
+              {
+                "flowId": "flow:p30",
+                "nodeId": "p30:n6"
+              },
+              {
+                "flowId": "flow:p31",
+                "nodeId": "p31:n6"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p31",
+                "nodeId": "p31:n10"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "提取数据并用于页面跳转参数封装，同时将操作结果（成功 URL 或失败错误码）通过日志接口输出",
+        "storageMethod": "无本地持久化存储，数据仅留存于设备系统日志缓冲区",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p30",
+                "nodeId": "p30:n11"
+              },
+              {
+                "flowId": "flow:p31",
+                "nodeId": "p31:n11"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现从排行榜到视频详情页的导航功能，并记录路由状态以便调试",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,859 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.732Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p13 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/Feedback.ets:42 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 4,
+      "nodes": 27,
+      "edges": 23,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "Feedback",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+        "structName": "Feedback",
+        "line": 32,
+        "description": "反馈页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Feedback_8e85dafbb8",
+      "kind": "ui",
+      "title": "查看Debug日志"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p13",
+      "pathId": "p13",
+      "nodes": [
+        {
+          "id": "p13:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 38,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "  @State logArr: LogFile[] = []",
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "  gistClient = new GistClient(ApiConstants.GITEE_TOKEN);",
+              "",
+              "  aboutToAppear() {",
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {"
+            ]
+          }
+        },
+        {
+          "id": "p13:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 42,
+          "code": "fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+          "description": "未提取到SDK注释；请在 input/csv/sdk_api_description_override.csv 补充该 API 描述（api=@ohos.file.fs.listFile）（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));",
+              "      });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p13:n1",
+          "to": "p13:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p13 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/Feedback.ets:42 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p14",
+      "pathId": "p14",
+      "nodes": [
+        {
+          "id": "p14:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 38,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，组件即将显示时触发，作为数据流收集的起始点。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "  @State logArr: LogFile[] = []",
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "  gistClient = new GistClient(ApiConstants.GITEE_TOKEN);",
+              "",
+              "  aboutToAppear() {",
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {"
+            ]
+          }
+        },
+        {
+          "id": "p14:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 41,
+          "code": "getLogFiles() {",
+          "description": "定义 getLogFiles 方法，准备执行日志文件扫描逻辑。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "  gistClient = new GistClient(ApiConstants.GITEE_TOKEN);",
+              "",
+              "  aboutToAppear() {",
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));"
+            ]
+          }
+        },
+        {
+          "id": "p14:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 42,
+          "code": "fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+          "description": "调用 fs.listFile 异步获取应用沙箱目录下 '/log' 文件夹内的所有文件名列表。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));",
+              "      });"
+            ]
+          }
+        },
+        {
+          "id": "p14:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 43,
+          "code": "files.forEach((file: string) => {",
+          "description": "遍历获取到的文件名单，对每个文件进行单独处理。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "  aboutToAppear() {",
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));",
+              "      });",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p14:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 44,
+          "code": "let path = `${globalThis.filesDir}/log/${file}`;",
+          "description": "拼接完整的文件绝对路径，构造用于后续元数据读取的目标路径字符串。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));",
+              "      });",
+              "    });",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p14:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 45,
+          "code": "let size = fs.statSync(path).size;",
+          "description": "调用 fs.statSync 同步读取指定路径文件的元数据，并提取文件大小 (size)，这是隐私数据流的关键收集点。",
+          "context": {
+            "startLine": 40,
+            "lines": [
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));",
+              "      });",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p14:n1",
+          "to": "p14:n2"
+        },
+        {
+          "from": "p14:n2",
+          "to": "p14:n3"
+        },
+        {
+          "from": "p14:n3",
+          "to": "p14:n4"
+        },
+        {
+          "from": "p14:n4",
+          "to": "p14:n5"
+        },
+        {
+          "from": "p14:n5",
+          "to": "p14:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "本地日志文件列表",
+          "日志文件元数据（文件大小）",
+          "应用唯一标识 (appUuid)",
+          "调试模式状态 (appLogDebug)"
+        ],
+        "collectionFrequency": [
+          "事件触发（组件即将显示时 aboutToAppear）",
+          "异步回调触发（文件列表获取完成后）"
+        ],
+        "cloudUpload": [
+          "未在当前路径发现直接上传行为，但存在 GistClient 初始化，暗示后续可能上传至 Gitee"
+        ],
+        "storageAndEncryption": [
+          "读取应用沙箱目录下的本地文件 (/log)",
+          "数据暂存于组件状态 (@State logArr)",
+          "未在当前片段发现加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.READ_MEDIA (隐含，访问文件元数据)",
+          "ohos.permission.WRITE_MEDIA (隐含，若涉及写操作)",
+          "无需动态权限（访问应用沙箱内部目录通常不需要额外权限声明）"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p15",
+      "pathId": "p15",
+      "nodes": [
+        {
+          "id": "p15:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 69,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化反馈页面的组件树。",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "      console.error(\"OhBili err: \" + err);",
+              "    }",
+              "    return false;",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '反馈' })",
+              "      Scroll() {",
+              "        Column() {",
+              "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")"
+            ]
+          }
+        },
+        {
+          "id": "p15:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 72,
+          "code": "Scroll() {",
+          "description": "创建 Scroll 滚动容器，用于容纳超出屏幕高度的反馈内容。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '反馈' })",
+              "      Scroll() {",
+              "        Column() {",
+              "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")",
+              "            .fontSize(16)",
+              "            .fontColor(\"#333333\")",
+              "            .padding({ top: 16, left: 16, right: 16 })"
+            ]
+          }
+        },
+        {
+          "id": "p15:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 73,
+          "code": "Column() {",
+          "description": "在滚动容器内创建 Column 布局，排列文本提示和操作按钮。",
+          "context": {
+            "startLine": 68,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '反馈' })",
+              "      Scroll() {",
+              "        Column() {",
+              "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")",
+              "            .fontSize(16)",
+              "            .fontColor(\"#333333\")",
+              "            .padding({ top: 16, left: 16, right: 16 })",
+              "          Text(\"1. 开启Debug日志；\\n\\n\" +"
+            ]
+          }
+        },
+        {
+          "id": "p15:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 86,
+          "code": "Row() {",
+          "description": "创建 Row 水平布局，用于并排放置“开启/关闭 Debug 日志”和“查看 Debug 日志”两个按钮。",
+          "context": {
+            "startLine": 81,
+            "lines": [
+              "          \"4. 打开项目gitee网页，提交相关issue；\")",
+              "            .width('100%')",
+              "            .fontSize(16)",
+              "            .fontColor(\"#333333\")",
+              "            .padding(16)",
+              "          Row() {",
+              "            Button(this.appLogDebug == '1' ? \"关闭Debug日志\" : \"开启Debug日志\")",
+              "              .onClick(() => {",
+              "                if (this.appLogDebug == '1') {",
+              "                  this.appLogDebug = '0';",
+              "                } else {"
+            ]
+          }
+        },
+        {
+          "id": "p15:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 95,
+          "code": "Button(\"查看Debug日志\")",
+          "description": "实例化“查看 Debug 日志”按钮组件，准备绑定点击事件。",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "                  this.appLogDebug = '0';",
+              "                } else {",
+              "                  this.appLogDebug = '1';",
+              "                }",
+              "              })",
+              "            Button(\"查看Debug日志\")",
+              "              .margin({ left: 20 })",
+              "              .onClick(() => {",
+              "                this.getLogFiles();",
+              "              })",
+              "          }.width('100%').justifyContent(FlexAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p15:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 97,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 回调函数，作为用户交互的触发点。",
+          "context": {
+            "startLine": 92,
+            "lines": [
+              "                  this.appLogDebug = '1';",
+              "                }",
+              "              })",
+              "            Button(\"查看Debug日志\")",
+              "              .margin({ left: 20 })",
+              "              .onClick(() => {",
+              "                this.getLogFiles();",
+              "              })",
+              "          }.width('100%').justifyContent(FlexAlign.Center)",
+              "          .margin({ top: 36, bottom: 36 })",
+              "          ForEach(this.logArr, (item: LogFile) => {"
+            ]
+          }
+        },
+        {
+          "id": "p15:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 98,
+          "code": "this.getLogFiles();",
+          "description": "在回调中调用 getLogFiles() 方法，启动日志文件扫描流程。",
+          "context": {
+            "startLine": 93,
+            "lines": [
+              "                }",
+              "              })",
+              "            Button(\"查看Debug日志\")",
+              "              .margin({ left: 20 })",
+              "              .onClick(() => {",
+              "                this.getLogFiles();",
+              "              })",
+              "          }.width('100%').justifyContent(FlexAlign.Center)",
+              "          .margin({ top: 36, bottom: 36 })",
+              "          ForEach(this.logArr, (item: LogFile) => {",
+              "            Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p15:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 41,
+          "code": "getLogFiles() {",
+          "description": "进入 getLogFiles() 方法定义，准备执行异步文件列表获取操作。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "  gistClient = new GistClient(ApiConstants.GITEE_TOKEN);",
+              "",
+              "  aboutToAppear() {",
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));"
+            ]
+          }
+        },
+        {
+          "id": "p15:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 42,
+          "code": "fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+          "description": "调用 fs.listFile API 读取应用私有目录下的 log 文件夹，获取所有日志文件名列表（Sink 节点）。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));",
+              "      });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p15:n1",
+          "to": "p15:n2"
+        },
+        {
+          "from": "p15:n2",
+          "to": "p15:n3"
+        },
+        {
+          "from": "p15:n3",
+          "to": "p15:n4"
+        },
+        {
+          "from": "p15:n4",
+          "to": "p15:n5"
+        },
+        {
+          "from": "p15:n5",
+          "to": "p15:n6"
+        },
+        {
+          "from": "p15:n6",
+          "to": "p15:n7"
+        },
+        {
+          "from": "p15:n7",
+          "to": "p15:n8"
+        },
+        {
+          "from": "p15:n8",
+          "to": "p15:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "本地日志文件列表",
+          "日志文件路径",
+          "日志文件大小",
+          "应用唯一标识 (appUuid)",
+          "Debug 日志开关状态 (appLogDebug)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "代码中存在 GistClient 上传逻辑，但当前数据流仅展示到文件列表获取，未直接包含上传动作"
+        ],
+        "storageAndEncryption": [
+          "读取本地文件系统 (globalThis.filesDir/log)",
+          "使用 @StorageLink 持久化存储用户配置 (appUuid, appLogDebug)",
+          "未在当前片段中发现加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.READ_MEDIA (隐含，访问文件需要)",
+          "ohos.permission.WRITE_MEDIA (隐含，若后续上传或生成日志需要)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p16",
+      "pathId": "p16",
+      "nodes": [
+        {
+          "id": "p16:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 69,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化反馈页面的组件树。",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "      console.error(\"OhBili err: \" + err);",
+              "    }",
+              "    return false;",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '反馈' })",
+              "      Scroll() {",
+              "        Column() {",
+              "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")"
+            ]
+          }
+        },
+        {
+          "id": "p16:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 72,
+          "code": "Scroll() {",
+          "description": "创建 Scroll 滚动容器，用于包裹页面主要内容区域。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '反馈' })",
+              "      Scroll() {",
+              "        Column() {",
+              "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")",
+              "            .fontSize(16)",
+              "            .fontColor(\"#333333\")",
+              "            .padding({ top: 16, left: 16, right: 16 })"
+            ]
+          }
+        },
+        {
+          "id": "p16:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 73,
+          "code": "Column() {",
+          "description": "在滚动容器内创建 Column 布局，排列提示文本和操作按钮。",
+          "context": {
+            "startLine": 68,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '反馈' })",
+              "      Scroll() {",
+              "        Column() {",
+              "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")",
+              "            .fontSize(16)",
+              "            .fontColor(\"#333333\")",
+              "            .padding({ top: 16, left: 16, right: 16 })",
+              "          Text(\"1. 开启Debug日志；\\n\\n\" +"
+            ]
+          }
+        },
+        {
+          "id": "p16:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 86,
+          "code": "Row() {",
+          "description": "创建 Row 水平布局，用于并排放置“开启/关闭 Debug 日志”和“查看 Debug 日志”两个按钮。",
+          "context": {
+            "startLine": 81,
+            "lines": [
+              "          \"4. 打开项目gitee网页，提交相关issue；\")",
+              "            .width('100%')",
+              "            .fontSize(16)",
+              "            .fontColor(\"#333333\")",
+              "            .padding(16)",
+              "          Row() {",
+              "            Button(this.appLogDebug == '1' ? \"关闭Debug日志\" : \"开启Debug日志\")",
+              "              .onClick(() => {",
+              "                if (this.appLogDebug == '1') {",
+              "                  this.appLogDebug = '0';",
+              "                } else {"
+            ]
+          }
+        },
+        {
+          "id": "p16:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 95,
+          "code": "Button(\"查看Debug日志\")",
+          "description": "实例化“查看 Debug 日志”按钮组件，准备绑定点击事件。",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "                  this.appLogDebug = '0';",
+              "                } else {",
+              "                  this.appLogDebug = '1';",
+              "                }",
+              "              })",
+              "            Button(\"查看Debug日志\")",
+              "              .margin({ left: 20 })",
+              "              .onClick(() => {",
+              "                this.getLogFiles();",
+              "              })",
+              "          }.width('100%').justifyContent(FlexAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p16:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 97,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 回调函数，当用户点击时触发数据流。",
+          "context": {
+            "startLine": 92,
+            "lines": [
+              "                  this.appLogDebug = '1';",
+              "                }",
+              "              })",
+              "            Button(\"查看Debug日志\")",
+              "              .margin({ left: 20 })",
+              "              .onClick(() => {",
+              "                this.getLogFiles();",
+              "              })",
+              "          }.width('100%').justifyContent(FlexAlign.Center)",
+              "          .margin({ top: 36, bottom: 36 })",
+              "          ForEach(this.logArr, (item: LogFile) => {"
+            ]
+          }
+        },
+        {
+          "id": "p16:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 98,
+          "code": "this.getLogFiles();",
+          "description": "在回调中调用 getLogFiles() 方法，启动本地日志文件的扫描流程。",
+          "context": {
+            "startLine": 93,
+            "lines": [
+              "                }",
+              "              })",
+              "            Button(\"查看Debug日志\")",
+              "              .margin({ left: 20 })",
+              "              .onClick(() => {",
+              "                this.getLogFiles();",
+              "              })",
+              "          }.width('100%').justifyContent(FlexAlign.Center)",
+              "          .margin({ top: 36, bottom: 36 })",
+              "          ForEach(this.logArr, (item: LogFile) => {",
+              "            Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p16:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 41,
+          "code": "getLogFiles() {",
+          "description": "进入 getLogFiles() 函数体，开始执行异步文件列表获取逻辑。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "  gistClient = new GistClient(ApiConstants.GITEE_TOKEN);",
+              "",
+              "  aboutToAppear() {",
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));"
+            ]
+          }
+        },
+        {
+          "id": "p16:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 42,
+          "code": "fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+          "description": "调用 fs.listFile 异步读取应用私有目录下的 'log' 文件夹，获取所有日志文件名列表。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "  }",
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));",
+              "      });"
+            ]
+          }
+        },
+        {
+          "id": "p16:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 45,
+          "code": "let size = fs.statSync(path).size;",
+          "description": "遍历文件列表，对每个日志文件调用 fs.statSync 同步获取其元数据（主要是文件大小 size），作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 40,
+            "lines": [
+              "",
+              "  getLogFiles() {",
+              "    fs.listFile(`${globalThis.filesDir}/log`).then((files: string[]) => {",
+              "      files.forEach((file: string) => {",
+              "        let path = `${globalThis.filesDir}/log/${file}`;",
+              "        let size = fs.statSync(path).size;",
+              "        this.logArr.push(new LogFile(file, path, size));",
+              "      });",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p16:n1",
+          "to": "p16:n2"
+        },
+        {
+          "from": "p16:n2",
+          "to": "p16:n3"
+        },
+        {
+          "from": "p16:n3",
+          "to": "p16:n4"
+        },
+        {
+          "from": "p16:n4",
+          "to": "p16:n5"
+        },
+        {
+          "from": "p16:n5",
+          "to": "p16:n6"
+        },
+        {
+          "from": "p16:n6",
+          "to": "p16:n7"
+        },
+        {
+          "from": "p16:n7",
+          "to": "p16:n8"
+        },
+        {
+          "from": "p16:n8",
+          "to": "p16:n9"
+        },
+        {
+          "from": "p16:n9",
+          "to": "p16:n10"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "本地日志文件列表",
+          "日志文件元数据（大小、路径）",
+          "应用唯一标识 (appUuid)",
+          "Debug 日志开关状态 (appLogDebug)"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户点击按钮）"
+        ],
+        "cloudUpload": [
+          "当前路径未直接执行上传，但代码中存在将日志上传至 Gitee 的逻辑（updateFile 方法），此处仅为读取本地元数据"
+        ],
+        "storageAndEncryption": [
+          "读取本地文件系统 (globalThis.filesDir/log)",
+          "数据暂存于内存 (@State logArr)",
+          "未在此片段中发现加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.READ_WRITE_MEDIA (隐含，访问应用沙箱外或特定目录可能需要，但 filesDir 通常为应用私有无需额外权限，若日志存放在共享目录则需权限)",
+          "ohos.permission.FILE_ACCESS (隐含，ArkTS 文件操作基础能力)"
+        ]
+      }
+    }
+  ]
+}

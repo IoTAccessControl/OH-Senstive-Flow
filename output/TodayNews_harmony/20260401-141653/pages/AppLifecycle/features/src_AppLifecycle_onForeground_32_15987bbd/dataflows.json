@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260401-141653",
+    "generatedAt": "2026-04-01T06:22:19.943Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onForeground_32_15987bbd",
+      "kind": "source",
+      "title": "应用切到前台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p19",
+      "pathId": "p19",
+      "nodes": [
+        {
+          "id": "p19:n1",
+          "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 32,
+          "code": "onForeground() {",
+          "description": "定义 onForeground 生命周期函数入口，当 UIAbility 切换到前台时被系统调用。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {"
+            ]
+          }
+        },
+        {
+          "id": "p19:n2",
+          "filePath": "input/app/TodayNews_harmony/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 34,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+          "description": "调用 hilog.info 输出日志，记录'Ability onForeground'字符串，作为数据流的终点（Sink），未涉及敏感隐私数据收集或网络传输。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground() {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p19:n1",
+          "to": "p19:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [
+          "事件触发（应用切换至前台时）"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

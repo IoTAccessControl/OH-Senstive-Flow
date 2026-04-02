@@ -1,0 +1,228 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:30.063Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 7,
+      "edges": 6,
+      "pages": 1,
+      "elements": 6
+    }
+  },
+  "roots": [
+    "page:1c0c434f4664"
+  ],
+  "nodes": {
+    "page:1c0c434f4664": {
+      "id": "page:1c0c434f4664",
+      "category": "Page",
+      "name": "FocusPage",
+      "description": "关注页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/FocusPage.ets",
+      "line": 10,
+      "code": "export struct FocusPage {",
+      "context": {
+        "startLine": 5,
+        "lines": [
+          "import { LogUtils } from '../../../utils/LogUtils'",
+          "import FocusViewModel from '../../../viewmodel/FocusViewModel'",
+          "import { FocusItemComponent } from './component/FocusItemComponent'",
+          "",
+          "@Component",
+          "export struct FocusPage {",
+          "  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING",
+          "  @State isRefreshing: boolean = false",
+          "  @State dataList: FocusModelItemList[] = []",
+          "  @State showLoading: boolean = false",
+          "  @Consume @Watch(\"onHomeTabSelected\") homeTabSelected: number"
+        ]
+      }
+    },
+    "ui:1596c7ee631f": {
+      "id": "ui:1596c7ee631f",
+      "category": "Component",
+      "name": "build",
+      "description": "关注页布局",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/FocusPage.ets",
+      "line": 61,
+      "code": "build() {",
+      "context": {
+        "startLine": 56,
+        "lines": [
+          "        this.dataList = [...this.dataList, ...result]",
+          "      }",
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    StateComponent({",
+          "      viewState: this.viewState,",
+          "      retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {"
+        ]
+      }
+    },
+    "ui:a0ca518fab08": {
+      "id": "ui:a0ca518fab08",
+      "category": "Component",
+      "name": "StateComponent",
+      "description": "状态视图",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/FocusPage.ets",
+      "line": 62,
+      "code": "StateComponent({",
+      "context": {
+        "startLine": 57,
+        "lines": [
+          "      }",
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    StateComponent({",
+          "      viewState: this.viewState,",
+          "      retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "      Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {"
+        ]
+      }
+    },
+    "ui:ffe165218027": {
+      "id": "ui:ffe165218027",
+      "category": "Component",
+      "name": "Refresh",
+      "description": "关注刷新列表",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/FocusPage.ets",
+      "line": 67,
+      "code": "Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+      "context": {
+        "startLine": 62,
+        "lines": [
+          "    StateComponent({",
+          "      viewState: this.viewState,",
+          "      retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "      Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+          "        List({ space: 10, initialIndex: 0 }) {",
+          "          ForEach(this.dataList, (item: FocusModelItemList, index: number) => {",
+          "            ListItem() {",
+          "              FocusItemComponent({ item: item })",
+          "            }"
+        ]
+      }
+    },
+    "ui:e35251c7d126": {
+      "id": "ui:e35251c7d126",
+      "category": "Component",
+      "name": "ForEach",
+      "description": "关注内容列表",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/FocusPage.ets",
+      "line": 69,
+      "code": "ForEach(this.dataList, (item: FocusModelItemList, index: number) => {",
+      "context": {
+        "startLine": 64,
+        "lines": [
+          "      retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "      Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+          "        List({ space: 10, initialIndex: 0 }) {",
+          "          ForEach(this.dataList, (item: FocusModelItemList, index: number) => {",
+          "            ListItem() {",
+          "              FocusItemComponent({ item: item })",
+          "            }",
+          "          })",
+          "          ListItem() {"
+        ]
+      }
+    },
+    "ui:f6b07bd8e2ab": {
+      "id": "ui:f6b07bd8e2ab",
+      "category": "Component",
+      "name": "FocusItemComponent",
+      "description": "关注列表项",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/FocusPage.ets",
+      "line": 71,
+      "code": "FocusItemComponent({ item: item })",
+      "context": {
+        "startLine": 66,
+        "lines": [
+          "      } }) {",
+          "      Refresh({ refreshing: $$this.isRefreshing, offset: 100, friction: 100 }) {",
+          "        List({ space: 10, initialIndex: 0 }) {",
+          "          ForEach(this.dataList, (item: FocusModelItemList, index: number) => {",
+          "            ListItem() {",
+          "              FocusItemComponent({ item: item })",
+          "            }",
+          "          })",
+          "          ListItem() {",
+          "            RefreshFooter({ showFooter: this.showLoading })",
+          "          }"
+        ]
+      }
+    },
+    "ui:8ef9c9531b03": {
+      "id": "ui:8ef9c9531b03",
+      "category": "Component",
+      "name": "RefreshFooter",
+      "description": "加载更多",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/focus/FocusPage.ets",
+      "line": 75,
+      "code": "RefreshFooter({ showFooter: this.showLoading })",
+      "context": {
+        "startLine": 70,
+        "lines": [
+          "            ListItem() {",
+          "              FocusItemComponent({ item: item })",
+          "            }",
+          "          })",
+          "          ListItem() {",
+          "            RefreshFooter({ showFooter: this.showLoading })",
+          "          }",
+          "        }",
+          "        .listDirection(Axis.Vertical) // 排列方向",
+          "        .divider({",
+          "          strokeWidth: 1,"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:1c0c434f4664",
+      "to": "ui:1596c7ee631f",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1c0c434f4664",
+      "to": "ui:a0ca518fab08",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1c0c434f4664",
+      "to": "ui:ffe165218027",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1c0c434f4664",
+      "to": "ui:e35251c7d126",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1c0c434f4664",
+      "to": "ui:f6b07bd8e2ab",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1c0c434f4664",
+      "to": "ui:8ef9c9531b03",
+      "kind": "contains"
+    }
+  ]
+}

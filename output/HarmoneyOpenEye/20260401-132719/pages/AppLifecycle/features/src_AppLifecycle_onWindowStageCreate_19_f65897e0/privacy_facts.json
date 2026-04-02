@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "featureId": "src_AppLifecycle_onWindowStageCreate_19_f65897e0",
+    "generatedAt": "2026-04-01T05:42:48.003Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "应用启动并创建主窗口时记录运行状态日志",
+        "dataSources": [
+          "系统生命周期事件",
+          "页面加载回调结果"
+        ],
+        "dataItems": [
+          {
+            "name": "生命周期事件标识",
+            "refs": [
+              {
+                "flowId": "flow:p58",
+                "nodeId": "p58:n2"
+              }
+            ]
+          },
+          {
+            "name": "错误对象及详细信息",
+            "refs": [
+              {
+                "flowId": "flow:p59",
+                "nodeId": "p59:n4"
+              }
+            ]
+          },
+          {
+            "name": "窗口加载状态数据",
+            "refs": [
+              {
+                "flowId": "flow:p60",
+                "nodeId": "p60:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "序列化后输出至系统日志",
+        "storageMethod": "无本地持久化存储，仅临时写入系统日志",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p58",
+                "nodeId": "p58:n2"
+              },
+              {
+                "flowId": "flow:p59",
+                "nodeId": "p59:n4"
+              },
+              {
+                "flowId": "flow:p60",
+                "nodeId": "p60:n3"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于开发调试和监控应用启动及页面加载过程中的异常与状态",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

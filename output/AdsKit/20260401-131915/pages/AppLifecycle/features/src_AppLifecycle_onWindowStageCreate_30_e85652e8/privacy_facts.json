@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "runId": "AdsKit_20260401-131915",
+    "featureId": "src_AppLifecycle_onWindowStageCreate_30_e85652e8",
+    "generatedAt": "2026-04-01T05:22:20.803Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "AdsKit",
+        "businessScenario": "应用启动并创建主窗口时记录运行状态",
+        "dataSources": [
+          "系统生命周期事件"
+        ],
+        "dataItems": [
+          {
+            "name": "生命周期事件标识",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "将固定文本标记写入系统日志",
+        "storageMethod": "由系统日志服务临时缓存，无持久化存储",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n3"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于调试和确认应用窗口创建流程是否正常触发",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "AdsKit",
+        "businessScenario": "主窗口内容加载失败时记录错误详情",
+        "dataSources": [
+          "页面加载回调结果"
+        ],
+        "dataItems": [
+          {
+            "name": "错误对象及详细信息",
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "将错误对象序列化为 JSON 字符串并写入错误日志",
+        "storageMethod": "本地日志存储（由系统处理，代码未显式加密）",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于诊断页面加载失败的原因",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "AdsKit",
+        "businessScenario": "主窗口内容加载成功时记录返回数据",
+        "dataSources": [
+          "页面加载回调结果"
+        ],
+        "dataItems": [
+          {
+            "name": "页面加载回调数据",
+            "refs": [
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "将回调数据序列化为 JSON 字符串并写入信息日志",
+        "storageMethod": "本地日志存储（无持久化存储，未加密）",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于调试和确认页面内容加载成功及数据完整性",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

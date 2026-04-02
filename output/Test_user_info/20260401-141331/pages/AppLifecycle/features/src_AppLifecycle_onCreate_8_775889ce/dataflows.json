@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "runId": "Test_user_info_20260401-141331",
+    "generatedAt": "2026-04-01T06:16:03.324Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onCreate_8_775889ce",
+      "kind": "source",
+      "title": "应用创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 8,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "定义 UIAbility 的 onCreate 生命周期入口函数，当应用实例创建时被系统调用。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 9,
+          "code": "this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);",
+          "description": "获取应用上下文并设置颜色模式配置，此操作不涉及敏感隐私数据收集。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "",
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 10,
+          "code": "hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "调用 hilog.info 接口将'Ability onCreate'字符串作为公开日志写入系统日志缓冲区，构成数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识",
+          "日志标签 (testTag)",
+          "日志内容 (Ability onCreate)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "写入系统日志缓冲区 (hilog)",
+          "未加密 (使用 %{public}s 标记为公开)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

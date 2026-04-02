@@ -1,0 +1,756 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260401-131340",
+    "generatedAt": "2026-04-01T05:17:32.141Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 5,
+      "nodes": 23,
+      "edges": 18,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onWindowStageCreate_21_1cff5b6b",
+      "kind": "source",
+      "title": "主窗口创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "定义 onWindowStageCreate 生命周期回调函数，作为数据流的起点，当 WindowStage 创建时被系统触发。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;"
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 22,
+          "code": "hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+          "description": "调用 hilog.info 接口，将包含 domainId、logTag 及固定文本 'Ability onWindowStageCreate' 的信息写入系统日志，作为当前路径的终点（Sink）。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识",
+          "日志域 ID (domainId)",
+          "日志标签 (logTag)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 创建时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "仅输出到系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p13",
+      "pathId": "p13",
+      "nodes": [
+        {
+          "id": "p13:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，作为数据流的起始点。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;"
+            ]
+          }
+        },
+        {
+          "id": "p13:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "const windowClass: window.Window = windowStage.getMainWindowSync();",
+          "description": "调用 getMainWindowSync 获取当前应用的主窗口对象，准备进行窗口属性配置。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+              "    }).catch((error: BusinessError) => {"
+            ]
+          }
+        },
+        {
+          "id": "p13:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 26,
+          "code": "const isLayoutFullScreen = true;",
+          "description": "定义布尔变量 isLayoutFullScreen 为 true，设定目标为启用全屏沉浸式布局模式。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+              "    }).catch((error: BusinessError) => {",
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);"
+            ]
+          }
+        },
+        {
+          "id": "p13:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 27,
+          "code": "windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+          "description": "异步调用 setWindowLayoutFullScreen 方法应用全屏设置，并注册成功回调函数。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+              "    }).catch((error: BusinessError) => {",
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p13:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 28,
+          "code": "hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+          "description": "在设置成功的回调中调用 hilog.info 记录日志，标记窗口全屏设置已完成，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+              "    }).catch((error: BusinessError) => {",
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "    });",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p13:n1",
+          "to": "p13:n2"
+        },
+        {
+          "from": "p13:n2",
+          "to": "p13:n3"
+        },
+        {
+          "from": "p13:n3",
+          "to": "p13:n4"
+        },
+        {
+          "from": "p13:n4",
+          "to": "p13:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用日志信息",
+          "窗口布局状态"
+        ],
+        "collectionFrequency": [
+          "一次性（应用启动时）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（仅本地日志输出）"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p14",
+      "pathId": "p14",
+      "nodes": [
+        {
+          "id": "p14:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期入口：onWindowStageCreate 函数开始执行，响应窗口阶段创建事件。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;"
+            ]
+          }
+        },
+        {
+          "id": "p14:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "const windowClass: window.Window = windowStage.getMainWindowSync();",
+          "description": "数据获取：同步获取应用主窗口对象 (windowClass)，为后续 UI 操作做准备。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+              "    }).catch((error: BusinessError) => {"
+            ]
+          }
+        },
+        {
+          "id": "p14:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 27,
+          "code": "windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+          "description": "异步操作发起：调用 setWindowLayoutFullScreen 尝试设置全屏沉浸式布局，注册错误回调。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+              "    }).catch((error: BusinessError) => {",
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p14:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 30,
+          "code": "hilog.error(this.domainId, this.logTag,",
+          "description": "敏感数据汇聚与输出 (Sink)：在 catch 回调中，将错误码、错误消息及组件标识拼接并通过 hilog.error 输出到系统日志。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+              "    }).catch((error: BusinessError) => {",
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "    });",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (error) => {",
+              "      if (error.code) {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p14:n1",
+          "to": "p14:n2"
+        },
+        {
+          "from": "p14:n2",
+          "to": "p14:n3"
+        },
+        {
+          "from": "p14:n3",
+          "to": "p14:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "错误码 (error.code)",
+          "错误信息 (error.message)",
+          "组件域名 (domainId)",
+          "日志标签 (logTag)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UI 布局设置失败时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无 (运行时内存打印，未持久化存储)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p15",
+      "pathId": "p15",
+      "nodes": [
+        {
+          "id": "p15:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，启动窗口初始化流程。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;"
+            ]
+          }
+        },
+        {
+          "id": "p15:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 34,
+          "code": "windowStage.loadContent('pages/HomePage', (error) => {",
+          "description": "调用 windowStage.loadContent 加载主页内容 'pages/HomePage'，此操作异步执行并注册了错误回调函数。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "    }).catch((error: BusinessError) => {",
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "    });",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (error) => {",
+              "      if (error.code) {",
+              "        hilog.error(this.domainId, this.logTag,",
+              "          `Failed to load the content. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p15:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 35,
+          "code": "if (error.code) {",
+          "description": "在 loadContent 的回调中判断 error.code 是否存在，若存在则进入错误处理分支。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "    });",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (error) => {",
+              "      if (error.code) {",
+              "        hilog.error(this.domainId, this.logTag,",
+              "          `Failed to load the content. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "        return;",
+              "      }",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in loading the content.');"
+            ]
+          }
+        },
+        {
+          "id": "p15:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 36,
+          "code": "hilog.error(this.domainId, this.logTag,",
+          "description": "【Sink】调用 hilog.error 接口，将组件域名、日志标签以及包含错误码和错误信息的格式化字符串写入系统错误日志。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "    });",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (error) => {",
+              "      if (error.code) {",
+              "        hilog.error(this.domainId, this.logTag,",
+              "          `Failed to load the content. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "        return;",
+              "      }",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in loading the content.');",
+              "    });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p15:n1",
+          "to": "p15:n2"
+        },
+        {
+          "from": "p15:n2",
+          "to": "p15:n3"
+        },
+        {
+          "from": "p15:n3",
+          "to": "p15:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "错误码 (error.code)",
+          "错误信息 (error.message)",
+          "组件域名 (domainId)",
+          "日志标签 (logTag)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面内容加载失败时)"
+        ],
+        "cloudUpload": [
+          "无明确云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p16",
+      "pathId": "p16",
+      "nodes": [
+        {
+          "id": "p16:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，作为数据流的起始点。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;"
+            ]
+          }
+        },
+        {
+          "id": "p16:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 22,
+          "code": "hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+          "description": "记录进入 onWindowStageCreate 生命周期的日志，未涉及隐私数据。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p16:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "const windowClass: window.Window = windowStage.getMainWindowSync();",
+          "description": "同步获取应用的主窗口对象 (window.Window)，用于后续界面配置，不涉及用户隐私数据收集。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+              "    }).catch((error: BusinessError) => {"
+            ]
+          }
+        },
+        {
+          "id": "p16:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 26,
+          "code": "const isLayoutFullScreen = true;",
+          "description": "定义全屏布局标志位常量，属于本地逻辑变量。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+              "    }).catch((error: BusinessError) => {",
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);"
+            ]
+          }
+        },
+        {
+          "id": "p16:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 27,
+          "code": "windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+          "description": "异步设置窗口为全屏模式，调整 UI 展示方式，不涉及隐私数据。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app.",
+              "    const windowClass: window.Window = windowStage.getMainWindowSync();",
+              "    // 2. Set the immersive mode.",
+              "    const isLayoutFullScreen = true;",
+              "    windowClass.setWindowLayoutFullScreen(isLayoutFullScreen).then(() => {",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in setting WindowLayoutFullScreen.');",
+              "    }).catch((error: BusinessError) => {",
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p16:n6",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 34,
+          "code": "windowStage.loadContent('pages/HomePage', (error) => {",
+          "description": "加载页面内容 'pages/HomePage'，触发页面渲染流程。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "    }).catch((error: BusinessError) => {",
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "    });",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (error) => {",
+              "      if (error.code) {",
+              "        hilog.error(this.domainId, this.logTag,",
+              "          `Failed to load the content. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p16:n7",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 35,
+          "code": "if (error.code) {",
+          "description": "检查加载内容是否发生错误，进行条件判断。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "      hilog.error(this.domainId, this.logTag,",
+              "        `Failed to setWindowLayoutFullScreen. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "    });",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (error) => {",
+              "      if (error.code) {",
+              "        hilog.error(this.domainId, this.logTag,",
+              "          `Failed to load the content. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "        return;",
+              "      }",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in loading the content.');"
+            ]
+          }
+        },
+        {
+          "id": "p16:n8",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 40,
+          "code": "hilog.info(this.domainId, this.logTag, 'Succeeded in loading the content.');",
+          "description": "【Sink】内容加载成功后输出 info 级别日志，标记流程结束，未上传或存储敏感数据。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "      if (error.code) {",
+              "        hilog.error(this.domainId, this.logTag,",
+              "          `Failed to load the content. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "        return;",
+              "      }",
+              "      hilog.info(this.domainId, this.logTag, 'Succeeded in loading the content.');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageDestroy');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p16:n1",
+          "to": "p16:n2"
+        },
+        {
+          "from": "p16:n2",
+          "to": "p16:n3"
+        },
+        {
+          "from": "p16:n3",
+          "to": "p16:n4"
+        },
+        {
+          "from": "p16:n4",
+          "to": "p16:n5"
+        },
+        {
+          "from": "p16:n5",
+          "to": "p16:n6"
+        },
+        {
+          "from": "p16:n6",
+          "to": "p16:n7"
+        },
+        {
+          "from": "p16:n7",
+          "to": "p16:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地敏感数据存储",
+          "无加密操作"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

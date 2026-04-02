@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260401-141653",
+    "generatedAt": "2026-04-01T06:22:19.943Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p1 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/TodayNews_harmony/home/src/main/ets/view/CategoryTabbar.ets:18 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "DetailPage",
+      "entry": {
+        "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+        "structName": "DetailPage",
+        "line": 11,
+        "description": "Detail页面"
+      }
+    },
+    "feature": {
+      "featureId": "src_DetailPage_aboutToAppear_16_a8c7fa53",
+      "kind": "source",
+      "title": "Detail页面进入时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/CategoryTabbar.ets",
+          "line": 16,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  @State currentIndex: number = 0;",
+              "  @State displayWidth: number = 0;",
+              "  @Link needChange: boolean;",
+              "",
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "",
+              "    this.displayWidth = px2vp(displayClass.width);",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/CategoryTabbar.ets",
+          "line": 18,
+          "code": "let displayClass = display.getDefaultDisplaySync();",
+          "description": "Obtain the default display.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @Link needChange: boolean;",
+              "",
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "",
+              "    this.displayWidth = px2vp(displayClass.width);",
+              "",
+              "  }",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p1 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/TodayNews_harmony/home/src/main/ets/view/CategoryTabbar.ets:18 之后继续扩展"
+        ]
+      }
+    }
+  ]
+}

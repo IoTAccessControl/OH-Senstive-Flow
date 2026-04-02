@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260401-141653",
+    "generatedAt": "2026-04-01T06:22:19.943Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p5 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets:15 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "DetailPage",
+      "entry": {
+        "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+        "structName": "DetailPage",
+        "line": 11,
+        "description": "Detail页面"
+      }
+    },
+    "feature": {
+      "featureId": "src_DetailPage_aboutToAppear_13_146345f0",
+      "kind": "source",
+      "title": "Detail页面进入时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets",
+          "line": 13,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "  @State day: number = 0;",
+              "  @State hour: number = 0;",
+              "  @State minute: number = 0;",
+              "  @State timeShow: string = \"\";",
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    systemTime.getCurrentTime(false, (error, time) => {",
+              "      let temp = time / 1000 - this.itemData.display_dt;",
+              "      this.day = Math.trunc(temp / 3600 / 24);",
+              "      this.hour = Math.trunc((temp % (3600 * 24)) / 3600);"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets",
+          "line": 15,
+          "code": "systemTime.getCurrentTime(false, (error, time) => {",
+          "description": "Obtains the number of milliseconds that have elapsed since the Unix epoch.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  @State minute: number = 0;",
+              "  @State timeShow: string = \"\";",
+              "",
+              "  aboutToAppear() {",
+              "",
+              "    systemTime.getCurrentTime(false, (error, time) => {",
+              "      let temp = time / 1000 - this.itemData.display_dt;",
+              "      this.day = Math.trunc(temp / 3600 / 24);",
+              "      this.hour = Math.trunc((temp % (3600 * 24)) / 3600);",
+              "      this.minute = Math.trunc((temp % 3600) / 60);",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p5 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/TodayNews_harmony/home/src/main/ets/view/MiddleNewsView.ets:15 之后继续扩展"
+        ]
+      }
+    }
+  ]
+}

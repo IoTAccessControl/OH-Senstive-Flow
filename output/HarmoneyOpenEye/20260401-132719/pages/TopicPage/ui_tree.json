@@ -1,0 +1,228 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:30.064Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 7,
+      "edges": 6,
+      "pages": 1,
+      "elements": 6
+    }
+  },
+  "roots": [
+    "page:87d3e7f49b45"
+  ],
+  "nodes": {
+    "page:87d3e7f49b45": {
+      "id": "page:87d3e7f49b45",
+      "category": "Page",
+      "name": "TopicPage",
+      "description": "话题页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/topic/TopicPage.ets",
+      "line": 12,
+      "code": "export struct TopicPage {",
+      "context": {
+        "startLine": 7,
+        "lines": [
+          "import ImageRegexUtils from '../../../utils/ImageRegexUtils'",
+          "import { LogUtils } from '../../../utils/LogUtils'",
+          "import TopicViewModel from '../../../viewmodel/TopicViewModel'",
+          "",
+          "@Component",
+          "export struct TopicPage {",
+          "  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING",
+          "  @State showLoading: boolean = false",
+          "  @State isRefreshing: boolean = false",
+          "  @State topicList: TopicModelItemList[] = []",
+          "  @Consume @Watch(\"onHomeTabSelected\") homeTabSelected: number"
+        ]
+      }
+    },
+    "ui:457694716742": {
+      "id": "ui:457694716742",
+      "category": "Component",
+      "name": "build",
+      "description": "话题页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/topic/TopicPage.ets",
+      "line": 66,
+      "code": "build() {",
+      "context": {
+        "startLine": 61,
+        "lines": [
+          "        this.topicList = [...this.topicList, ...result]",
+          "      }",
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        Refresh({ refreshing: $$this.isRefreshing }) {"
+        ]
+      }
+    },
+    "ui:44af32b5f41b": {
+      "id": "ui:44af32b5f41b",
+      "category": "Button",
+      "name": "StateComponent",
+      "description": "重试加载",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/topic/TopicPage.ets",
+      "line": 68,
+      "code": "StateComponent({ viewState: this.viewState, retryCallback: () => {",
+      "context": {
+        "startLine": 63,
+        "lines": [
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        Refresh({ refreshing: $$this.isRefreshing }) {",
+          "          List({ space: 10, initialIndex: 0 }) {",
+          "            ForEach(this.topicList, (item: TopicModelItemList, index: number) => {"
+        ]
+      }
+    },
+    "ui:c702b7850906": {
+      "id": "ui:c702b7850906",
+      "category": "Button",
+      "name": "Refresh",
+      "description": "话题列表刷新",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/topic/TopicPage.ets",
+      "line": 71,
+      "code": "Refresh({ refreshing: $$this.isRefreshing }) {",
+      "context": {
+        "startLine": 66,
+        "lines": [
+          "  build() {",
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        Refresh({ refreshing: $$this.isRefreshing }) {",
+          "          List({ space: 10, initialIndex: 0 }) {",
+          "            ForEach(this.topicList, (item: TopicModelItemList, index: number) => {",
+          "              ListItem() {",
+          "                Image(ImageRegexUtils(item.data.image))",
+          "                  .alt($r('app.media.back_placeholder'))"
+        ]
+      }
+    },
+    "ui:ecca94ddbab8": {
+      "id": "ui:ecca94ddbab8",
+      "category": "Button",
+      "name": "ForEach",
+      "description": "专题列表",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/topic/TopicPage.ets",
+      "line": 73,
+      "code": "ForEach(this.topicList, (item: TopicModelItemList, index: number) => {",
+      "context": {
+        "startLine": 68,
+        "lines": [
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        Refresh({ refreshing: $$this.isRefreshing }) {",
+          "          List({ space: 10, initialIndex: 0 }) {",
+          "            ForEach(this.topicList, (item: TopicModelItemList, index: number) => {",
+          "              ListItem() {",
+          "                Image(ImageRegexUtils(item.data.image))",
+          "                  .alt($r('app.media.back_placeholder'))",
+          "                  .width(\"100%\")",
+          "                  .height($r('app.float.size_200'))"
+        ]
+      }
+    },
+    "ui:73223d09e6b2": {
+      "id": "ui:73223d09e6b2",
+      "category": "Button",
+      "name": "Image",
+      "description": "专题图片",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/topic/TopicPage.ets",
+      "line": 75,
+      "code": "Image(ImageRegexUtils(item.data.image))",
+      "context": {
+        "startLine": 70,
+        "lines": [
+          "      } }) {",
+          "        Refresh({ refreshing: $$this.isRefreshing }) {",
+          "          List({ space: 10, initialIndex: 0 }) {",
+          "            ForEach(this.topicList, (item: TopicModelItemList, index: number) => {",
+          "              ListItem() {",
+          "                Image(ImageRegexUtils(item.data.image))",
+          "                  .alt($r('app.media.back_placeholder'))",
+          "                  .width(\"100%\")",
+          "                  .height($r('app.float.size_200'))",
+          "                  .border({ radius: $r('app.float.size_5') })",
+          "              }.onClick(() => {"
+        ]
+      }
+    },
+    "ui:3ba955a1a0dc": {
+      "id": "ui:3ba955a1a0dc",
+      "category": "Component",
+      "name": "RefreshFooter",
+      "description": "加载更多",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/topic/TopicPage.ets",
+      "line": 85,
+      "code": "RefreshFooter({ showFooter: this.showLoading })",
+      "context": {
+        "startLine": 80,
+        "lines": [
+          "              }.onClick(() => {",
+          "                Router.push(RoutePath.TopicDetailPage, { \"id\": item.data.id })",
+          "              })",
+          "            })",
+          "            ListItem() {",
+          "              RefreshFooter({ showFooter: this.showLoading })",
+          "            }",
+          "          }",
+          "          .listDirection(Axis.Vertical)",
+          "          .onReachEnd(() => {",
+          "            this.showLoading = true"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:87d3e7f49b45",
+      "to": "ui:457694716742",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87d3e7f49b45",
+      "to": "ui:44af32b5f41b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87d3e7f49b45",
+      "to": "ui:c702b7850906",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87d3e7f49b45",
+      "to": "ui:ecca94ddbab8",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87d3e7f49b45",
+      "to": "ui:73223d09e6b2",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87d3e7f49b45",
+      "to": "ui:3ba955a1a0dc",
+      "kind": "contains"
+    }
+  ]
+}

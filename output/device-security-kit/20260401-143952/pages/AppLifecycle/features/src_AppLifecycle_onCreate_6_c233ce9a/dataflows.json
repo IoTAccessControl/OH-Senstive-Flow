@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "runId": "device-security-kit_20260401-143952",
+    "generatedAt": "2026-04-01T06:41:06.478Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onCreate_6_c233ce9a",
+      "kind": "source",
+      "title": "应用创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/device-security-kit/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 6,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "UIAbility 生命周期入口 onCreate 被触发，标志着应用实例开始创建，接收启动参数 want 和 launchParam。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';",
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/device-security-kit/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 7,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "调用 hilog.info 接口，将固定的公开字符串 'Ability onCreate' 与标签 'testTag' 写入系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识",
+          "日志标签 (testTag)",
+          "固定字符串消息 (Ability onCreate)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "仅输出至系统日志缓冲区 (hilog)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

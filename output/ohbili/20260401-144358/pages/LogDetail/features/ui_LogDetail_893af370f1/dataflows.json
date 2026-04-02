@@ -1,0 +1,323 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.732Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p18 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets:27 之后继续扩展",
+      "数据流 p20 LLM 分析失败，已回退到锚点数据流：LLM 输出跨入了当前路径之外的 source：input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets:26"
+    ],
+    "counts": {
+      "flows": 3,
+      "nodes": 9,
+      "edges": 6,
+      "failedPaths": 2,
+      "fallbackFlows": 2
+    },
+    "page": {
+      "pageId": "LogDetail",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+        "structName": "LogDetail",
+        "line": 22,
+        "description": "LogDetail页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_LogDetail_893af370f1",
+      "kind": "ui",
+      "title": "日志详情"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p18",
+      "pathId": "p18",
+      "nodes": [
+        {
+          "id": "p18:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 26,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "@Component",
+              "struct LogDetail {",
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)"
+            ]
+          }
+        },
+        {
+          "id": "p18:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 27,
+          "code": "let params = router.getParams() as LogDetailParams | undefined;",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "struct LogDetail {",
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p18:n1",
+          "to": "p18:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p18 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets:27 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p19",
+      "pathId": "p19",
+      "nodes": [
+        {
+          "id": "p19:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 26,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 开始执行，作为数据流的起点，在组件即将显示时触发。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "@Component",
+              "struct LogDetail {",
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)"
+            ]
+          }
+        },
+        {
+          "id": "p19:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 27,
+          "code": "let params = router.getParams() as LogDetailParams | undefined;",
+          "description": "调用 router.getParams() 获取从上一页面传递过来的路由参数对象。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "struct LogDetail {",
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p19:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 28,
+          "code": "if (params?.logFilePath) {",
+          "description": "判断路由参数中是否包含 logFilePath 字段，决定后续数据源路径。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "  private logFilePath: string = '';",
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p19:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 29,
+          "code": "this.logFilePath = params.logFilePath;",
+          "description": "将路由参数中的 logFilePath 赋值给组件成员变量，确定待读取的本地文件路径。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "  @State logStr: string = \"\"",
+              "",
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p19:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 31,
+          "code": "this.logStr = fs.readTextSync(this.logFilePath)",
+          "description": "调用 fs.readTextSync 同步读取指定路径的本地日志文件内容，并将结果赋值给 logStr 状态变量，完成敏感数据（日志内容）的采集。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '日志详情' })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p19:n1",
+          "to": "p19:n2"
+        },
+        {
+          "from": "p19:n2",
+          "to": "p19:n3"
+        },
+        {
+          "from": "p19:n3",
+          "to": "p19:n4"
+        },
+        {
+          "from": "p19:n4",
+          "to": "p19:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "本地日志文件内容",
+          "路由传递参数 (logFilePath)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面即将显示时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "读取本地文件系统文件",
+          "未检测到加密操作",
+          "数据存储在组件状态 (@State) 中用于渲染"
+        ],
+        "permissions": [
+          "ohos.permission.READ_MEDIA (若日志位于媒体目录)",
+          "ohos.permission.FILEIO_WRITE (若涉及文件写入，此处仅为读，通常不需要额外权限除非在沙箱外)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p20",
+      "pathId": "p20",
+      "nodes": [
+        {
+          "id": "p20:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 34,
+          "code": "build() {",
+          "description": "ArkUI 组件的 UI 构建入口函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '日志详情' })",
+              "      Scroll() {",
+              "        Text(this.logStr).fontSize(14).width('100%').padding(8)",
+              "      }.layoutWeight(1)"
+            ]
+          }
+        },
+        {
+          "id": "p20:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+          "line": 31,
+          "code": "this.logStr = fs.readTextSync(this.logFilePath)",
+          "description": "未提取到SDK注释；请在 input/csv/sdk_api_description_override.csv 补充该 API 描述（api=@ohos.file.fs.readTextSync）（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  aboutToAppear() {",
+              "    let params = router.getParams() as LogDetailParams | undefined;",
+              "    if (params?.logFilePath) {",
+              "      this.logFilePath = params.logFilePath;",
+              "    }",
+              "    this.logStr = fs.readTextSync(this.logFilePath)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '日志详情' })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p20:n1",
+          "to": "p20:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p20 LLM 分析失败，已回退到锚点数据流：LLM 输出跨入了当前路径之外的 source：input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets:26"
+        ]
+      }
+    }
+  ]
+}

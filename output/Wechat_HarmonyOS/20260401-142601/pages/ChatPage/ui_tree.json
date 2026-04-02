@@ -1,0 +1,438 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260401-142601",
+    "generatedAt": "2026-04-01T06:35:15.279Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 14,
+      "edges": 13,
+      "pages": 1,
+      "elements": 13
+    }
+  },
+  "roots": [
+    "page:c8043438075d"
+  ],
+  "nodes": {
+    "page:c8043438075d": {
+      "id": "page:c8043438075d",
+      "category": "Page",
+      "name": "ChatPage",
+      "description": "聊天页面",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 99,
+      "code": "export default struct ChatPage {",
+      "context": {
+        "startLine": 94,
+        "lines": [
+          "  height: number",
+          "}",
+          "",
+          "@Entry",
+          "@Component",
+          "export default struct ChatPage {",
+          "  private name?: string = \"微信\"",
+          "  private controller: TextAreaController = new TextAreaController()",
+          "  private scroller: Scroller = new Scroller()",
+          "  @State private chatText: string = ''",
+          "  private keyboardHeight: number = 0"
+        ]
+      }
+    },
+    "ui:8bf8691ff08c": {
+      "id": "ui:8bf8691ff08c",
+      "category": "Component",
+      "name": "build",
+      "description": "聊天页面",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 330,
+      "code": "build() {",
+      "context": {
+        "startLine": 325,
+        "lines": [
+          "    const TextChat = new ChatMessage(MessageType.text, this.voiceToText)",
+          "    //   插入到消息数组中",
+          "    this.chatList.push(TextChat)",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Toolbar({ title: this.name })",
+          "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+          "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+          "          ListItem() {"
+        ]
+      }
+    },
+    "ui:a917fb9e46db": {
+      "id": "ui:a917fb9e46db",
+      "category": "Component",
+      "name": "Toolbar",
+      "description": "聊天标题栏",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 332,
+      "code": "Toolbar({ title: this.name })",
+      "context": {
+        "startLine": 327,
+        "lines": [
+          "    this.chatList.push(TextChat)",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Toolbar({ title: this.name })",
+          "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+          "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+          "          ListItem() {",
+          "            if (item.self) {",
+          "              ListChatContentRightItem({ data: item })"
+        ]
+      }
+    },
+    "ui:58b8cc2ac15d": {
+      "id": "ui:58b8cc2ac15d",
+      "category": "Component",
+      "name": "ForEach",
+      "description": "聊天内容列表",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 334,
+      "code": "ForEach(this.dataList, (item: ChatContentItemData) => {",
+      "context": {
+        "startLine": 329,
+        "lines": [
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Toolbar({ title: this.name })",
+          "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+          "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+          "          ListItem() {",
+          "            if (item.self) {",
+          "              ListChatContentRightItem({ data: item })",
+          "            } else {",
+          "              ListChatContentLeftItem({ data: item })"
+        ]
+      }
+    },
+    "ui:722b3db33609": {
+      "id": "ui:722b3db33609",
+      "category": "Component",
+      "name": "ListChatContentRightItem",
+      "description": "聊天内容",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 337,
+      "code": "ListChatContentRightItem({ data: item })",
+      "context": {
+        "startLine": 332,
+        "lines": [
+          "      Toolbar({ title: this.name })",
+          "      List({ space: 20, initialIndex: this.dataList.length, scroller: this.scroller }) {",
+          "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+          "          ListItem() {",
+          "            if (item.self) {",
+          "              ListChatContentRightItem({ data: item })",
+          "            } else {",
+          "              ListChatContentLeftItem({ data: item })",
+          "            }",
+          "          }",
+          "        })"
+        ]
+      }
+    },
+    "ui:dab7c4079613": {
+      "id": "ui:dab7c4079613",
+      "category": "Component",
+      "name": "ListChatContentLeftItem",
+      "description": "左侧消息气泡",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 339,
+      "code": "ListChatContentLeftItem({ data: item })",
+      "context": {
+        "startLine": 334,
+        "lines": [
+          "        ForEach(this.dataList, (item: ChatContentItemData) => {",
+          "          ListItem() {",
+          "            if (item.self) {",
+          "              ListChatContentRightItem({ data: item })",
+          "            } else {",
+          "              ListChatContentLeftItem({ data: item })",
+          "            }",
+          "          }",
+          "        })",
+          "        ListItem() {",
+          "          Row().height(px2vp(20))"
+        ]
+      }
+    },
+    "ui:1450354868e2": {
+      "id": "ui:1450354868e2",
+      "category": "Button",
+      "name": "Image",
+      "description": "语音输入",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 355,
+      "code": "Image($r(\"app.media.ic_use_voice\"))",
+      "context": {
+        "startLine": 350,
+        "lines": [
+          "      .layoutWeight(1)",
+          "",
+          "      Row() {",
+          "",
+          "        if (this.inputType == WXInputType.keyboard) {",
+          "          Image($r(\"app.media.ic_use_voice\"))",
+          "            .width(33)",
+          "            .height(33)",
+          "            .borderRadius(4)",
+          "            .margin({ left: 15, right: 15 })",
+          "            .objectFit(ImageFit.Cover)"
+        ]
+      }
+    },
+    "ui:084b1b50db6b": {
+      "id": "ui:084b1b50db6b",
+      "category": "Input",
+      "name": "TextArea",
+      "description": "消息输入框",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 370,
+      "code": "TextArea({ text: $$this.chatText, placeholder: '', controller: this.controller })",
+      "context": {
+        "startLine": 365,
+        "lines": [
+          "              }",
+          "              this.inputType = WXInputType.voice",
+          "              this.showFuncBarWithAnim(false)",
+          "            })",
+          "",
+          "          TextArea({ text: $$this.chatText, placeholder: '', controller: this.controller })",
+          "            .placeholderFont({ size: 20, weight: 400 })",
+          "            .caretColor(Color.Green)",
+          "            .placeholderColor(Color.Grey)",
+          "            .layoutWeight(1)",
+          "            .padding({ left: 8, right: 8 })"
+        ]
+      }
+    },
+    "ui:01169d614f5b": {
+      "id": "ui:01169d614f5b",
+      "category": "Button",
+      "name": "Image",
+      "description": "切换键盘",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 393,
+      "code": "Image($r(\"app.media.ic_use_keyboard\"))",
+      "context": {
+        "startLine": 388,
+        "lines": [
+          "            })",
+          "          // .onSubmit(() => {",
+          "          //   prompt.showToast({ message: this.chatText })",
+          "          // })",
+          "        } else {",
+          "          Image($r(\"app.media.ic_use_keyboard\"))",
+          "            .width(33)",
+          "            .height(33)",
+          "            .borderRadius(4)",
+          "            .margin({ left: 15, right: 15 })",
+          "            .objectFit(ImageFit.Cover)"
+        ]
+      }
+    },
+    "ui:62f2e8fe217b": {
+      "id": "ui:62f2e8fe217b",
+      "category": "Button",
+      "name": "Button",
+      "description": "按住说话",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 403,
+      "code": "Button(\"按住 说话\")",
+      "context": {
+        "startLine": 398,
+        "lines": [
+          "            .objectFit(ImageFit.Cover)",
+          "            .onClick(() => {",
+          "              this.inputType = WXInputType.keyboard",
+          "            })",
+          "",
+          "          Button(\"按住 说话\")",
+          "            .fontColor(Color.Black)",
+          "            .layoutWeight(1)",
+          "            .type(ButtonType.Normal)",
+          "            .borderRadius(8)",
+          "            .backgroundColor(Color.White)"
+        ]
+      }
+    },
+    "ui:c074c0a7e076": {
+      "id": "ui:c074c0a7e076",
+      "category": "Button",
+      "name": "Image",
+      "description": "表情面板",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 416,
+      "code": "Image($r(\"app.media.ic_emoji_pack\"))",
+      "context": {
+        "startLine": 411,
+        "lines": [
+          "              { modalTransition: ModalTransition.NONE })",
+          "            .onTouch(this.onPressTalk)",
+          "        }",
+          "",
+          "",
+          "        Image($r(\"app.media.ic_emoji_pack\"))",
+          "          .width(33)",
+          "          .height(33)",
+          "          .borderRadius(4)",
+          "          .margin({ left: 15, right: 5 })",
+          "          .objectFit(ImageFit.Cover)"
+        ]
+      }
+    },
+    "ui:8aa6b0d25986": {
+      "id": "ui:8aa6b0d25986",
+      "category": "Button",
+      "name": "Text",
+      "description": "发送",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 425,
+      "code": "Text(\"发送\")",
+      "context": {
+        "startLine": 420,
+        "lines": [
+          "          .margin({ left: 15, right: 5 })",
+          "          .objectFit(ImageFit.Cover)",
+          "          .onClick(unDevTip)",
+          "",
+          "",
+          "        Text(\"发送\")",
+          "          .fontColor(Color.White)",
+          "          .width(65)",
+          "          .textAlign(TextAlign.Center)",
+          "          .height(36)",
+          "          .backgroundColor(\"#58BE6A\")"
+        ]
+      }
+    },
+    "ui:71f507ac8c8b": {
+      "id": "ui:71f507ac8c8b",
+      "category": "Button",
+      "name": "Image",
+      "description": "添加",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 439,
+      "code": "Image($r(\"app.media.ic_add\"))",
+      "context": {
+        "startLine": 434,
+        "lines": [
+          "          .margin({ left: 10, right: 10 })",
+          "          .onClick(() => {",
+          "            this.sendTextMsg()",
+          "          })",
+          "",
+          "        Image($r(\"app.media.ic_add\"))",
+          "          .width(33)",
+          "          .height(33)",
+          "          .borderRadius(4)",
+          "          .visibility(this.chatText.length == 0 ? Visibility.Visible : Visibility.None)",
+          "          .margin({ left: 15, right: 8 })"
+        ]
+      }
+    },
+    "ui:113456260a02": {
+      "id": "ui:113456260a02",
+      "category": "Component",
+      "name": "ChatFunctionBar",
+      "description": "聊天功能栏",
+      "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/chat/ChatPage.ets",
+      "line": 464,
+      "code": "ChatFunctionBar()",
+      "context": {
+        "startLine": 459,
+        "lines": [
+          "        .vertical(false)",
+          "        .color(\"#f0f0f0\")",
+          "        .strokeWidth(1)",
+          "        .lineCap(LineCapStyle.Round)",
+          "",
+          "      ChatFunctionBar()",
+          "        .height(this.funcBarHeight)",
+          "",
+          "    }",
+          "    .width(\"100%\")",
+          "    .height(\"100%\")"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:8bf8691ff08c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:a917fb9e46db",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:58b8cc2ac15d",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:722b3db33609",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:dab7c4079613",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:1450354868e2",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:084b1b50db6b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:01169d614f5b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:62f2e8fe217b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:c074c0a7e076",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:8aa6b0d25986",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:71f507ac8c8b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:c8043438075d",
+      "to": "ui:113456260a02",
+      "kind": "contains"
+    }
+  ]
+}

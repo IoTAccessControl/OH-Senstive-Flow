@@ -1,0 +1,366 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p1 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets:23 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 2,
+      "nodes": 11,
+      "edges": 9,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "CategoryDetailPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+        "structName": "CategoryDetailPage",
+        "line": 16,
+        "description": "分类详情页"
+      }
+    },
+    "feature": {
+      "featureId": "src_CategoryDetailPage_aboutToAppear_17_15495255",
+      "kind": "source",
+      "title": "分类详情页进入时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets",
+          "line": 17,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  @State statusBarHeight: number = 0",
+              "  private titleAlignment: TextAlign = TextAlign.Center",
+              "  private backButton: boolean = true",
+              "  private onBackClick?: () => void",
+              "",
+              "  aboutToAppear() {",
+              "    this.setSystemStatusBar()",
+              "  }",
+              "",
+              "  setSystemStatusBar() {",
+              "    let context = getContext(this)"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets",
+          "line": 23,
+          "code": "window.getLastWindow(context, (error, data) => {",
+          "description": "Get the final show window.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "    this.setSystemStatusBar()",
+              "  }",
+              "",
+              "  setSystemStatusBar() {",
+              "    let context = getContext(this)",
+              "    window.getLastWindow(context, (error, data) => {",
+              "      //1、设置系统状态栏",
+              "      let avoidArea = data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)",
+              "      //这里为什么要自己设置一个高度？因为系统返回的高度太高了，并不能正确的返回系统状态栏的高度，自己二次设置一个接近的值",
+              "      avoidArea.topRect.height = 90",
+              "      this.statusBarHeight = avoidArea.topRect.height"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p1 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets:23 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets",
+          "line": 17,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，组件即将显示时触发数据流开始",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  @State statusBarHeight: number = 0",
+              "  private titleAlignment: TextAlign = TextAlign.Center",
+              "  private backButton: boolean = true",
+              "  private onBackClick?: () => void",
+              "",
+              "  aboutToAppear() {",
+              "    this.setSystemStatusBar()",
+              "  }",
+              "",
+              "  setSystemStatusBar() {",
+              "    let context = getContext(this)"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets",
+          "line": 18,
+          "code": "this.setSystemStatusBar()",
+          "description": "调用 setSystemStatusBar 方法，启动获取系统窗口信息的逻辑",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  private titleAlignment: TextAlign = TextAlign.Center",
+              "  private backButton: boolean = true",
+              "  private onBackClick?: () => void",
+              "",
+              "  aboutToAppear() {",
+              "    this.setSystemStatusBar()",
+              "  }",
+              "",
+              "  setSystemStatusBar() {",
+              "    let context = getContext(this)",
+              "    window.getLastWindow(context, (error, data) => {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets",
+          "line": 22,
+          "code": "let context = getContext(this)",
+          "description": "获取当前组件的上下文对象 (context)，用于后续窗口 API 调用",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  aboutToAppear() {",
+              "    this.setSystemStatusBar()",
+              "  }",
+              "",
+              "  setSystemStatusBar() {",
+              "    let context = getContext(this)",
+              "    window.getLastWindow(context, (error, data) => {",
+              "      //1、设置系统状态栏",
+              "      let avoidArea = data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)",
+              "      //这里为什么要自己设置一个高度？因为系统返回的高度太高了，并不能正确的返回系统状态栏的高度，自己二次设置一个接近的值",
+              "      avoidArea.topRect.height = 90"
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets",
+          "line": 23,
+          "code": "window.getLastWindow(context, (error, data) => {",
+          "description": "异步调用 window.getLastWindow 获取当前应用窗口实例，这是获取屏幕区域数据的源头",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "    this.setSystemStatusBar()",
+              "  }",
+              "",
+              "  setSystemStatusBar() {",
+              "    let context = getContext(this)",
+              "    window.getLastWindow(context, (error, data) => {",
+              "      //1、设置系统状态栏",
+              "      let avoidArea = data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)",
+              "      //这里为什么要自己设置一个高度？因为系统返回的高度太高了，并不能正确的返回系统状态栏的高度，自己二次设置一个接近的值",
+              "      avoidArea.topRect.height = 90",
+              "      this.statusBarHeight = avoidArea.topRect.height"
+            ]
+          }
+        },
+        {
+          "id": "p2:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets",
+          "line": 25,
+          "code": "let avoidArea = data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)",
+          "description": "从窗口数据中提取系统避让区域 (AvoidArea)，包含状态栏和导航栏的矩形信息",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "",
+              "  setSystemStatusBar() {",
+              "    let context = getContext(this)",
+              "    window.getLastWindow(context, (error, data) => {",
+              "      //1、设置系统状态栏",
+              "      let avoidArea = data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)",
+              "      //这里为什么要自己设置一个高度？因为系统返回的高度太高了，并不能正确的返回系统状态栏的高度，自己二次设置一个接近的值",
+              "      avoidArea.topRect.height = 90",
+              "      this.statusBarHeight = avoidArea.topRect.height",
+              "      LogUtils.debug(\"顶部状态栏的高度\", `${this.statusBarHeight}`)",
+              "      let bottomHeight = avoidArea.bottomRect.height"
+            ]
+          }
+        },
+        {
+          "id": "p2:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets",
+          "line": 27,
+          "code": "avoidArea.topRect.height = 90",
+          "description": "硬编码修正状态栏高度为 90，覆盖系统返回的实际测量值",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "    let context = getContext(this)",
+              "    window.getLastWindow(context, (error, data) => {",
+              "      //1、设置系统状态栏",
+              "      let avoidArea = data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)",
+              "      //这里为什么要自己设置一个高度？因为系统返回的高度太高了，并不能正确的返回系统状态栏的高度，自己二次设置一个接近的值",
+              "      avoidArea.topRect.height = 90",
+              "      this.statusBarHeight = avoidArea.topRect.height",
+              "      LogUtils.debug(\"顶部状态栏的高度\", `${this.statusBarHeight}`)",
+              "      let bottomHeight = avoidArea.bottomRect.height",
+              "      LogUtils.debug(\"底部系统导航栏的高度\", `${bottomHeight}`)",
+              "      //2、设置系统状态栏颜色---该API废弃了，统一返回801，目前没找到好的方法设置状态栏文字的颜色，放弃了。。。。。。"
+            ]
+          }
+        },
+        {
+          "id": "p2:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets",
+          "line": 28,
+          "code": "this.statusBarHeight = avoidArea.topRect.height",
+          "description": "将处理后的状态栏高度赋值给组件状态变量 statusBarHeight，完成数据收集",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    window.getLastWindow(context, (error, data) => {",
+              "      //1、设置系统状态栏",
+              "      let avoidArea = data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)",
+              "      //这里为什么要自己设置一个高度？因为系统返回的高度太高了，并不能正确的返回系统状态栏的高度，自己二次设置一个接近的值",
+              "      avoidArea.topRect.height = 90",
+              "      this.statusBarHeight = avoidArea.topRect.height",
+              "      LogUtils.debug(\"顶部状态栏的高度\", `${this.statusBarHeight}`)",
+              "      let bottomHeight = avoidArea.bottomRect.height",
+              "      LogUtils.debug(\"底部系统导航栏的高度\", `${bottomHeight}`)",
+              "      //2、设置系统状态栏颜色---该API废弃了，统一返回801，目前没找到好的方法设置状态栏文字的颜色，放弃了。。。。。。",
+              "      const systemBarProperties: window.SystemBarProperties = {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CommonTopBar.ets",
+          "line": 29,
+          "code": "LogUtils.debug(\"顶部状态栏的高度\", `${this.statusBarHeight}`)",
+          "description": "调用 LogUtils.debug 将状态栏高度作为敏感数据传入日志工具类",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      //1、设置系统状态栏",
+              "      let avoidArea = data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)",
+              "      //这里为什么要自己设置一个高度？因为系统返回的高度太高了，并不能正确的返回系统状态栏的高度，自己二次设置一个接近的值",
+              "      avoidArea.topRect.height = 90",
+              "      this.statusBarHeight = avoidArea.topRect.height",
+              "      LogUtils.debug(\"顶部状态栏的高度\", `${this.statusBarHeight}`)",
+              "      let bottomHeight = avoidArea.bottomRect.height",
+              "      LogUtils.debug(\"底部系统导航栏的高度\", `${bottomHeight}`)",
+              "      //2、设置系统状态栏颜色---该API废弃了，统一返回801，目前没找到好的方法设置状态栏文字的颜色，放弃了。。。。。。",
+              "      const systemBarProperties: window.SystemBarProperties = {",
+              "        //顶部状态栏颜色"
+            ]
+          }
+        },
+        {
+          "id": "p2:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "最终 Sink 节点：调用 hilog.debug 接口将格式化后的数据输出到系统日志缓冲区",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        },
+        {
+          "from": "p2:n4",
+          "to": "p2:n5"
+        },
+        {
+          "from": "p2:n5",
+          "to": "p2:n6"
+        },
+        {
+          "from": "p2:n6",
+          "to": "p2:n7"
+        },
+        {
+          "from": "p2:n7",
+          "to": "p2:n8"
+        },
+        {
+          "from": "p2:n8",
+          "to": "p2:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "系统状态栏高度 (System Status Bar Height)",
+          "底部导航栏高度 (Bottom Navigation Bar Height)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件 aboutToAppear 生命周期触发)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出，未检测到网络发送)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (仅内存变量赋值与日志打印)",
+          "无加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.WINDOW_MANAGER (隐含，调用 window.getLastWindow 需要窗口管理权限)"
+        ]
+      }
+    }
+  ]
+}

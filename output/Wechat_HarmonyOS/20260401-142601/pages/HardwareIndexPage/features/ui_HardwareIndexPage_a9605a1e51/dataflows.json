@@ -1,0 +1,3058 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260401-142601",
+    "generatedAt": "2026-04-01T06:35:15.202Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 8,
+      "nodes": 103,
+      "edges": 95,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "HardwareIndexPage",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+        "structName": "HardwareIndexPage",
+        "line": 14,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_HardwareIndexPage_a9605a1e51",
+      "kind": "ui",
+      "title": "硬件信息页"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 43,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，当页面显示时自动触发，作为数据收集的起始点。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "  // 像素密度（PPI）",
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 44,
+          "code": "this.getDeviceInfo()",
+          "description": "调用 getDeviceInfo() 方法，启动设备硬件信息的获取流程。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 48,
+          "code": "getDeviceInfo() {",
+          "description": "定义 getDeviceInfo 函数体开始，准备执行一系列设备信息读取操作。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 50,
+          "code": "this.marketName = deviceInfo.marketName",
+          "description": "从 deviceInfo 模块读取设备市场名称 (marketName) 并赋值给本地状态变量。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()"
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 51,
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "description": "从 deviceInfo 模块读取操作系统全称 (osFullName) 并赋值给本地状态变量。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据"
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 52,
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "description": "从 deviceInfo 模块读取 SDK API 版本号并格式化后赋值给本地状态变量。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()"
+            ]
+          }
+        },
+        {
+          "id": "p1:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 53,
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "description": "从 deviceInfo 模块读取设备类型 (deviceType) 并赋值给本地状态变量。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取"
+            ]
+          }
+        },
+        {
+          "id": "p1:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 55,
+          "code": "this.uptime = process.uptime()",
+          "description": "调用 process.uptime() 获取系统自启动以来的运行时间（毫秒），作为隐私相关的时间指纹数据存入本地状态变量，此为当前数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        },
+        {
+          "from": "p1:n6",
+          "to": "p1:n7"
+        },
+        {
+          "from": "p1:n7",
+          "to": "p1:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备市场名称 (marketName)",
+          "操作系统全称 (osFullName)",
+          "SDK API 版本 (sdkApiVersion)",
+          "设备类型 (deviceType)",
+          "系统运行时间 (uptime)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示时 onPageShow)"
+        ],
+        "cloudUpload": [
+          "未在当前代码片段中发现网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (@State 状态变量)",
+          "未观察到加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 43,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，当页面显示时自动触发，作为数据收集的起始点。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "  // 像素密度（PPI）",
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 44,
+          "code": "this.getDeviceInfo()",
+          "description": "调用 getDeviceInfo 方法，启动设备硬件及网络信息的收集流程。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息"
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 48,
+          "code": "getDeviceInfo() {",
+          "description": "定义 getDeviceInfo 函数体开始，准备执行一系列设备信息获取操作。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType"
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 50,
+          "code": "this.marketName = deviceInfo.marketName",
+          "description": "从 deviceInfo 模块读取设备市场名称 (marketName) 并赋值给本地状态变量。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()"
+            ]
+          }
+        },
+        {
+          "id": "p2:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 51,
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "description": "从 deviceInfo 模块读取操作系统全称 (osFullName) 并赋值给本地状态变量。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据"
+            ]
+          }
+        },
+        {
+          "id": "p2:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 52,
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "description": "从 deviceInfo 模块读取 SDK API 版本号并转换为字符串存储。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()"
+            ]
+          }
+        },
+        {
+          "id": "p2:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 53,
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "description": "从 deviceInfo 模块读取设备类型 (deviceType) 并存储。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取"
+            ]
+          }
+        },
+        {
+          "id": "p2:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 55,
+          "code": "this.uptime = process.uptime()",
+          "description": "调用 process.uptime() 获取系统自启动以来的运行时间（毫秒级精度）。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态"
+            ]
+          }
+        },
+        {
+          "id": "p2:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 57,
+          "code": "this.getScreenInfo()",
+          "description": "调用 getScreenInfo 方法，进一步收集屏幕宽度、刷新率和像素密度等显示参数。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()"
+            ]
+          }
+        },
+        {
+          "id": "p2:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 59,
+          "code": "this.getSenorIdArr()",
+          "description": "调用 getSenorIdArr 方法，收集设备支持的传感器 ID 列表。",
+          "context": {
+            "startLine": 54,
+            "lines": [
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 62,
+          "code": "const hasDefaultNet = connection.hasDefaultNetSync()",
+          "description": "调用 connection.hasDefaultNetSync() 同步检查设备是否激活了默认数据网络，此为当前数据流的终点（Sink）。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        },
+        {
+          "from": "p2:n4",
+          "to": "p2:n5"
+        },
+        {
+          "from": "p2:n5",
+          "to": "p2:n6"
+        },
+        {
+          "from": "p2:n6",
+          "to": "p2:n7"
+        },
+        {
+          "from": "p2:n7",
+          "to": "p2:n8"
+        },
+        {
+          "from": "p2:n8",
+          "to": "p2:n9"
+        },
+        {
+          "from": "p2:n9",
+          "to": "p2:n10"
+        },
+        {
+          "from": "p2:n10",
+          "to": "p2:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备市场名称 (marketName)",
+          "操作系统全称 (osFullName)",
+          "SDK API 版本 (sdkApiVersion)",
+          "设备类型 (deviceType)",
+          "系统运行时间 (uptime)",
+          "屏幕信息 (displayWidth, displayRefreshRate, displayDensityDPI)",
+          "传感器 ID 列表 (supportSensorIds)",
+          "默认网络连接状态 (hasDefaultNet)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示时 onPageShow)"
+        ],
+        "cloudUpload": [
+          "当前片段未检测到网络上传行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (@State 装饰的组件状态变量)",
+          "未检测到加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.ACCESS_NETWORK_STATE (推断：用于检查网络连接状态 hasDefaultNetSync)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 43,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，当页面显示时自动触发，开始执行数据采集流程。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "  // 像素密度（PPI）",
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 44,
+          "code": "this.getDeviceInfo()",
+          "description": "调用 getDeviceInfo 方法，作为获取设备硬件及网络信息的起始点。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 48,
+          "code": "getDeviceInfo() {",
+          "description": "定义 getDeviceInfo 函数，准备收集设备标识、系统版本及网络状态等隐私数据。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 50,
+          "code": "this.marketName = deviceInfo.marketName",
+          "description": "读取 deviceInfo.marketName，收集设备市场名称（设备标识相关）。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()"
+            ]
+          }
+        },
+        {
+          "id": "p3:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 51,
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "description": "读取 deviceInfo.osFullName，收集操作系统全称（设备指纹相关）。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据"
+            ]
+          }
+        },
+        {
+          "id": "p3:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 52,
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "description": "读取 deviceInfo.sdkApiVersion，收集 SDK API 版本号。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()"
+            ]
+          }
+        },
+        {
+          "id": "p3:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 53,
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "description": "读取 deviceInfo.deviceType，收集设备类型（如 phone, tablet 等）。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取"
+            ]
+          }
+        },
+        {
+          "id": "p3:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 55,
+          "code": "this.uptime = process.uptime()",
+          "description": "调用 process.uptime()，收集系统自启动以来的运行时间毫秒数。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态"
+            ]
+          }
+        },
+        {
+          "id": "p3:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 57,
+          "code": "this.getScreenInfo()",
+          "description": "调用 getScreenInfo 方法，进一步收集屏幕宽度、刷新率及像素密度等显示特征。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()"
+            ]
+          }
+        },
+        {
+          "id": "p3:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 59,
+          "code": "this.getSenorIdArr()",
+          "description": "调用 getSenorIdArr 方法，收集设备支持的传感器 ID 列表。",
+          "context": {
+            "startLine": 54,
+            "lines": [
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 62,
+          "code": "const hasDefaultNet = connection.hasDefaultNetSync()",
+          "description": "调用 connection.hasDefaultNetSync()，检查是否存在默认激活的网络连接。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n12",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 64,
+          "code": "if (!hasDefaultNet) {",
+          "description": "判断默认网络是否存在，若无网络则终止后续网络信息采集流程。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {",
+              "      this.getConnectionNetBearType() //  获取网络类型",
+              "      this.getConnectionProperties() // IP地址"
+            ]
+          }
+        },
+        {
+          "id": "p3:n13",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 68,
+          "code": "this.getConnectionNetBearType() //  获取网络类型",
+          "description": "在确认有网络后，调用 getConnectionNetBearType 方法以获取具体的网络承载类型。",
+          "context": {
+            "startLine": 63,
+            "lines": [
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {",
+              "      this.getConnectionNetBearType() //  获取网络类型",
+              "      this.getConnectionProperties() // IP地址",
+              "    }",
+              "  }",
+              "",
+              "  // 获取网络类型"
+            ]
+          }
+        },
+        {
+          "id": "p3:n14",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 74,
+          "code": "getConnectionNetBearType() {",
+          "description": "定义 getConnectionNetBearType 函数，准备执行需要权限的网络信息查询。",
+          "context": {
+            "startLine": 69,
+            "lines": [
+              "      this.getConnectionProperties() // IP地址",
+              "    }",
+              "  }",
+              "",
+              "  // 获取网络类型",
+              "  getConnectionNetBearType() {",
+              "    // 1、获取默认连接的网络，defaultNet",
+              "    const defaultNet = connection.getDefaultNetSync()",
+              "    // 2、获取defaultNet对应的网络的能力信息（网络额能力集）getNetCapabilitySync()",
+              "    const netCapabilities = connection.getNetCapabilitiesSync(defaultNet)",
+              "    // 3、在网络的能力集中获取网络类型NetBearType"
+            ]
+          }
+        },
+        {
+          "id": "p3:n15",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 76,
+          "code": "const defaultNet = connection.getDefaultNetSync()",
+          "description": "【Sink】调用 connection.getDefaultNetSync() 获取默认网络对象，此操作依赖 ohos.permission.GET_NETWORK_INFO 权限，标志着网络隐私数据的实际读取。",
+          "context": {
+            "startLine": 71,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取网络类型",
+              "  getConnectionNetBearType() {",
+              "    // 1、获取默认连接的网络，defaultNet",
+              "    const defaultNet = connection.getDefaultNetSync()",
+              "    // 2、获取defaultNet对应的网络的能力信息（网络额能力集）getNetCapabilitySync()",
+              "    const netCapabilities = connection.getNetCapabilitiesSync(defaultNet)",
+              "    // 3、在网络的能力集中获取网络类型NetBearType",
+              "    if (netCapabilities.bearerTypes.includes(connection.NetBearType.BEARER_WIFI)) {",
+              "      this.netBearType = 'WIFI网络'"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n4",
+          "to": "p3:n5"
+        },
+        {
+          "from": "p3:n5",
+          "to": "p3:n6"
+        },
+        {
+          "from": "p3:n6",
+          "to": "p3:n7"
+        },
+        {
+          "from": "p3:n7",
+          "to": "p3:n8"
+        },
+        {
+          "from": "p3:n8",
+          "to": "p3:n9"
+        },
+        {
+          "from": "p3:n9",
+          "to": "p3:n10"
+        },
+        {
+          "from": "p3:n10",
+          "to": "p3:n11"
+        },
+        {
+          "from": "p3:n11",
+          "to": "p3:n12"
+        },
+        {
+          "from": "p3:n12",
+          "to": "p3:n13"
+        },
+        {
+          "from": "p3:n13",
+          "to": "p3:n14"
+        },
+        {
+          "from": "p3:n14",
+          "to": "p3:n15"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备市场名称 (marketName)",
+          "操作系统全称 (osFullName)",
+          "SDK API 版本 (sdkApiVersion)",
+          "设备类型 (deviceType)",
+          "系统运行时间 (uptime)",
+          "屏幕信息 (displayWidth, refreshRate, density)",
+          "传感器 ID 列表 (supportSensorIds)",
+          "默认网络连接状态 (hasDefaultNet)",
+          "默认网络对象 (defaultNet)",
+          "网络承载类型 (netBearType)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示时 onPageShow)"
+        ],
+        "cloudUpload": [
+          "当前片段未检测到网络发送行为，数据仅存储于组件状态 (@State)"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (ArkTS @State 响应式变量)",
+          "未检测到加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.GET_NETWORK_INFO (调用 getDefaultNetSync 必需)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 43,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，当页面显示时触发，开始执行数据收集流程。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "  // 像素密度（PPI）",
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 44,
+          "code": "this.getDeviceInfo()",
+          "description": "调用 getDeviceInfo() 方法，启动设备硬件及网络信息的获取逻辑。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 48,
+          "code": "getDeviceInfo() {",
+          "description": "进入 getDeviceInfo 函数定义，准备收集设备标识、系统版本及网络状态。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType"
+            ]
+          }
+        },
+        {
+          "id": "p4:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 50,
+          "code": "this.marketName = deviceInfo.marketName",
+          "description": "读取 deviceInfo.marketName，收集设备市场名称（设备标识类数据）。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()"
+            ]
+          }
+        },
+        {
+          "id": "p4:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 51,
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "description": "读取 deviceInfo.osFullName，收集操作系统全称（系统环境数据）。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据"
+            ]
+          }
+        },
+        {
+          "id": "p4:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 52,
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "description": "读取 deviceInfo.sdkApiVersion，收集 SDK API 版本号。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()"
+            ]
+          }
+        },
+        {
+          "id": "p4:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 53,
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "description": "读取 deviceInfo.deviceType，收集设备类型（如 phone, tablet 等）。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取"
+            ]
+          }
+        },
+        {
+          "id": "p4:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 55,
+          "code": "this.uptime = process.uptime()",
+          "description": "调用 process.uptime()，收集系统自启动以来的运行时间（毫秒）。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态"
+            ]
+          }
+        },
+        {
+          "id": "p4:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 57,
+          "code": "this.getScreenInfo()",
+          "description": "调用 getScreenInfo()，进一步收集屏幕宽度、刷新率及像素密度等显示参数。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()"
+            ]
+          }
+        },
+        {
+          "id": "p4:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 59,
+          "code": "this.getSenorIdArr()",
+          "description": "调用 getSenorIdArr()，收集设备支持的传感器 ID 列表。",
+          "context": {
+            "startLine": 54,
+            "lines": [
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 62,
+          "code": "const hasDefaultNet = connection.hasDefaultNetSync()",
+          "description": "调用 connection.hasDefaultNetSync()，检查是否存在默认网络连接，作为后续网络信息采集的前置判断。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n12",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 64,
+          "code": "if (!hasDefaultNet) {",
+          "description": "条件判断节点：若无默认网络则返回，若有则继续执行网络类型获取逻辑。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {",
+              "      this.getConnectionNetBearType() //  获取网络类型",
+              "      this.getConnectionProperties() // IP地址"
+            ]
+          }
+        },
+        {
+          "id": "p4:n13",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 68,
+          "code": "this.getConnectionNetBearType() //  获取网络类型",
+          "description": "调用 getConnectionNetBearType()，专门用于获取当前网络的具体承载类型（如 WiFi 或蜂窝数据）。",
+          "context": {
+            "startLine": 63,
+            "lines": [
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {",
+              "      this.getConnectionNetBearType() //  获取网络类型",
+              "      this.getConnectionProperties() // IP地址",
+              "    }",
+              "  }",
+              "",
+              "  // 获取网络类型"
+            ]
+          }
+        },
+        {
+          "id": "p4:n14",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 74,
+          "code": "getConnectionNetBearType() {",
+          "description": "进入 getConnectionNetBearType 函数定义，开始执行网络能力查询逻辑。",
+          "context": {
+            "startLine": 69,
+            "lines": [
+              "      this.getConnectionProperties() // IP地址",
+              "    }",
+              "  }",
+              "",
+              "  // 获取网络类型",
+              "  getConnectionNetBearType() {",
+              "    // 1、获取默认连接的网络，defaultNet",
+              "    const defaultNet = connection.getDefaultNetSync()",
+              "    // 2、获取defaultNet对应的网络的能力信息（网络额能力集）getNetCapabilitySync()",
+              "    const netCapabilities = connection.getNetCapabilitiesSync(defaultNet)",
+              "    // 3、在网络的能力集中获取网络类型NetBearType"
+            ]
+          }
+        },
+        {
+          "id": "p4:n15",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 76,
+          "code": "const defaultNet = connection.getDefaultNetSync()",
+          "description": "调用 connection.getDefaultNetSync()，获取当前的默认网络连接对象句柄。",
+          "context": {
+            "startLine": 71,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取网络类型",
+              "  getConnectionNetBearType() {",
+              "    // 1、获取默认连接的网络，defaultNet",
+              "    const defaultNet = connection.getDefaultNetSync()",
+              "    // 2、获取defaultNet对应的网络的能力信息（网络额能力集）getNetCapabilitySync()",
+              "    const netCapabilities = connection.getNetCapabilitiesSync(defaultNet)",
+              "    // 3、在网络的能力集中获取网络类型NetBearType",
+              "    if (netCapabilities.bearerTypes.includes(connection.NetBearType.BEARER_WIFI)) {",
+              "      this.netBearType = 'WIFI网络'"
+            ]
+          }
+        },
+        {
+          "id": "p4:n16",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 78,
+          "code": "const netCapabilities = connection.getNetCapabilitiesSync(defaultNet)",
+          "description": "【Sink】调用 connection.getNetCapabilitiesSync(defaultNet)，获取网络能力集（包含承载类型），此操作需要 ohos.permission.GET_NETWORK_INFO 权限。",
+          "context": {
+            "startLine": 73,
+            "lines": [
+              "  // 获取网络类型",
+              "  getConnectionNetBearType() {",
+              "    // 1、获取默认连接的网络，defaultNet",
+              "    const defaultNet = connection.getDefaultNetSync()",
+              "    // 2、获取defaultNet对应的网络的能力信息（网络额能力集）getNetCapabilitySync()",
+              "    const netCapabilities = connection.getNetCapabilitiesSync(defaultNet)",
+              "    // 3、在网络的能力集中获取网络类型NetBearType",
+              "    if (netCapabilities.bearerTypes.includes(connection.NetBearType.BEARER_WIFI)) {",
+              "      this.netBearType = 'WIFI网络'",
+              "    } else if (netCapabilities.bearerTypes.includes(connection.NetBearType.BEARER_CELLULAR)) {",
+              "      this.netBearType = '蜂窝网络'"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        },
+        {
+          "from": "p4:n3",
+          "to": "p4:n4"
+        },
+        {
+          "from": "p4:n4",
+          "to": "p4:n5"
+        },
+        {
+          "from": "p4:n5",
+          "to": "p4:n6"
+        },
+        {
+          "from": "p4:n6",
+          "to": "p4:n7"
+        },
+        {
+          "from": "p4:n7",
+          "to": "p4:n8"
+        },
+        {
+          "from": "p4:n8",
+          "to": "p4:n9"
+        },
+        {
+          "from": "p4:n9",
+          "to": "p4:n10"
+        },
+        {
+          "from": "p4:n10",
+          "to": "p4:n11"
+        },
+        {
+          "from": "p4:n11",
+          "to": "p4:n12"
+        },
+        {
+          "from": "p4:n12",
+          "to": "p4:n13"
+        },
+        {
+          "from": "p4:n13",
+          "to": "p4:n14"
+        },
+        {
+          "from": "p4:n14",
+          "to": "p4:n15"
+        },
+        {
+          "from": "p4:n15",
+          "to": "p4:n16"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备市场名称 (marketName)",
+          "操作系统全称 (osFullName)",
+          "SDK API 版本 (sdkApiVersion)",
+          "设备类型 (deviceType)",
+          "系统运行时间 (uptime)",
+          "屏幕信息 (displayWidth, refreshRate, density)",
+          "传感器 ID 列表 (supportSensorIds)",
+          "默认网络连接对象 (defaultNet)",
+          "网络承载类型 (NetBearType: WIFI/Cellular/Ethernet)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示 onPageShow 时执行一次)"
+        ],
+        "cloudUpload": [
+          "当前片段未检测到网络发送或上传行为 (仅本地读取并赋值给状态变量)"
+        ],
+        "storageAndEncryption": [
+          "数据存储于组件状态 (@State)，位于内存中",
+          "未检测到显式的本地文件存储操作",
+          "未检测到加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.GET_NETWORK_INFO (调用 getNetCapabilitiesSync 必需)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 43,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，当页面显示时自动触发，启动设备信息采集流程。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "  // 像素密度（PPI）",
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 44,
+          "code": "this.getDeviceInfo()",
+          "description": "调用 getDeviceInfo 方法，作为数据采集的总调度入口。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息"
+            ]
+          }
+        },
+        {
+          "id": "p5:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 48,
+          "code": "getDeviceInfo() {",
+          "description": "定义 getDeviceInfo 函数开始执行，准备收集各类硬件及系统信息。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType"
+            ]
+          }
+        },
+        {
+          "id": "p5:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 50,
+          "code": "this.marketName = deviceInfo.marketName",
+          "description": "读取 deviceInfo.marketName 获取设备市场名称，并赋值给本地状态变量。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()"
+            ]
+          }
+        },
+        {
+          "id": "p5:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 51,
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "description": "读取 deviceInfo.osFullName 获取操作系统全称，并赋值给本地状态变量。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据"
+            ]
+          }
+        },
+        {
+          "id": "p5:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 52,
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "description": "读取 deviceInfo.sdkApiVersion 获取 SDK 版本，并赋值给本地状态变量。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()"
+            ]
+          }
+        },
+        {
+          "id": "p5:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 53,
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "description": "读取 deviceInfo.deviceType 获取设备类型，并赋值给本地状态变量。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取"
+            ]
+          }
+        },
+        {
+          "id": "p5:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 55,
+          "code": "this.uptime = process.uptime()",
+          "description": "调用 process.uptime() 获取系统启动以来的运行时间（毫秒），并赋值给本地状态变量。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态"
+            ]
+          }
+        },
+        {
+          "id": "p5:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 57,
+          "code": "this.getScreenInfo()",
+          "description": "调用 getScreenInfo 方法（内部实现未展示）以获取屏幕宽度、刷新率和像素密度等显示参数。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()"
+            ]
+          }
+        },
+        {
+          "id": "p5:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 59,
+          "code": "this.getSenorIdArr()",
+          "description": "调用 getSenorIdArr 方法（内部实现未展示）以获取支持的传感器 ID 列表。",
+          "context": {
+            "startLine": 54,
+            "lines": [
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 62,
+          "code": "const hasDefaultNet = connection.hasDefaultNetSync()",
+          "description": "调用 connection.hasDefaultNetSync() 检查是否存在默认激活的网络连接，结果存入 hasDefaultNet。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n12",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 64,
+          "code": "if (!hasDefaultNet) {",
+          "description": "判断 hasDefaultNet 是否为假，若无网络则提前返回，阻止后续网络信息采集。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {",
+              "      this.getConnectionNetBearType() //  获取网络类型",
+              "      this.getConnectionProperties() // IP地址"
+            ]
+          }
+        },
+        {
+          "id": "p5:n13",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 69,
+          "code": "this.getConnectionProperties() // IP地址",
+          "description": "在网络存在的情况下，调用 getConnectionProperties 方法以获取详细的网络链路属性（如 IP 地址）。",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {",
+              "      this.getConnectionNetBearType() //  获取网络类型",
+              "      this.getConnectionProperties() // IP地址",
+              "    }",
+              "  }",
+              "",
+              "  // 获取网络类型",
+              "  getConnectionNetBearType() {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n14",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 93,
+          "code": "const defaultNet = connection.getDefaultNetSync()",
+          "description": "[Sink] 调用 connection.getDefaultNetSync() 获取默认激活的数据网络对象，此操作需要 ohos.permission.GET_NETWORK_INFO 权限，用于后续提取 IP 地址。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取链路信息--进行获取IP地址",
+              "  getConnectionProperties() {",
+              "    // 获取默认网络",
+              "    const defaultNet = connection.getDefaultNetSync()",
+              "    // 获取默认网络的链路信息",
+              "    const connectionProperties = connection.getConnectionPropertiesSync(defaultNet)",
+              "    // 提取链路信息",
+              "    const linkAddress = connectionProperties.linkAddresses[0]",
+              "    if (linkAddress) {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        },
+        {
+          "from": "p5:n2",
+          "to": "p5:n3"
+        },
+        {
+          "from": "p5:n3",
+          "to": "p5:n4"
+        },
+        {
+          "from": "p5:n4",
+          "to": "p5:n5"
+        },
+        {
+          "from": "p5:n5",
+          "to": "p5:n6"
+        },
+        {
+          "from": "p5:n6",
+          "to": "p5:n7"
+        },
+        {
+          "from": "p5:n7",
+          "to": "p5:n8"
+        },
+        {
+          "from": "p5:n8",
+          "to": "p5:n9"
+        },
+        {
+          "from": "p5:n9",
+          "to": "p5:n10"
+        },
+        {
+          "from": "p5:n10",
+          "to": "p5:n11"
+        },
+        {
+          "from": "p5:n11",
+          "to": "p5:n12"
+        },
+        {
+          "from": "p5:n12",
+          "to": "p5:n13"
+        },
+        {
+          "from": "p5:n13",
+          "to": "p5:n14"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备市场名称 (marketName)",
+          "操作系统全称 (osFullName)",
+          "SDK API 版本 (sdkApiVersion)",
+          "设备类型 (deviceType)",
+          "系统运行时间 (uptime)",
+          "屏幕信息 (displayWidth, displayRefreshRate, displayDensityDPI)",
+          "传感器 ID 列表 (supportSensorIds)",
+          "默认网络连接对象 (defaultNet)",
+          "IP 地址 (IPAddress)",
+          "子网掩码"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示时 onPageShow)"
+        ],
+        "cloudUpload": [
+          "未在当前代码片段中发现网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (@State 装饰的组件状态变量)",
+          "未在当前代码片段中发现加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.GET_NETWORK_INFO (调用 getDefaultNetSync 必需)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 43,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，当页面显示时自动触发，开始执行设备信息收集流程。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "  // 像素密度（PPI）",
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 44,
+          "code": "this.getDeviceInfo()",
+          "description": "调用 getDeviceInfo 方法，作为数据收集的总调度入口。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 48,
+          "code": "getDeviceInfo() {",
+          "description": "定义 getDeviceInfo 函数，准备采集设备硬件、系统及网络相关信息。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType"
+            ]
+          }
+        },
+        {
+          "id": "p6:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 50,
+          "code": "this.marketName = deviceInfo.marketName",
+          "description": "读取 deviceInfo.marketName，获取设备市场名称（隐私数据：设备标识相关）。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()"
+            ]
+          }
+        },
+        {
+          "id": "p6:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 51,
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "description": "读取 deviceInfo.osFullName，获取操作系统全称（隐私数据：系统环境信息）。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据"
+            ]
+          }
+        },
+        {
+          "id": "p6:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 52,
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "description": "读取 deviceInfo.sdkApiVersion，获取 SDK API 版本号。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()"
+            ]
+          }
+        },
+        {
+          "id": "p6:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 53,
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "description": "读取 deviceInfo.deviceType，获取设备类型（如 phone, tablet 等）。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取"
+            ]
+          }
+        },
+        {
+          "id": "p6:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 55,
+          "code": "this.uptime = process.uptime()",
+          "description": "调用 process.uptime() 获取系统自启动以来的运行时间毫秒数。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态"
+            ]
+          }
+        },
+        {
+          "id": "p6:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 57,
+          "code": "this.getScreenInfo()",
+          "description": "调用 getScreenInfo 方法（内部实现未展示），用于获取屏幕宽度、刷新率及像素密度。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()"
+            ]
+          }
+        },
+        {
+          "id": "p6:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 59,
+          "code": "this.getSenorIdArr()",
+          "description": "调用 getSenorIdArr 方法（内部实现未展示），用于获取支持的传感器 ID 列表。",
+          "context": {
+            "startLine": 54,
+            "lines": [
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 62,
+          "code": "const hasDefaultNet = connection.hasDefaultNetSync()",
+          "description": "调用 connection.hasDefaultNetSync() 检查是否存在默认网络连接，作为后续网络信息采集的前置判断。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n12",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 64,
+          "code": "if (!hasDefaultNet) {",
+          "description": "判断是否有默认网络，若无则返回，终止后续网络相关数据的采集。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {",
+              "      this.getConnectionNetBearType() //  获取网络类型",
+              "      this.getConnectionProperties() // IP地址"
+            ]
+          }
+        },
+        {
+          "id": "p6:n13",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 69,
+          "code": "this.getConnectionProperties() // IP地址",
+          "description": "在有网络的情况下，调用 getConnectionProperties 方法以获取详细的网络链路属性（如 IP 地址）。",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "    if (!hasDefaultNet) {",
+              "      // this.netWorkType = '无网络'",
+              "      return",
+              "    } else {",
+              "      this.getConnectionNetBearType() //  获取网络类型",
+              "      this.getConnectionProperties() // IP地址",
+              "    }",
+              "  }",
+              "",
+              "  // 获取网络类型",
+              "  getConnectionNetBearType() {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n14",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 91,
+          "code": "getConnectionProperties() {",
+          "description": "定义 getConnectionProperties 函数，专门负责获取当前默认网络的详细链路信息。",
+          "context": {
+            "startLine": 86,
+            "lines": [
+              "      this.netBearType = '以太网网络'",
+              "    }",
+              "  }",
+              "",
+              "  // 获取链路信息--进行获取IP地址",
+              "  getConnectionProperties() {",
+              "    // 获取默认网络",
+              "    const defaultNet = connection.getDefaultNetSync()",
+              "    // 获取默认网络的链路信息",
+              "    const connectionProperties = connection.getConnectionPropertiesSync(defaultNet)",
+              "    // 提取链路信息"
+            ]
+          }
+        },
+        {
+          "id": "p6:n15",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 93,
+          "code": "const defaultNet = connection.getDefaultNetSync()",
+          "description": "调用 connection.getDefaultNetSync() 获取当前的默认网络连接对象，作为查询属性的参数。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取链路信息--进行获取IP地址",
+              "  getConnectionProperties() {",
+              "    // 获取默认网络",
+              "    const defaultNet = connection.getDefaultNetSync()",
+              "    // 获取默认网络的链路信息",
+              "    const connectionProperties = connection.getConnectionPropertiesSync(defaultNet)",
+              "    // 提取链路信息",
+              "    const linkAddress = connectionProperties.linkAddresses[0]",
+              "    if (linkAddress) {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n16",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 95,
+          "code": "const connectionProperties = connection.getConnectionPropertiesSync(defaultNet)",
+          "description": "【Sink】调用 connection.getConnectionPropertiesSync(defaultNet)，同步获取网络连接属性（包含 IP 地址、子网掩码等），此操作需要 ohos.permission.GET_NETWORK_INFO 权限。",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "  // 获取链路信息--进行获取IP地址",
+              "  getConnectionProperties() {",
+              "    // 获取默认网络",
+              "    const defaultNet = connection.getDefaultNetSync()",
+              "    // 获取默认网络的链路信息",
+              "    const connectionProperties = connection.getConnectionPropertiesSync(defaultNet)",
+              "    // 提取链路信息",
+              "    const linkAddress = connectionProperties.linkAddresses[0]",
+              "    if (linkAddress) {",
+              "      // 获取 IP 地址",
+              "      this.IPAddress = linkAddress.address.address"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        },
+        {
+          "from": "p6:n3",
+          "to": "p6:n4"
+        },
+        {
+          "from": "p6:n4",
+          "to": "p6:n5"
+        },
+        {
+          "from": "p6:n5",
+          "to": "p6:n6"
+        },
+        {
+          "from": "p6:n6",
+          "to": "p6:n7"
+        },
+        {
+          "from": "p6:n7",
+          "to": "p6:n8"
+        },
+        {
+          "from": "p6:n8",
+          "to": "p6:n9"
+        },
+        {
+          "from": "p6:n9",
+          "to": "p6:n10"
+        },
+        {
+          "from": "p6:n10",
+          "to": "p6:n11"
+        },
+        {
+          "from": "p6:n11",
+          "to": "p6:n12"
+        },
+        {
+          "from": "p6:n12",
+          "to": "p6:n13"
+        },
+        {
+          "from": "p6:n13",
+          "to": "p6:n14"
+        },
+        {
+          "from": "p6:n14",
+          "to": "p6:n15"
+        },
+        {
+          "from": "p6:n15",
+          "to": "p6:n16"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备市场名称 (marketName)",
+          "操作系统全称 (osFullName)",
+          "SDK API 版本 (sdkApiVersion)",
+          "设备类型 (deviceType)",
+          "系统运行时间 (uptime)",
+          "屏幕宽度 (displayWidth)",
+          "屏幕刷新率 (displayRefreshRate)",
+          "屏幕像素密度 (displayDensityDPI)",
+          "支持的传感器 ID 列表 (supportSensorIds)",
+          "网络承载类型 (netBearType)",
+          "默认网络连接对象 (defaultNet)",
+          "IP 地址 (IPAddress)",
+          "子网掩码 (subnetMask)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示时 onPageShow)"
+        ],
+        "cloudUpload": [
+          "未在当前代码片段中发现网络上传行为"
+        ],
+        "storageAndEncryption": [
+          "数据存储在组件状态 (@State) 中，用于 UI 渲染",
+          "未发现本地文件存储行为",
+          "未发现加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.GET_NETWORK_INFO (获取网络连接属性所需)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 43,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，当页面显示时自动触发，开始执行数据采集流程。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "  // 像素密度（PPI）",
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 44,
+          "code": "this.getDeviceInfo()",
+          "description": "调用 getDeviceInfo 方法，作为获取设备硬件信息的起始点。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息"
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 48,
+          "code": "getDeviceInfo() {",
+          "description": "定义 getDeviceInfo 函数，准备收集各类设备标识和系统属性。",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType"
+            ]
+          }
+        },
+        {
+          "id": "p7:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 50,
+          "code": "this.marketName = deviceInfo.marketName",
+          "description": "从 deviceInfo 模块读取设备市场名称 (marketName) 并赋值给组件状态变量。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()"
+            ]
+          }
+        },
+        {
+          "id": "p7:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 51,
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "description": "从 deviceInfo 模块读取操作系统全称 (osFullName) 并赋值给组件状态变量。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据"
+            ]
+          }
+        },
+        {
+          "id": "p7:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 52,
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "description": "从 deviceInfo 模块读取 SDK API 版本号并格式化后赋值给组件状态变量。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()"
+            ]
+          }
+        },
+        {
+          "id": "p7:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 53,
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "description": "从 deviceInfo 模块读取设备类型 (deviceType) 并赋值给组件状态变量。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取"
+            ]
+          }
+        },
+        {
+          "id": "p7:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 55,
+          "code": "this.uptime = process.uptime()",
+          "description": "调用 process.uptime() 获取系统自启动以来的运行时间（毫秒），属于设备指纹相关信息。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态"
+            ]
+          }
+        },
+        {
+          "id": "p7:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 57,
+          "code": "this.getScreenInfo()",
+          "description": "调用 getScreenInfo 方法，准备进一步获取屏幕相关的物理参数。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()"
+            ]
+          }
+        },
+        {
+          "id": "p7:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 152,
+          "code": "getScreenInfo() {",
+          "description": "定义 getScreenInfo 函数，专注于提取显示设备的详细规格。",
+          "context": {
+            "startLine": 147,
+            "lines": [
+              "    // 将结果数组转换为字符串并使用点分隔",
+              "    return broadcastParts.join('.');",
+              "  }",
+              "",
+              "  // 获取屏幕数据",
+              "  getScreenInfo() {",
+              "    const ScreenInfo = display.getDefaultDisplaySync()",
+              "    this.displayHeight = ScreenInfo.height",
+              "    this.displayWidth = ScreenInfo.width",
+              "    this.displayRefreshRate = ScreenInfo.refreshRate",
+              "    this.displayDensityDPI = ScreenInfo.densityDPI"
+            ]
+          }
+        },
+        {
+          "id": "p7:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 153,
+          "code": "const ScreenInfo = display.getDefaultDisplaySync()",
+          "description": "【Sink】调用 display.getDefaultDisplaySync() 同步获取默认显示对象，包含屏幕分辨率、刷新率等敏感硬件信息。",
+          "context": {
+            "startLine": 148,
+            "lines": [
+              "    return broadcastParts.join('.');",
+              "  }",
+              "",
+              "  // 获取屏幕数据",
+              "  getScreenInfo() {",
+              "    const ScreenInfo = display.getDefaultDisplaySync()",
+              "    this.displayHeight = ScreenInfo.height",
+              "    this.displayWidth = ScreenInfo.width",
+              "    this.displayRefreshRate = ScreenInfo.refreshRate",
+              "    this.displayDensityDPI = ScreenInfo.densityDPI",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        },
+        {
+          "from": "p7:n3",
+          "to": "p7:n4"
+        },
+        {
+          "from": "p7:n4",
+          "to": "p7:n5"
+        },
+        {
+          "from": "p7:n5",
+          "to": "p7:n6"
+        },
+        {
+          "from": "p7:n6",
+          "to": "p7:n7"
+        },
+        {
+          "from": "p7:n7",
+          "to": "p7:n8"
+        },
+        {
+          "from": "p7:n8",
+          "to": "p7:n9"
+        },
+        {
+          "from": "p7:n9",
+          "to": "p7:n10"
+        },
+        {
+          "from": "p7:n10",
+          "to": "p7:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备市场名称 (marketName)",
+          "操作系统全称 (osFullName)",
+          "SDK API 版本 (sdkApiVersion)",
+          "设备类型 (deviceType)",
+          "系统运行时间 (uptime)",
+          "屏幕高度 (height)",
+          "屏幕宽度 (width)",
+          "屏幕刷新率 (refreshRate)",
+          "屏幕像素密度 (densityDPI)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示时 onPageShow)"
+        ],
+        "cloudUpload": [
+          "未在当前代码片段中发现网络发送或上传行为"
+        ],
+        "storageAndEncryption": [
+          "数据存储在组件状态 (@State) 中，用于 UI 渲染",
+          "未发现本地文件存储行为",
+          "未发现加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.GET_DEVICE_INFO (隐含，访问 deviceInfo 模块)",
+          "ohos.permission.GET_DISPLAY_INFO (隐含，访问 display 模块)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p8",
+      "pathId": "p8",
+      "nodes": [
+        {
+          "id": "p8:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 43,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，当页面显示时自动触发数据收集流程",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "  // 像素密度（PPI）",
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 44,
+          "code": "this.getDeviceInfo()",
+          "description": "调用 getDeviceInfo 方法，开始获取设备硬件详细信息",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "  @State displayDensityDPI: number = 0",
+              "  // 支持的传感器id列表",
+              "  @State supportSensorIds: number[] = []",
+              "",
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息"
+            ]
+          }
+        },
+        {
+          "id": "p8:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 48,
+          "code": "getDeviceInfo() {",
+          "description": "定义 getDeviceInfo 函数，作为设备信息采集的协调者",
+          "context": {
+            "startLine": 43,
+            "lines": [
+              "  onPageShow() {",
+              "    this.getDeviceInfo()",
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType"
+            ]
+          }
+        },
+        {
+          "id": "p8:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 50,
+          "code": "this.marketName = deviceInfo.marketName",
+          "description": "从 deviceInfo 模块读取设备市场名称并赋值给本地状态变量",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "  }",
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()"
+            ]
+          }
+        },
+        {
+          "id": "p8:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 51,
+          "code": "this.osFullName = deviceInfo.osFullName",
+          "description": "从 deviceInfo 模块读取操作系统全称并赋值给本地状态变量",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "",
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据"
+            ]
+          }
+        },
+        {
+          "id": "p8:n6",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 52,
+          "code": "this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+          "description": "从 deviceInfo 模块读取 SDK API 版本号并赋值给本地状态变量",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "  // 获取设备硬件各项信息",
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()"
+            ]
+          }
+        },
+        {
+          "id": "p8:n7",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 53,
+          "code": "this.deviceType = deviceInfo.deviceType",
+          "description": "从 deviceInfo 模块读取设备类型并赋值给本地状态变量",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  getDeviceInfo() {",
+              "    // 利用@ohos.deviceInfo获取设备信息",
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取"
+            ]
+          }
+        },
+        {
+          "id": "p8:n8",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 55,
+          "code": "this.uptime = process.uptime()",
+          "description": "调用 process.uptime() 获取系统启动以来的运行时间（毫秒）",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    this.marketName = deviceInfo.marketName",
+              "    this.osFullName = deviceInfo.osFullName",
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态"
+            ]
+          }
+        },
+        {
+          "id": "p8:n9",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 57,
+          "code": "this.getScreenInfo()",
+          "description": "调用 getScreenInfo 方法以获取屏幕分辨率、刷新率等显示参数",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "    this.sdkApiVersion = `${deviceInfo.sdkApiVersion}`",
+              "    this.deviceType = deviceInfo.deviceType",
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()"
+            ]
+          }
+        },
+        {
+          "id": "p8:n10",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 59,
+          "code": "this.getSenorIdArr()",
+          "description": "调用 getSenorIdArr 方法，准备获取设备支持的传感器列表信息",
+          "context": {
+            "startLine": 54,
+            "lines": [
+              "    //利用@kit.ArkTs获取系统运行时间，返回值是毫秒",
+              "    this.uptime = process.uptime()",
+              "    //   获取屏幕数据",
+              "    this.getScreenInfo()",
+              "    //   传感器获取",
+              "    this.getSenorIdArr()",
+              "    //   获取网络状态",
+              "    // 首先判断是否存在默认连接的网络",
+              "    const hasDefaultNet = connection.hasDefaultNetSync()",
+              "    // 没有网络",
+              "    if (!hasDefaultNet) {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n11",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 161,
+          "code": "async getSenorIdArr() {",
+          "description": "定义异步函数 getSenorIdArr，用于处理传感器数据的获取逻辑",
+          "context": {
+            "startLine": 156,
+            "lines": [
+              "    this.displayRefreshRate = ScreenInfo.refreshRate",
+              "    this.displayDensityDPI = ScreenInfo.densityDPI",
+              "  }",
+              "",
+              "  // 获取传感器的数据",
+              "  async getSenorIdArr() {",
+              "    let SensorList = await sensor.getSensorList() //获取设备传感器的信息",
+              "    this.supportSensorIds = SensorList.map<number>(item => item.sensorId) //将设备传感器的ID赋值给supportSensorIds",
+              "  }",
+              "",
+              "  @Builder"
+            ]
+          }
+        },
+        {
+          "id": "p8:n12",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/HardwareIndexPage.ets",
+          "line": 162,
+          "code": "let SensorList = await sensor.getSensorList() //获取设备传感器的信息",
+          "description": "【Sink】调用 sensor.getSensorList() API 获取设备上所有可用传感器的详细信息列表",
+          "context": {
+            "startLine": 157,
+            "lines": [
+              "    this.displayDensityDPI = ScreenInfo.densityDPI",
+              "  }",
+              "",
+              "  // 获取传感器的数据",
+              "  async getSenorIdArr() {",
+              "    let SensorList = await sensor.getSensorList() //获取设备传感器的信息",
+              "    this.supportSensorIds = SensorList.map<number>(item => item.sensorId) //将设备传感器的ID赋值给supportSensorIds",
+              "  }",
+              "",
+              "  @Builder",
+              "  ListTitle(title: string) {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p8:n1",
+          "to": "p8:n2"
+        },
+        {
+          "from": "p8:n2",
+          "to": "p8:n3"
+        },
+        {
+          "from": "p8:n3",
+          "to": "p8:n4"
+        },
+        {
+          "from": "p8:n4",
+          "to": "p8:n5"
+        },
+        {
+          "from": "p8:n5",
+          "to": "p8:n6"
+        },
+        {
+          "from": "p8:n6",
+          "to": "p8:n7"
+        },
+        {
+          "from": "p8:n7",
+          "to": "p8:n8"
+        },
+        {
+          "from": "p8:n8",
+          "to": "p8:n9"
+        },
+        {
+          "from": "p8:n9",
+          "to": "p8:n10"
+        },
+        {
+          "from": "p8:n10",
+          "to": "p8:n11"
+        },
+        {
+          "from": "p8:n11",
+          "to": "p8:n12"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备市场名称 (marketName)",
+          "操作系统全称 (osFullName)",
+          "SDK API 版本 (sdkApiVersion)",
+          "设备类型 (deviceType)",
+          "系统运行时间 (uptime)",
+          "屏幕分辨率 (width/height)",
+          "屏幕刷新率 (refreshRate)",
+          "屏幕像素密度 (densityDPI)",
+          "传感器列表及 ID (sensorList/sensorId)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示时 onPageShow)"
+        ],
+        "cloudUpload": [
+          "当前片段未检测到网络发送或云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (@State 状态变量)",
+          "未检测到加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.READ_DEVICE_INFO (隐含，读取 deviceInfo)",
+          "ohos.permission.SENSOR (隐含，读取传感器列表)"
+        ]
+      }
+    }
+  ]
+}

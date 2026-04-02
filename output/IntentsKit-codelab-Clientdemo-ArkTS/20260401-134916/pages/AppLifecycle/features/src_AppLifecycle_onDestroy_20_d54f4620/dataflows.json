@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "runId": "IntentsKit-codelab-Clientdemo-ArkTS_20260401-134916",
+    "generatedAt": "2026-04-01T05:51:02.920Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_20_d54f4620",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 20,
+          "code": "onDestroy(): void {",
+          "description": "UIAbility 生命周期函数 onDestroy 的入口点，当应用实例被销毁时触发。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "    if (want.parameters?.['result']) {",
+              "      this.result = want.parameters?.['result'] as string;",
+              "    }",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    Logger.info(TAG, 'onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "Logger.info(TAG, 'onDestroy');",
+          "description": "调用自定义 Logger.info 方法，传入固定标签 TAG 和字符串 'onDestroy'，记录应用销毁事件。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "      this.result = want.parameters?.['result'] as string;",
+              "    }",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    Logger.info(TAG, 'onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    Logger.info(TAG, `onWindowStageCreate`)"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 11,
+          "code": "public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+          "description": "进入 Logger 类的静态 info 方法定义，准备接收日志标签、消息格式及参数。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "  public static debug(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.debug(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static warn(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.warn(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 12,
+          "code": "hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+          "description": "调用系统 hilog.info API，将拼接后的日志内容（包含域、标签、消息）输出到系统日志流，作为数据流的终点。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  public static debug(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.debug(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static warn(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.warn(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态标识 (onDestroy)",
+          "模块标签 (TAG)",
+          "日志域标识 (DOMAIN)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地系统日志输出)"
+        ],
+        "storageAndEncryption": [
+          "存储于系统日志缓冲区 (hilog)",
+          "未加密 (明文日志)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

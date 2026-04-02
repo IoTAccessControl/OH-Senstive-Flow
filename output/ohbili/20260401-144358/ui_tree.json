@@ -1,0 +1,3044 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.731Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 102,
+      "edges": 89,
+      "pages": 17,
+      "elements": 85
+    }
+  },
+  "roots": [
+    "page:6da0db86f705",
+    "page:1a028764137d",
+    "page:4f162f495801",
+    "page:eab6d4d72358",
+    "page:39c45203cc7e",
+    "page:1bb846a6dabc",
+    "page:895c3a9b7b7b",
+    "page:ed19863193d5",
+    "page:05d6bccf15de",
+    "page:9a7be148d173",
+    "page:87e3308c31d3"
+  ],
+  "nodes": {
+    "page:6da0db86f705": {
+      "id": "page:6da0db86f705",
+      "category": "Page",
+      "name": "PlayerView",
+      "description": "首页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 57,
+      "code": "export struct PlayerView {",
+      "context": {
+        "startLine": 52,
+        "lines": [
+          "  // 可以在这里添加任何需要的属性",
+          "}",
+          "",
+          "@Entry",
+          "@Component",
+          "export struct PlayerView {",
+          "  private cid: number = 0;",
+          "  private bvid: string = \"\";",
+          "  @StorageLink('isPortrait') isPortrait: boolean = true",
+          "  @Link @Watch('onPageStateUpdated') pageState: string;",
+          "  private player: IPlayer = (playerType == \"IjkPlayer\" ? new IjkPlayer() : new AvPlayer());"
+        ]
+      }
+    },
+    "ui:f67567d6331b": {
+      "id": "ui:f67567d6331b",
+      "category": "Component",
+      "name": "build",
+      "description": "视频播放区",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 149,
+      "code": "build() {",
+      "context": {
+        "startLine": 144,
+        "lines": [
+          "    if (this.cid > 0) {",
+          "      this.getDanmaku(true);",
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack({ alignContent: Alignment.Center }) {",
+          "      XComponent({",
+          "        id: this.player.id(),",
+          "        type: 'surface',",
+          "        libraryname: this.player.libraryName(),"
+        ]
+      }
+    },
+    "ui:a8f59f3aeba3": {
+      "id": "ui:a8f59f3aeba3",
+      "category": "Component",
+      "name": "XComponent",
+      "description": "视频播放窗口",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 151,
+      "code": "XComponent({",
+      "context": {
+        "startLine": 146,
+        "lines": [
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack({ alignContent: Alignment.Center }) {",
+          "      XComponent({",
+          "        id: this.player.id(),",
+          "        type: 'surface',",
+          "        libraryname: this.player.libraryName(),",
+          "        controller: this.player.controller()",
+          "      })"
+        ]
+      }
+    },
+    "ui:00211fd0ff12": {
+      "id": "ui:00211fd0ff12",
+      "category": "Component",
+      "name": "Progress",
+      "description": "播放进度条",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 175,
+      "code": "Progress({ value: this.progressValue, total: PROGRESS_MAX_VALUE,",
+      "context": {
+        "startLine": 170,
+        "lines": [
+          "        .aspectRatio(this.aspRatio)",
+          "",
+          "      if (!this.mIsShowCtl) {",
+          "        Column() {",
+          "          Blank()",
+          "          Progress({ value: this.progressValue, total: PROGRESS_MAX_VALUE,",
+          "            type: ProgressType.Linear })",
+          "            .color(Color.Red)",
+          "            .backgroundColor(Color.Transparent)",
+          "            .width('100%')",
+          "            .height(2)"
+        ]
+      }
+    },
+    "ui:e818646d7e56": {
+      "id": "ui:e818646d7e56",
+      "category": "Button",
+      "name": "DanmakuView",
+      "description": "弹幕显示",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 186,
+      "code": "DanmakuView({ model: $mDanmakuModel })",
+      "context": {
+        "startLine": 181,
+        "lines": [
+          "        }.height('100%')",
+          "      }",
+          "",
+          "      Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center,",
+          "        justifyContent: FlexAlign.Center }) {",
+          "        DanmakuView({ model: $mDanmakuModel })",
+          "      }.width('100%')",
+          "      .height('100%')",
+          "",
+          "      if (this.replayVisible){",
+          "        Column() {"
+        ]
+      }
+    },
+    "ui:ff7b132e1934": {
+      "id": "ui:ff7b132e1934",
+      "category": "Button",
+      "name": "Image",
+      "description": "重播",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 192,
+      "code": "Image($r('app.media.icon_replay'))",
+      "context": {
+        "startLine": 187,
+        "lines": [
+          "      }.width('100%')",
+          "      .height('100%')",
+          "",
+          "      if (this.replayVisible){",
+          "        Column() {",
+          "          Image($r('app.media.icon_replay'))",
+          "            .objectFit(ImageFit.Auto)",
+          "            .width(48)",
+          "            .height(48)",
+          "            .border({ width: 0 })",
+          "            .borderStyle(BorderStyle.Dashed)"
+        ]
+      }
+    },
+    "ui:0634b985d431": {
+      "id": "ui:0634b985d431",
+      "category": "Display",
+      "name": "Image",
+      "description": "加载图标",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 210,
+      "code": "Image($r('app.media.icon_load'))",
+      "context": {
+        "startLine": 205,
+        "lines": [
+          "        .hitTestBehavior(HitTestMode.Transparent)",
+          "      }",
+          "",
+          "      if (this.loadingVisible) {",
+          "        Column() {",
+          "          Image($r('app.media.icon_load'))",
+          "            .objectFit(ImageFit.Auto)",
+          "            .width(48)",
+          "            .height(48)",
+          "            .border({ width: 0 })",
+          "            .borderStyle(BorderStyle.Dashed)"
+        ]
+      }
+    },
+    "ui:13e6cb90a8f0": {
+      "id": "ui:13e6cb90a8f0",
+      "category": "Component",
+      "name": "PlayerControlView",
+      "description": "播放器控制栏",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 222,
+      "code": "PlayerControlView({",
+      "context": {
+        "startLine": 217,
+        "lines": [
+          "        .backgroundColor('#33000000')",
+          "        .justifyContent(FlexAlign.Center)",
+          "        .hitTestBehavior(HitTestMode.Transparent)",
+          "      }",
+          "",
+          "      PlayerControlView({",
+          "        player: this.player,",
+          "        mDanmakuModel: this.mDanmakuModel,",
+          "        loadingVisible: $loadingVisible,",
+          "        replayVisible: $replayVisible,",
+          "        progressValue: $progressValue,"
+        ]
+      }
+    },
+    "page:1a028764137d": {
+      "id": "page:1a028764137d",
+      "category": "Page",
+      "name": "About",
+      "description": "关于页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/About.ets",
+      "line": 19,
+      "code": "struct About {",
+      "context": {
+        "startLine": 14,
+        "lines": [
+          "import { OhNavBar } from '../view/base/OhNavBar'",
+          "",
+          "",
+          "@Entry",
+          "@Component",
+          "struct About {",
+          "",
+          "  @StorageLink(\"appVersionName\") appVersionName: string = \"\";",
+          "  @StorageLink(\"appVendor\") appVendor: string = \"\";",
+          "",
+          "  build() {"
+        ]
+      }
+    },
+    "ui:a16870bcd7fd": {
+      "id": "ui:a16870bcd7fd",
+      "category": "Component",
+      "name": "build",
+      "description": "关于",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/About.ets",
+      "line": 24,
+      "code": "build() {",
+      "context": {
+        "startLine": 19,
+        "lines": [
+          "struct About {",
+          "",
+          "  @StorageLink(\"appVersionName\") appVersionName: string = \"\";",
+          "  @StorageLink(\"appVendor\") appVendor: string = \"\";",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '关于' })",
+          "      Scroll() {",
+          "        Column() {",
+          "          this.LogoAndVersionComponent()"
+        ]
+      }
+    },
+    "ui:b3abfe96d810": {
+      "id": "ui:b3abfe96d810",
+      "category": "Component",
+      "name": "OhNavBar",
+      "description": "关于页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/About.ets",
+      "line": 26,
+      "code": "OhNavBar({ title: '关于' })",
+      "context": {
+        "startLine": 21,
+        "lines": [
+          "  @StorageLink(\"appVersionName\") appVersionName: string = \"\";",
+          "  @StorageLink(\"appVendor\") appVendor: string = \"\";",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '关于' })",
+          "      Scroll() {",
+          "        Column() {",
+          "          this.LogoAndVersionComponent()",
+          "          this.AppInfoComponent()",
+          "          this.CopyrightComponent()"
+        ]
+      }
+    },
+    "page:680445ee49f6": {
+      "id": "page:680445ee49f6",
+      "category": "Page",
+      "name": "BingeWatchView",
+      "description": "追剧页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/BingeWatch.ets",
+      "line": 3,
+      "code": "export struct BingeWatchView {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "",
+          "@Component",
+          "export struct BingeWatchView {",
+          "  @StorageLink(\"searchBarPosY\") searchBarPosY: number = 0;",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Flex().height(20)"
+        ]
+      }
+    },
+    "ui:127980dec704": {
+      "id": "ui:127980dec704",
+      "category": "Button",
+      "name": "build",
+      "description": "偏移-10",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/BingeWatch.ets",
+      "line": 6,
+      "code": "build() {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "",
+          "@Component",
+          "export struct BingeWatchView {",
+          "  @StorageLink(\"searchBarPosY\") searchBarPosY: number = 0;",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Flex().height(20)",
+          "      Button(\"偏移-10\").onClick(() => {",
+          "        this.searchBarPosY -= 10;",
+          "      })"
+        ]
+      }
+    },
+    "ui:1812b6893d1f": {
+      "id": "ui:1812b6893d1f",
+      "category": "Button",
+      "name": "Button",
+      "description": "偏移-10",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/BingeWatch.ets",
+      "line": 9,
+      "code": "Button(\"偏移-10\").onClick(() => {",
+      "context": {
+        "startLine": 4,
+        "lines": [
+          "  @StorageLink(\"searchBarPosY\") searchBarPosY: number = 0;",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Flex().height(20)",
+          "      Button(\"偏移-10\").onClick(() => {",
+          "        this.searchBarPosY -= 10;",
+          "      })",
+          "      Flex().height(20)",
+          "      Button(\"偏移+10\").onClick(() => {",
+          "        this.searchBarPosY += 10;"
+        ]
+      }
+    },
+    "ui:3915d73597b9": {
+      "id": "ui:3915d73597b9",
+      "category": "Button",
+      "name": "Button",
+      "description": "偏移+10",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/BingeWatch.ets",
+      "line": 13,
+      "code": "Button(\"偏移+10\").onClick(() => {",
+      "context": {
+        "startLine": 8,
+        "lines": [
+          "      Flex().height(20)",
+          "      Button(\"偏移-10\").onClick(() => {",
+          "        this.searchBarPosY -= 10;",
+          "      })",
+          "      Flex().height(20)",
+          "      Button(\"偏移+10\").onClick(() => {",
+          "        this.searchBarPosY += 10;",
+          "      })",
+          "    }",
+          "  }",
+          "}"
+        ]
+      }
+    },
+    "page:4f162f495801": {
+      "id": "page:4f162f495801",
+      "category": "Page",
+      "name": "Feedback",
+      "description": "反馈页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+      "line": 32,
+      "code": "struct Feedback {",
+      "context": {
+        "startLine": 27,
+        "lines": [
+          "let owner = \"ohos_port\";",
+          "let repo = \"log\";",
+          "",
+          "@Entry",
+          "@Component",
+          "struct Feedback {",
+          "  @State logArr: LogFile[] = []",
+          "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+          "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+          "  gistClient = new GistClient(ApiConstants.GITEE_TOKEN);",
+          ""
+        ]
+      }
+    },
+    "ui:62d5f0457e7a": {
+      "id": "ui:62d5f0457e7a",
+      "category": "Component",
+      "name": "build",
+      "description": "反馈页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+      "line": 69,
+      "code": "build() {",
+      "context": {
+        "startLine": 64,
+        "lines": [
+          "      console.error(\"OhBili err: \" + err);",
+          "    }",
+          "    return false;",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '反馈' })",
+          "      Scroll() {",
+          "        Column() {",
+          "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")"
+        ]
+      }
+    },
+    "ui:d3dbf4bf2deb": {
+      "id": "ui:d3dbf4bf2deb",
+      "category": "Component",
+      "name": "OhNavBar",
+      "description": "反馈页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+      "line": 71,
+      "code": "OhNavBar({ title: '反馈' })",
+      "context": {
+        "startLine": 66,
+        "lines": [
+          "    return false;",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '反馈' })",
+          "      Scroll() {",
+          "        Column() {",
+          "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")",
+          "            .fontSize(16)",
+          "            .fontColor(\"#333333\")"
+        ]
+      }
+    },
+    "ui:7ec93b83a933": {
+      "id": "ui:7ec93b83a933",
+      "category": "Display",
+      "name": "Text",
+      "description": "操作说明",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+      "line": 74,
+      "code": "Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")",
+      "context": {
+        "startLine": 69,
+        "lines": [
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '反馈' })",
+          "      Scroll() {",
+          "        Column() {",
+          "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")",
+          "            .fontSize(16)",
+          "            .fontColor(\"#333333\")",
+          "            .padding({ top: 16, left: 16, right: 16 })",
+          "          Text(\"1. 开启Debug日志；\\n\\n\" +",
+          "          \"2. 重启应用，重复异常操作流程；\\n\\n\" +"
+        ]
+      }
+    },
+    "ui:7e2fba0911ad": {
+      "id": "ui:7e2fba0911ad",
+      "category": "Button",
+      "name": "Text",
+      "description": "问题反馈指引",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+      "line": 78,
+      "code": "Text(\"1. 开启Debug日志；\\n\\n\" +",
+      "context": {
+        "startLine": 73,
+        "lines": [
+          "        Column() {",
+          "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")",
+          "            .fontSize(16)",
+          "            .fontColor(\"#333333\")",
+          "            .padding({ top: 16, left: 16, right: 16 })",
+          "          Text(\"1. 开启Debug日志；\\n\\n\" +",
+          "          \"2. 重启应用，重复异常操作流程；\\n\\n\" +",
+          "          \"3. 导出Debug日志；\\n\\n\" +",
+          "          \"4. 打开项目gitee网页，提交相关issue；\")",
+          "            .width('100%')",
+          "            .fontSize(16)"
+        ]
+      }
+    },
+    "ui:47097712e5bf": {
+      "id": "ui:47097712e5bf",
+      "category": "Button",
+      "name": "Button",
+      "description": "切换Debug日志",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+      "line": 87,
+      "code": "Button(this.appLogDebug == '1' ? \"关闭Debug日志\" : \"开启Debug日志\")",
+      "context": {
+        "startLine": 82,
+        "lines": [
+          "            .width('100%')",
+          "            .fontSize(16)",
+          "            .fontColor(\"#333333\")",
+          "            .padding(16)",
+          "          Row() {",
+          "            Button(this.appLogDebug == '1' ? \"关闭Debug日志\" : \"开启Debug日志\")",
+          "              .onClick(() => {",
+          "                if (this.appLogDebug == '1') {",
+          "                  this.appLogDebug = '0';",
+          "                } else {",
+          "                  this.appLogDebug = '1';"
+        ]
+      }
+    },
+    "ui:9681eb53635e": {
+      "id": "ui:9681eb53635e",
+      "category": "Button",
+      "name": "Button",
+      "description": "查看Debug日志",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+      "line": 95,
+      "code": "Button(\"查看Debug日志\")",
+      "context": {
+        "startLine": 90,
+        "lines": [
+          "                  this.appLogDebug = '0';",
+          "                } else {",
+          "                  this.appLogDebug = '1';",
+          "                }",
+          "              })",
+          "            Button(\"查看Debug日志\")",
+          "              .margin({ left: 20 })",
+          "              .onClick(() => {",
+          "                this.getLogFiles();",
+          "              })",
+          "          }.width('100%').justifyContent(FlexAlign.Center)"
+        ]
+      }
+    },
+    "ui:b202b241df14": {
+      "id": "ui:b202b241df14",
+      "category": "Button",
+      "name": "ForEach",
+      "description": "日志文件列表",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+      "line": 102,
+      "code": "ForEach(this.logArr, (item: LogFile) => {",
+      "context": {
+        "startLine": 97,
+        "lines": [
+          "              .onClick(() => {",
+          "                this.getLogFiles();",
+          "              })",
+          "          }.width('100%').justifyContent(FlexAlign.Center)",
+          "          .margin({ top: 36, bottom: 36 })",
+          "          ForEach(this.logArr, (item: LogFile) => {",
+          "            Row() {",
+          "              Text(item.name)",
+          "              Blank()",
+          "              Text(StringUtil.generateSizeStr(item.size))",
+          "            }.padding(20).width('100%').onClick(() => {"
+        ]
+      }
+    },
+    "ui:eb5af8f076b1": {
+      "id": "ui:eb5af8f076b1",
+      "category": "Button",
+      "name": "Text",
+      "description": "日志文件",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+      "line": 104,
+      "code": "Text(item.name)",
+      "context": {
+        "startLine": 99,
+        "lines": [
+          "              })",
+          "          }.width('100%').justifyContent(FlexAlign.Center)",
+          "          .margin({ top: 36, bottom: 36 })",
+          "          ForEach(this.logArr, (item: LogFile) => {",
+          "            Row() {",
+          "              Text(item.name)",
+          "              Blank()",
+          "              Text(StringUtil.generateSizeStr(item.size))",
+          "            }.padding(20).width('100%').onClick(() => {",
+          "              router.pushUrl({ url: \"pages/LogDetail\",",
+          "                params: { logFilePath: item.path }"
+        ]
+      }
+    },
+    "ui:72b99be99d77": {
+      "id": "ui:72b99be99d77",
+      "category": "Button",
+      "name": "Text",
+      "description": "查看日志详情",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+      "line": 106,
+      "code": "Text(StringUtil.generateSizeStr(item.size))",
+      "context": {
+        "startLine": 101,
+        "lines": [
+          "          .margin({ top: 36, bottom: 36 })",
+          "          ForEach(this.logArr, (item: LogFile) => {",
+          "            Row() {",
+          "              Text(item.name)",
+          "              Blank()",
+          "              Text(StringUtil.generateSizeStr(item.size))",
+          "            }.padding(20).width('100%').onClick(() => {",
+          "              router.pushUrl({ url: \"pages/LogDetail\",",
+          "                params: { logFilePath: item.path }",
+          "              });",
+          "              /*let logStr = fs.readTextSync(item.path);"
+        ]
+      },
+      "navTarget": {
+        "kind": "pushUrl",
+        "url": "pages/LogDetail",
+        "resolvedFilePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets"
+      }
+    },
+    "page:39c45203cc7e": {
+      "id": "page:39c45203cc7e",
+      "category": "Page",
+      "name": "LogDetail",
+      "description": "LogDetail页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+      "line": 22,
+      "code": "struct LogDetail {",
+      "context": {
+        "startLine": 17,
+        "lines": [
+          "interface LogDetailParams {",
+          "  logFilePath: string;",
+          "}",
+          "@Entry",
+          "@Component",
+          "struct LogDetail {",
+          "  private logFilePath: string = '';",
+          "  @State logStr: string = \"\"",
+          "",
+          "  aboutToAppear() {",
+          "    let params = router.getParams() as LogDetailParams | undefined;"
+        ]
+      }
+    },
+    "page:345a58fdc2b4": {
+      "id": "page:345a58fdc2b4",
+      "category": "Page",
+      "name": "HomeView",
+      "description": "首页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 20,
+      "code": "export struct HomeView {",
+      "context": {
+        "startLine": 15,
+        "lines": [
+          "import { BingeWatchView } from './BingeWatch';",
+          "import { HomeSearchBar } from '../view/home/SearchBar'",
+          "import { ApiManager } from '../network/ApiManager';",
+          "",
+          "@Component",
+          "export struct HomeView {",
+          "  @State currentIndex: number = 0;",
+          "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+          "  @StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+          "  @StorageLink(\"searchBarPosY\") @Watch('onPosYUpdated') searchBarPosY: number = 0;",
+          "  @State offsetY: number = 0;"
+        ]
+      }
+    },
+    "ui:a9c9d000ca5d": {
+      "id": "ui:a9c9d000ca5d",
+      "category": "Component",
+      "name": "build",
+      "description": "首页内容",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 63,
+      "code": "build() {",
+      "context": {
+        "startLine": 58,
+        "lines": [
+          "    .height('100%')",
+          "    .justifyContent(FlexAlign.Center)",
+          "    .border({width: {bottom: 0.5}, color: '#cccccc'})",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      HomeSearchBar().padding({ top: 16 })",
+          "        .margin({left: 16, right: 16, bottom: 8})",
+          "        .onAreaChange((oldValue: Area, newValue: Area) => {",
+          "          if (newValue.height as number) {"
+        ]
+      }
+    },
+    "ui:37e02654b9ba": {
+      "id": "ui:37e02654b9ba",
+      "category": "Component",
+      "name": "HomeSearchBar",
+      "description": "搜索栏",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 65,
+      "code": "HomeSearchBar().padding({ top: 16 })",
+      "context": {
+        "startLine": 60,
+        "lines": [
+          "    .border({width: {bottom: 0.5}, color: '#cccccc'})",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      HomeSearchBar().padding({ top: 16 })",
+          "        .margin({left: 16, right: 16, bottom: 8})",
+          "        .onAreaChange((oldValue: Area, newValue: Area) => {",
+          "          if (newValue.height as number) {",
+          "            this.searchBarHeight = newValue.height as number",
+          "          }"
+        ]
+      }
+    },
+    "ui:21f0c9778277": {
+      "id": "ui:21f0c9778277",
+      "category": "Display",
+      "name": "Text",
+      "description": "网络异常提示",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 73,
+      "code": "Text('网络不给力，请检查网络设置。')",
+      "context": {
+        "startLine": 68,
+        "lines": [
+          "          if (newValue.height as number) {",
+          "            this.searchBarHeight = newValue.height as number",
+          "          }",
+          "        })",
+          "      if (!this.netIsAvailable) {",
+          "        Text('网络不给力，请检查网络设置。')",
+          "          .width('100%')",
+          "          .fontSize(14).textAlign(TextAlign.Center)",
+          "          .padding({ top: 16, bottom: 16 })",
+          "          .backgroundColor(\"#ffe1df\")",
+          "      }"
+        ]
+      }
+    },
+    "ui:2025ef967b9a": {
+      "id": "ui:2025ef967b9a",
+      "category": "Component",
+      "name": "RecommendView",
+      "description": "推荐内容",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 81,
+      "code": "RecommendView()",
+      "context": {
+        "startLine": 76,
+        "lines": [
+          "          .padding({ top: 16, bottom: 16 })",
+          "          .backgroundColor(\"#ffe1df\")",
+          "      }",
+          "      Tabs() {",
+          "        TabContent() {",
+          "          RecommendView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_recommend'), 0))",
+          "",
+          "        TabContent() {",
+          "          PopularView()"
+        ]
+      }
+    },
+    "ui:d783b5fca211": {
+      "id": "ui:d783b5fca211",
+      "category": "Component",
+      "name": "PopularView",
+      "description": "热门视频",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 86,
+      "code": "PopularView()",
+      "context": {
+        "startLine": 81,
+        "lines": [
+          "          RecommendView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_recommend'), 0))",
+          "",
+          "        TabContent() {",
+          "          PopularView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_hot'), 1))",
+          "",
+          "        /*TabContent() {",
+          "          BingeWatchView()"
+        ]
+      }
+    },
+    "ui:31a80499168a": {
+      "id": "ui:31a80499168a",
+      "category": "Component",
+      "name": "BingeWatchView",
+      "description": "热门内容",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 91,
+      "code": "BingeWatchView()",
+      "context": {
+        "startLine": 86,
+        "lines": [
+          "          PopularView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_hot'), 1))",
+          "",
+          "        /*TabContent() {",
+          "          BingeWatchView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_animation'), 2))",
+          "",
+          "        TabContent() {",
+          "          Text($r('app.string.func_develop')).fontSize(16)"
+        ]
+      }
+    },
+    "ui:3786a9811f3e": {
+      "id": "ui:3786a9811f3e",
+      "category": "Display",
+      "name": "Text",
+      "description": "功能开发中",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 96,
+      "code": "Text($r('app.string.func_develop')).fontSize(16)",
+      "context": {
+        "startLine": 91,
+        "lines": [
+          "          BingeWatchView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_animation'), 2))",
+          "",
+          "        TabContent() {",
+          "          Text($r('app.string.func_develop')).fontSize(16)",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_movie'), 3))*/",
+          "      }.onChange((index) => {",
+          "        this.currentIndex = index",
+          "      }).barWidth('80%').barHeight(40)"
+        ]
+      }
+    },
+    "page:eab6d4d72358": {
+      "id": "page:eab6d4d72358",
+      "category": "Page",
+      "name": "Index",
+      "description": "首页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Index.ets",
+      "line": 20,
+      "code": "struct Index {",
+      "context": {
+        "startLine": 15,
+        "lines": [
+          "import { WindowManager } from '../utils/WindowManager';",
+          "import { MomentsView } from './Moments';",
+          "",
+          "@Entry",
+          "@Component",
+          "struct Index {",
+          "  private tabsController: TabsController = new TabsController()",
+          "  @State currentIndex: number = 0;",
+          "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+          "",
+          "  @Builder TabBuilder(title: string | Resource, targetIndex: number, imgPath: Resource) {"
+        ]
+      }
+    },
+    "ui:a6803e0f6cd4": {
+      "id": "ui:a6803e0f6cd4",
+      "category": "Component",
+      "name": "build",
+      "description": "首页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Index.ets",
+      "line": 52,
+      "code": "build() {",
+      "context": {
+        "startLine": 47,
+        "lines": [
+          "",
+          "  onPageHide() {",
+          "    this.isShowPage = false;",
+          "  }",
+          "",
+          "  build() {",
+          "    Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {",
+          "      TabContent() {",
+          "        HomeView()",
+          "      }",
+          "      .tabBar(this.TabBuilder($r('app.string.home'), 0, $r('app.media.ic_tab_bar_home')))"
+        ]
+      }
+    },
+    "ui:0417bcb9f3db": {
+      "id": "ui:0417bcb9f3db",
+      "category": "Component",
+      "name": "HomeView",
+      "description": "首页内容",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Index.ets",
+      "line": 55,
+      "code": "HomeView()",
+      "context": {
+        "startLine": 50,
+        "lines": [
+          "  }",
+          "",
+          "  build() {",
+          "    Tabs({ barPosition: BarPosition.End, controller: this.tabsController }) {",
+          "      TabContent() {",
+          "        HomeView()",
+          "      }",
+          "      .tabBar(this.TabBuilder($r('app.string.home'), 0, $r('app.media.ic_tab_bar_home')))",
+          "",
+          "      TabContent() {",
+          "        MomentsView()"
+        ]
+      }
+    },
+    "ui:b23ade028c59": {
+      "id": "ui:b23ade028c59",
+      "category": "Component",
+      "name": "MomentsView",
+      "description": "动态页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Index.ets",
+      "line": 60,
+      "code": "MomentsView()",
+      "context": {
+        "startLine": 55,
+        "lines": [
+          "        HomeView()",
+          "      }",
+          "      .tabBar(this.TabBuilder($r('app.string.home'), 0, $r('app.media.ic_tab_bar_home')))",
+          "",
+          "      TabContent() {",
+          "        MomentsView()",
+          "      }",
+          "      .tabBar(this.TabBuilder($r('app.string.moments'), 1, $r('app.media.ic_tab_bar_moments')))",
+          "",
+          "      /*TabContent() {",
+          "        Text($r('app.string.func_develop')).fontSize(16)"
+        ]
+      }
+    },
+    "ui:88531a837a57": {
+      "id": "ui:88531a837a57",
+      "category": "Display",
+      "name": "Text",
+      "description": "功能开发",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Index.ets",
+      "line": 65,
+      "code": "Text($r('app.string.func_develop')).fontSize(16)",
+      "context": {
+        "startLine": 60,
+        "lines": [
+          "        MomentsView()",
+          "      }",
+          "      .tabBar(this.TabBuilder($r('app.string.moments'), 1, $r('app.media.ic_tab_bar_moments')))",
+          "",
+          "      /*TabContent() {",
+          "        Text($r('app.string.func_develop')).fontSize(16)",
+          "      }",
+          "      .tabBar(this.TabBuilder($r('app.string.live_stream'), 2, $r('app.media.ic_tab_bar_shopping')))*/",
+          "",
+          "      TabContent() {",
+          "        MineView()"
+        ]
+      }
+    },
+    "ui:07b2ee182cf0": {
+      "id": "ui:07b2ee182cf0",
+      "category": "Component",
+      "name": "MineView",
+      "description": "我的页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Index.ets",
+      "line": 70,
+      "code": "MineView()",
+      "context": {
+        "startLine": 65,
+        "lines": [
+          "        Text($r('app.string.func_develop')).fontSize(16)",
+          "      }",
+          "      .tabBar(this.TabBuilder($r('app.string.live_stream'), 2, $r('app.media.ic_tab_bar_shopping')))*/",
+          "",
+          "      TabContent() {",
+          "        MineView()",
+          "      }",
+          "      .tabBar(this.TabBuilder($r('app.string.mine'), 2, $r('app.media.ic_tab_bar_mine')))",
+          "    }.scrollable(false)",
+          "    .barMode(BarMode.Fixed)",
+          "    .onChange((index) => {"
+        ]
+      }
+    },
+    "ui:255622cd0aa8": {
+      "id": "ui:255622cd0aa8",
+      "category": "Component",
+      "name": "build",
+      "description": "日志详情",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+      "line": 34,
+      "code": "build() {",
+      "context": {
+        "startLine": 29,
+        "lines": [
+          "      this.logFilePath = params.logFilePath;",
+          "    }",
+          "    this.logStr = fs.readTextSync(this.logFilePath)",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '日志详情' })",
+          "      Scroll() {",
+          "        Text(this.logStr).fontSize(14).width('100%').padding(8)",
+          "      }.layoutWeight(1)"
+        ]
+      }
+    },
+    "ui:4d66fd8c3b07": {
+      "id": "ui:4d66fd8c3b07",
+      "category": "Component",
+      "name": "OhNavBar",
+      "description": "日志详情",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+      "line": 36,
+      "code": "OhNavBar({ title: '日志详情' })",
+      "context": {
+        "startLine": 31,
+        "lines": [
+          "    this.logStr = fs.readTextSync(this.logFilePath)",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '日志详情' })",
+          "      Scroll() {",
+          "        Text(this.logStr).fontSize(14).width('100%').padding(8)",
+          "      }.layoutWeight(1)",
+          "      .align(Alignment.Top)",
+          "      .edgeEffect(EdgeEffect.Fade)"
+        ]
+      }
+    },
+    "ui:fb1b01f8eaa0": {
+      "id": "ui:fb1b01f8eaa0",
+      "category": "Display",
+      "name": "Text",
+      "description": "日志详情",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/LogDetail.ets",
+      "line": 38,
+      "code": "Text(this.logStr).fontSize(14).width('100%').padding(8)",
+      "context": {
+        "startLine": 33,
+        "lines": [
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '日志详情' })",
+          "      Scroll() {",
+          "        Text(this.logStr).fontSize(14).width('100%').padding(8)",
+          "      }.layoutWeight(1)",
+          "      .align(Alignment.Top)",
+          "      .edgeEffect(EdgeEffect.Fade)",
+          "    }.width('100%').height('100%')",
+          "  }"
+        ]
+      }
+    },
+    "page:974626ce5c54": {
+      "id": "page:974626ce5c54",
+      "category": "Page",
+      "name": "MineView",
+      "description": "我的页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Mine.ets",
+      "line": 19,
+      "code": "export struct MineView {",
+      "context": {
+        "startLine": 14,
+        "lines": [
+          "import { UserStateView } from '../view/mine/UserState';",
+          "import { MineOptView } from '../view/mine/MineOpt';",
+          "import { MoreServerView } from '../view/mine/MoreServer';",
+          "",
+          "@Component",
+          "export struct MineView {",
+          "  build() {",
+          "    Column() {",
+          "      UserHeadView()",
+          "      UserStateView()",
+          "      MineOptView()"
+        ]
+      }
+    },
+    "ui:92a7dead74f4": {
+      "id": "ui:92a7dead74f4",
+      "category": "Component",
+      "name": "build",
+      "description": "我的页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Mine.ets",
+      "line": 20,
+      "code": "build() {",
+      "context": {
+        "startLine": 15,
+        "lines": [
+          "import { MineOptView } from '../view/mine/MineOpt';",
+          "import { MoreServerView } from '../view/mine/MoreServer';",
+          "",
+          "@Component",
+          "export struct MineView {",
+          "  build() {",
+          "    Column() {",
+          "      UserHeadView()",
+          "      UserStateView()",
+          "      MineOptView()",
+          "      MoreServerView()"
+        ]
+      }
+    },
+    "ui:fb74e5cd40a2": {
+      "id": "ui:fb74e5cd40a2",
+      "category": "Component",
+      "name": "UserHeadView",
+      "description": "用户头像",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Mine.ets",
+      "line": 22,
+      "code": "UserHeadView()",
+      "context": {
+        "startLine": 17,
+        "lines": [
+          "",
+          "@Component",
+          "export struct MineView {",
+          "  build() {",
+          "    Column() {",
+          "      UserHeadView()",
+          "      UserStateView()",
+          "      MineOptView()",
+          "      MoreServerView()",
+          "    }.width('100%').height('100%')",
+          "    .justifyContent(FlexAlign.Start)"
+        ]
+      }
+    },
+    "ui:085bcce411f2": {
+      "id": "ui:085bcce411f2",
+      "category": "Component",
+      "name": "UserStateView",
+      "description": "用户状态展示",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Mine.ets",
+      "line": 23,
+      "code": "UserStateView()",
+      "context": {
+        "startLine": 18,
+        "lines": [
+          "@Component",
+          "export struct MineView {",
+          "  build() {",
+          "    Column() {",
+          "      UserHeadView()",
+          "      UserStateView()",
+          "      MineOptView()",
+          "      MoreServerView()",
+          "    }.width('100%').height('100%')",
+          "    .justifyContent(FlexAlign.Start)",
+          "  }"
+        ]
+      }
+    },
+    "ui:8d8350f0f2d4": {
+      "id": "ui:8d8350f0f2d4",
+      "category": "Component",
+      "name": "MineOptView",
+      "description": "我的功能入口",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Mine.ets",
+      "line": 24,
+      "code": "MineOptView()",
+      "context": {
+        "startLine": 19,
+        "lines": [
+          "export struct MineView {",
+          "  build() {",
+          "    Column() {",
+          "      UserHeadView()",
+          "      UserStateView()",
+          "      MineOptView()",
+          "      MoreServerView()",
+          "    }.width('100%').height('100%')",
+          "    .justifyContent(FlexAlign.Start)",
+          "  }",
+          "}"
+        ]
+      }
+    },
+    "ui:e69f4b068855": {
+      "id": "ui:e69f4b068855",
+      "category": "Component",
+      "name": "MoreServerView",
+      "description": "更多服务",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Mine.ets",
+      "line": 25,
+      "code": "MoreServerView()",
+      "context": {
+        "startLine": 20,
+        "lines": [
+          "  build() {",
+          "    Column() {",
+          "      UserHeadView()",
+          "      UserStateView()",
+          "      MineOptView()",
+          "      MoreServerView()",
+          "    }.width('100%').height('100%')",
+          "    .justifyContent(FlexAlign.Start)",
+          "  }",
+          "}"
+        ]
+      }
+    },
+    "page:6fbc28a89fb3": {
+      "id": "page:6fbc28a89fb3",
+      "category": "Page",
+      "name": "MomentsView",
+      "description": "动态页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Moments.ets",
+      "line": 17,
+      "code": "export struct MomentsView {",
+      "context": {
+        "startLine": 12,
+        "lines": [
+          "",
+          "import { OhNavBar } from '../view/base/OhNavBar'",
+          "import promptAction from '@ohos.promptAction'",
+          "",
+          "@Component",
+          "export struct MomentsView {",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: \"动态\", isBack: false, isTitleCenter: true })",
+          "",
+          "      Text(\"你还未登录\").fontSize(16).fontColor(Color.Black).fontWeight(FontWeight.Medium).margin({top: 48})"
+        ]
+      }
+    },
+    "ui:c38320ad0acc": {
+      "id": "ui:c38320ad0acc",
+      "category": "Button",
+      "name": "build",
+      "description": "动态页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Moments.ets",
+      "line": 18,
+      "code": "build() {",
+      "context": {
+        "startLine": 13,
+        "lines": [
+          "import { OhNavBar } from '../view/base/OhNavBar'",
+          "import promptAction from '@ohos.promptAction'",
+          "",
+          "@Component",
+          "export struct MomentsView {",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: \"动态\", isBack: false, isTitleCenter: true })",
+          "",
+          "      Text(\"你还未登录\").fontSize(16).fontColor(Color.Black).fontWeight(FontWeight.Medium).margin({top: 48})",
+          "      Text(\"登录账号，查看你关注的UP主内容\").fontSize(15).fontColor('#888888').margin({top: 16})"
+        ]
+      }
+    },
+    "ui:765387fd06b0": {
+      "id": "ui:765387fd06b0",
+      "category": "Button",
+      "name": "OhNavBar",
+      "description": "动态",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Moments.ets",
+      "line": 20,
+      "code": "OhNavBar({ title: \"动态\", isBack: false, isTitleCenter: true })",
+      "context": {
+        "startLine": 15,
+        "lines": [
+          "",
+          "@Component",
+          "export struct MomentsView {",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: \"动态\", isBack: false, isTitleCenter: true })",
+          "",
+          "      Text(\"你还未登录\").fontSize(16).fontColor(Color.Black).fontWeight(FontWeight.Medium).margin({top: 48})",
+          "      Text(\"登录账号，查看你关注的UP主内容\").fontSize(15).fontColor('#888888').margin({top: 16})",
+          "      Button(\"登录\").width(240).margin({top: 16}).onClick(() => {",
+          "        promptAction.showToast({"
+        ]
+      }
+    },
+    "ui:5f0e1ab355b3": {
+      "id": "ui:5f0e1ab355b3",
+      "category": "Button",
+      "name": "Text",
+      "description": "未登录提示",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Moments.ets",
+      "line": 22,
+      "code": "Text(\"你还未登录\").fontSize(16).fontColor(Color.Black).fontWeight(FontWeight.Medium).margin({top: 48})",
+      "context": {
+        "startLine": 17,
+        "lines": [
+          "export struct MomentsView {",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: \"动态\", isBack: false, isTitleCenter: true })",
+          "",
+          "      Text(\"你还未登录\").fontSize(16).fontColor(Color.Black).fontWeight(FontWeight.Medium).margin({top: 48})",
+          "      Text(\"登录账号，查看你关注的UP主内容\").fontSize(15).fontColor('#888888').margin({top: 16})",
+          "      Button(\"登录\").width(240).margin({top: 16}).onClick(() => {",
+          "        promptAction.showToast({",
+          "          message: '登录功能暂未实现',",
+          "          duration: 2000"
+        ]
+      }
+    },
+    "ui:05be51e1f3b4": {
+      "id": "ui:05be51e1f3b4",
+      "category": "Button",
+      "name": "Text",
+      "description": "登录引导提示",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Moments.ets",
+      "line": 23,
+      "code": "Text(\"登录账号，查看你关注的UP主内容\").fontSize(15).fontColor('#888888').margin({top: 16})",
+      "context": {
+        "startLine": 18,
+        "lines": [
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: \"动态\", isBack: false, isTitleCenter: true })",
+          "",
+          "      Text(\"你还未登录\").fontSize(16).fontColor(Color.Black).fontWeight(FontWeight.Medium).margin({top: 48})",
+          "      Text(\"登录账号，查看你关注的UP主内容\").fontSize(15).fontColor('#888888').margin({top: 16})",
+          "      Button(\"登录\").width(240).margin({top: 16}).onClick(() => {",
+          "        promptAction.showToast({",
+          "          message: '登录功能暂未实现',",
+          "          duration: 2000",
+          "        });"
+        ]
+      }
+    },
+    "ui:2ef0c7c8e88a": {
+      "id": "ui:2ef0c7c8e88a",
+      "category": "Button",
+      "name": "Button",
+      "description": "登录",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Moments.ets",
+      "line": 24,
+      "code": "Button(\"登录\").width(240).margin({top: 16}).onClick(() => {",
+      "context": {
+        "startLine": 19,
+        "lines": [
+          "    Column() {",
+          "      OhNavBar({ title: \"动态\", isBack: false, isTitleCenter: true })",
+          "",
+          "      Text(\"你还未登录\").fontSize(16).fontColor(Color.Black).fontWeight(FontWeight.Medium).margin({top: 48})",
+          "      Text(\"登录账号，查看你关注的UP主内容\").fontSize(15).fontColor('#888888').margin({top: 16})",
+          "      Button(\"登录\").width(240).margin({top: 16}).onClick(() => {",
+          "        promptAction.showToast({",
+          "          message: '登录功能暂未实现',",
+          "          duration: 2000",
+          "        });",
+          "      })"
+        ]
+      }
+    },
+    "page:aead19abd172": {
+      "id": "page:aead19abd172",
+      "category": "Page",
+      "name": "PopularView",
+      "description": "Popular页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Popular.ets",
+      "line": 21,
+      "code": "export struct PopularView {",
+      "context": {
+        "startLine": 16,
+        "lines": [
+          "import { DataSourceManager } from '../model/DataSourceManager';",
+          "import { PopularItemView } from '../view/home/PopularItem';",
+          "import { BaseVideo } from '../model/response/Response';",
+          "",
+          "@Component",
+          "export struct PopularView {",
+          "  private scroller: Scroller = new Scroller();",
+          "  @State data: PopularItem[] = [];",
+          "  @State pn: number = 1;",
+          "",
+          "  build() {"
+        ]
+      }
+    },
+    "ui:da65484371a5": {
+      "id": "ui:da65484371a5",
+      "category": "Component",
+      "name": "build",
+      "description": "热门列表",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Popular.ets",
+      "line": 26,
+      "code": "build() {",
+      "context": {
+        "startLine": 21,
+        "lines": [
+          "export struct PopularView {",
+          "  private scroller: Scroller = new Scroller();",
+          "  @State data: PopularItem[] = [];",
+          "  @State pn: number = 1;",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      HomePullToRefresh({",
+          "        // 必传项，列表组件所绑定的数据",
+          "        data: $data,",
+          "        // 必传项，需绑定传入主体布局内的列表或宫格组件"
+        ]
+      }
+    },
+    "ui:f6185a166791": {
+      "id": "ui:f6185a166791",
+      "category": "Component",
+      "name": "HomePullToRefresh",
+      "description": "下拉刷新列表",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Popular.ets",
+      "line": 28,
+      "code": "HomePullToRefresh({",
+      "context": {
+        "startLine": 23,
+        "lines": [
+          "  @State data: PopularItem[] = [];",
+          "  @State pn: number = 1;",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      HomePullToRefresh({",
+          "        // 必传项，列表组件所绑定的数据",
+          "        data: $data,",
+          "        // 必传项，需绑定传入主体布局内的列表或宫格组件",
+          "        scroller: this.scroller,",
+          "        // 必传项，自定义主体布局，内部有列表或宫格组件"
+        ]
+      }
+    },
+    "ui:07a4dcbd6676": {
+      "id": "ui:07a4dcbd6676",
+      "category": "Component",
+      "name": "resolve",
+      "description": "刷新回调处理",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Popular.ets",
+      "line": 40,
+      "code": "resolve('');",
+      "context": {
+        "startLine": 35,
+        "lines": [
+          "        // 可选项，下拉刷新回调",
+          "        onRefresh: () => {",
+          "          return new Promise<string>((resolve, reject) => {",
+          "            this.pn = 1;",
+          "            ApiManager.getInstance().requestPopular(this.pn).then((resp: boolean) => {",
+          "              resolve('');",
+          "            });",
+          "          });",
+          "        },",
+          "        // 可选项，上拉加载更多回调",
+          "        onLoadMore: () => {"
+        ]
+      }
+    },
+    "ui:437024ba421f": {
+      "id": "ui:437024ba421f",
+      "category": "Component",
+      "name": "resolve",
+      "description": "加载更多",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Popular.ets",
+      "line": 49,
+      "code": "resolve('');",
+      "context": {
+        "startLine": 44,
+        "lines": [
+          "        // 可选项，上拉加载更多回调",
+          "        onLoadMore: () => {",
+          "          return new Promise<string>((resolve, reject) => {",
+          "            this.pn++;",
+          "            ApiManager.getInstance().requestPopular(this.pn).then((resp: boolean) => {",
+          "              resolve('');",
+          "            });",
+          "          });",
+          "        },",
+          "        customLoad: undefined,",
+          "        customRefresh: undefined,"
+        ]
+      }
+    },
+    "page:b21a9e17fd84": {
+      "id": "page:b21a9e17fd84",
+      "category": "Page",
+      "name": "RecommendView",
+      "description": "Recommend页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Recommend.ets",
+      "line": 21,
+      "code": "export struct RecommendView {",
+      "context": {
+        "startLine": 16,
+        "lines": [
+          "import { DataSourceManager } from '../model/DataSourceManager';",
+          "import { RecommendItemView } from '../view/home/RecommendItem';",
+          "import { HomePullToRefresh } from '../view/home/HomePullToRefresh';",
+          "",
+          "@Component",
+          "export struct RecommendView {",
+          "  private scroller: Scroller = new Scroller();",
+          "  @State isRefreshing: boolean = false",
+          "  @State freshIdx: number = 1;",
+          "  @State data: RecommendItem[] = [];",
+          ""
+        ]
+      }
+    },
+    "ui:552ab4729d41": {
+      "id": "ui:552ab4729d41",
+      "category": "Component",
+      "name": "build",
+      "description": "推荐页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Recommend.ets",
+      "line": 27,
+      "code": "build() {",
+      "context": {
+        "startLine": 22,
+        "lines": [
+          "  private scroller: Scroller = new Scroller();",
+          "  @State isRefreshing: boolean = false",
+          "  @State freshIdx: number = 1;",
+          "  @State data: RecommendItem[] = [];",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      HomePullToRefresh({",
+          "        // 必传项，列表组件所绑定的数据",
+          "        data: $data,",
+          "        // 必传项，需绑定传入主体布局内的列表或宫格组件"
+        ]
+      }
+    },
+    "ui:611ae9d29768": {
+      "id": "ui:611ae9d29768",
+      "category": "Component",
+      "name": "HomePullToRefresh",
+      "description": "下拉刷新列表",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Recommend.ets",
+      "line": 29,
+      "code": "HomePullToRefresh({",
+      "context": {
+        "startLine": 24,
+        "lines": [
+          "  @State freshIdx: number = 1;",
+          "  @State data: RecommendItem[] = [];",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      HomePullToRefresh({",
+          "        // 必传项，列表组件所绑定的数据",
+          "        data: $data,",
+          "        // 必传项，需绑定传入主体布局内的列表或宫格组件",
+          "        scroller: this.scroller,",
+          "        // 必传项，自定义主体布局，内部有列表或宫格组件"
+        ]
+      }
+    },
+    "ui:0e7a7258ecc8": {
+      "id": "ui:0e7a7258ecc8",
+      "category": "Component",
+      "name": "resolve",
+      "description": "推荐刷新回调",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Recommend.ets",
+      "line": 41,
+      "code": "resolve('');",
+      "context": {
+        "startLine": 36,
+        "lines": [
+          "        // 可选项，下拉刷新回调",
+          "        onRefresh: () => {",
+          "          return new Promise<string>((resolve, reject) => {",
+          "            this.freshIdx++;",
+          "            ApiManager.getInstance().requestRecommend(this.freshIdx, true).then((resp: boolean) => {",
+          "              resolve('');",
+          "            });",
+          "          });",
+          "        },",
+          "        // 可选项，上拉加载更多回调",
+          "        onLoadMore: () => {"
+        ]
+      }
+    },
+    "ui:92a5cc870373": {
+      "id": "ui:92a5cc870373",
+      "category": "Component",
+      "name": "resolve",
+      "description": "加载更多",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Recommend.ets",
+      "line": 50,
+      "code": "resolve('');",
+      "context": {
+        "startLine": 45,
+        "lines": [
+          "        // 可选项，上拉加载更多回调",
+          "        onLoadMore: () => {",
+          "          return new Promise<string>((resolve, reject) => {",
+          "            this.freshIdx++;",
+          "            ApiManager.getInstance().requestRecommend(this.freshIdx, false).then((resp: boolean) => {",
+          "              resolve('');",
+          "            });",
+          "          });",
+          "        },",
+          "        customLoad: undefined,",
+          "        customRefresh: undefined,"
+        ]
+      }
+    },
+    "page:1bb846a6dabc": {
+      "id": "page:1bb846a6dabc",
+      "category": "Page",
+      "name": "SearchPage",
+      "description": "搜索页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 25,
+      "code": "struct SearchPage {",
+      "context": {
+        "startLine": 20,
+        "lines": [
+          "  defaultKeyword?: string;",
+          "}",
+          "",
+          "@Entry",
+          "@Component",
+          "struct SearchPage {",
+          "",
+          "  @State rankings: Array<RankingItem> = []",
+          "  private defaultKeyword: string = ''",
+          "",
+          "  aboutToAppear() {"
+        ]
+      }
+    },
+    "ui:4ffb9a7bcae0": {
+      "id": "ui:4ffb9a7bcae0",
+      "category": "Button",
+      "name": "build",
+      "description": "搜索页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 40,
+      "code": "build() {",
+      "context": {
+        "startLine": 35,
+        "lines": [
+          "    ApiManager.getInstance().requestRanking().then((resp) => {",
+          "      this.rankings = resp.data.list;",
+          "    });",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      SearchBar({placeholder: this.defaultKeyword})",
+          "      Row() {",
+          "        Text($r('app.string.bili_top_search'))",
+          "          .fontSize(14)"
+        ]
+      }
+    },
+    "ui:a5c51466bfbe": {
+      "id": "ui:a5c51466bfbe",
+      "category": "Button",
+      "name": "SearchBar",
+      "description": "搜索",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 42,
+      "code": "SearchBar({placeholder: this.defaultKeyword})",
+      "context": {
+        "startLine": 37,
+        "lines": [
+          "    });",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      SearchBar({placeholder: this.defaultKeyword})",
+          "      Row() {",
+          "        Text($r('app.string.bili_top_search'))",
+          "          .fontSize(14)",
+          "          .fontWeight(FontWeight.Bold)",
+          "        Blank()"
+        ]
+      }
+    },
+    "ui:bd43ef610577": {
+      "id": "ui:bd43ef610577",
+      "category": "Button",
+      "name": "Text",
+      "description": "热搜榜",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 44,
+      "code": "Text($r('app.string.bili_top_search'))",
+      "context": {
+        "startLine": 39,
+        "lines": [
+          "",
+          "  build() {",
+          "    Column() {",
+          "      SearchBar({placeholder: this.defaultKeyword})",
+          "      Row() {",
+          "        Text($r('app.string.bili_top_search'))",
+          "          .fontSize(14)",
+          "          .fontWeight(FontWeight.Bold)",
+          "        Blank()",
+          "        Text(\"完整榜单\").fontSize(14).fontColor(\"#888888\").onClick(() => {",
+          "          router.pushUrl({ url: 'pages/TopSearch', params: { rankings: this.rankings } });"
+        ]
+      }
+    },
+    "ui:9da3f992c946": {
+      "id": "ui:9da3f992c946",
+      "category": "Button",
+      "name": "Text",
+      "description": "完整榜单",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 48,
+      "code": "Text(\"完整榜单\").fontSize(14).fontColor(\"#888888\").onClick(() => {",
+      "context": {
+        "startLine": 43,
+        "lines": [
+          "      Row() {",
+          "        Text($r('app.string.bili_top_search'))",
+          "          .fontSize(14)",
+          "          .fontWeight(FontWeight.Bold)",
+          "        Blank()",
+          "        Text(\"完整榜单\").fontSize(14).fontColor(\"#888888\").onClick(() => {",
+          "          router.pushUrl({ url: 'pages/TopSearch', params: { rankings: this.rankings } });",
+          "        })",
+          "      }.width('100%')",
+          "      .padding({ left: 16, right: 16, top: 16, bottom: 8 })",
+          "      Grid() {"
+        ]
+      },
+      "navTarget": {
+        "kind": "pushUrl",
+        "url": "pages/TopSearch",
+        "resolvedFilePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets"
+      }
+    },
+    "ui:be673437f76d": {
+      "id": "ui:be673437f76d",
+      "category": "Button",
+      "name": "ForEach",
+      "description": "热搜关键词列表",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 54,
+      "code": "ForEach(this.rankings.slice(0, 10), (item: RankingItem) => {",
+      "context": {
+        "startLine": 49,
+        "lines": [
+          "          router.pushUrl({ url: 'pages/TopSearch', params: { rankings: this.rankings } });",
+          "        })",
+          "      }.width('100%')",
+          "      .padding({ left: 16, right: 16, top: 16, bottom: 8 })",
+          "      Grid() {",
+          "        ForEach(this.rankings.slice(0, 10), (item: RankingItem) => {",
+          "          GridItem() {",
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "              Text(item.keyword).maxLines(1)",
+          "                .fontSize(14)",
+          "                .textOverflow({overflow: TextOverflow.Ellipsis})"
+        ]
+      }
+    },
+    "ui:c56a87c0ae42": {
+      "id": "ui:c56a87c0ae42",
+      "category": "Button",
+      "name": "GridItem",
+      "description": "热搜条目",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 55,
+      "code": "GridItem() {",
+      "context": {
+        "startLine": 50,
+        "lines": [
+          "        })",
+          "      }.width('100%')",
+          "      .padding({ left: 16, right: 16, top: 16, bottom: 8 })",
+          "      Grid() {",
+          "        ForEach(this.rankings.slice(0, 10), (item: RankingItem) => {",
+          "          GridItem() {",
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "              Text(item.keyword).maxLines(1)",
+          "                .fontSize(14)",
+          "                .textOverflow({overflow: TextOverflow.Ellipsis})",
+          "              if (item.icon != undefined && item.icon != \"\") {"
+        ]
+      }
+    },
+    "ui:8c9532ce1158": {
+      "id": "ui:8c9532ce1158",
+      "category": "Button",
+      "name": "Text",
+      "description": "热搜关键词",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 57,
+      "code": "Text(item.keyword).maxLines(1)",
+      "context": {
+        "startLine": 52,
+        "lines": [
+          "      .padding({ left: 16, right: 16, top: 16, bottom: 8 })",
+          "      Grid() {",
+          "        ForEach(this.rankings.slice(0, 10), (item: RankingItem) => {",
+          "          GridItem() {",
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "              Text(item.keyword).maxLines(1)",
+          "                .fontSize(14)",
+          "                .textOverflow({overflow: TextOverflow.Ellipsis})",
+          "              if (item.icon != undefined && item.icon != \"\") {",
+          "                Image(item.icon)",
+          "                  .height(16)"
+        ]
+      }
+    },
+    "ui:261e93d914b3": {
+      "id": "ui:261e93d914b3",
+      "category": "Button",
+      "name": "Image",
+      "description": "查看搜索结果",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 61,
+      "code": "Image(item.icon)",
+      "context": {
+        "startLine": 56,
+        "lines": [
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "              Text(item.keyword).maxLines(1)",
+          "                .fontSize(14)",
+          "                .textOverflow({overflow: TextOverflow.Ellipsis})",
+          "              if (item.icon != undefined && item.icon != \"\") {",
+          "                Image(item.icon)",
+          "                  .height(16)",
+          "                  .margin({left: 4})",
+          "              }",
+          "            }.width('100%').padding({ left: 16, right: 16, top: 8, bottom: 8 })",
+          "          }.onClick(() => {"
+        ]
+      },
+      "navTarget": {
+        "kind": "pushUrl",
+        "url": "pages/SearchResult",
+        "resolvedFilePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets"
+      }
+    },
+    "page:9a7be148d173": {
+      "id": "page:9a7be148d173",
+      "category": "Page",
+      "name": "TopSearchPage",
+      "description": "搜索页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+      "line": 23,
+      "code": "struct TopSearchPage {",
+      "context": {
+        "startLine": 18,
+        "lines": [
+          "  rankings?: Array<RankingItem>;",
+          "}",
+          "",
+          "@Entry",
+          "@Component",
+          "struct TopSearchPage {",
+          "  private rankings: Array<RankingItem> = [];",
+          "  ",
+          "  aboutToAppear() {",
+          "    const params = router.getParams() as TopSearchParams;",
+          "    if (params && params.rankings) {"
+        ]
+      }
+    },
+    "page:895c3a9b7b7b": {
+      "id": "page:895c3a9b7b7b",
+      "category": "Page",
+      "name": "SearchResultPage",
+      "description": "搜索页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets",
+      "line": 29,
+      "code": "struct SearchResultPage {",
+      "context": {
+        "startLine": 24,
+        "lines": [
+          "  keyword?: string;",
+          "}",
+          "",
+          "@Entry",
+          "@Component",
+          "struct SearchResultPage {",
+          "  @State data: SearchVideo[] = [];",
+          "  private keyword: string = '';",
+          "  private scroller: Scroller = new Scroller();",
+          "  @State pn: number = 1;",
+          "  @State isLoading: boolean = false;"
+        ]
+      }
+    },
+    "ui:d5e035cf9a65": {
+      "id": "ui:d5e035cf9a65",
+      "category": "Component",
+      "name": "build",
+      "description": "搜索结果页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets",
+      "line": 52,
+      "code": "build() {",
+      "context": {
+        "startLine": 47,
+        "lines": [
+          "",
+          "  aboutToDisappear() {",
+          "    DataSourceManager.getSearchSource().setData([]);",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      SearchBar({keyword: this.keyword})",
+          "",
+          "      if (this.isLoading) {",
+          "        Text('数据加载中···')"
+        ]
+      }
+    },
+    "ui:4d3183faf9b5": {
+      "id": "ui:4d3183faf9b5",
+      "category": "Component",
+      "name": "SearchBar",
+      "description": "搜索栏",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets",
+      "line": 54,
+      "code": "SearchBar({keyword: this.keyword})",
+      "context": {
+        "startLine": 49,
+        "lines": [
+          "    DataSourceManager.getSearchSource().setData([]);",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      SearchBar({keyword: this.keyword})",
+          "",
+          "      if (this.isLoading) {",
+          "        Text('数据加载中···')",
+          "          .width('100%').layoutWeight(1)",
+          "          .fontSize(14).textAlign(TextAlign.Center)"
+        ]
+      }
+    },
+    "ui:57c3e7b8656a": {
+      "id": "ui:57c3e7b8656a",
+      "category": "Display",
+      "name": "Text",
+      "description": "数据加载中",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets",
+      "line": 57,
+      "code": "Text('数据加载中···')",
+      "context": {
+        "startLine": 52,
+        "lines": [
+          "  build() {",
+          "    Column() {",
+          "      SearchBar({keyword: this.keyword})",
+          "",
+          "      if (this.isLoading) {",
+          "        Text('数据加载中···')",
+          "          .width('100%').layoutWeight(1)",
+          "          .fontSize(14).textAlign(TextAlign.Center)",
+          "      } else {",
+          "        HomePullToRefresh({",
+          "          // 必传项，列表组件所绑定的数据"
+        ]
+      }
+    },
+    "ui:30ac9feb4ae4": {
+      "id": "ui:30ac9feb4ae4",
+      "category": "Component",
+      "name": "HomePullToRefresh",
+      "description": "下拉刷新列表",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets",
+      "line": 61,
+      "code": "HomePullToRefresh({",
+      "context": {
+        "startLine": 56,
+        "lines": [
+          "      if (this.isLoading) {",
+          "        Text('数据加载中···')",
+          "          .width('100%').layoutWeight(1)",
+          "          .fontSize(14).textAlign(TextAlign.Center)",
+          "      } else {",
+          "        HomePullToRefresh({",
+          "          // 必传项，列表组件所绑定的数据",
+          "          data: $data,",
+          "          // 必传项，需绑定传入主体布局内的列表或宫格组件",
+          "          scroller: this.scroller,",
+          "          // 必传项，自定义主体布局，内部有列表或宫格组件"
+        ]
+      }
+    },
+    "ui:bc62e262cf7e": {
+      "id": "ui:bc62e262cf7e",
+      "category": "Component",
+      "name": "resolve",
+      "description": "刷新加载",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets",
+      "line": 73,
+      "code": "resolve('');",
+      "context": {
+        "startLine": 68,
+        "lines": [
+          "          // 可选项，下拉刷新回调",
+          "          onRefresh: () => {",
+          "            return new Promise<string>((resolve, reject) => {",
+          "              this.pn = 1;",
+          "              ApiManager.getInstance().requestSearch(this.keyword, this.pn).then((success: boolean) => {",
+          "                resolve('');",
+          "              });",
+          "            });",
+          "          },",
+          "          // 可选项，上拉加载更多回调",
+          "          onLoadMore: () => {"
+        ]
+      }
+    },
+    "ui:9587dee5de15": {
+      "id": "ui:9587dee5de15",
+      "category": "Component",
+      "name": "resolve",
+      "description": "搜索加载更多",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets",
+      "line": 82,
+      "code": "resolve('');",
+      "context": {
+        "startLine": 77,
+        "lines": [
+          "          // 可选项，上拉加载更多回调",
+          "          onLoadMore: () => {",
+          "            return new Promise<string>((resolve, reject) => {",
+          "              this.pn++;",
+          "              ApiManager.getInstance().requestSearch(this.keyword, this.pn).then((success: boolean) => {",
+          "                resolve('');",
+          "              });",
+          "            });",
+          "          },",
+          "          customLoad: undefined,",
+          "          customRefresh: undefined,"
+        ]
+      }
+    },
+    "page:ed19863193d5": {
+      "id": "page:ed19863193d5",
+      "category": "Page",
+      "name": "Setting",
+      "description": "设置页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Setting.ets",
+      "line": 19,
+      "code": "struct Setting {",
+      "context": {
+        "startLine": 14,
+        "lines": [
+          "import { SettingTextItem } from '../view/base/SettingTextItem';",
+          "import { OhNavBar } from '../view/base/OhNavBar'",
+          "",
+          "@Entry",
+          "@Component",
+          "struct Setting {",
+          "  @StorageLink('checkUpdates') checkUpdates: string = '1';",
+          "  @StorageLink('showDefaultKeyword') showDefaultKeyword: string = '1';",
+          "  @StorageLink('showTopSearch') showTopSearch: string = '1';",
+          "  @StorageLink('openDanmu') openDanmu: string = '1';",
+          "  @StorageLink('danmuFontSize') danmuFontSize: string = '1.0X';"
+        ]
+      }
+    },
+    "ui:1be295f3bf5a": {
+      "id": "ui:1be295f3bf5a",
+      "category": "Component",
+      "name": "build",
+      "description": "设置页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Setting.ets",
+      "line": 35,
+      "code": "build() {",
+      "context": {
+        "startLine": 30,
+        "lines": [
+          "  private danmuFontSizeArr: string[] = ['0.6X', '0.9X', '1.0X', '1.2X', '1.4X', '1.6X']",
+          "  private danmuOpacityArr: string[] = ['50%', '60%', '70%', '80%', '90%', '100%']",
+          "  private videoQualityArr: string[] = ['4K超清', '1080P高码率', '1080P', '720P', '480P', '360P']",
+          "  private playSpeedArr: string[] = ['2.0X', '1.5X', '1.25X', '1.0X', '0.75X', '0.5X']",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '设置' })",
+          "      Scroll() {",
+          "        Column() {",
+          "          this.BaseSettingComponent()"
+        ]
+      }
+    },
+    "ui:fe27eea90a34": {
+      "id": "ui:fe27eea90a34",
+      "category": "Component",
+      "name": "OhNavBar",
+      "description": "设置",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Setting.ets",
+      "line": 37,
+      "code": "OhNavBar({ title: '设置' })",
+      "context": {
+        "startLine": 32,
+        "lines": [
+          "  private videoQualityArr: string[] = ['4K超清', '1080P高码率', '1080P', '720P', '480P', '360P']",
+          "  private playSpeedArr: string[] = ['2.0X', '1.5X', '1.25X', '1.0X', '0.75X', '0.5X']",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      OhNavBar({ title: '设置' })",
+          "      Scroll() {",
+          "        Column() {",
+          "          this.BaseSettingComponent()",
+          "          this.DanmuSettingComponent()",
+          "          this.VideoSettingComponent()"
+        ]
+      }
+    },
+    "page:05d6bccf15de": {
+      "id": "page:05d6bccf15de",
+      "category": "Page",
+      "name": "Splash",
+      "description": "启动页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+      "line": 25,
+      "code": "struct Splash {",
+      "context": {
+        "startLine": 20,
+        "lines": [
+          "",
+          "storageInit();",
+          "",
+          "@Entry",
+          "@Component",
+          "struct Splash {",
+          "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+          "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+          "",
+          "  aboutToAppear() {",
+          "    let list: Array<Permissions> = ["
+        ]
+      }
+    },
+    "ui:a93f59aebe49": {
+      "id": "ui:a93f59aebe49",
+      "category": "Component",
+      "name": "build",
+      "description": "启动页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+      "line": 97,
+      "code": "build() {",
+      "context": {
+        "startLine": 92,
+        "lines": [
+          "  onPageShow() {",
+          "    WindowManager.setLayoutFullScreen(false, WindowManager.COLOR_WHITE,",
+          "      WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Image($r('app.media.bilibili'))",
+          "        .width('100%')",
+          "        .height('100%')",
+          "    }.width('100%').height('100%')"
+        ]
+      }
+    },
+    "ui:252d5e1da9bd": {
+      "id": "ui:252d5e1da9bd",
+      "category": "Display",
+      "name": "Image",
+      "description": "启动页图标",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+      "line": 99,
+      "code": "Image($r('app.media.bilibili'))",
+      "context": {
+        "startLine": 94,
+        "lines": [
+          "      WindowManager.COLOR_BLACK, WindowManager.COLOR_WHITE, WindowManager.COLOR_BLACK);",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Image($r('app.media.bilibili'))",
+          "        .width('100%')",
+          "        .height('100%')",
+          "    }.width('100%').height('100%')",
+          "  }",
+          "}"
+        ]
+      }
+    },
+    "ui:9c15a1a54855": {
+      "id": "ui:9c15a1a54855",
+      "category": "Button",
+      "name": "build",
+      "description": "返回",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+      "line": 33,
+      "code": "build() {",
+      "context": {
+        "startLine": 28,
+        "lines": [
+          "    if (params && params.rankings) {",
+          "      this.rankings = params.rankings;",
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Row() {",
+          "        Image($r('app.media.ic_page_back'))",
+          "          .objectFit(ImageFit.Auto)",
+          "          .width(18)"
+        ]
+      }
+    },
+    "ui:dd83fbb9afb4": {
+      "id": "ui:dd83fbb9afb4",
+      "category": "Button",
+      "name": "Image",
+      "description": "返回",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+      "line": 36,
+      "code": "Image($r('app.media.ic_page_back'))",
+      "context": {
+        "startLine": 31,
+        "lines": [
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Row() {",
+          "        Image($r('app.media.ic_page_back'))",
+          "          .objectFit(ImageFit.Auto)",
+          "          .width(18)",
+          "          .height(18)",
+          "          .margin({ left: 16 })",
+          "          .onClick(() => {"
+        ]
+      }
+    },
+    "ui:007cea848787": {
+      "id": "ui:007cea848787",
+      "category": "Display",
+      "name": "Text",
+      "description": "bilibili热搜",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+      "line": 44,
+      "code": "Text(\"bilibili热搜\")",
+      "context": {
+        "startLine": 39,
+        "lines": [
+          "          .height(18)",
+          "          .margin({ left: 16 })",
+          "          .onClick(() => {",
+          "            router.back();",
+          "          })",
+          "        Text(\"bilibili热搜\")",
+          "          .fontSize(32)",
+          "          .fontWeight(FontWeight.Bold)",
+          "          .fontColor(\"#1698CE\")",
+          "          .layoutWeight(1)",
+          "          .textAlign(TextAlign.Center)"
+        ]
+      }
+    },
+    "ui:76040aba44ea": {
+      "id": "ui:76040aba44ea",
+      "category": "Component",
+      "name": "ForEach",
+      "description": "热搜排行榜",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+      "line": 58,
+      "code": "ForEach(this.rankings, (item: RankingItem) => {",
+      "context": {
+        "startLine": 53,
+        "lines": [
+          "      }.margin({ top: 12, bottom: 24 })",
+          "",
+          "      Flex().width('100%').height(1)",
+          "        .backgroundColor('#ffeeeeee')",
+          "      List() {",
+          "        ForEach(this.rankings, (item: RankingItem) => {",
+          "          ListItem() {",
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "              Text(item.position + \"\")",
+          "                .maxLines(1)",
+          "                .fontSize(16)"
+        ]
+      }
+    },
+    "ui:c28b608526a2": {
+      "id": "ui:c28b608526a2",
+      "category": "Display",
+      "name": "Text",
+      "description": "排名序号",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+      "line": 61,
+      "code": "Text(item.position + \"\")",
+      "context": {
+        "startLine": 56,
+        "lines": [
+          "        .backgroundColor('#ffeeeeee')",
+          "      List() {",
+          "        ForEach(this.rankings, (item: RankingItem) => {",
+          "          ListItem() {",
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "              Text(item.position + \"\")",
+          "                .maxLines(1)",
+          "                .fontSize(16)",
+          "                .fontWeight(FontWeight.Bold)",
+          "                .fontColor(Color.Gray)",
+          "                .width(30)"
+        ]
+      }
+    },
+    "ui:f7da7199d4b2": {
+      "id": "ui:f7da7199d4b2",
+      "category": "Display",
+      "name": "Text",
+      "description": "搜索关键词",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+      "line": 67,
+      "code": "Text(item.keyword).maxLines(1)",
+      "context": {
+        "startLine": 62,
+        "lines": [
+          "                .maxLines(1)",
+          "                .fontSize(16)",
+          "                .fontWeight(FontWeight.Bold)",
+          "                .fontColor(Color.Gray)",
+          "                .width(30)",
+          "              Text(item.keyword).maxLines(1)",
+          "                .fontSize(16)",
+          "                .textOverflow({ overflow: TextOverflow.Ellipsis })",
+          "              if (item.icon != undefined && item.icon != \"\") {",
+          "                Image(item.icon)",
+          "                  .height(16)"
+        ]
+      }
+    },
+    "ui:c484a7fc3ffd": {
+      "id": "ui:c484a7fc3ffd",
+      "category": "Button",
+      "name": "Image",
+      "description": "热搜图标",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+      "line": 71,
+      "code": "Image(item.icon)",
+      "context": {
+        "startLine": 66,
+        "lines": [
+          "                .width(30)",
+          "              Text(item.keyword).maxLines(1)",
+          "                .fontSize(16)",
+          "                .textOverflow({ overflow: TextOverflow.Ellipsis })",
+          "              if (item.icon != undefined && item.icon != \"\") {",
+          "                Image(item.icon)",
+          "                  .height(16)",
+          "                  .margin({ left: 4 })",
+          "              }",
+          "              Blank()",
+          "              Image($r('app.media.ic_arrow_right'))"
+        ]
+      }
+    },
+    "ui:2e53aec59551": {
+      "id": "ui:2e53aec59551",
+      "category": "Button",
+      "name": "Image",
+      "description": "进入搜索详情",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+      "line": 76,
+      "code": "Image($r('app.media.ic_arrow_right'))",
+      "context": {
+        "startLine": 71,
+        "lines": [
+          "                Image(item.icon)",
+          "                  .height(16)",
+          "                  .margin({ left: 4 })",
+          "              }",
+          "              Blank()",
+          "              Image($r('app.media.ic_arrow_right'))",
+          "                .objectFit(ImageFit.Auto)",
+          "                .width(18)",
+          "                .height(18)",
+          "                .margin({ left: 16 })",
+          "            }.width('100%').padding({ top: 12, bottom: 12 })"
+        ]
+      },
+      "navTarget": {
+        "kind": "pushUrl",
+        "url": "pages/SearchResult",
+        "resolvedFilePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets"
+      }
+    },
+    "page:87e3308c31d3": {
+      "id": "page:87e3308c31d3",
+      "category": "Page",
+      "name": "VideoPlayer",
+      "description": "Video页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 33,
+      "code": "struct VideoPlayer {",
+      "context": {
+        "startLine": 28,
+        "lines": [
+          "  vInfo?: BaseVideo;",
+          "}",
+          "",
+          "@Entry",
+          "@Component",
+          "struct VideoPlayer {",
+          "  @State vInfo: BaseVideo = EmptyBaseVideo(\"\")",
+          "  @StorageLink('isPortrait') @Watch('onPortraitUpdated') isPortrait: boolean = true;",
+          "  @State currentIndex: number = 0;",
+          "  @StorageLink('replyCount') @Watch('onCountUpdated') replyCount: number = 0;",
+          "  @State tabTitle: ResourceStr[] = [$r('app.string.video_overview'), $r('app.string.video_reply', 0)];"
+        ]
+      }
+    },
+    "ui:8575c4a06188": {
+      "id": "ui:8575c4a06188",
+      "category": "Component",
+      "name": "build",
+      "description": "视频播放页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 139,
+      "code": "build() {",
+      "context": {
+        "startLine": 134,
+        "lines": [
+          "    .height('100%')",
+          "    .justifyContent(FlexAlign.Center)",
+          "    .border({ width: { bottom: 0.5 }, color: '#cccccc' })",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      PlayerView({ cid: this.vInfo.cid, bvid: this.vInfo.bvid, pageState: $pageState })",
+          "      if (this.isPortrait) {",
+          "        if (this.replyItem != null) {",
+          "          Column() {"
+        ]
+      }
+    },
+    "ui:afd4a60b9171": {
+      "id": "ui:afd4a60b9171",
+      "category": "Component",
+      "name": "PlayerView",
+      "description": "视频播放器",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 141,
+      "code": "PlayerView({ cid: this.vInfo.cid, bvid: this.vInfo.bvid, pageState: $pageState })",
+      "context": {
+        "startLine": 136,
+        "lines": [
+          "    .border({ width: { bottom: 0.5 }, color: '#cccccc' })",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      PlayerView({ cid: this.vInfo.cid, bvid: this.vInfo.bvid, pageState: $pageState })",
+          "      if (this.isPortrait) {",
+          "        if (this.replyItem != null) {",
+          "          Column() {",
+          "            ReplyDetailView({ vInfo: this.vInfo })",
+          "          }.layoutWeight(1)"
+        ]
+      }
+    },
+    "ui:17cff722761b": {
+      "id": "ui:17cff722761b",
+      "category": "Component",
+      "name": "ReplyDetailView",
+      "description": "评论详情视图",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 145,
+      "code": "ReplyDetailView({ vInfo: this.vInfo })",
+      "context": {
+        "startLine": 140,
+        "lines": [
+          "    Column() {",
+          "      PlayerView({ cid: this.vInfo.cid, bvid: this.vInfo.bvid, pageState: $pageState })",
+          "      if (this.isPortrait) {",
+          "        if (this.replyItem != null) {",
+          "          Column() {",
+          "            ReplyDetailView({ vInfo: this.vInfo })",
+          "          }.layoutWeight(1)",
+          "        } else {",
+          "          Tabs({ index: this.currentIndex }) {",
+          "            TabContent() {",
+          "              VideoOverview({ vInfo: $vInfo, isFollowing: $isFollowing, fansCount: $fansCount, archiveCount: $archiveCount })"
+        ]
+      }
+    },
+    "ui:b3dfe9957b36": {
+      "id": "ui:b3dfe9957b36",
+      "category": "Component",
+      "name": "VideoOverview",
+      "description": "视频详情概览",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 150,
+      "code": "VideoOverview({ vInfo: $vInfo, isFollowing: $isFollowing, fansCount: $fansCount, archiveCount: $archiveCount })",
+      "context": {
+        "startLine": 145,
+        "lines": [
+          "            ReplyDetailView({ vInfo: this.vInfo })",
+          "          }.layoutWeight(1)",
+          "        } else {",
+          "          Tabs({ index: this.currentIndex }) {",
+          "            TabContent() {",
+          "              VideoOverview({ vInfo: $vInfo, isFollowing: $isFollowing, fansCount: $fansCount, archiveCount: $archiveCount })",
+          "            }",
+          "            .tabBar(this.TabBuilder(0))",
+          "",
+          "            TabContent() {",
+          "              VideoReply({ vInfo: this.vInfo })"
+        ]
+      }
+    },
+    "ui:771eb712479e": {
+      "id": "ui:771eb712479e",
+      "category": "Component",
+      "name": "VideoReply",
+      "description": "视频评论",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Video.ets",
+      "line": 155,
+      "code": "VideoReply({ vInfo: this.vInfo })",
+      "context": {
+        "startLine": 150,
+        "lines": [
+          "              VideoOverview({ vInfo: $vInfo, isFollowing: $isFollowing, fansCount: $fansCount, archiveCount: $archiveCount })",
+          "            }",
+          "            .tabBar(this.TabBuilder(0))",
+          "",
+          "            TabContent() {",
+          "              VideoReply({ vInfo: this.vInfo })",
+          "            }",
+          "            .tabBar(this.TabBuilder(1))",
+          "          }.barHeight(40).onChange((index) => {",
+          "            if (this.replyItem == null) {",
+          "              BLog.i(\"onChange: \" + index);"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:f67567d6331b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:a8f59f3aeba3",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:00211fd0ff12",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:e818646d7e56",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:ff7b132e1934",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:0634b985d431",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:13e6cb90a8f0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1a028764137d",
+      "to": "ui:a16870bcd7fd",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1a028764137d",
+      "to": "ui:b3abfe96d810",
+      "kind": "contains"
+    },
+    {
+      "from": "page:680445ee49f6",
+      "to": "ui:127980dec704",
+      "kind": "contains"
+    },
+    {
+      "from": "page:680445ee49f6",
+      "to": "ui:1812b6893d1f",
+      "kind": "contains"
+    },
+    {
+      "from": "page:680445ee49f6",
+      "to": "ui:3915d73597b9",
+      "kind": "contains"
+    },
+    {
+      "from": "page:4f162f495801",
+      "to": "ui:62d5f0457e7a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:4f162f495801",
+      "to": "ui:d3dbf4bf2deb",
+      "kind": "contains"
+    },
+    {
+      "from": "page:4f162f495801",
+      "to": "ui:7ec93b83a933",
+      "kind": "contains"
+    },
+    {
+      "from": "page:4f162f495801",
+      "to": "ui:7e2fba0911ad",
+      "kind": "contains"
+    },
+    {
+      "from": "page:4f162f495801",
+      "to": "ui:47097712e5bf",
+      "kind": "contains"
+    },
+    {
+      "from": "page:4f162f495801",
+      "to": "ui:9681eb53635e",
+      "kind": "contains"
+    },
+    {
+      "from": "page:4f162f495801",
+      "to": "ui:b202b241df14",
+      "kind": "contains"
+    },
+    {
+      "from": "page:4f162f495801",
+      "to": "ui:eb5af8f076b1",
+      "kind": "contains"
+    },
+    {
+      "from": "page:4f162f495801",
+      "to": "ui:72b99be99d77",
+      "kind": "contains"
+    },
+    {
+      "from": "ui:72b99be99d77",
+      "to": "page:39c45203cc7e",
+      "kind": "navigatesTo"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:a9c9d000ca5d",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:37e02654b9ba",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:21f0c9778277",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:2025ef967b9a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:d783b5fca211",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:31a80499168a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:3786a9811f3e",
+      "kind": "contains"
+    },
+    {
+      "from": "page:eab6d4d72358",
+      "to": "ui:a6803e0f6cd4",
+      "kind": "contains"
+    },
+    {
+      "from": "page:eab6d4d72358",
+      "to": "ui:0417bcb9f3db",
+      "kind": "contains"
+    },
+    {
+      "from": "page:eab6d4d72358",
+      "to": "ui:b23ade028c59",
+      "kind": "contains"
+    },
+    {
+      "from": "page:eab6d4d72358",
+      "to": "ui:88531a837a57",
+      "kind": "contains"
+    },
+    {
+      "from": "page:eab6d4d72358",
+      "to": "ui:07b2ee182cf0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:39c45203cc7e",
+      "to": "ui:255622cd0aa8",
+      "kind": "contains"
+    },
+    {
+      "from": "page:39c45203cc7e",
+      "to": "ui:4d66fd8c3b07",
+      "kind": "contains"
+    },
+    {
+      "from": "page:39c45203cc7e",
+      "to": "ui:fb1b01f8eaa0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:974626ce5c54",
+      "to": "ui:92a7dead74f4",
+      "kind": "contains"
+    },
+    {
+      "from": "page:974626ce5c54",
+      "to": "ui:fb74e5cd40a2",
+      "kind": "contains"
+    },
+    {
+      "from": "page:974626ce5c54",
+      "to": "ui:085bcce411f2",
+      "kind": "contains"
+    },
+    {
+      "from": "page:974626ce5c54",
+      "to": "ui:8d8350f0f2d4",
+      "kind": "contains"
+    },
+    {
+      "from": "page:974626ce5c54",
+      "to": "ui:e69f4b068855",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6fbc28a89fb3",
+      "to": "ui:c38320ad0acc",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6fbc28a89fb3",
+      "to": "ui:765387fd06b0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6fbc28a89fb3",
+      "to": "ui:5f0e1ab355b3",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6fbc28a89fb3",
+      "to": "ui:05be51e1f3b4",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6fbc28a89fb3",
+      "to": "ui:2ef0c7c8e88a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:aead19abd172",
+      "to": "ui:da65484371a5",
+      "kind": "contains"
+    },
+    {
+      "from": "page:aead19abd172",
+      "to": "ui:f6185a166791",
+      "kind": "contains"
+    },
+    {
+      "from": "page:aead19abd172",
+      "to": "ui:07a4dcbd6676",
+      "kind": "contains"
+    },
+    {
+      "from": "page:aead19abd172",
+      "to": "ui:437024ba421f",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b21a9e17fd84",
+      "to": "ui:552ab4729d41",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b21a9e17fd84",
+      "to": "ui:611ae9d29768",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b21a9e17fd84",
+      "to": "ui:0e7a7258ecc8",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b21a9e17fd84",
+      "to": "ui:92a5cc870373",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:4ffb9a7bcae0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:a5c51466bfbe",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:bd43ef610577",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:9da3f992c946",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:be673437f76d",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:c56a87c0ae42",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:8c9532ce1158",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:261e93d914b3",
+      "kind": "contains"
+    },
+    {
+      "from": "ui:9da3f992c946",
+      "to": "page:9a7be148d173",
+      "kind": "navigatesTo"
+    },
+    {
+      "from": "ui:261e93d914b3",
+      "to": "page:895c3a9b7b7b",
+      "kind": "navigatesTo"
+    },
+    {
+      "from": "page:895c3a9b7b7b",
+      "to": "ui:d5e035cf9a65",
+      "kind": "contains"
+    },
+    {
+      "from": "page:895c3a9b7b7b",
+      "to": "ui:4d3183faf9b5",
+      "kind": "contains"
+    },
+    {
+      "from": "page:895c3a9b7b7b",
+      "to": "ui:57c3e7b8656a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:895c3a9b7b7b",
+      "to": "ui:30ac9feb4ae4",
+      "kind": "contains"
+    },
+    {
+      "from": "page:895c3a9b7b7b",
+      "to": "ui:bc62e262cf7e",
+      "kind": "contains"
+    },
+    {
+      "from": "page:895c3a9b7b7b",
+      "to": "ui:9587dee5de15",
+      "kind": "contains"
+    },
+    {
+      "from": "page:ed19863193d5",
+      "to": "ui:1be295f3bf5a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:ed19863193d5",
+      "to": "ui:fe27eea90a34",
+      "kind": "contains"
+    },
+    {
+      "from": "page:05d6bccf15de",
+      "to": "ui:a93f59aebe49",
+      "kind": "contains"
+    },
+    {
+      "from": "page:05d6bccf15de",
+      "to": "ui:252d5e1da9bd",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9a7be148d173",
+      "to": "ui:9c15a1a54855",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9a7be148d173",
+      "to": "ui:dd83fbb9afb4",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9a7be148d173",
+      "to": "ui:007cea848787",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9a7be148d173",
+      "to": "ui:76040aba44ea",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9a7be148d173",
+      "to": "ui:c28b608526a2",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9a7be148d173",
+      "to": "ui:f7da7199d4b2",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9a7be148d173",
+      "to": "ui:c484a7fc3ffd",
+      "kind": "contains"
+    },
+    {
+      "from": "page:9a7be148d173",
+      "to": "ui:2e53aec59551",
+      "kind": "contains"
+    },
+    {
+      "from": "ui:2e53aec59551",
+      "to": "page:895c3a9b7b7b",
+      "kind": "navigatesTo"
+    },
+    {
+      "from": "page:87e3308c31d3",
+      "to": "ui:8575c4a06188",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87e3308c31d3",
+      "to": "ui:afd4a60b9171",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87e3308c31d3",
+      "to": "ui:17cff722761b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87e3308c31d3",
+      "to": "ui:b3dfe9957b36",
+      "kind": "contains"
+    },
+    {
+      "from": "page:87e3308c31d3",
+      "to": "ui:771eb712479e",
+      "kind": "contains"
+    }
+  ]
+}

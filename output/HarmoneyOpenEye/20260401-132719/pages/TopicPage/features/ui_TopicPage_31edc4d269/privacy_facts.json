@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "featureId": "ui_TopicPage_31edc4d269",
+    "generatedAt": "2026-04-01T05:46:17.321Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在话题列表页点击具体话题项，查看该话题的详细内容",
+        "dataSources": [
+          "内存中的话题列表数据状态"
+        ],
+        "dataItems": [
+          {
+            "name": "话题项 ID",
+            "refs": [
+              {
+                "flowId": "flow:p36",
+                "nodeId": "p36:n7"
+              },
+              {
+                "flowId": "flow:p37",
+                "nodeId": "p37:n7"
+              },
+              {
+                "flowId": "flow:p38",
+                "nodeId": "p38:n7"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转日志信息",
+            "refs": [
+              {
+                "flowId": "flow:p36",
+                "nodeId": "p36:n11"
+              },
+              {
+                "flowId": "flow:p36",
+                "nodeId": "p36:n12"
+              },
+              {
+                "flowId": "flow:p37",
+                "nodeId": "p37:n11"
+              },
+              {
+                "flowId": "flow:p37",
+                "nodeId": "p37:n12"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取内存中的数据项 ID，将其作为参数传递给路由跳转接口；在跳转成功或失败时生成包含 URL 或错误信息的日志文本",
+        "storageMethod": "数据暂存于内存组件状态中，无本地持久化存储；日志信息写入系统日志缓冲区",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p36",
+                "nodeId": "p36:n12"
+              },
+              {
+                "flowId": "flow:p37",
+                "nodeId": "p37:n12"
+              }
+            ]
+          },
+          {
+            "name": "话题详情页面",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p36",
+                "nodeId": "p36:n9"
+              },
+              {
+                "flowId": "flow:p37",
+                "nodeId": "p37:n9"
+              },
+              {
+                "flowId": "flow:p38",
+                "nodeId": "p38:n8"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现从列表页到详情页的导航跳转，并记录操作日志以便调试和监控",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

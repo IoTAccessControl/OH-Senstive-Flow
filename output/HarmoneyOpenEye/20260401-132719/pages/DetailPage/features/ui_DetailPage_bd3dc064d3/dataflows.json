@@ -1,0 +1,264 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p46 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets:17 之后继续扩展",
+      "数据流 p48 LLM 分析失败，已回退到锚点数据流：LLM 输出跨入了当前路径之外的 source：input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets:16"
+    ],
+    "counts": {
+      "flows": 3,
+      "nodes": 7,
+      "edges": 4,
+      "failedPaths": 2,
+      "fallbackFlows": 2
+    },
+    "page": {
+      "pageId": "DetailPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+        "structName": "DetailPage",
+        "line": 9,
+        "description": "视频详情页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_DetailPage_bd3dc064d3",
+      "kind": "ui",
+      "title": "视频详情"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p46",
+      "pathId": "p46",
+      "nodes": [
+        {
+          "id": "p46:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 16,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  @State showControls: boolean = true",
+              "  @State playUrl: string = \"\"",
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p46:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 17,
+          "code": "this.relationId = router.getParams()['id']",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  @State playUrl: string = \"\"",
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p46:n1",
+          "to": "p46:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p46 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets:17 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p47",
+      "pathId": "p47",
+      "nodes": [
+        {
+          "id": "p47:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 16,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，当组件即将显示时触发，开始执行数据初始化逻辑。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  @State showControls: boolean = true",
+              "  @State playUrl: string = \"\"",
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p47:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 17,
+          "code": "this.relationId = router.getParams()['id']",
+          "description": "调用 router.getParams() 获取路由参数对象，并提取 'id' 字段赋值给 relationId 状态变量。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  @State playUrl: string = \"\"",
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p47:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 18,
+          "code": "this.playUrl = router.getParams()['playUrl']",
+          "description": "再次调用 router.getParams() 获取路由参数对象，提取 'playUrl' 字段（视频播放地址）并赋值给 playUrl 状态变量，完成敏感数据从路由到组件状态的流转。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '视频详情', alpha: 1 })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p47:n1",
+          "to": "p47:n2"
+        },
+        {
+          "from": "p47:n2",
+          "to": "p47:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (playUrl)",
+          "页面路由参数 (id)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存存储 (@State 状态变量)，未加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p48",
+      "pathId": "p48",
+      "nodes": [
+        {
+          "id": "p48:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 21,
+          "code": "build() {",
+          "description": "ArkUI 组件的 UI 构建入口函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '视频详情', alpha: 1 })",
+              "      this.headerPlayer()",
+              "      VideoBottomComponent({",
+              "        relationId: this.relationId,"
+            ]
+          }
+        },
+        {
+          "id": "p48:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets",
+          "line": 18,
+          "code": "this.playUrl = router.getParams()['playUrl']",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State relationId: number = -1",
+              "  private controller: VideoController = new VideoController()",
+              "",
+              "  aboutToAppear() {",
+              "    this.relationId = router.getParams()['id']",
+              "    this.playUrl = router.getParams()['playUrl']",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '视频详情', alpha: 1 })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p48:n1",
+          "to": "p48:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p48 LLM 分析失败，已回退到锚点数据流：LLM 输出跨入了当前路径之外的 source：input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/DetailPage.ets:16"
+        ]
+      }
+    }
+  ]
+}

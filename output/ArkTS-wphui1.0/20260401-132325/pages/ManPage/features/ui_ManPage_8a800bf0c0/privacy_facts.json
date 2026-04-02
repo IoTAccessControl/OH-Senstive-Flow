@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "runId": "ArkTS-wphui1.0_20260401-132325",
+    "featureId": "ui_ManPage_8a800bf0c0",
+    "generatedAt": "2026-04-01T05:27:11.186Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ArkTS-wphui1.0",
+        "businessScenario": "用户在男装页面浏览商品瀑布流列表，并点击商品卡片查看详细信息时",
+        "dataSources": [
+          "本地内存数据源"
+        ],
+        "dataItems": [
+          {
+            "name": "商品图片 URL",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n3"
+              }
+            ]
+          },
+          {
+            "name": "商品价格",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n4"
+              }
+            ]
+          },
+          {
+            "name": "商品卡片唯一标识",
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取本地数据源并在界面渲染展示；响应用户点击事件，将商品标识作为参数通过路由明文传递至详情页",
+        "storageMethod": "数据暂存于内存组件状态，页面跳转时通过路由参数临时传递（未加密）",
+        "dataRecipients": [
+          {
+            "name": "商品详情页面",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "向用户展示商品图片与价格信息，并支持用户点击跳转至详情页以获取更多商品信息",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

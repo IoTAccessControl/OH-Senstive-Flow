@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260401-131340",
+    "generatedAt": "2026-04-01T05:17:32.141Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onBackground_52_f1c5496b",
+      "kind": "source",
+      "title": "应用切到后台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p19",
+      "pathId": "p19",
+      "nodes": [
+        {
+          "id": "p19:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 52,
+          "code": "onBackground(): void {",
+          "description": "定义 onBackground 生命周期回调函数，作为数据流的起点，当应用界面切换到后台时被系统触发。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "",
+              "  onForeground(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p19:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 53,
+          "code": "hilog.info(this.domainId, this.logTag, 'Ability onBackground');",
+          "description": "调用 hilog.info 接口，将包含 domainId、logTag 及固定文本 'Ability onBackground' 的生命周期事件信息写入系统日志，作为数据流的终点。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  onForeground(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p19:n1",
+          "to": "p19:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "日志标签 (logTag)",
+          "日志域 ID (domainId)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (当 UIAbility 切换到后台时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出，未检测到网络发送行为)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (仅运行时内存打印)",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

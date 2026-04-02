@@ -1,0 +1,335 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 3,
+      "nodes": 9,
+      "edges": 6,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onWindowStageCreate_19_f65897e0",
+      "kind": "source",
+      "title": "主窗口创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p58",
+      "pathId": "p58",
+      "nodes": [
+        {
+          "id": "p58:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 19,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "定义 onWindowStageCreate 生命周期回调函数，作为数据流的起点，当应用主窗口阶段创建时被系统触发。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "    //",
+              "    // 1.获取应用主窗口。",
+              "    let windowClass = null;"
+            ]
+          }
+        },
+        {
+          "id": "p58:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 21,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onWindowStageCreate' 格式化并输出到系统信息日志中，作为当前数据流的终点（Sink）。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "    //",
+              "    // 1.获取应用主窗口。",
+              "    let windowClass = null;",
+              "    windowStage.getMainWindow((err, data) => {",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p58:n1",
+          "to": "p58:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "生命周期事件标识 (Ability onWindowStageCreate)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 创建时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储，仅输出至系统日志"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p59",
+      "pathId": "p59",
+      "nodes": [
+        {
+          "id": "p59:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 19,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "[Source] onWindowStageCreate 生命周期函数入口，窗口阶段创建时触发，开始执行页面加载逻辑。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "    //",
+              "    // 1.获取应用主窗口。",
+              "    let windowClass = null;"
+            ]
+          }
+        },
+        {
+          "id": "p59:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 58,
+          "code": "windowStage.loadContent(\"pages/SplashPage\", (err, data) => {",
+          "description": "调用 windowStage.loadContent 加载应用首页 'pages/SplashPage'，该操作异步执行并可能产生错误对象。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "    //   //   statusBarColor: \"#ffffff\", isStatusBarLightIcon: false",
+              "    //   // })",
+              "    //   window.on(\"\")",
+              "    // })",
+              "",
+              "    windowStage.loadContent(\"pages/SplashPage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', '加载应用首页内容失败. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', '加载应用首页成功. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p59:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 59,
+          "code": "if (err.code) {",
+          "description": "检查 loadContent 回调中的 err 对象是否存在 code 属性，判断页面加载是否失败。",
+          "context": {
+            "startLine": 54,
+            "lines": [
+              "    //   // })",
+              "    //   window.on(\"\")",
+              "    // })",
+              "",
+              "    windowStage.loadContent(\"pages/SplashPage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', '加载应用首页内容失败. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', '加载应用首页成功. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p59:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 60,
+          "code": "hilog.error(0x0000, 'testTag', '加载应用首页内容失败. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "[Sink] 调用 hilog.error 将加载失败的错误信息（经 JSON.stringify 序列化）作为敏感参数写入系统日志，标记为 public 可能导致隐私泄露。",
+          "context": {
+            "startLine": 55,
+            "lines": [
+              "    //   window.on(\"\")",
+              "    // })",
+              "",
+              "    windowStage.loadContent(\"pages/SplashPage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', '加载应用首页内容失败. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', '加载应用首页成功. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p59:n1",
+          "to": "p59:n2"
+        },
+        {
+          "from": "p59:n2",
+          "to": "p59:n3"
+        },
+        {
+          "from": "p59:n3",
+          "to": "p59:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "错误对象 (err)",
+          "错误码 (err.code)",
+          "错误详细信息 (JSON 字符串化)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (仅在 loadContent 失败时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出，未检测到网络发送行为)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储",
+          "无加密处理",
+          "数据以明文形式写入系统日志"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p60",
+      "pathId": "p60",
+      "nodes": [
+        {
+          "id": "p60:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 19,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，标志着数据流开始。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "    //",
+              "    // 1.获取应用主窗口。",
+              "    let windowClass = null;"
+            ]
+          }
+        },
+        {
+          "id": "p60:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 58,
+          "code": "windowStage.loadContent(\"pages/SplashPage\", (err, data) => {",
+          "description": "调用 windowStage.loadContent 加载首页内容，该操作是异步的，其结果将通过回调函数的 data 参数返回。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "    //   //   statusBarColor: \"#ffffff\", isStatusBarLightIcon: false",
+              "    //   // })",
+              "    //   window.on(\"\")",
+              "    // })",
+              "",
+              "    windowStage.loadContent(\"pages/SplashPage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', '加载应用首页内容失败. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', '加载应用首页成功. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p60:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 63,
+          "code": "hilog.info(0x0000, 'testTag', '加载应用首页成功. Data: %{public}s', JSON.stringify(data) ?? '');",
+          "description": "Sink 节点：在 loadContent 成功回调中，将返回的数据对象 data 序列化为 JSON 字符串，并通过 hilog.info 打印到系统日志，标记为公共日志（%{public}s）。",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "    windowStage.loadContent(\"pages/SplashPage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', '加载应用首页内容失败. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', '加载应用首页成功. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p60:n1",
+          "to": "p60:n2"
+        },
+        {
+          "from": "p60:n2",
+          "to": "p60:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "窗口加载状态数据",
+          "错误信息对象"
+        ],
+        "collectionFrequency": [
+          "一次性（应用启动时）"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "仅内存中临时序列化用于日志输出"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

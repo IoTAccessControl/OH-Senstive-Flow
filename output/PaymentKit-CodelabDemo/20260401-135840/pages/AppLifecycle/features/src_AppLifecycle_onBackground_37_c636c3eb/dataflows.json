@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "runId": "PaymentKit-CodelabDemo_20260401-135840",
+    "generatedAt": "2026-04-01T06:01:26.392Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onBackground_37_c636c3eb",
+      "kind": "source",
+      "title": "应用切到后台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 37,
+          "code": "onBackground(): void {",
+          "description": "定义 onBackground 生命周期回调函数入口，当 UIAbility 切换到后台时被系统触发。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "// Ability has back to background",
+          "description": "代码注释行，说明当前处于应用回到后台的逻辑块。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p12:n3",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onBackground' 作为公开参数写入系统信息级日志，完成数据流出。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        },
+        {
+          "from": "p12:n2",
+          "to": "p12:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "日志文本字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发（当应用切换至后台时）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（仅本地日志输出）"
+        ],
+        "storageAndEncryption": [
+          "写入系统日志缓冲区（hilog），未加密，依赖系统日志轮转策略"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

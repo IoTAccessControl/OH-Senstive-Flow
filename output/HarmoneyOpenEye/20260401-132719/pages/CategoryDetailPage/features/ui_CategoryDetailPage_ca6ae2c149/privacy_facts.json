@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "featureId": "ui_CategoryDetailPage_ca6ae2c149",
+    "generatedAt": "2026-04-01T05:43:59.799Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在分类详情页浏览视频列表并停止滚动时",
+        "dataSources": [
+          "用户界面交互行为"
+        ],
+        "dataItems": [
+          {
+            "name": "用户滚动行为状态",
+            "refs": [
+              {
+                "flowId": "flow:p52",
+                "nodeId": "p52:n7"
+              }
+            ]
+          },
+          {
+            "name": "滚动偏移量数值",
+            "refs": [
+              {
+                "flowId": "flow:p53",
+                "nodeId": "p53:n9"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "采集并记录至系统调试日志",
+        "storageMethod": "临时存储于系统日志缓冲区，未加密",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p52",
+                "nodeId": "p52:n8"
+              },
+              {
+                "flowId": "flow:p53",
+                "nodeId": "p53:n10"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于开发调试及分析用户浏览行为",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户点击分类详情页面的视频列表项时",
+        "dataSources": [
+          "应用内部视频数据源"
+        ],
+        "dataItems": [
+          {
+            "name": "视频内容 ID",
+            "refs": [
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n9"
+              },
+              {
+                "flowId": "flow:p55",
+                "nodeId": "p55:n9"
+              }
+            ]
+          },
+          {
+            "name": "视频播放地址",
+            "refs": [
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n9"
+              },
+              {
+                "flowId": "flow:p55",
+                "nodeId": "p55:n9"
+              }
+            ]
+          },
+          {
+            "name": "路由跳转错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n13"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "作为页面跳转参数传递，失败时记录错误日志",
+        "storageMethod": "仅在内存中传递，无持久化存储",
+        "dataRecipients": [
+          {
+            "name": "应用内路由模块",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n10"
+              },
+              {
+                "flowId": "flow:p55",
+                "nodeId": "p55:n10"
+              }
+            ]
+          },
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p54",
+                "nodeId": "p54:n14"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现从列表页到视频详情页的导航跳转及异常监控",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

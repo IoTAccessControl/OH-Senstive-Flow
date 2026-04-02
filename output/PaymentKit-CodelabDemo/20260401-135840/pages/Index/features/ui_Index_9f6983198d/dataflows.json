@@ -1,0 +1,899 @@
+{
+  "meta": {
+    "runId": "PaymentKit-CodelabDemo_20260401-135840",
+    "generatedAt": "2026-04-01T06:01:26.392Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 4,
+      "nodes": 28,
+      "edges": 24,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "Index",
+      "entry": {
+        "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+        "structName": "Index",
+        "line": 10,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Index_9f6983198d",
+      "kind": "ui",
+      "title": "发起支付请求"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 69,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，定义页面布局结构。",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "      // succeed in signing",
+              "      console.info('succeeded in signing');",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button('requestPaymentPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 71,
+          "code": "Button('requestPaymentPromise')",
+          "description": "创建名为 'requestPaymentPromise' 的按钮组件，作为用户触发支付操作的界面元素。",
+          "context": {
+            "startLine": 66,
+            "lines": [
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button('requestPaymentPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestPaymentPromise();"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 75,
+          "code": ".onClick(() => {",
+          "description": "为按钮绑定 onClick 事件监听器，定义点击后的回调逻辑起点。",
+          "context": {
+            "startLine": 70,
+            "lines": [
+              "    Column() {",
+              "      Button('requestPaymentPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestPaymentPromise();",
+              "        })",
+              "      Button('requestPaymentCallBack')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 76,
+          "code": "this.requestPaymentPromise();",
+          "description": "在点击事件中调用类成员方法 requestPaymentPromise()，将控制流从 UI 层转向业务逻辑层。",
+          "context": {
+            "startLine": 71,
+            "lines": [
+              "      Button('requestPaymentPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestPaymentPromise();",
+              "        })",
+              "      Button('requestPaymentCallBack')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)"
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 13,
+          "code": "requestPaymentPromise() {",
+          "description": "进入 requestPaymentPromise 方法体，准备执行支付请求的具体逻辑。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct Index {",
+              "  context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;",
+              "",
+              "  requestPaymentPromise() {",
+              "    // use your own orderStr",
+              "    const orderStr = '{\"app_id\":\"***\",\"merc_no\":\"***\",\"prepay_id\":\"xxx\",\"timestamp\":\"1680259863114\",\"noncestr\":\"1487b8a60ed9f9ecc0ba759fbec23f4f\",\"sign\":\"****\",\"auth_id\":\"***\"}';",
+              "    paymentService.requestPayment(this.context, orderStr)",
+              "      .then(() => {",
+              "        // succeeded in paying"
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 15,
+          "code": "const orderStr = '{\"app_id\":\"***\",\"merc_no\":\"***\",\"prepay_id\":\"xxx\",\"timestamp\":\"1680259863114\",\"noncestr\":\"1487b8a60ed9f9ecc0ba759fbec23f4f\",\"sign\":\"****\",\"auth_id\":\"***\"}';",
+          "description": "构造包含敏感支付信息（如 app_id, merc_no, prepay_id, sign 等）的 JSON 字符串 orderStr，作为待传输的数据源。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "struct Index {",
+              "  context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;",
+              "",
+              "  requestPaymentPromise() {",
+              "    // use your own orderStr",
+              "    const orderStr = '{\"app_id\":\"***\",\"merc_no\":\"***\",\"prepay_id\":\"xxx\",\"timestamp\":\"1680259863114\",\"noncestr\":\"1487b8a60ed9f9ecc0ba759fbec23f4f\",\"sign\":\"****\",\"auth_id\":\"***\"}';",
+              "    paymentService.requestPayment(this.context, orderStr)",
+              "      .then(() => {",
+              "        // succeeded in paying",
+              "        console.info('succeeded in paying');",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p1:n7",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 16,
+          "code": "paymentService.requestPayment(this.context, orderStr)",
+          "description": "调用 paymentService.requestPayment 接口，传入上下文和订单数据，执行实际的支付请求操作（数据汇点）。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  context: common.UIAbilityContext = getContext(this) as common.UIAbilityContext;",
+              "",
+              "  requestPaymentPromise() {",
+              "    // use your own orderStr",
+              "    const orderStr = '{\"app_id\":\"***\",\"merc_no\":\"***\",\"prepay_id\":\"xxx\",\"timestamp\":\"1680259863114\",\"noncestr\":\"1487b8a60ed9f9ecc0ba759fbec23f4f\",\"sign\":\"****\",\"auth_id\":\"***\"}';",
+              "    paymentService.requestPayment(this.context, orderStr)",
+              "      .then(() => {",
+              "        // succeeded in paying",
+              "        console.info('succeeded in paying');",
+              "      })",
+              "      .catch((error: BusinessError) => {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        },
+        {
+          "from": "p1:n6",
+          "to": "p1:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "支付订单信息 (orderStr)",
+          "应用标识 (app_id)",
+          "商户编号 (merc_no)",
+          "预支付交易会话标识 (prepay_id)",
+          "时间戳 (timestamp)",
+          "随机字符串 (noncestr)",
+          "签名数据 (sign)",
+          "授权标识 (auth_id)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "通过 paymentService.requestPayment 接口将订单数据发送至支付服务提供者（云端/第三方）"
+        ],
+        "storageAndEncryption": [
+          "代码中硬编码模拟订单数据，未展示本地持久化存储",
+          "数据传输依赖底层 paymentService 的安全通道，源码层未体现额外加密逻辑"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于网络通信)",
+          "可能涉及 ohos.permission.ACCESS_NETWORK_INFO (隐含)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 69,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，定义页面组件结构",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "      // succeed in signing",
+              "      console.info('succeeded in signing');",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button('requestPaymentPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 78,
+          "code": "Button('requestPaymentCallBack')",
+          "description": "创建名为 'requestPaymentCallBack' 的按钮组件，作为用户触发支付的入口",
+          "context": {
+            "startLine": 73,
+            "lines": [
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestPaymentPromise();",
+              "        })",
+              "      Button('requestPaymentCallBack')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestPaymentCallBack();"
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 82,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 事件监听器箭头函数起始位置",
+          "context": {
+            "startLine": 77,
+            "lines": [
+              "        })",
+              "      Button('requestPaymentCallBack')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestPaymentCallBack();",
+              "        })",
+              "      Button('requestContractPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')"
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 83,
+          "code": "this.requestPaymentCallBack();",
+          "description": "在点击事件中调用类成员方法 requestPaymentCallBack()",
+          "context": {
+            "startLine": 78,
+            "lines": [
+              "      Button('requestPaymentCallBack')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestPaymentCallBack();",
+              "        })",
+              "      Button('requestContractPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)"
+            ]
+          }
+        },
+        {
+          "id": "p2:n5",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 27,
+          "code": "requestPaymentCallBack() {",
+          "description": "进入 requestPaymentCallBack 方法定义，准备执行支付逻辑",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "        // failed to pay",
+              "        console.error(`failed to pay, error.code: ${error.code}, error.message: ${error.message}`);",
+              "      });",
+              "  }",
+              "",
+              "  requestPaymentCallBack() {",
+              "    // use your own orderStr",
+              "    const orderStr = '{\"app_id\":\"***\",\"merc_no\":\"***\",\"prepay_id\":\"xxx\",\"timestamp\":\"1680259863114\",\"noncestr\":\"1487b8a60ed9f9ecc0ba759fbec23f4f\",\"sign\":\"****\",\"auth_id\":\"***\"}';",
+              "    paymentService.requestPayment(this.context, orderStr, (error: BusinessError) => {",
+              "      if (error) {",
+              "        // failed to pay"
+            ]
+          }
+        },
+        {
+          "id": "p2:n6",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 29,
+          "code": "const orderStr = '{\"app_id\":\"***\",\"merc_no\":\"***\",\"prepay_id\":\"xxx\",\"timestamp\":\"1680259863114\",\"noncestr\":\"1487b8a60ed9f9ecc0ba759fbec23f4f\",\"sign\":\"****\",\"auth_id\":\"***\"}';",
+          "description": "构造包含敏感支付数据（app_id, merc_no, prepay_id, sign 等）的 JSON 字符串 orderStr",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      });",
+              "  }",
+              "",
+              "  requestPaymentCallBack() {",
+              "    // use your own orderStr",
+              "    const orderStr = '{\"app_id\":\"***\",\"merc_no\":\"***\",\"prepay_id\":\"xxx\",\"timestamp\":\"1680259863114\",\"noncestr\":\"1487b8a60ed9f9ecc0ba759fbec23f4f\",\"sign\":\"****\",\"auth_id\":\"***\"}';",
+              "    paymentService.requestPayment(this.context, orderStr, (error: BusinessError) => {",
+              "      if (error) {",
+              "        // failed to pay",
+              "        console.error(`failed to pay, error.code: ${error.code}, error.message: ${error.message}`);",
+              "        return;"
+            ]
+          }
+        },
+        {
+          "id": "p2:n7",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 30,
+          "code": "paymentService.requestPayment(this.context, orderStr, (error: BusinessError) => {",
+          "description": "调用 paymentService.requestPayment 接口，传入上下文、订单字符串及回调，将支付数据发送至系统支付服务（Sink）",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "  }",
+              "",
+              "  requestPaymentCallBack() {",
+              "    // use your own orderStr",
+              "    const orderStr = '{\"app_id\":\"***\",\"merc_no\":\"***\",\"prepay_id\":\"xxx\",\"timestamp\":\"1680259863114\",\"noncestr\":\"1487b8a60ed9f9ecc0ba759fbec23f4f\",\"sign\":\"****\",\"auth_id\":\"***\"}';",
+              "    paymentService.requestPayment(this.context, orderStr, (error: BusinessError) => {",
+              "      if (error) {",
+              "        // failed to pay",
+              "        console.error(`failed to pay, error.code: ${error.code}, error.message: ${error.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        },
+        {
+          "from": "p2:n4",
+          "to": "p2:n5"
+        },
+        {
+          "from": "p2:n5",
+          "to": "p2:n6"
+        },
+        {
+          "from": "p2:n6",
+          "to": "p2:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "支付订单信息 (orderStr)",
+          "应用标识 (app_id)",
+          "商户编号 (merc_no)",
+          "预支付交易会话标识 (prepay_id)",
+          "时间戳 (timestamp)",
+          "随机字符串 (noncestr)",
+          "签名数据 (sign)",
+          "授权标识 (auth_id)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "通过 paymentService.requestPayment 调用系统支付服务，数据将传输至支付服务提供商云端进行处理"
+        ],
+        "storageAndEncryption": [
+          "源码中 orderStr 为硬编码字符串，未展示本地存储行为",
+          "数据传输依赖 paymentService 内部实现加密，源码片段未显式展示加密逻辑"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于网络通信)",
+          "需配置支付相关 Kit 权限 (具体权限名依赖 PaymentKit 文档，通常为隐式授权或特定商户配置)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 69,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始，初始化页面组件树",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "      // succeed in signing",
+              "      console.info('succeeded in signing');",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button('requestPaymentPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 85,
+          "code": "Button('requestContractPromise')",
+          "description": "创建名为 'requestContractPromise' 的按钮组件，作为用户触发签约操作的入口",
+          "context": {
+            "startLine": 80,
+            "lines": [
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestPaymentCallBack();",
+              "        })",
+              "      Button('requestContractPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestContractPromise();"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 89,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 事件回调函数，准备响应用户点击",
+          "context": {
+            "startLine": 84,
+            "lines": [
+              "        })",
+              "      Button('requestContractPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestContractPromise();",
+              "        })",
+              "      Button('requestContractCallBack')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 90,
+          "code": "this.requestContractPromise();",
+          "description": "在回调中调用类成员方法 requestContractPromise，将控制流转向业务逻辑处理",
+          "context": {
+            "startLine": 85,
+            "lines": [
+              "      Button('requestContractPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestContractPromise();",
+              "        })",
+              "      Button('requestContractCallBack')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)"
+            ]
+          }
+        },
+        {
+          "id": "p3:n5",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 41,
+          "code": "requestContractPromise() {",
+          "description": "进入 requestContractPromise 方法定义，开始执行支付签约逻辑",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "      // succeeded in paying",
+              "      console.info('succeeded in paying');",
+              "    })",
+              "  }",
+              "",
+              "  requestContractPromise() {",
+              "    // use your own contractStr",
+              "    const contractStr = '{\"appId\":\"***\",\"preSignNo\":\"***\"}';",
+              "    paymentService.requestContract(this.context, contractStr)",
+              "      .then(() => {",
+              "        // succeed in signing"
+            ]
+          }
+        },
+        {
+          "id": "p3:n6",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 43,
+          "code": "const contractStr = '{\"appId\":\"***\",\"preSignNo\":\"***\"}';",
+          "description": "构造包含 appId 和 preSignNo 的合约字符串常量，作为待发送的隐私数据项",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "    })",
+              "  }",
+              "",
+              "  requestContractPromise() {",
+              "    // use your own contractStr",
+              "    const contractStr = '{\"appId\":\"***\",\"preSignNo\":\"***\"}';",
+              "    paymentService.requestContract(this.context, contractStr)",
+              "      .then(() => {",
+              "        // succeed in signing",
+              "        console.info('succeeded in signing');",
+              "      })"
+            ]
+          }
+        },
+        {
+          "id": "p3:n7",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 44,
+          "code": "paymentService.requestContract(this.context, contractStr)",
+          "description": "调用 paymentService.requestContract 接口，传入上下文和合约数据，执行最终的支付签约请求（Sink）",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "  }",
+              "",
+              "  requestContractPromise() {",
+              "    // use your own contractStr",
+              "    const contractStr = '{\"appId\":\"***\",\"preSignNo\":\"***\"}';",
+              "    paymentService.requestContract(this.context, contractStr)",
+              "      .then(() => {",
+              "        // succeed in signing",
+              "        console.info('succeeded in signing');",
+              "      })",
+              "      .catch((error: BusinessError) => {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n4",
+          "to": "p3:n5"
+        },
+        {
+          "from": "p3:n5",
+          "to": "p3:n6"
+        },
+        {
+          "from": "p3:n6",
+          "to": "p3:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "支付合约信息 (appId, preSignNo)",
+          "应用上下文 (context)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "通过 paymentService.requestContract 发起支付签约请求，数据发送至支付服务提供方"
+        ],
+        "storageAndEncryption": [
+          "代码中未见显式本地存储操作",
+          "传输加密由底层 PaymentKit 保证"
+        ],
+        "permissions": [
+          "ohos.permission.INTERNET (隐含，用于网络通信)",
+          "ohos.permission.ACCESS_NETWORK_STATE (隐含)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 69,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，渲染页面组件",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "      // succeed in signing",
+              "      console.info('succeeded in signing');",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button('requestPaymentPromise')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 92,
+          "code": "Button('requestContractCallBack')",
+          "description": "创建名为 'requestContractCallBack' 的按钮组件",
+          "context": {
+            "startLine": 87,
+            "lines": [
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestContractPromise();",
+              "        })",
+              "      Button('requestContractCallBack')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestContractCallBack();"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 96,
+          "code": ".onClick(() => {",
+          "description": "为按钮绑定 onClick 点击事件监听器",
+          "context": {
+            "startLine": 91,
+            "lines": [
+              "        })",
+              "      Button('requestContractCallBack')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestContractCallBack();",
+              "        })",
+              "    }",
+              "    .justifyContent(FlexAlign.Center)",
+              "    .width('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p4:n4",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 97,
+          "code": "this.requestContractCallBack();",
+          "description": "点击事件触发，调用类成员方法 requestContractCallBack()",
+          "context": {
+            "startLine": 92,
+            "lines": [
+              "      Button('requestContractCallBack')",
+              "        .type(ButtonType.Capsule)",
+              "        .width('50%')",
+              "        .margin(20)",
+              "        .onClick(() => {",
+              "          this.requestContractCallBack();",
+              "        })",
+              "    }",
+              "    .justifyContent(FlexAlign.Center)",
+              "    .width('100%')",
+              "    .height('100%')"
+            ]
+          }
+        },
+        {
+          "id": "p4:n5",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 55,
+          "code": "requestContractCallBack() {",
+          "description": "进入 requestContractCallBack 方法定义，准备处理支付合同请求逻辑",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "        // failed to sign",
+              "        console.error(`failed to sign, error.code: ${error.code}, error.message: ${error.message}`);",
+              "      });",
+              "  }",
+              "",
+              "  requestContractCallBack() {",
+              "    // use your own contractStr",
+              "    const contractStr = '{\"appId\":\"***\",\"preSignNo\":\"***\"}';",
+              "    paymentService.requestContract(this.context, contractStr, (error: BusinessError) => {",
+              "      if (error) {",
+              "        // failed to sign"
+            ]
+          }
+        },
+        {
+          "id": "p4:n6",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 57,
+          "code": "const contractStr = '{\"appId\":\"***\",\"preSignNo\":\"***\"}';",
+          "description": "构造包含 appId 和 preSignNo 的硬编码合同字符串 (contractStr)，作为敏感数据源",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "      });",
+              "  }",
+              "",
+              "  requestContractCallBack() {",
+              "    // use your own contractStr",
+              "    const contractStr = '{\"appId\":\"***\",\"preSignNo\":\"***\"}';",
+              "    paymentService.requestContract(this.context, contractStr, (error: BusinessError) => {",
+              "      if (error) {",
+              "        // failed to sign",
+              "        console.error(`failed to sign, error.code: ${error.code}, error.message: ${error.message}`);",
+              "        return;"
+            ]
+          }
+        },
+        {
+          "id": "p4:n7",
+          "filePath": "input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 58,
+          "code": "paymentService.requestContract(this.context, contractStr, (error: BusinessError) => {",
+          "description": "调用 paymentService.requestContract 接口，传入 context 和 contractStr，将支付数据发送至系统支付服务 (Sink)",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "  }",
+              "",
+              "  requestContractCallBack() {",
+              "    // use your own contractStr",
+              "    const contractStr = '{\"appId\":\"***\",\"preSignNo\":\"***\"}';",
+              "    paymentService.requestContract(this.context, contractStr, (error: BusinessError) => {",
+              "      if (error) {",
+              "        // failed to sign",
+              "        console.error(`failed to sign, error.code: ${error.code}, error.message: ${error.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        },
+        {
+          "from": "p4:n3",
+          "to": "p4:n4"
+        },
+        {
+          "from": "p4:n4",
+          "to": "p4:n5"
+        },
+        {
+          "from": "p4:n5",
+          "to": "p4:n6"
+        },
+        {
+          "from": "p4:n6",
+          "to": "p4:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "支付合同字符串 (contractStr)",
+          "应用标识 (appId)",
+          "预签名编号 (preSignNo)",
+          "上下文对象 (context)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "通过 paymentService.requestContract 发送至支付服务框架 (可能涉及云端交互)"
+        ],
+        "storageAndEncryption": [
+          "代码中未显式本地存储",
+          "传输过程依赖支付服务框架内部加密机制"
+        ],
+        "permissions": [
+          "ohos.permission.ACCESS_NETWORK (隐含，用于网络通信)",
+          "ohos.permission.USER_ID (隐含，用于识别用户身份)"
+        ]
+      }
+    }
+  ]
+}

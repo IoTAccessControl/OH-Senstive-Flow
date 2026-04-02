@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "featureId": "ui_MainPage_04f7f779be",
+    "generatedAt": "2026-04-01T05:45:11.782Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在应用内查看“我的页面”时，系统记录页面的显示与隐藏状态用于调试或运行监控",
+        "dataSources": [
+          "系统页面生命周期事件"
+        ],
+        "dataItems": [
+          {
+            "name": "页面可见状态事件",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n1"
+              },
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n2"
+              }
+            ]
+          },
+          {
+            "name": "页面不可见状态事件",
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n1"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "调用系统日志接口将静态提示文本与状态事件写入错误日志流",
+        "storageMethod": "由系统日志服务接管存储，可能暂存于系统日志缓冲区，应用层未进行本地文件或加密存储",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n4"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "记录页面生命周期状态以便开发调试或运行监控",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

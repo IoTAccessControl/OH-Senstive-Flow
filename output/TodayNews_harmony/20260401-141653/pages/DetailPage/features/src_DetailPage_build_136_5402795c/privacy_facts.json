@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260401-141653",
+    "featureId": "src_DetailPage_build_136_5402795c",
+    "generatedAt": "2026-04-01T06:23:07.427Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.SYSTEM_TIME 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "TodayNews_harmony",
+        "businessScenario": "用户在新闻详情页加载失败时点击重试，或浏览新闻列表并点击条目进入详情页",
+        "dataSources": [
+          "系统时间服务",
+          "本地新闻数据列表"
+        ],
+        "dataItems": [
+          {
+            "name": "系统时间戳",
+            "refs": [
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n6"
+              }
+            ]
+          },
+          {
+            "name": "新闻列表数据（含标题、标签、详情参数）",
+            "refs": [
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n11"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n12"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "内存中临时读取与传递，未检测到加密处理",
+        "storageMethod": "内存存储（存储在变量中，未检测到本地持久化）",
+        "dataRecipients": [
+          {
+            "name": "新闻数据获取接口",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n6"
+              }
+            ]
+          },
+          {
+            "name": "新闻详情页面",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n12"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "构建网络请求参数以重新加载新闻数据，以及传递新闻参数以展示详情内容",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

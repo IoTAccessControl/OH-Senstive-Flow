@@ -1,0 +1,228 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:30.061Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 7,
+      "edges": 6,
+      "pages": 1,
+      "elements": 6
+    }
+  },
+  "roots": [
+    "page:b68f1c8ddef5"
+  ],
+  "nodes": {
+    "page:b68f1c8ddef5": {
+      "id": "page:b68f1c8ddef5",
+      "category": "Page",
+      "name": "CategoryPage",
+      "description": "分类页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+      "line": 12,
+      "code": "export struct CategoryPage {",
+      "context": {
+        "startLine": 7,
+        "lines": [
+          "import ImageRegexUtils from '../../../utils/ImageRegexUtils'",
+          "import { LogUtils } from '../../../utils/LogUtils'",
+          "import CategoryViewModel from '../../../viewmodel/CategoryViewModel'",
+          "",
+          "@Component",
+          "export struct CategoryPage {",
+          "  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING",
+          "  @State dataList: CategoryModel = []",
+          "  @State dataSource: BaseDataSourceWrapper<CategoryModelChild> = new BaseDataSourceWrapper<CategoryModelChild>([])",
+          "  @Consume @Watch(\"onHomeTabSelected\") homeTabSelected: number",
+          "  @Consume @Watch(\"onFindTabSelectedIndex\") findCurrentIndex: number"
+        ]
+      }
+    },
+    "ui:0e416cab893a": {
+      "id": "ui:0e416cab893a",
+      "category": "Component",
+      "name": "build",
+      "description": "分类网格布局",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+      "line": 58,
+      "code": "build() {",
+      "context": {
+        "startLine": 53,
+        "lines": [
+          "      this.dataList = result",
+          "      this.dataSource = new BaseDataSourceWrapper<CategoryModelChild>(this.dataList)",
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        Grid() {"
+        ]
+      }
+    },
+    "ui:29ff69fb5d64": {
+      "id": "ui:29ff69fb5d64",
+      "category": "Component",
+      "name": "StateComponent",
+      "description": "分类列表",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+      "line": 60,
+      "code": "StateComponent({ viewState: this.viewState, retryCallback: () => {",
+      "context": {
+        "startLine": 55,
+        "lines": [
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        Grid() {",
+          "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+          "            GridItem() {"
+        ]
+      }
+    },
+    "ui:b8a247ea1845": {
+      "id": "ui:b8a247ea1845",
+      "category": "Button",
+      "name": "LazyForEach",
+      "description": "分类列表",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+      "line": 64,
+      "code": "LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+      "context": {
+        "startLine": 59,
+        "lines": [
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        Grid() {",
+          "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+          "            GridItem() {",
+          "              Stack() {",
+          "                Image(ImageRegexUtils(item.bgPicture))",
+          "                  .border({ radius: $r('app.float.size_5') })",
+          "                  .alt($r(\"app.media.back_placeholder\"))"
+        ]
+      }
+    },
+    "ui:61ccec05903b": {
+      "id": "ui:61ccec05903b",
+      "category": "Button",
+      "name": "GridItem",
+      "description": "分类项",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+      "line": 65,
+      "code": "GridItem() {",
+      "context": {
+        "startLine": 60,
+        "lines": [
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        Grid() {",
+          "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+          "            GridItem() {",
+          "              Stack() {",
+          "                Image(ImageRegexUtils(item.bgPicture))",
+          "                  .border({ radius: $r('app.float.size_5') })",
+          "                  .alt($r(\"app.media.back_placeholder\"))",
+          "                Text(item.name)"
+        ]
+      }
+    },
+    "ui:73c68a8368cd": {
+      "id": "ui:73c68a8368cd",
+      "category": "Button",
+      "name": "Image",
+      "description": "分类背景图",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+      "line": 67,
+      "code": "Image(ImageRegexUtils(item.bgPicture))",
+      "context": {
+        "startLine": 62,
+        "lines": [
+          "      } }) {",
+          "        Grid() {",
+          "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+          "            GridItem() {",
+          "              Stack() {",
+          "                Image(ImageRegexUtils(item.bgPicture))",
+          "                  .border({ radius: $r('app.float.size_5') })",
+          "                  .alt($r(\"app.media.back_placeholder\"))",
+          "                Text(item.name)",
+          "                  .fontColor($r('app.color.color_white'))",
+          "                  .fontSize($r('app.float.size_text_20'))"
+        ]
+      }
+    },
+    "ui:a0ad16c9b94f": {
+      "id": "ui:a0ad16c9b94f",
+      "category": "Button",
+      "name": "Text",
+      "description": "分类名称",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+      "line": 70,
+      "code": "Text(item.name)",
+      "context": {
+        "startLine": 65,
+        "lines": [
+          "            GridItem() {",
+          "              Stack() {",
+          "                Image(ImageRegexUtils(item.bgPicture))",
+          "                  .border({ radius: $r('app.float.size_5') })",
+          "                  .alt($r(\"app.media.back_placeholder\"))",
+          "                Text(item.name)",
+          "                  .fontColor($r('app.color.color_white'))",
+          "                  .fontSize($r('app.float.size_text_20'))",
+          "                  .fontWeight(FontWeight.Bold)",
+          "              }.border({ radius: $r('app.float.size_5') })",
+          "            }.onClick(() => {"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:b68f1c8ddef5",
+      "to": "ui:0e416cab893a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b68f1c8ddef5",
+      "to": "ui:29ff69fb5d64",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b68f1c8ddef5",
+      "to": "ui:b8a247ea1845",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b68f1c8ddef5",
+      "to": "ui:61ccec05903b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b68f1c8ddef5",
+      "to": "ui:73c68a8368cd",
+      "kind": "contains"
+    },
+    {
+      "from": "page:b68f1c8ddef5",
+      "to": "ui:a0ad16c9b94f",
+      "kind": "contains"
+    }
+  ]
+}

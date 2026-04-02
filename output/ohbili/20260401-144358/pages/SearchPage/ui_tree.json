@@ -1,0 +1,298 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.830Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 9,
+      "edges": 8,
+      "pages": 1,
+      "elements": 8
+    }
+  },
+  "roots": [
+    "page:1bb846a6dabc"
+  ],
+  "nodes": {
+    "page:1bb846a6dabc": {
+      "id": "page:1bb846a6dabc",
+      "category": "Page",
+      "name": "SearchPage",
+      "description": "搜索页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 25,
+      "code": "struct SearchPage {",
+      "context": {
+        "startLine": 20,
+        "lines": [
+          "  defaultKeyword?: string;",
+          "}",
+          "",
+          "@Entry",
+          "@Component",
+          "struct SearchPage {",
+          "",
+          "  @State rankings: Array<RankingItem> = []",
+          "  private defaultKeyword: string = ''",
+          "",
+          "  aboutToAppear() {"
+        ]
+      }
+    },
+    "ui:4ffb9a7bcae0": {
+      "id": "ui:4ffb9a7bcae0",
+      "category": "Button",
+      "name": "build",
+      "description": "搜索页面",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 40,
+      "code": "build() {",
+      "context": {
+        "startLine": 35,
+        "lines": [
+          "    ApiManager.getInstance().requestRanking().then((resp) => {",
+          "      this.rankings = resp.data.list;",
+          "    });",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      SearchBar({placeholder: this.defaultKeyword})",
+          "      Row() {",
+          "        Text($r('app.string.bili_top_search'))",
+          "          .fontSize(14)"
+        ]
+      }
+    },
+    "ui:a5c51466bfbe": {
+      "id": "ui:a5c51466bfbe",
+      "category": "Button",
+      "name": "SearchBar",
+      "description": "搜索",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 42,
+      "code": "SearchBar({placeholder: this.defaultKeyword})",
+      "context": {
+        "startLine": 37,
+        "lines": [
+          "    });",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      SearchBar({placeholder: this.defaultKeyword})",
+          "      Row() {",
+          "        Text($r('app.string.bili_top_search'))",
+          "          .fontSize(14)",
+          "          .fontWeight(FontWeight.Bold)",
+          "        Blank()"
+        ]
+      }
+    },
+    "ui:bd43ef610577": {
+      "id": "ui:bd43ef610577",
+      "category": "Button",
+      "name": "Text",
+      "description": "热搜榜",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 44,
+      "code": "Text($r('app.string.bili_top_search'))",
+      "context": {
+        "startLine": 39,
+        "lines": [
+          "",
+          "  build() {",
+          "    Column() {",
+          "      SearchBar({placeholder: this.defaultKeyword})",
+          "      Row() {",
+          "        Text($r('app.string.bili_top_search'))",
+          "          .fontSize(14)",
+          "          .fontWeight(FontWeight.Bold)",
+          "        Blank()",
+          "        Text(\"完整榜单\").fontSize(14).fontColor(\"#888888\").onClick(() => {",
+          "          router.pushUrl({ url: 'pages/TopSearch', params: { rankings: this.rankings } });"
+        ]
+      }
+    },
+    "ui:9da3f992c946": {
+      "id": "ui:9da3f992c946",
+      "category": "Button",
+      "name": "Text",
+      "description": "完整榜单",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 48,
+      "code": "Text(\"完整榜单\").fontSize(14).fontColor(\"#888888\").onClick(() => {",
+      "context": {
+        "startLine": 43,
+        "lines": [
+          "      Row() {",
+          "        Text($r('app.string.bili_top_search'))",
+          "          .fontSize(14)",
+          "          .fontWeight(FontWeight.Bold)",
+          "        Blank()",
+          "        Text(\"完整榜单\").fontSize(14).fontColor(\"#888888\").onClick(() => {",
+          "          router.pushUrl({ url: 'pages/TopSearch', params: { rankings: this.rankings } });",
+          "        })",
+          "      }.width('100%')",
+          "      .padding({ left: 16, right: 16, top: 16, bottom: 8 })",
+          "      Grid() {"
+        ]
+      },
+      "navTarget": {
+        "kind": "pushUrl",
+        "url": "pages/TopSearch",
+        "resolvedFilePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets"
+      }
+    },
+    "ui:be673437f76d": {
+      "id": "ui:be673437f76d",
+      "category": "Button",
+      "name": "ForEach",
+      "description": "热搜关键词列表",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 54,
+      "code": "ForEach(this.rankings.slice(0, 10), (item: RankingItem) => {",
+      "context": {
+        "startLine": 49,
+        "lines": [
+          "          router.pushUrl({ url: 'pages/TopSearch', params: { rankings: this.rankings } });",
+          "        })",
+          "      }.width('100%')",
+          "      .padding({ left: 16, right: 16, top: 16, bottom: 8 })",
+          "      Grid() {",
+          "        ForEach(this.rankings.slice(0, 10), (item: RankingItem) => {",
+          "          GridItem() {",
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "              Text(item.keyword).maxLines(1)",
+          "                .fontSize(14)",
+          "                .textOverflow({overflow: TextOverflow.Ellipsis})"
+        ]
+      }
+    },
+    "ui:c56a87c0ae42": {
+      "id": "ui:c56a87c0ae42",
+      "category": "Button",
+      "name": "GridItem",
+      "description": "热搜条目",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 55,
+      "code": "GridItem() {",
+      "context": {
+        "startLine": 50,
+        "lines": [
+          "        })",
+          "      }.width('100%')",
+          "      .padding({ left: 16, right: 16, top: 16, bottom: 8 })",
+          "      Grid() {",
+          "        ForEach(this.rankings.slice(0, 10), (item: RankingItem) => {",
+          "          GridItem() {",
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "              Text(item.keyword).maxLines(1)",
+          "                .fontSize(14)",
+          "                .textOverflow({overflow: TextOverflow.Ellipsis})",
+          "              if (item.icon != undefined && item.icon != \"\") {"
+        ]
+      }
+    },
+    "ui:8c9532ce1158": {
+      "id": "ui:8c9532ce1158",
+      "category": "Button",
+      "name": "Text",
+      "description": "热搜关键词",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 57,
+      "code": "Text(item.keyword).maxLines(1)",
+      "context": {
+        "startLine": 52,
+        "lines": [
+          "      .padding({ left: 16, right: 16, top: 16, bottom: 8 })",
+          "      Grid() {",
+          "        ForEach(this.rankings.slice(0, 10), (item: RankingItem) => {",
+          "          GridItem() {",
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "              Text(item.keyword).maxLines(1)",
+          "                .fontSize(14)",
+          "                .textOverflow({overflow: TextOverflow.Ellipsis})",
+          "              if (item.icon != undefined && item.icon != \"\") {",
+          "                Image(item.icon)",
+          "                  .height(16)"
+        ]
+      }
+    },
+    "ui:261e93d914b3": {
+      "id": "ui:261e93d914b3",
+      "category": "Button",
+      "name": "Image",
+      "description": "查看搜索结果",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Search.ets",
+      "line": 61,
+      "code": "Image(item.icon)",
+      "context": {
+        "startLine": 56,
+        "lines": [
+          "            Flex({ direction: FlexDirection.Row }) {",
+          "              Text(item.keyword).maxLines(1)",
+          "                .fontSize(14)",
+          "                .textOverflow({overflow: TextOverflow.Ellipsis})",
+          "              if (item.icon != undefined && item.icon != \"\") {",
+          "                Image(item.icon)",
+          "                  .height(16)",
+          "                  .margin({left: 4})",
+          "              }",
+          "            }.width('100%').padding({ left: 16, right: 16, top: 8, bottom: 8 })",
+          "          }.onClick(() => {"
+        ]
+      },
+      "navTarget": {
+        "kind": "pushUrl",
+        "url": "pages/SearchResult",
+        "resolvedFilePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets"
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:4ffb9a7bcae0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:a5c51466bfbe",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:bd43ef610577",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:9da3f992c946",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:be673437f76d",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:c56a87c0ae42",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:8c9532ce1158",
+      "kind": "contains"
+    },
+    {
+      "from": "page:1bb846a6dabc",
+      "to": "ui:261e93d914b3",
+      "kind": "contains"
+    }
+  ]
+}

@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 7,
+      "edges": 6,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "CategoryDetailPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/categoryDetail/CategoryDetailPage.ets",
+        "structName": "CategoryDetailPage",
+        "line": 16,
+        "description": "分类详情页"
+      }
+    },
+    "feature": {
+      "featureId": "src_CategoryDetailPage_aboutToDisappear_23_31f38c44",
+      "kind": "source",
+      "title": "分类详情页离开前"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CustomTabLayout.ets",
+          "line": 23,
+          "code": "aboutToDisappear() {",
+          "description": "定义 aboutToDisappear 生命周期函数锚点，作为数据流分析的起始上下文标记，虽此处无逻辑，但标识组件销毁前的状态。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "",
+              "  }",
+              "",
+              "  aboutToDisappear() {",
+              "",
+              "  }",
+              "",
+              "  build() {",
+              "    Flex({ direction: FlexDirection.Row, justifyContent: this.flexAlign }) {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CustomTabLayout.ets",
+          "line": 29,
+          "code": "ForEach(this.tabTitle, (item: string, index: number) => {",
+          "description": "ForEach 循环遍历 tabTitle 数组，为每个 Tab 项建立渲染上下文，准备绑定点击事件和数据。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "",
+              "  }",
+              "",
+              "  build() {",
+              "    Flex({ direction: FlexDirection.Row, justifyContent: this.flexAlign }) {",
+              "      ForEach(this.tabTitle, (item: string, index: number) => {",
+              "        this.TabBuilder(index, item)",
+              "      }, item => item.index)",
+              "    }",
+              "    .backgroundColor($r(\"app.color.color_red\"))",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CustomTabLayout.ets",
+          "line": 30,
+          "code": "this.TabBuilder(index, item)",
+          "description": "调用 TabBuilder 自定义构建函数，将当前循环的索引 (index) 和标题 (item/name) 传递给构建器以生成具体的 Tab UI 组件。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Flex({ direction: FlexDirection.Row, justifyContent: this.flexAlign }) {",
+              "      ForEach(this.tabTitle, (item: string, index: number) => {",
+              "        this.TabBuilder(index, item)",
+              "      }, item => item.index)",
+              "    }",
+              "    .backgroundColor($r(\"app.color.color_red\"))",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p4:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CustomTabLayout.ets",
+          "line": 36,
+          "code": "@Builder TabBuilder(index: number, name: string) {",
+          "description": "进入 TabBuilder 函数定义，接收 index 和 name 参数，开始构建包含点击监听器的 Column 布局。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "      }, item => item.index)",
+              "    }",
+              "    .backgroundColor($r(\"app.color.color_red\"))",
+              "  }",
+              "",
+              "  @Builder TabBuilder(index: number, name: string) {",
+              "    Column() {",
+              "      Text(name)",
+              "        .fontColor(this.currentIndex === index ? $r(\"app.color.color_white\") : $r(\"app.color.color_f5f5f5\"))",
+              "        .fontSize($r('app.float.size_text_15'))",
+              "        .fontWeight(this.currentIndex === index ? 500 : 400)"
+            ]
+          }
+        },
+        {
+          "id": "p4:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CustomTabLayout.ets",
+          "line": 56,
+          "code": "this.tabSelectCallback(index, name)",
+          "description": "响应用户点击事件，首先执行回调函数 tabSelectCallback 传递选中状态，随后准备记录调试日志。",
+          "context": {
+            "startLine": 51,
+            "lines": [
+              "    .width('101%') //解决Tab连接处白色线条间隙",
+              "    .height($r(\"app.float.size_50\"))",
+              "    .backgroundColor($r(\"app.color.color_red\"))",
+              "    .justifyContent(FlexAlign.End)",
+              "    .onClick(() => {",
+              "      this.tabSelectCallback(index, name)",
+              "      LogUtils.debug(`${this.currentIndex}`)",
+              "      LogUtils.debug(`${index}`)",
+              "      LogUtils.debug(`${name}`)",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p4:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/views/CustomTabLayout.ets",
+          "line": 57,
+          "code": "LogUtils.debug(`${this.currentIndex}`)",
+          "description": "调用 LogUtils.debug 方法，传入当前选中索引 (this.currentIndex) 作为敏感数据项，准备将其格式化并输出到系统日志。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "    .height($r(\"app.float.size_50\"))",
+              "    .backgroundColor($r(\"app.color.color_red\"))",
+              "    .justifyContent(FlexAlign.End)",
+              "    .onClick(() => {",
+              "      this.tabSelectCallback(index, name)",
+              "      LogUtils.debug(`${this.currentIndex}`)",
+              "      LogUtils.debug(`${index}`)",
+              "      LogUtils.debug(`${name}`)",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p4:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "Sink 节点：调用 ohos.hilog.debug API，将来自上层的具体数据（如索引、名称等）以明文形式写入系统调试日志缓冲区，完成数据流出。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        },
+        {
+          "from": "p4:n3",
+          "to": "p4:n4"
+        },
+        {
+          "from": "p4:n4",
+          "to": "p4:n5"
+        },
+        {
+          "from": "p4:n5",
+          "to": "p4:n6"
+        },
+        {
+          "from": "p4:n6",
+          "to": "p4:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户交互事件（Tab 点击）",
+          "当前选中索引 (currentIndex)",
+          "目标 Tab 索引 (index)",
+          "Tab 名称 (name)"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户点击 Tab 时）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（数据仅输出至系统日志）"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据以明文形式写入系统调试日志缓冲区"
+        ],
+        "permissions": [
+          "ohos.permission.LOG（隐式依赖，用于写入 hilog）"
+        ]
+      }
+    }
+  ]
+}

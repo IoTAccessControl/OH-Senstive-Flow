@@ -1,0 +1,230 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260401-131340",
+    "generatedAt": "2026-04-01T05:17:32.141Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p7 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets:70 之后继续扩展",
+      "数据流 p8 LLM 分析失败，已回退到锚点数据流：LLM 输出跨入了当前路径之外的 source：input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets:69",
+      "数据流 p9 LLM 分析失败，已回退到锚点数据流：LLM 输出跨入了当前路径之外的 source：input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets:69"
+    ],
+    "counts": {
+      "flows": 3,
+      "nodes": 6,
+      "edges": 3,
+      "failedPaths": 3,
+      "fallbackFlows": 3
+    },
+    "page": {
+      "pageId": "QuickLoginPage",
+      "entry": {
+        "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+        "structName": "QuickLoginPage",
+        "line": 17,
+        "description": "快速登录页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_QuickLoginPage_9b4ab0968b",
+      "kind": "ui",
+      "title": "快捷登录页"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 69,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "  @State showPopUp: boolean = false;",
+              "  // Variable that determines whether the agreement and checkbox are unavailable for tapping during the sign-in process.",
+              "  @State enableStatus: boolean = true;",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+              "    // Obtain the passed parameter object.",
+              "    if (this.params && this.params !== null) {",
+              "      this.quickLoginAnonymousPhone = (this.params['anonymousPhone'] ?? '') as string;",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 70,
+          "code": "hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+          "description": "Outputs info-level logs.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 65,
+            "lines": [
+              "  // Variable that determines whether the agreement and checkbox are unavailable for tapping during the sign-in process.",
+              "  @State enableStatus: boolean = true;",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+              "    // Obtain the passed parameter object.",
+              "    if (this.params && this.params !== null) {",
+              "      this.quickLoginAnonymousPhone = (this.params['anonymousPhone'] ?? '') as string;",
+              "    }",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p7 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets:70 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p8",
+      "pathId": "p8",
+      "nodes": [
+        {
+          "id": "p8:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 78,
+          "code": "onBackPress(): boolean | void {",
+          "description": "返回键事件回调（页面/组件）（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 73,
+            "lines": [
+              "      this.quickLoginAnonymousPhone = (this.params['anonymousPhone'] ?? '') as string;",
+              "    }",
+              "  }",
+              "",
+              "  // Processing logic returned after a gesture operation is executed.",
+              "  onBackPress(): boolean | void {",
+              "    if (this.pageInfos && this.pageInfos.size() > 0) {",
+              "      this.pageInfos.pop();",
+              "      return true;",
+              "    }",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p8:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 70,
+          "code": "hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+          "description": "Outputs info-level logs.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 65,
+            "lines": [
+              "  // Variable that determines whether the agreement and checkbox are unavailable for tapping during the sign-in process.",
+              "  @State enableStatus: boolean = true;",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+              "    // Obtain the passed parameter object.",
+              "    if (this.params && this.params !== null) {",
+              "      this.quickLoginAnonymousPhone = (this.params['anonymousPhone'] ?? '') as string;",
+              "    }",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p8:n1",
+          "to": "p8:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p8 LLM 分析失败，已回退到锚点数据流：LLM 输出跨入了当前路径之外的 source：input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets:69"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 180,
+          "code": "build() {",
+          "description": "ArkUI 组件的 UI 构建入口函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 175,
+            "lines": [
+              "        `getProtocolUrl Error. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "      return '';",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Flex({",
+              "          direction: FlexDirection.Column,",
+              "          alignItems: ItemAlign.Center,"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets",
+          "line": 70,
+          "code": "hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+          "description": "Outputs info-level logs.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 65,
+            "lines": [
+              "  // Variable that determines whether the agreement and checkbox are unavailable for tapping during the sign-in process.",
+              "  @State enableStatus: boolean = true;",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, 'aboutToAppear');",
+              "    // Obtain the passed parameter object.",
+              "    if (this.params && this.params !== null) {",
+              "      this.quickLoginAnonymousPhone = (this.params['anonymousPhone'] ?? '') as string;",
+              "    }",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p9 LLM 分析失败，已回退到锚点数据流：LLM 输出跨入了当前路径之外的 source：input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/QuickLoginPage.ets:69"
+        ]
+      }
+    }
+  ]
+}

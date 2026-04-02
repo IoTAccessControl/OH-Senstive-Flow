@@ -1,0 +1,258 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.829Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 8,
+      "edges": 7,
+      "pages": 1,
+      "elements": 7
+    }
+  },
+  "roots": [
+    "page:6da0db86f705"
+  ],
+  "nodes": {
+    "page:6da0db86f705": {
+      "id": "page:6da0db86f705",
+      "category": "Page",
+      "name": "PlayerView",
+      "description": "首页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 57,
+      "code": "export struct PlayerView {",
+      "context": {
+        "startLine": 52,
+        "lines": [
+          "  // 可以在这里添加任何需要的属性",
+          "}",
+          "",
+          "@Entry",
+          "@Component",
+          "export struct PlayerView {",
+          "  private cid: number = 0;",
+          "  private bvid: string = \"\";",
+          "  @StorageLink('isPortrait') isPortrait: boolean = true",
+          "  @Link @Watch('onPageStateUpdated') pageState: string;",
+          "  private player: IPlayer = (playerType == \"IjkPlayer\" ? new IjkPlayer() : new AvPlayer());"
+        ]
+      }
+    },
+    "ui:f67567d6331b": {
+      "id": "ui:f67567d6331b",
+      "category": "Component",
+      "name": "build",
+      "description": "视频播放区",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 149,
+      "code": "build() {",
+      "context": {
+        "startLine": 144,
+        "lines": [
+          "    if (this.cid > 0) {",
+          "      this.getDanmaku(true);",
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack({ alignContent: Alignment.Center }) {",
+          "      XComponent({",
+          "        id: this.player.id(),",
+          "        type: 'surface',",
+          "        libraryname: this.player.libraryName(),"
+        ]
+      }
+    },
+    "ui:a8f59f3aeba3": {
+      "id": "ui:a8f59f3aeba3",
+      "category": "Component",
+      "name": "XComponent",
+      "description": "视频播放窗口",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 151,
+      "code": "XComponent({",
+      "context": {
+        "startLine": 146,
+        "lines": [
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack({ alignContent: Alignment.Center }) {",
+          "      XComponent({",
+          "        id: this.player.id(),",
+          "        type: 'surface',",
+          "        libraryname: this.player.libraryName(),",
+          "        controller: this.player.controller()",
+          "      })"
+        ]
+      }
+    },
+    "ui:00211fd0ff12": {
+      "id": "ui:00211fd0ff12",
+      "category": "Component",
+      "name": "Progress",
+      "description": "播放进度条",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 175,
+      "code": "Progress({ value: this.progressValue, total: PROGRESS_MAX_VALUE,",
+      "context": {
+        "startLine": 170,
+        "lines": [
+          "        .aspectRatio(this.aspRatio)",
+          "",
+          "      if (!this.mIsShowCtl) {",
+          "        Column() {",
+          "          Blank()",
+          "          Progress({ value: this.progressValue, total: PROGRESS_MAX_VALUE,",
+          "            type: ProgressType.Linear })",
+          "            .color(Color.Red)",
+          "            .backgroundColor(Color.Transparent)",
+          "            .width('100%')",
+          "            .height(2)"
+        ]
+      }
+    },
+    "ui:e818646d7e56": {
+      "id": "ui:e818646d7e56",
+      "category": "Button",
+      "name": "DanmakuView",
+      "description": "弹幕显示",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 186,
+      "code": "DanmakuView({ model: $mDanmakuModel })",
+      "context": {
+        "startLine": 181,
+        "lines": [
+          "        }.height('100%')",
+          "      }",
+          "",
+          "      Flex({ direction: FlexDirection.Column, alignItems: ItemAlign.Center,",
+          "        justifyContent: FlexAlign.Center }) {",
+          "        DanmakuView({ model: $mDanmakuModel })",
+          "      }.width('100%')",
+          "      .height('100%')",
+          "",
+          "      if (this.replayVisible){",
+          "        Column() {"
+        ]
+      }
+    },
+    "ui:ff7b132e1934": {
+      "id": "ui:ff7b132e1934",
+      "category": "Button",
+      "name": "Image",
+      "description": "重播",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 192,
+      "code": "Image($r('app.media.icon_replay'))",
+      "context": {
+        "startLine": 187,
+        "lines": [
+          "      }.width('100%')",
+          "      .height('100%')",
+          "",
+          "      if (this.replayVisible){",
+          "        Column() {",
+          "          Image($r('app.media.icon_replay'))",
+          "            .objectFit(ImageFit.Auto)",
+          "            .width(48)",
+          "            .height(48)",
+          "            .border({ width: 0 })",
+          "            .borderStyle(BorderStyle.Dashed)"
+        ]
+      }
+    },
+    "ui:0634b985d431": {
+      "id": "ui:0634b985d431",
+      "category": "Display",
+      "name": "Image",
+      "description": "加载图标",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 210,
+      "code": "Image($r('app.media.icon_load'))",
+      "context": {
+        "startLine": 205,
+        "lines": [
+          "        .hitTestBehavior(HitTestMode.Transparent)",
+          "      }",
+          "",
+          "      if (this.loadingVisible) {",
+          "        Column() {",
+          "          Image($r('app.media.icon_load'))",
+          "            .objectFit(ImageFit.Auto)",
+          "            .width(48)",
+          "            .height(48)",
+          "            .border({ width: 0 })",
+          "            .borderStyle(BorderStyle.Dashed)"
+        ]
+      }
+    },
+    "ui:13e6cb90a8f0": {
+      "id": "ui:13e6cb90a8f0",
+      "category": "Component",
+      "name": "PlayerControlView",
+      "description": "播放器控制栏",
+      "filePath": "input/app/ohbili/entry/src/main/ets/view/video/Player.ets",
+      "line": 222,
+      "code": "PlayerControlView({",
+      "context": {
+        "startLine": 217,
+        "lines": [
+          "        .backgroundColor('#33000000')",
+          "        .justifyContent(FlexAlign.Center)",
+          "        .hitTestBehavior(HitTestMode.Transparent)",
+          "      }",
+          "",
+          "      PlayerControlView({",
+          "        player: this.player,",
+          "        mDanmakuModel: this.mDanmakuModel,",
+          "        loadingVisible: $loadingVisible,",
+          "        replayVisible: $replayVisible,",
+          "        progressValue: $progressValue,"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:f67567d6331b",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:a8f59f3aeba3",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:00211fd0ff12",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:e818646d7e56",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:ff7b132e1934",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:0634b985d431",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6da0db86f705",
+      "to": "ui:13e6cb90a8f0",
+      "kind": "contains"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "meta": {
+    "runId": "WebCookie_20260401-142348",
+    "generatedAt": "2026-04-01T06:25:19.742Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onCreate_21_2066e47e",
+      "kind": "source",
+      "title": "应用创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/WebCookie/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "onCreate() {",
+          "description": "UIAbility 生命周期入口 onCreate 函数定义，当应用实例创建时被系统调用，作为数据流的起始源点。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "import { UIAbility } from '@kit.AbilityKit';",
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/WebCookie/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 22,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "调用 hilog.info 接口，将固定的字符串常量 'Ability onCreate' 格式化后输出到系统 Info 级别日志，作为当前路径的终点（Sink）。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy() {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态字符串 (Ability onCreate)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (写入系统日志缓冲区)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

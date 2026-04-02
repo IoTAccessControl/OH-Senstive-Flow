@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "runId": "AdsKit_20260401-131915",
+    "generatedAt": "2026-04-01T05:21:59.723Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_26_2732b8b5",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/AdsKit/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 26,
+          "code": "onDestroy(): void {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点（Source），在 UIAbility 销毁时被系统触发。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // When the main window is created, set a main page for this ability."
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/AdsKit/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 27,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口输出日志信息（Sink），记录 'Ability onDestroy' 字符串，未涉及敏感隐私数据的收集、传输或存储。",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // When the main window is created, set a main page for this ability.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储操作",
+          "无加密操作"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

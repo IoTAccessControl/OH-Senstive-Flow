@@ -1,0 +1,161 @@
+{
+  "meta": {
+    "runId": "IntentsKit-codelab-Clientdemo-ArkTS_20260401-134916",
+    "generatedAt": "2026-04-01T05:51:02.920Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onBackground_49_db5a90f6",
+      "kind": "source",
+      "title": "应用切到后台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 49,
+          "code": "onBackground(): void {",
+          "description": "UIAbility 生命周期回调 onBackground 被触发，标志着应用从可见状态切换至后台运行状态，作为数据流的起始事件源。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    Logger.info(TAG, `onForeground`);",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    Logger.info(TAG, `onBackground`);",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 51,
+          "code": "Logger.info(TAG, `onBackground`);",
+          "description": "调用静态工具类 Logger 的 info 方法，传入固定标签 TAG 和描述应用进入后台状态的字符串模板，发起日志记录请求。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "    Logger.info(TAG, `onForeground`);",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    Logger.info(TAG, `onBackground`);",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 11,
+          "code": "public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+          "description": "Logger 类的 info 静态方法接收参数，准备将日志级别、域、标签及格式化消息传递给底层系统日志接口。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "  public static debug(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.debug(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static warn(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.warn(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);"
+            ]
+          }
+        },
+        {
+          "id": "p7:n4",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 12,
+          "code": "hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+          "description": "调用 ohos.hilog.info 原生接口，将拼接好的包含应用状态信息的日志字符串写入系统日志缓冲区，作为当前数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  public static debug(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.debug(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static warn(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.warn(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        },
+        {
+          "from": "p7:n3",
+          "to": "p7:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件 (onBackground)",
+          "自定义日志标签 (TAG)",
+          "日志域标识 (DOMAIN)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (当 UIAbility 切换到后台时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅输出至系统日志缓冲区)"
+        ],
+        "storageAndEncryption": [
+          "临时存储于系统日志环缓冲区 (hilog buffer)",
+          "未进行应用层加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

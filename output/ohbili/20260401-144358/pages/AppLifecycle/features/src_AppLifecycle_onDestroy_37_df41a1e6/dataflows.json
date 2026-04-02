@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.732Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_37_df41a1e6",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p35",
+      "pathId": "p35",
+      "nodes": [
+        {
+          "id": "p35:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 37,
+          "code": "onDestroy() {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时触发。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "        } catch (error) {",
+              "            BLog.e(\"ImageKnife initialization error: \" + JSON.stringify(error));",
+              "        }",
+              "    }",
+              "",
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {"
+            ]
+          }
+        },
+        {
+          "id": "p35:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onDestroy' 作为公开参数写入系统日志，此处为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "            BLog.e(\"ImageKnife initialization error: \" + JSON.stringify(error));",
+              "        }",
+              "    }",
+              "",
+              "    onDestroy() {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "        this.netConnUnregister();",
+              "    }",
+              "",
+              "    onWindowStageCreate(windowStage: window.WindowStage) {",
+              "        // Main window is created, set main page for this ability"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p35:n1",
+          "to": "p35:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发（UIAbility 销毁时）"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅输出到系统日志，无本地持久化存储，无加密"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

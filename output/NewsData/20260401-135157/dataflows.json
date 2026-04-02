@@ -1,0 +1,2218 @@
+{
+  "meta": {
+    "runId": "NewsData_20260401-135157",
+    "generatedAt": "2026-04-01T05:57:39.686Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets:22 之后继续扩展",
+      "数据流 p3 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets:23 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 19,
+      "nodes": 69,
+      "edges": 50,
+      "failedPaths": 2,
+      "fallbackFlows": 2
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/view/NewsList.ets",
+          "line": 61,
+          "code": "aboutToAppear() {",
+          "description": "生命周期入口：aboutToAppear 函数被调用，标志着组件即将显示，触发初始数据加载流程。",
+          "context": {
+            "startLine": 56,
+            "lines": [
+              "        });",
+              "        this.newsModel.pageState = PageState.Fail;",
+              "      });",
+              "  }",
+              "",
+              "  aboutToAppear() {",
+              "    // Request news data.",
+              "    this.changeCategory();",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/view/NewsList.ets",
+          "line": 63,
+          "code": "this.changeCategory();",
+          "description": "流程控制：在生命周期内调用 changeCategory() 方法，启动新闻列表获取逻辑。",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "      });",
+              "  }",
+              "",
+              "  aboutToAppear() {",
+              "    // Request news data.",
+              "    this.changeCategory();",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      if (this.newsModel.pageState === PageState.Success) {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/view/NewsList.ets",
+          "line": 39,
+          "code": "changeCategory() {",
+          "description": "函数定义：changeCategory() 方法开始执行，准备重置分页状态并请求数据。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "@Component",
+              "export default struct NewsList {",
+              "  @State newsModel: NewsModel = new NewsModel();",
+              "  @Watch('changeCategory') @Link currentIndex: number;",
+              "",
+              "  changeCategory() {",
+              "    this.newsModel.currentPage = 1;",
+              "    NewsViewModel.getNewsList(this.newsModel.currentPage, this.newsModel.pageSize, Const.GET_NEWS_LIST)",
+              "      .then((data: NewsData[]) => {",
+              "        this.newsModel.pageState = PageState.Success;",
+              "        if (data.length === this.newsModel.pageSize) {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/NewsData/entry/src/main/ets/view/NewsList.ets",
+          "line": 40,
+          "code": "this.newsModel.currentPage = 1;",
+          "description": "数据处理：将当前页码 (currentPage) 重置为 1，准备从头加载新闻列表。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "export default struct NewsList {",
+              "  @State newsModel: NewsModel = new NewsModel();",
+              "  @Watch('changeCategory') @Link currentIndex: number;",
+              "",
+              "  changeCategory() {",
+              "    this.newsModel.currentPage = 1;",
+              "    NewsViewModel.getNewsList(this.newsModel.currentPage, this.newsModel.pageSize, Const.GET_NEWS_LIST)",
+              "      .then((data: NewsData[]) => {",
+              "        this.newsModel.pageState = PageState.Success;",
+              "        if (data.length === this.newsModel.pageSize) {",
+              "          this.newsModel.currentPage++;"
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/NewsData/entry/src/main/ets/view/NewsList.ets",
+          "line": 41,
+          "code": "NewsViewModel.getNewsList(this.newsModel.currentPage, this.newsModel.pageSize, Const.GET_NEWS_LIST)",
+          "description": "网络请求源：调用 NewsViewModel.getNewsList，传入页码、每页大小及接口常量，发起异步网络请求获取新闻数据。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "  @State newsModel: NewsModel = new NewsModel();",
+              "  @Watch('changeCategory') @Link currentIndex: number;",
+              "",
+              "  changeCategory() {",
+              "    this.newsModel.currentPage = 1;",
+              "    NewsViewModel.getNewsList(this.newsModel.currentPage, this.newsModel.pageSize, Const.GET_NEWS_LIST)",
+              "      .then((data: NewsData[]) => {",
+              "        this.newsModel.pageState = PageState.Success;",
+              "        if (data.length === this.newsModel.pageSize) {",
+              "          this.newsModel.currentPage++;",
+              "          this.newsModel.hasMore = true;"
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/NewsData/entry/src/main/ets/view/NewsList.ets",
+          "line": 52,
+          "code": ".catch((err: string | Resource) => {",
+          "description": "异常捕获：定义 .catch 回调函数，用于接收网络请求或数据处理过程中产生的错误对象 (err)。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "        } else {",
+              "          this.newsModel.hasMore = false;",
+              "        }",
+              "        this.newsModel.newsData = data;",
+              "      })",
+              "      .catch((err: string | Resource) => {",
+              "        promptAction.showToast({",
+              "          message: err,",
+              "          duration: Const.ANIMATION_DURATION",
+              "        });",
+              "        this.newsModel.pageState = PageState.Fail;"
+            ]
+          }
+        },
+        {
+          "id": "p1:n7",
+          "filePath": "input/app/NewsData/entry/src/main/ets/view/NewsList.ets",
+          "line": 53,
+          "code": "promptAction.showToast({",
+          "description": "隐私 Sink：调用 promptAction.showToast，将包含潜在敏感信息的错误消息 (err) 以弹窗形式展示给用户，完成数据流向终端的输出。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "          this.newsModel.hasMore = false;",
+              "        }",
+              "        this.newsModel.newsData = data;",
+              "      })",
+              "      .catch((err: string | Resource) => {",
+              "        promptAction.showToast({",
+              "          message: err,",
+              "          duration: Const.ANIMATION_DURATION",
+              "        });",
+              "        this.newsModel.pageState = PageState.Fail;",
+              "      });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        },
+        {
+          "from": "p1:n6",
+          "to": "p1:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "错误信息 (Error Message)",
+          "分页参数 (Page Number, Page Size)",
+          "新闻列表数据 (News List Data)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (组件显示时)",
+          "用户交互触发 (分类切换)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地展示与提示)"
+        ],
+        "storageAndEncryption": [
+          "内存临时存储 (@State 状态管理)",
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "UIAbility 创建时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';",
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 22,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "Checks whether logs of the specified tag, and level can be printed.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets:22 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "UIAbility 创建时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';",
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 23,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "Outputs info-level logs.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p3 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets:23 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "定义 onCreate 生命周期函数入口，接收 Want 和 launchParam 两个包含敏感启动信息的参数对象。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';",
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+          "description": "将 Want 对象序列化为 JSON 字符串，并拼接前缀文本，准备作为公开日志（%{public}s）输出，可能导致启动参数中的隐私数据泄露。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "Want 对象（包含启动参数、URI、BundleName 等）",
+          "AbilityConstant.LaunchParam 对象（包含启动模式、窗口模式等）"
+        ],
+        "collectionFrequency": [
+          "一次性（应用/Ability 启动时触发）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（数据仅输出至系统日志缓冲区）"
+        ],
+        "storageAndEncryption": [
+          "本地临时存储于系统 Log 缓冲区（hilog buffer）",
+          "未加密（使用 %{public}s 标记，表示内容在日志中明文可见）"
+        ],
+        "permissions": [
+          "无需额外权限（hilog.info 为普通应用默认可用的调试接口）"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 21,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "UIAbility 生命周期入口 onCreate 被触发，接收 want 和 launchParam 作为输入参数，标志着数据流的开始。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';",
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+          "description": "将 want 对象序列化为 JSON 字符串并拼接到日志消息中，准备输出启动意图相关数据。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);"
+            ]
+          }
+        },
+        {
+          "id": "p5:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 25,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+          "description": "将 launchParam 对象序列化为 JSON 字符串，拼接到日志格式字符串中，并通过 hilog.info 接口输出，构成隐私数据泄露的 Sink 点。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        },
+        {
+          "from": "p5:n2",
+          "to": "p5:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "launchParam (启动参数)",
+          "want (启动意图)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "未进行本地持久化存储",
+          "数据未加密 (以明文形式拼接字符串并输出)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 28,
+          "code": "onDestroy(): void | Promise<void> {",
+          "description": "定义 onDestroy 生命周期函数入口，当 UIAbility 实例销毁时被系统调用。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 29,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "调用 hilog.isLoggable 检查特定标签和级别的日志是否可打印，此处仅为日志配置检查，未涉及隐私数据收集或传输。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储操作",
+          "无加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 28,
+          "code": "onDestroy(): void | Promise<void> {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时由系统自动触发。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 29,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "调用 hilog.isLoggable 检查当前标签 'testTag' 在 INFO 级别是否允许输出日志，作为日志写入的前置判断。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'want param:' + JSON.stringify(want) ?? '');",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 30,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 将字符串 'Ability onDestroy' 写入系统日志，这是数据流的终点（Sink），输出了应用销毁的状态信息。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'launchParam:' + JSON.stringify(launchParam) ?? '');",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态标识 (Ability onDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "数据仅输出至系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p8",
+      "pathId": "p8",
+      "nodes": [
+        {
+          "id": "p8:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 的入口点，当 WindowStage 创建时被系统调用，作为数据流的起始源点。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 35,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "调用 hilog.isLoggable 检查特定标签和级别的日志是否可打印，此为数据流的终点（Sink），该操作仅进行内部状态检查，未涉及隐私数据采集、上传或存储。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p8:n1",
+          "to": "p8:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地数据存储行为",
+          "无加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "定义 onWindowStageCreate 生命周期回调函数，作为数据流的起点，当应用的 WindowStage 创建时被系统调用。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 34,
+          "code": "// Main window is created, set main page for this ability",
+          "description": "代码注释，说明此阶段用于设置应用的主页面，不涉及实际数据操作。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 35,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "调用 hilog.isLoggable 检查当前日志级别是否允许输出 INFO 级别日志，为后续日志记录做前置判断。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);"
+            ]
+          }
+        },
+        {
+          "id": "p9:n4",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 36,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "调用 hilog.info 将固定的字符串 'Ability onWindowStageCreate' 写入系统日志，标记应用窗口阶段已创建，此为数据流终点（Sink）。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        },
+        {
+          "from": "p9:n3",
+          "to": "p9:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识 (Ability onWindowStageCreate)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时 WindowStage 创建触发)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "仅输出至系统日志缓冲区 (hilog)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当应用主窗口阶段创建时被系统调用。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "windowStage.loadContent('pages/Index', (err, data) => {",
+          "description": "调用 windowStage.loadContent 异步加载页面内容，注册回调函数以处理加载结果（成功或失败）。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "if (err.code) {",
+          "description": "在加载回调中判断是否存在错误代码 (err.code)，作为数据流的条件分支点。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);"
+            ]
+          }
+        },
+        {
+          "id": "p10:n4",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 40,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+          "description": "Sink 节点：调用 hilog.isLoggable 检查当前标签和错误级别是否允许打印日志，为后续记录错误信息做准备。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        },
+        {
+          "from": "p10:n3",
+          "to": "p10:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "错误对象 (err)",
+          "加载状态数据 (data)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (窗口创建失败时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "仅内存中临时序列化用于日志打印"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，作为数据流的起始点。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "windowStage.loadContent('pages/Index', (err, data) => {",
+          "description": "调用 loadContent 方法异步加载应用主页面内容，该操作可能产生错误对象 (err) 或成功数据 (data)。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "if (err.code) {",
+          "description": "判断 loadContent 回调中的 err 对象是否存在 code 属性，确认是否发生页面加载错误。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);"
+            ]
+          }
+        },
+        {
+          "id": "p11:n4",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 40,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+          "description": "在确认发生错误后，检查当前日志级别是否允许输出 ERROR 级别的日志。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p11:n5",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 41,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "将错误对象 err 序列化为 JSON 字符串，并通过 hilog.error 接口输出到系统日志，构成数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        },
+        {
+          "from": "p11:n3",
+          "to": "p11:n4"
+        },
+        {
+          "from": "p11:n4",
+          "to": "p11:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面加载错误对象 (err)",
+          "错误详情字符串化数据"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面加载失败时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "【Source】onWindowStageCreate 生命周期函数入口，当应用主窗口阶段创建时被系统调用，启动后续数据流。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {"
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 35,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "调用 hilog.isLoggable 检查 INFO 级别日志是否可打印，作为当前上下文日志记录的预检操作。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);"
+            ]
+          }
+        },
+        {
+          "id": "p12:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 36,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "记录'Ability onWindowStageCreate'文本日志，标记应用窗口阶段创建事件，不涉及敏感隐私数据。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p12:n4",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "windowStage.loadContent('pages/Index', (err, data) => {",
+          "description": "调用 windowStage.loadContent 异步加载主页内容 'pages/Index'，注册回调函数以处理加载结果（成功或失败）。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p12:n5",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "if (err.code) {",
+          "description": "在加载回调中判断 err.code 是否存在，分支进入错误处理逻辑或成功处理逻辑。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);"
+            ]
+          }
+        },
+        {
+          "id": "p12:n6",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 40,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+          "description": "在错误分支中调用 hilog.isLoggable 检查 ERROR 级别日志权限，准备记录错误详情。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p12:n7",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 41,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "将错误对象 err 序列化为 JSON 字符串并记录到日志，此处涉及错误堆栈或代码信息的临时暴露。",
+          "context": {
+            "startLine": 36,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p12:n8",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 44,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "【Sink】在加载成功分支中调用 hilog.isLoggable 检查 INFO 级别日志权限，确认是否可以输出加载成功的数据信息。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        },
+        {
+          "from": "p12:n2",
+          "to": "p12:n3"
+        },
+        {
+          "from": "p12:n3",
+          "to": "p12:n4"
+        },
+        {
+          "from": "p12:n4",
+          "to": "p12:n5"
+        },
+        {
+          "from": "p12:n5",
+          "to": "p12:n6"
+        },
+        {
+          "from": "p12:n6",
+          "to": "p12:n7"
+        },
+        {
+          "from": "p12:n5",
+          "to": "p12:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态标识",
+          "页面加载结果数据",
+          "错误信息对象"
+        ],
+        "collectionFrequency": [
+          "事件触发（WindowStage 创建及内容加载完成时）"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅用于临时日志输出检查"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p13",
+      "pathId": "p13",
+      "nodes": [
+        {
+          "id": "p13:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 Ability 的窗口阶段创建时被系统调用，作为数据流的起点。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {"
+            ]
+          }
+        },
+        {
+          "id": "p13:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "windowStage.loadContent('pages/Index', (err, data) => {",
+          "description": "调用 windowStage.loadContent 加载主页面 'pages/Index'，注册异步回调函数以接收加载结果（err 和 data）。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p13:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "if (err.code) {",
+          "description": "在回调函数中判断加载是否失败（检查 err.code），决定后续是记录错误还是记录成功数据。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);"
+            ]
+          }
+        },
+        {
+          "id": "p13:n4",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 44,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "加载成功分支的逻辑检查点，准备处理加载成功的回调数据。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "      if (err.code) {",
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p13:n5",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 45,
+          "code": "hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+          "description": "【Sink】将页面加载返回的 data 对象序列化为 JSON 字符串，并通过 hilog.info 接口以明文形式打印到系统日志中，存在隐私泄露风险。",
+          "context": {
+            "startLine": 40,
+            "lines": [
+              "        hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.ERROR);",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p13:n1",
+          "to": "p13:n2"
+        },
+        {
+          "from": "p13:n2",
+          "to": "p13:n3"
+        },
+        {
+          "from": "p13:n3",
+          "to": "p13:n4"
+        },
+        {
+          "from": "p13:n4",
+          "to": "p13:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面加载回调数据 (loadContent callback data)",
+          "应用启动参数 (launchParam)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用窗口创建时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据以明文形式输出至系统日志"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p14",
+      "pathId": "p14",
+      "nodes": [
+        {
+          "id": "p14:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 49,
+          "code": "onWindowStageDestroy(): void {",
+          "description": "定义 onWindowStageDestroy 生命周期回调函数，作为数据流的起点（Source），在窗口阶段销毁时触发。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p14:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 50,
+          "code": "// Main window is destroyed, release UI related resources",
+          "description": "注释行，说明此处意图是释放与 UI 相关的资源，不涉及实际代码执行。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p14:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 51,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "调用 hilog.isLoggable 检查特定标签和级别的日志是否可打印，作为数据流的终点（Sink），该操作仅涉及日志系统内部状态查询，未收集隐私数据。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p14:n1",
+          "to": "p14:n2"
+        },
+        {
+          "from": "p14:n2",
+          "to": "p14:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储操作",
+          "无加密操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p15",
+      "pathId": "p15",
+      "nodes": [
+        {
+          "id": "p15:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 49,
+          "code": "onWindowStageDestroy(): void {",
+          "description": "定义 onWindowStageDestroy 生命周期回调函数，作为数据流的起点，当应用窗口阶段销毁时被系统触发。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "      hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p15:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 50,
+          "code": "// Main window is destroyed, release UI related resources",
+          "description": "代码注释，说明此阶段应释放 UI 相关资源，不涉及实际数据操作。",
+          "context": {
+            "startLine": 45,
+            "lines": [
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p15:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 51,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "检查 'testTag' 标签的 INFO 级别日志是否可输出，为后续日志记录做前置判断。",
+          "context": {
+            "startLine": 46,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground"
+            ]
+          }
+        },
+        {
+          "id": "p15:n4",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 52,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+          "description": "调用 hilog.info 将固定的生命周期状态字符串 'Ability onWindowStageDestroy' 写入系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 47,
+            "lines": [
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p15:n1",
+          "to": "p15:n2"
+        },
+        {
+          "from": "p15:n2",
+          "to": "p15:n3"
+        },
+        {
+          "from": "p15:n3",
+          "to": "p15:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "生命周期事件标识 (Ability onWindowStageDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 销毁时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储行为",
+          "数据未加密 (以明文形式输出到系统日志)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p16",
+      "pathId": "p16",
+      "nodes": [
+        {
+          "id": "p16:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 55,
+          "code": "onForeground(): void {",
+          "description": "定义 onForeground 生命周期函数入口，当 UIAbility 切换到前台时被系统调用。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p16:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 57,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "调用 hilog.isLoggable 检查特定标签和级别的日志是否可打印，此处未涉及用户隐私数据收集或网络传输，仅为日志状态检查。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p16:n1",
+          "to": "p16:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [
+          "事件触发（应用切换至前台时）"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p17",
+      "pathId": "p17",
+      "nodes": [
+        {
+          "id": "p17:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 55,
+          "code": "onForeground(): void {",
+          "description": "定义 onForeground 生命周期函数入口，当应用从后台切换至前台时被系统调用。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p17:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 56,
+          "code": "// Ability has brought to foreground",
+          "description": "代码注释，说明此函数用于处理应用进入前台的逻辑。",
+          "context": {
+            "startLine": 51,
+            "lines": [
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p17:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 57,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "检查 'testTag' 标签的 INFO 级别日志是否可输出，作为日志记录的前置判断。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background"
+            ]
+          }
+        },
+        {
+          "id": "p17:n4",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 58,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+          "description": "调用 hilog.info 将固定的状态字符串 'Ability onForeground' 写入系统日志，标记应用已回到前台。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p17:n1",
+          "to": "p17:n2"
+        },
+        {
+          "from": "p17:n2",
+          "to": "p17:n3"
+        },
+        {
+          "from": "p17:n3",
+          "to": "p17:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "固定日志字符串 ('Ability onForeground')"
+        ],
+        "collectionFrequency": [
+          "事件触发 (当 UIAbility 切换到前台时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "写入系统日志缓冲区 (hilog)",
+          "未涉及敏感数据加密存储"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p18",
+      "pathId": "p18",
+      "nodes": [
+        {
+          "id": "p18:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 61,
+          "code": "onBackground(): void {",
+          "description": "定义 onBackground 生命周期函数入口，当应用切换到后台时触发，作为数据流的起始源点。",
+          "context": {
+            "startLine": 56,
+            "lines": [
+              "    // Ability has brought to foreground",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p18:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 62,
+          "code": "// Ability has back to background",
+          "description": "代码注释，说明当前处于应用切回后台的逻辑块，无实际数据操作。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p18:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 63,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "调用 hilog.isLoggable 检查特定标签和级别的日志是否可打印，此为数据流终点（Sink），仅涉及日志系统内部状态查询，未收集用户隐私数据。",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p18:n1",
+          "to": "p18:n2"
+        },
+        {
+          "from": "p18:n2",
+          "to": "p18:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p19",
+      "pathId": "p19",
+      "nodes": [
+        {
+          "id": "p19:n1",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 61,
+          "code": "onBackground(): void {",
+          "description": "定义 onBackground 生命周期回调函数，作为数据流的起点，当应用进入后台时被系统触发。",
+          "context": {
+            "startLine": 56,
+            "lines": [
+              "    // Ability has brought to foreground",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p19:n2",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 62,
+          "code": "// Ability has back to background",
+          "description": "代码注释，说明当前逻辑发生在应用回到后台的场景，不涉及实际数据操作。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p19:n3",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 63,
+          "code": "hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+          "description": "调用 hilog.isLoggable 检查当前标签和级别的日志是否开启，为后续日志记录做前置判断。",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p19:n4",
+          "filePath": "input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 64,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+          "description": "调用 hilog.info 将固定的字符串 'Ability onBackground' 写入系统日志，作为数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.isLoggable(0x0000, 'testTag', hilog.LogLevel.INFO);",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p19:n1",
+          "to": "p19:n2"
+        },
+        {
+          "from": "p19:n2",
+          "to": "p19:n3"
+        },
+        {
+          "from": "p19:n3",
+          "to": "p19:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "静态日志标签 (testTag)",
+          "静态日志内容 (Ability onBackground)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (当 UIAbility 切换到后台时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "存储方式：依赖系统日志服务 (hilog) 的本地缓冲或持久化策略",
+          "加密情况：源码未体现显式加密，取决于系统日志配置"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

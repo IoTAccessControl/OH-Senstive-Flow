@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "featureId": "ui_SearchPage_4d8a2d1c8d",
+    "generatedAt": "2026-04-01T06:57:05.390Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "页面加载时获取并展示热搜榜单数据",
+        "dataSources": [
+          "网络接口"
+        ],
+        "dataItems": [
+          {
+            "name": "热搜榜单数据",
+            "refs": [
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n3"
+              },
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "通过网络请求获取，暂存于内存变量，并在用户点击时通过路由参数传递",
+        "storageMethod": "内存临时存储 (组件状态变量)",
+        "dataRecipients": [
+          {
+            "name": "完整榜单页面",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "向用户展示热门搜索内容列表及详情",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户点击热搜词条跳转至搜索结果页",
+        "dataSources": [
+          "用户交互事件 (点击热搜词条)"
+        ],
+        "dataItems": [
+          {
+            "name": "搜索关键词",
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "捕获用户点击的关键词，通过路由参数明文传递给目标页面",
+        "storageMethod": "临时内存存储 (路由参数)",
+        "dataRecipients": [
+          {
+            "name": "搜索结果页面",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "根据用户选择的关键词执行搜索并展示结果",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

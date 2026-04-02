@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "runId": "NewsData_20260401-135157",
+    "featureId": "src_Index_aboutToAppear_61_3f2bfb4e",
+    "generatedAt": "2026-04-01T05:58:33.935Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "NewsData",
+        "businessScenario": "首页加载时自动获取并展示新闻列表，若请求失败则向用户显示错误提示",
+        "dataSources": [
+          "应用内部配置的分页参数",
+          "远程新闻数据接口"
+        ],
+        "dataItems": [
+          {
+            "name": "分页参数",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n4"
+              },
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              }
+            ]
+          },
+          {
+            "name": "新闻列表数据",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n5"
+              }
+            ]
+          },
+          {
+            "name": "错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "内存临时处理与展示",
+        "storageMethod": "仅在内存中临时存储，无本地持久化",
+        "dataRecipients": [
+          {
+            "name": "用户（通过界面弹窗）",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n7"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "为用户提供新闻资讯浏览服务及异常状态反馈",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

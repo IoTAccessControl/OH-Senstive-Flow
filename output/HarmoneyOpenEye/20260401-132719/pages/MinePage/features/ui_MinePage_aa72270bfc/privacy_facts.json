@@ -1,0 +1,143 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "featureId": "ui_MinePage_aa72270bfc",
+    "generatedAt": "2026-04-01T05:45:27.856Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在个人中心页面点击菜单项查看或调试用户信息时",
+        "dataSources": [
+          "本地存储"
+        ],
+        "dataItems": [
+          {
+            "name": "用户信息",
+            "refs": [
+              {
+                "flowId": "flow:p19",
+                "nodeId": "p19:n4"
+              },
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取并明文输出到系统日志",
+        "storageMethod": "仅临时存在于系统日志缓冲区，未加密",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p19",
+                "nodeId": "p19:n6"
+              },
+              {
+                "flowId": "flow:p23",
+                "nodeId": "p23:n5"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于开发调试",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "HarmoneyOpenEye",
+        "businessScenario": "用户在个人中心页面点击“关注”按钮进行页面跳转时",
+        "dataSources": [
+          "用户交互事件",
+          "应用内部路由参数"
+        ],
+        "dataItems": [
+          {
+            "name": "路由跳转参数",
+            "refs": [
+              {
+                "flowId": "flow:p20",
+                "nodeId": "p20:n4"
+              },
+              {
+                "flowId": "flow:p22",
+                "nodeId": "p22:n4"
+              },
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n3"
+              },
+              {
+                "flowId": "flow:p26",
+                "nodeId": "p26:n3"
+              }
+            ]
+          },
+          {
+            "name": "路由执行状态日志",
+            "refs": [
+              {
+                "flowId": "flow:p20",
+                "nodeId": "p20:n8"
+              },
+              {
+                "flowId": "flow:p21",
+                "nodeId": "p21:n8"
+              },
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n7"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "收集跳转参数及执行结果并记录日志",
+        "storageMethod": "仅临时存在于系统日志缓冲区，无持久化存储",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p20",
+                "nodeId": "p20:n9"
+              },
+              {
+                "flowId": "flow:p21",
+                "nodeId": "p21:n9"
+              },
+              {
+                "flowId": "flow:p24",
+                "nodeId": "p24:n8"
+              },
+              {
+                "flowId": "flow:p25",
+                "nodeId": "p25:n8"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现页面导航功能及记录运行状态",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

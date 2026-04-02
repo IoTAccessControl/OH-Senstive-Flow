@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260401-131340",
+    "generatedAt": "2026-04-01T05:17:32.141Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onDestroy_17_a5931557",
+      "kind": "source",
+      "title": "应用退出时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 17,
+          "code": "onDestroy(): void {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时由系统自动触发。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 10,
+          "code": "logTag: string = 'EntryAbility';",
+          "description": "读取成员变量 logTag，其值为固定字符串 'EntryAbility'，用于标识日志来源模块。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "import { BusinessError } from '@kit.BasicServicesKit';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  logTag: string = 'EntryAbility';",
+              "  domainId: number = 0x0000;",
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onCreate');",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 11,
+          "code": "domainId: number = 0x0000;",
+          "description": "读取成员变量 domainId，其值为固定数字 0x0000，用于标识日志所属的域 ID。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "import { window } from '@kit.ArkUI';",
+              "import { BusinessError } from '@kit.BasicServicesKit';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  logTag: string = 'EntryAbility';",
+              "  domainId: number = 0x0000;",
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onCreate');",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p11:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 18,
+          "code": "hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口，将固定的生命周期状态文本 'Ability onDestroy' 连同 logTag 和 domainId 写入系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onWindowStageCreate');",
+              "    // 1. Obtain the main window of the app."
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        },
+        {
+          "from": "p11:n3",
+          "to": "p11:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态标识",
+          "日志标签 (logTag)",
+          "日志域 ID (domainId)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "仅输出至系统日志缓冲区，无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

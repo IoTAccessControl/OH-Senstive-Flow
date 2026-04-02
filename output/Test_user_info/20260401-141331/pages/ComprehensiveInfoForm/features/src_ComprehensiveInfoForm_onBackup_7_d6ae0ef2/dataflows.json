@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "runId": "Test_user_info_20260401-141331",
+    "generatedAt": "2026-04-01T06:16:03.324Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "ComprehensiveInfoForm",
+      "entry": {
+        "filePath": "input/app/Test_user_info/entry/src/main/ets/pages/Index.ets",
+        "structName": "ComprehensiveInfoForm",
+        "line": 5,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "src_ComprehensiveInfoForm_onBackup_7_d6ae0ef2",
+      "kind": "source",
+      "title": "首页逻辑：onBackup"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets",
+          "line": 7,
+          "code": "async onBackup() {",
+          "description": "定义 onBackup 异步函数，作为备份扩展能力的生命周期入口点，由系统在触发应用备份时调用。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import { BackupExtensionAbility, BundleVersion } from '@kit.CoreFileKit';",
+              "",
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryBackupAbility extends BackupExtensionAbility {",
+              "  async onBackup() {",
+              "    hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+              "    await Promise.resolve();",
+              "  }",
+              "",
+              "  async onRestore(bundleVersion: BundleVersion) {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/Test_user_info/entry/src/main/ets/entrybackupability/EntryBackupAbility.ets",
+          "line": 8,
+          "code": "hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+          "description": "调用 hilog.info 输出调试日志，记录备份流程开始，该操作仅写入系统日志缓冲区，不涉及敏感数据收集或网络传输。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "const DOMAIN = 0x0000;",
+              "",
+              "export default class EntryBackupAbility extends BackupExtensionAbility {",
+              "  async onBackup() {",
+              "    hilog.info(DOMAIN, 'testTag', 'onBackup ok');",
+              "    await Promise.resolve();",
+              "  }",
+              "",
+              "  async onRestore(bundleVersion: BundleVersion) {",
+              "    hilog.info(DOMAIN, 'testTag', 'onRestore ok %{public}s', JSON.stringify(bundleVersion));"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "未检测到本地存储操作",
+          "未检测到加密操作"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

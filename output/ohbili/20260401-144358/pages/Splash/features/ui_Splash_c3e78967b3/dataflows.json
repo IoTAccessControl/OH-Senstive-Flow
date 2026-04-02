@@ -1,0 +1,1028 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.732Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p26 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/Splash.ets:33 之后继续扩展",
+      "数据流 p27 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/Splash.ets:38 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 5,
+      "nodes": 33,
+      "edges": 29,
+      "failedPaths": 2,
+      "fallbackFlows": 2
+    },
+    "page": {
+      "pageId": "Splash",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+        "structName": "Splash",
+        "line": 25,
+        "description": "启动页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Splash_c3e78967b3",
+      "kind": "ui",
+      "title": "启动页"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p26",
+      "pathId": "p26",
+      "nodes": [
+        {
+          "id": "p26:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 29,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "@Component",
+              "struct Splash {",
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p26:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 33,
+          "code": "let atManager = abilityAccessCtrl.createAtManager();",
+          "description": "Obtains the AtManager instance.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p26:n1",
+          "to": "p26:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p26 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/Splash.ets:33 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p27",
+      "pathId": "p27",
+      "nodes": [
+        {
+          "id": "p27:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 29,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "@Component",
+              "struct Splash {",
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p27:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 38,
+          "code": "this.appUuid = util.generateRandomUUID();",
+          "description": "Generate a random RFC 4122 version 4 UUID using a cryptographically secure random number generator.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p27:n1",
+          "to": "p27:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p27 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/Splash.ets:38 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p28",
+      "pathId": "p28",
+      "nodes": [
+        {
+          "id": "p28:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 29,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，组件即将显示时触发，开始执行初始化和权限检查逻辑。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "@Component",
+              "struct Splash {",
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p28:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 30,
+          "code": "let list: Array<Permissions> = [",
+          "description": "定义待申请的权限列表，包含媒体位置读取和媒体读取权限。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "struct Splash {",
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');"
+            ]
+          }
+        },
+        {
+          "id": "p28:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 37,
+          "code": "if (this.appUuid == 'undefined') {",
+          "description": "检查本地存储的应用唯一标识 appUuid 是否未初始化。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {"
+            ]
+          }
+        },
+        {
+          "id": "p28:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 38,
+          "code": "this.appUuid = util.generateRandomUUID();",
+          "description": "若 appUuid 未初始化，调用工具类生成随机 UUID 作为设备/应用标识，并赋值给本地存储变量。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {"
+            ]
+          }
+        },
+        {
+          "id": "p28:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 40,
+          "code": "BLog.i(\"appUuid: \" + this.appUuid);",
+          "description": "将生成的 appUuid 打印到日志，存在隐私数据泄露风险。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+              "        this.initTask();",
+              "        setTimeout(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p28:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 42,
+          "code": "this.checkAccessToken(list[0]).then((grantStatus) => {",
+          "description": "异步检查第一个权限（MEDIA_LOCATION）的授权状态，进入回调处理流程。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+              "        this.initTask();",
+              "        setTimeout(() => {",
+              "          router.replaceUrl({ url: \"pages/Index\" });",
+              "        }, 1000);"
+            ]
+          }
+        },
+        {
+          "id": "p28:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 43,
+          "code": "if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+          "description": "判断权限授权结果是否为已授予，决定后续执行分支。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+              "        this.initTask();",
+              "        setTimeout(() => {",
+              "          router.replaceUrl({ url: \"pages/Index\" });",
+              "        }, 1000);",
+              "      } else {"
+            ]
+          }
+        },
+        {
+          "id": "p28:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 44,
+          "code": "this.initTask();",
+          "description": "权限已授予时，执行初始化任务逻辑（initTask）。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+              "        this.initTask();",
+              "        setTimeout(() => {",
+              "          router.replaceUrl({ url: \"pages/Index\" });",
+              "        }, 1000);",
+              "      } else {",
+              "        atManager.requestPermissionsFromUser(globalThis.appContext, list, (err, result) => {"
+            ]
+          }
+        },
+        {
+          "id": "p28:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 46,
+          "code": "router.replaceUrl({ url: \"pages/Index\" });",
+          "description": "延迟 1 秒后调用 router.replaceUrl 替换当前页面为首页 Index，完成启动流程，此为数据流终点。",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+              "        this.initTask();",
+              "        setTimeout(() => {",
+              "          router.replaceUrl({ url: \"pages/Index\" });",
+              "        }, 1000);",
+              "      } else {",
+              "        atManager.requestPermissionsFromUser(globalThis.appContext, list, (err, result) => {",
+              "          if (err) {",
+              "            BLog.e(\"dodo requestPermissionsFromUserError:\" + JSON.stringify(err));"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p28:n1",
+          "to": "p28:n2"
+        },
+        {
+          "from": "p28:n2",
+          "to": "p28:n3"
+        },
+        {
+          "from": "p28:n3",
+          "to": "p28:n4"
+        },
+        {
+          "from": "p28:n4",
+          "to": "p28:n5"
+        },
+        {
+          "from": "p28:n5",
+          "to": "p28:n6"
+        },
+        {
+          "from": "p28:n6",
+          "to": "p28:n7"
+        },
+        {
+          "from": "p28:n7",
+          "to": "p28:n8"
+        },
+        {
+          "from": "p28:n8",
+          "to": "p28:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "appUuid (应用唯一标识)",
+          "appLogDebug (调试配置)",
+          "用户授权状态 (权限授予结果)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)",
+          "事件触发 (组件显示时)"
+        ],
+        "cloudUpload": [
+          "未在当前片段发现直接上传行为"
+        ],
+        "storageAndEncryption": [
+          "本地存储：通过 @StorageLink 持久化 appUuid 和 appLogDebug",
+          "加密情况：未在当前片段发现加密操作，UUID 为明文生成"
+        ],
+        "permissions": [
+          "ohos.permission.MEDIA_LOCATION",
+          "ohos.permission.READ_MEDIA"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p29",
+      "pathId": "p29",
+      "nodes": [
+        {
+          "id": "p29:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 29,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，组件即将显示时触发，开始执行初始化和权限检查逻辑。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "@Component",
+              "struct Splash {",
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p29:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 30,
+          "code": "let list: Array<Permissions> = [",
+          "description": "定义需要申请的权限列表，包含媒体位置和读取媒体权限。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "struct Splash {",
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');"
+            ]
+          }
+        },
+        {
+          "id": "p29:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 37,
+          "code": "if (this.appUuid == 'undefined') {",
+          "description": "检查本地存储的设备标识 appUuid 是否已初始化，判断是否需要生成新标识。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {"
+            ]
+          }
+        },
+        {
+          "id": "p29:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 38,
+          "code": "this.appUuid = util.generateRandomUUID();",
+          "description": "若 appUuid 未初始化，调用 util.generateRandomUUID 生成随机 UUID 作为设备唯一标识。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {"
+            ]
+          }
+        },
+        {
+          "id": "p29:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 40,
+          "code": "BLog.i(\"appUuid: \" + this.appUuid);",
+          "description": "将生成的或已有的 appUuid 记录到调试日志中，确认数据项已准备就绪。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+              "        this.initTask();",
+              "        setTimeout(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p29:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 42,
+          "code": "this.checkAccessToken(list[0]).then((grantStatus) => {",
+          "description": "异步检查第一个权限 (MEDIA_LOCATION) 的授权状态，进入回调处理流程。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+              "        this.initTask();",
+              "        setTimeout(() => {",
+              "          router.replaceUrl({ url: \"pages/Index\" });",
+              "        }, 1000);"
+            ]
+          }
+        },
+        {
+          "id": "p29:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 43,
+          "code": "if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+          "description": "在 Promise 回调中判断权限授予状态，若已授权则准备执行后续任务。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+              "        this.initTask();",
+              "        setTimeout(() => {",
+              "          router.replaceUrl({ url: \"pages/Index\" });",
+              "        }, 1000);",
+              "      } else {"
+            ]
+          }
+        },
+        {
+          "id": "p29:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 46,
+          "code": "router.replaceUrl({ url: \"pages/Index\" });",
+          "description": "权限已授权分支：设置定时器，1 秒后执行页面跳转操作。",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+              "        this.initTask();",
+              "        setTimeout(() => {",
+              "          router.replaceUrl({ url: \"pages/Index\" });",
+              "        }, 1000);",
+              "      } else {",
+              "        atManager.requestPermissionsFromUser(globalThis.appContext, list, (err, result) => {",
+              "          if (err) {",
+              "            BLog.e(\"dodo requestPermissionsFromUserError:\" + JSON.stringify(err));"
+            ]
+          }
+        },
+        {
+          "id": "p29:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 49,
+          "code": "atManager.requestPermissionsFromUser(globalThis.appContext, list, (err, result) => {",
+          "description": "权限未授权分支：调用系统接口 requestPermissionsFromUser 向用户弹窗申请权限列表。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        this.initTask();",
+              "        setTimeout(() => {",
+              "          router.replaceUrl({ url: \"pages/Index\" });",
+              "        }, 1000);",
+              "      } else {",
+              "        atManager.requestPermissionsFromUser(globalThis.appContext, list, (err, result) => {",
+              "          if (err) {",
+              "            BLog.e(\"dodo requestPermissionsFromUserError:\" + JSON.stringify(err));",
+              "          } else {",
+              "            this.initTask();",
+              "            router.replaceUrl({ url: \"pages/Index\" });"
+            ]
+          }
+        },
+        {
+          "id": "p29:n10",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 53,
+          "code": "this.initTask();",
+          "description": "用户授权成功回调分支：执行初始化任务 (initTask)，可能涉及网络请求。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "      } else {",
+              "        atManager.requestPermissionsFromUser(globalThis.appContext, list, (err, result) => {",
+              "          if (err) {",
+              "            BLog.e(\"dodo requestPermissionsFromUserError:\" + JSON.stringify(err));",
+              "          } else {",
+              "            this.initTask();",
+              "            router.replaceUrl({ url: \"pages/Index\" });",
+              "          }",
+              "        })",
+              "      }",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p29:n11",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 54,
+          "code": "router.replaceUrl({ url: \"pages/Index\" });",
+          "description": "最终 Sink 节点：调用 router.replaceUrl 替换当前页面为 Index 页，完成启动流程并销毁当前页。",
+          "context": {
+            "startLine": 49,
+            "lines": [
+              "        atManager.requestPermissionsFromUser(globalThis.appContext, list, (err, result) => {",
+              "          if (err) {",
+              "            BLog.e(\"dodo requestPermissionsFromUserError:\" + JSON.stringify(err));",
+              "          } else {",
+              "            this.initTask();",
+              "            router.replaceUrl({ url: \"pages/Index\" });",
+              "          }",
+              "        })",
+              "      }",
+              "    });",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p29:n1",
+          "to": "p29:n2"
+        },
+        {
+          "from": "p29:n2",
+          "to": "p29:n3"
+        },
+        {
+          "from": "p29:n3",
+          "to": "p29:n4"
+        },
+        {
+          "from": "p29:n4",
+          "to": "p29:n5"
+        },
+        {
+          "from": "p29:n5",
+          "to": "p29:n6"
+        },
+        {
+          "from": "p29:n6",
+          "to": "p29:n7"
+        },
+        {
+          "from": "p29:n7",
+          "to": "p29:n8"
+        },
+        {
+          "from": "p29:n7",
+          "to": "p29:n9"
+        },
+        {
+          "from": "p29:n9",
+          "to": "p29:n10"
+        },
+        {
+          "from": "p29:n8",
+          "to": "p29:n11"
+        },
+        {
+          "from": "p29:n10",
+          "to": "p29:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备唯一标识 (appUuid)",
+          "媒体位置权限状态",
+          "媒体读取权限状态"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "未在当前片段发现直接上传行为 (后续 initTask 可能涉及)"
+        ],
+        "storageAndEncryption": [
+          "本地存储 (@StorageLink), 未加密明文存储"
+        ],
+        "permissions": [
+          "ohos.permission.MEDIA_LOCATION",
+          "ohos.permission.READ_MEDIA"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p30",
+      "pathId": "p30",
+      "nodes": [
+        {
+          "id": "p30:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 29,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，组件即将显示时触发，开始执行初始化和权限检查逻辑。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "@Component",
+              "struct Splash {",
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p30:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 30,
+          "code": "let list: Array<Permissions> = [",
+          "description": "定义待申请的权限列表，包含媒体位置和读取媒体权限。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "struct Splash {",
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');"
+            ]
+          }
+        },
+        {
+          "id": "p30:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 31,
+          "code": "'ohos.permission.MEDIA_LOCATION',",
+          "description": "权限列表项：声明需要访问用户媒体文件的位置信息权限。",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  @StorageLink('appLogDebug') appLogDebug: string = '0';",
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p30:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 32,
+          "code": "'ohos.permission.READ_MEDIA'];",
+          "description": "权限列表项：声明需要读取用户媒体文件的权限。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "  @StorageLink('appUuid') appUuid: string = 'undefined';",
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {"
+            ]
+          }
+        },
+        {
+          "id": "p30:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 33,
+          "code": "let atManager = abilityAccessCtrl.createAtManager();",
+          "description": "创建 AtManager 实例，用于后续进行权限管理操作。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "",
+              "  aboutToAppear() {",
+              "    let list: Array<Permissions> = [",
+              "      'ohos.permission.MEDIA_LOCATION',",
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();"
+            ]
+          }
+        },
+        {
+          "id": "p30:n6",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 37,
+          "code": "if (this.appUuid == 'undefined') {",
+          "description": "检查本地存储的 appUuid 是否未初始化，准备生成设备唯一标识。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "      'ohos.permission.READ_MEDIA'];",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {"
+            ]
+          }
+        },
+        {
+          "id": "p30:n7",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 38,
+          "code": "this.appUuid = util.generateRandomUUID();",
+          "description": "生成随机 UUID 并赋值给 appUuid，作为设备的唯一标识符进行本地持久化。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "",
+              "    BLog.setDebug(this.appLogDebug == '1');",
+              "",
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {"
+            ]
+          }
+        },
+        {
+          "id": "p30:n8",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 42,
+          "code": "this.checkAccessToken(list[0]).then((grantStatus) => {",
+          "description": "调用 checkAccessToken 异步检查第一个权限的授权状态，进入回调处理逻辑。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "    if (this.appUuid == 'undefined') {",
+              "      this.appUuid = util.generateRandomUUID();",
+              "    }",
+              "    BLog.i(\"appUuid: \" + this.appUuid);",
+              "",
+              "    this.checkAccessToken(list[0]).then((grantStatus) => {",
+              "      if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {",
+              "        this.initTask();",
+              "        setTimeout(() => {",
+              "          router.replaceUrl({ url: \"pages/Index\" });",
+              "        }, 1000);"
+            ]
+          }
+        },
+        {
+          "id": "p30:n9",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Splash.ets",
+          "line": 49,
+          "code": "atManager.requestPermissionsFromUser(globalThis.appContext, list, (err, result) => {",
+          "description": "Sink 节点：当权限未授予时，调用 requestPermissionsFromUser 向用户弹出系统授权对话框，请求媒体位置和读取权限。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "        this.initTask();",
+              "        setTimeout(() => {",
+              "          router.replaceUrl({ url: \"pages/Index\" });",
+              "        }, 1000);",
+              "      } else {",
+              "        atManager.requestPermissionsFromUser(globalThis.appContext, list, (err, result) => {",
+              "          if (err) {",
+              "            BLog.e(\"dodo requestPermissionsFromUserError:\" + JSON.stringify(err));",
+              "          } else {",
+              "            this.initTask();",
+              "            router.replaceUrl({ url: \"pages/Index\" });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p30:n1",
+          "to": "p30:n2"
+        },
+        {
+          "from": "p30:n2",
+          "to": "p30:n3"
+        },
+        {
+          "from": "p30:n3",
+          "to": "p30:n4"
+        },
+        {
+          "from": "p30:n4",
+          "to": "p30:n5"
+        },
+        {
+          "from": "p30:n5",
+          "to": "p30:n6"
+        },
+        {
+          "from": "p30:n6",
+          "to": "p30:n7"
+        },
+        {
+          "from": "p30:n7",
+          "to": "p30:n8"
+        },
+        {
+          "from": "p30:n8",
+          "to": "p30:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "设备唯一标识 (appUuid)",
+          "媒体位置信息 (隐式，通过 ohos.permission.MEDIA_LOCATION)",
+          "媒体读取权限 (隐式，通过 ohos.permission.READ_MEDIA)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)",
+          "事件触发 (组件显示 aboutToAppear)"
+        ],
+        "cloudUpload": [
+          "未在当前代码片段中发现直接上传行为"
+        ],
+        "storageAndEncryption": [
+          "本地存储：appUuid 存储在 @StorageLink 中",
+          "加密状态：未明确显示加密，UUID 为明文生成"
+        ],
+        "permissions": [
+          "ohos.permission.MEDIA_LOCATION",
+          "ohos.permission.READ_MEDIA"
+        ]
+      }
+    }
+  ]
+}

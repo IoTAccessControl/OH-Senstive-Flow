@@ -1,0 +1,1325 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260401-140248",
+    "generatedAt": "2026-04-01T06:08:49.922Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets:147 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 7,
+      "nodes": 42,
+      "edges": 36,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "HomePage",
+      "entry": {
+        "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+        "structName": "HomePage",
+        "line": 36,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_HomePage_c988fc21ff",
+      "kind": "ui",
+      "title": "主界面"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 93,
+          "code": "onPageShow() {",
+          "description": "生命周期入口：onPageShow 函数被调用，标志着页面显示并开始执行初始化逻辑。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "    }).catch((err: Error) => {",
+              "      Logger.error(TAG, 'GetAddressesFromLocation err ' + JSON.stringify(err));",
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 95,
+          "code": "this.requestPermissions();",
+          "description": "流程控制：调用 requestPermissions 方法以申请运行所需的敏感权限。",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    sensor.off(sensor.SensorId.PEDOMETER);",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 146,
+          "code": "requestPermissions(): void {",
+          "description": "函数定义：requestPermissions 函数开始执行，准备进行权限请求操作。",
+          "context": {
+            "startLine": 141,
+            "lines": [
+              "      }",
+              "      this.stepGoal = res;",
+              "    });",
+              "  }",
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 149,
+          "code": "atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+          "description": "权限请求：调用 system 接口 requestPermissionsFromUser 向用户申请定位和运动感知权限。",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "  }",
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;",
+              "        }",
+              "        const that = this;",
+              "        try {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 150,
+          "code": "if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+          "description": "权限校验：检查授权结果数组，确认位置和运动权限是否均已授予，若未授予则中断后续流程。",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;",
+              "        }",
+              "        const that = this;",
+              "        try {",
+              "          sensor.on(sensor.SensorId.PEDOMETER, this.sensorCallback, { interval: CommonConstants.SENSOR_INTERVAL });"
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 161,
+          "code": "LocationUtil.geolocationOn(this.getGeolocation);",
+          "description": "启动定位：权限验证通过后，调用 LocationUtil.geolocationOn 开启地理位置监听服务。",
+          "context": {
+            "startLine": 156,
+            "lines": [
+              "",
+              "        } catch (err) {",
+              "          console.error('On fail, errCode: ' + JSON.stringify(err));",
+              "        }",
+              "",
+              "        LocationUtil.geolocationOn(this.getGeolocation);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "      })",
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));"
+            ]
+          }
+        },
+        {
+          "id": "p1:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 76,
+          "code": "this.latitude = location.latitude;",
+          "description": "数据提取：从定位回调中获取具体的纬度 (latitude) 和经度 (longitude) 坐标数据。",
+          "context": {
+            "startLine": 71,
+            "lines": [
+              "  }",
+              "  private getGeolocation: (location: geoLocationManager.Location) => void = (location: geoLocationManager.Location) => {",
+              "    if (this.latitude === location.latitude && this.longitude === location.longitude) {",
+              "      return;",
+              "    }",
+              "    this.latitude = location.latitude;",
+              "    this.longitude = location.longitude;",
+              "    let reverseGeocodeRequest: geoLocationManager.ReverseGeoCodeRequest = {",
+              "      'locale': this.locale.toString().includes('zh') ? 'zh' : 'en',",
+              "      'latitude': this.latitude,",
+              "      'longitude': this.longitude,"
+            ]
+          }
+        },
+        {
+          "id": "p1:n8",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 78,
+          "code": "let reverseGeocodeRequest: geoLocationManager.ReverseGeoCodeRequest = {",
+          "description": "数据构造：构建 ReverseGeoCodeRequest 对象，将获取到的经纬度坐标封装为逆地理编码请求参数。",
+          "context": {
+            "startLine": 73,
+            "lines": [
+              "    if (this.latitude === location.latitude && this.longitude === location.longitude) {",
+              "      return;",
+              "    }",
+              "    this.latitude = location.latitude;",
+              "    this.longitude = location.longitude;",
+              "    let reverseGeocodeRequest: geoLocationManager.ReverseGeoCodeRequest = {",
+              "      'locale': this.locale.toString().includes('zh') ? 'zh' : 'en',",
+              "      'latitude': this.latitude,",
+              "      'longitude': this.longitude,",
+              "      'maxItems': 1",
+              "    };"
+            ]
+          }
+        },
+        {
+          "id": "p1:n9",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 84,
+          "code": "geoLocationManager.getAddressesFromLocation(reverseGeocodeRequest).then(data => {",
+          "description": "隐私 Sink：调用 geoLocationManager.getAddressesFromLocation API，将精确坐标发送至系统服务以换取具体地址信息。",
+          "context": {
+            "startLine": 79,
+            "lines": [
+              "      'locale': this.locale.toString().includes('zh') ? 'zh' : 'en',",
+              "      'latitude': this.latitude,",
+              "      'longitude': this.longitude,",
+              "      'maxItems': 1",
+              "    };",
+              "    geoLocationManager.getAddressesFromLocation(reverseGeocodeRequest).then(data => {",
+              "      if (data[0].placeName) {",
+              "        this.currentLocation = data[0].placeName;",
+              "      }",
+              "    }).catch((err: Error) => {",
+              "      Logger.error(TAG, 'GetAddressesFromLocation err ' + JSON.stringify(err));"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        },
+        {
+          "from": "p1:n6",
+          "to": "p1:n7"
+        },
+        {
+          "from": "p1:n7",
+          "to": "p1:n8"
+        },
+        {
+          "from": "p1:n8",
+          "to": "p1:n9"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "精确位置信息 (纬度/经度)",
+          "地理位置描述 (地址/地名)",
+          "设备传感器数据 (计步器)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示时)",
+          "周期性 (传感器监听)"
+        ],
+        "cloudUpload": [
+          "未在当前代码片段中发现直接上传行为"
+        ],
+        "storageAndEncryption": [
+          "本地内存存储 (组件状态变量)",
+          "未在当前代码片段中发现加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.LOCATION",
+          "ohos.permission.APPROXIMATELY_LOCATION",
+          "ohos.permission.MOTION_SENSING"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 93,
+          "code": "onPageShow() {",
+          "description": "页面显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "    }).catch((err: Error) => {",
+              "      Logger.error(TAG, 'GetAddressesFromLocation err ' + JSON.stringify(err));",
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 147,
+          "code": "let atManager = abilityAccessCtrl.createAtManager();",
+          "description": "Obtains the AtManager instance.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 142,
+            "lines": [
+              "      this.stepGoal = res;",
+              "    });",
+              "  }",
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;",
+              "        }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets:147 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 93,
+          "code": "onPageShow() {",
+          "description": "生命周期入口：onPageShow 函数被调用，标志着页面可见并开始执行初始化逻辑。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "    }).catch((err: Error) => {",
+              "      Logger.error(TAG, 'GetAddressesFromLocation err ' + JSON.stringify(err));",
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 95,
+          "code": "this.requestPermissions();",
+          "description": "流程控制：在 onPageShow 中调用 requestPermissions 方法，启动权限申请流程。",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    sensor.off(sensor.SensorId.PEDOMETER);",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 146,
+          "code": "requestPermissions(): void {",
+          "description": "函数定义：requestPermissions 方法开始执行，准备进行敏感权限的动态申请。",
+          "context": {
+            "startLine": 141,
+            "lines": [
+              "      }",
+              "      this.stepGoal = res;",
+              "    });",
+              "  }",
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 147,
+          "code": "let atManager = abilityAccessCtrl.createAtManager();",
+          "description": "对象创建：实例化 abilityAccessCtrl 管理器，用于后续处理应用权限相关操作。",
+          "context": {
+            "startLine": 142,
+            "lines": [
+              "      this.stepGoal = res;",
+              "    });",
+              "  }",
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;",
+              "        }"
+            ]
+          }
+        },
+        {
+          "id": "p3:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 149,
+          "code": "atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+          "description": "权限请求：调用 requestPermissionsFromUser 向用户申请 CommonConstants 中定义的权限列表（通常包含运动健康相关权限）。",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "  }",
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;",
+              "        }",
+              "        const that = this;",
+              "        try {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 150,
+          "code": "if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+          "description": "结果校验：检查用户授权结果 (authResults)，确认所有请求的权限是否均已授予（值为 0 表示同意）。",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;",
+              "        }",
+              "        const that = this;",
+              "        try {",
+              "          sensor.on(sensor.SensorId.PEDOMETER, this.sensorCallback, { interval: CommonConstants.SENSOR_INTERVAL });"
+            ]
+          }
+        },
+        {
+          "id": "p3:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 155,
+          "code": "sensor.on(sensor.SensorId.PEDOMETER, this.sensorCallback, { interval: CommonConstants.SENSOR_INTERVAL });",
+          "description": "数据收集 Sink：在权限验证通过后，调用 sensor.on 订阅计步器 (PEDOMETER) 传感器数据，设置采样间隔，数据将流入 sensorCallback 回调。",
+          "context": {
+            "startLine": 150,
+            "lines": [
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;",
+              "        }",
+              "        const that = this;",
+              "        try {",
+              "          sensor.on(sensor.SensorId.PEDOMETER, this.sensorCallback, { interval: CommonConstants.SENSOR_INTERVAL });",
+              "",
+              "        } catch (err) {",
+              "          console.error('On fail, errCode: ' + JSON.stringify(err));",
+              "        }",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n4",
+          "to": "p3:n5"
+        },
+        {
+          "from": "p3:n5",
+          "to": "p3:n6"
+        },
+        {
+          "from": "p3:n6",
+          "to": "p3:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "计步器传感器数据 (PEDOMETER)",
+          "用户授权状态"
+        ],
+        "collectionFrequency": [
+          "周期性 (由 SENSOR_INTERVAL 定义)",
+          "事件触发 (页面显示时)"
+        ],
+        "cloudUpload": [
+          "当前片段未直接体现上传操作，数据流向 sensorCallback 回调函数"
+        ],
+        "storageAndEncryption": [
+          "当前片段未体现本地存储或加密操作"
+        ],
+        "permissions": [
+          "ohos.permission.ACTIVITY_MOTION (隐含于 PEDOMETER 传感器)",
+          "动态权限请求 (CommonConstants.REQUEST_PERMISSIONS)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 93,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，页面显示时触发数据流开始",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "    }).catch((err: Error) => {",
+              "      Logger.error(TAG, 'GetAddressesFromLocation err ' + JSON.stringify(err));",
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 95,
+          "code": "this.requestPermissions();",
+          "description": "调用 requestPermissions 方法，启动权限申请流程",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    sensor.off(sensor.SensorId.PEDOMETER);",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 146,
+          "code": "requestPermissions(): void {",
+          "description": "进入 requestPermissions 函数定义，准备执行权限请求逻辑",
+          "context": {
+            "startLine": 141,
+            "lines": [
+              "      }",
+              "      this.stepGoal = res;",
+              "    });",
+              "  }",
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;"
+            ]
+          }
+        },
+        {
+          "id": "p4:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 149,
+          "code": "atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+          "description": "调用系统 API requestPermissionsFromUser 向用户申请定位及运动权限",
+          "context": {
+            "startLine": 144,
+            "lines": [
+              "  }",
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;",
+              "        }",
+              "        const that = this;",
+              "        try {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 150,
+          "code": "if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+          "description": "校验权限授权结果，若授权失败则中断后续数据采集流程",
+          "context": {
+            "startLine": 145,
+            "lines": [
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;",
+              "        }",
+              "        const that = this;",
+              "        try {",
+              "          sensor.on(sensor.SensorId.PEDOMETER, this.sensorCallback, { interval: CommonConstants.SENSOR_INTERVAL });"
+            ]
+          }
+        },
+        {
+          "id": "p4:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 161,
+          "code": "LocationUtil.geolocationOn(this.getGeolocation);",
+          "description": "权限校验通过后，调用 LocationUtil.geolocationOn 开启地理位置监听",
+          "context": {
+            "startLine": 156,
+            "lines": [
+              "",
+              "        } catch (err) {",
+              "          console.error('On fail, errCode: ' + JSON.stringify(err));",
+              "        }",
+              "",
+              "        LocationUtil.geolocationOn(this.getGeolocation);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "      })",
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));"
+            ]
+          }
+        },
+        {
+          "id": "p4:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/LocationUtil.ets",
+          "line": 28,
+          "code": "geoLocationManager.on('locationChange', requestInfo, locationChange);",
+          "description": "调用 geoLocationManager.on 订阅位置变化事件，注册回调以持续收集用户实时位置数据 (Sink)",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "      'timeInterval': 0,",
+              "      'distanceInterval': 0,",
+              "      'maxAccuracy': 0",
+              "    }",
+              "    try {",
+              "      geoLocationManager.on('locationChange', requestInfo, locationChange);",
+              "    } catch (err) {",
+              "      console.error(\"locationChange error:\" + JSON.stringify(err));",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        },
+        {
+          "from": "p4:n3",
+          "to": "p4:n4"
+        },
+        {
+          "from": "p4:n4",
+          "to": "p4:n5"
+        },
+        {
+          "from": "p4:n5",
+          "to": "p4:n6"
+        },
+        {
+          "from": "p4:n6",
+          "to": "p4:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户位置信息 (经纬度/地址)",
+          "计步器传感器数据"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示时初始化)",
+          "周期性/实时监听 (位置变化及步数变化)"
+        ],
+        "cloudUpload": [
+          "当前片段未包含网络发送逻辑"
+        ],
+        "storageAndEncryption": [
+          "本地内存暂存 (currentLocation, stepGoal)",
+          "未观察到加密存储操作"
+        ],
+        "permissions": [
+          "ohos.permission.LOCATION",
+          "ohos.permission.ACTIVITY_MOTION"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 93,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，当页面显示时自动触发，启动初始化和权限请求流程。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "    }).catch((err: Error) => {",
+              "      Logger.error(TAG, 'GetAddressesFromLocation err ' + JSON.stringify(err));",
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 95,
+          "code": "this.requestPermissions();",
+          "description": "调用 requestPermissions 方法，开始申请应用运行所需的敏感权限。",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    sensor.off(sensor.SensorId.PEDOMETER);",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p5:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 146,
+          "code": "requestPermissions(): void {",
+          "description": "定义 requestPermissions 函数体，创建权限管理实例并准备发起用户授权请求。",
+          "context": {
+            "startLine": 141,
+            "lines": [
+              "      }",
+              "      this.stepGoal = res;",
+              "    });",
+              "  }",
+              "",
+              "  requestPermissions(): void {",
+              "    let atManager = abilityAccessCtrl.createAtManager();",
+              "    try {",
+              "      atManager.requestPermissionsFromUser(this.context, CommonConstants.REQUEST_PERMISSIONS).then((data) => {",
+              "        if (data.authResults[0] !== 0 || data.authResults[1] !== 0) {",
+              "          return;"
+            ]
+          }
+        },
+        {
+          "id": "p5:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 162,
+          "code": "}).catch((err: Error) => {",
+          "description": "捕获 requestPermissionsFromUser 异步 Promise 拒绝态的错误，准备处理权限请求失败的情况。",
+          "context": {
+            "startLine": 157,
+            "lines": [
+              "        } catch (err) {",
+              "          console.error('On fail, errCode: ' + JSON.stringify(err));",
+              "        }",
+              "",
+              "        LocationUtil.geolocationOn(this.getGeolocation);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "      })",
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p5:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 163,
+          "code": "Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+          "description": "构造错误日志消息，将权限请求失败的错误对象序列化为 JSON 字符串并拼接提示文本。",
+          "context": {
+            "startLine": 158,
+            "lines": [
+              "          console.error('On fail, errCode: ' + JSON.stringify(err));",
+              "        }",
+              "",
+              "        LocationUtil.geolocationOn(this.getGeolocation);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "      })",
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "    }",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p5:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 165,
+          "code": "} catch (err) {",
+          "description": "捕获 requestPermissions 同步代码块中的异常，进入同步错误处理分支。",
+          "context": {
+            "startLine": 160,
+            "lines": [
+              "",
+              "        LocationUtil.geolocationOn(this.getGeolocation);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "      })",
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 166,
+          "code": "Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+          "description": "构造同步异常的错误日志消息，将异常对象序列化为 JSON 字符串，作为隐私数据流的关键节点。",
+          "context": {
+            "startLine": 161,
+            "lines": [
+              "        LocationUtil.geolocationOn(this.getGeolocation);",
+              "      }).catch((err: Error) => {",
+              "        Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "      })",
+              "    } catch (err) {",
+              "      Logger.error(TAG, 'requestPermissionsFromUser err' + JSON.stringify(err));",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.TopStart }) {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n8",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/Logger.ets",
+          "line": 47,
+          "code": "hilog.error(this.domain, this.prefix, this.format, args);",
+          "description": "Sink 节点：调用系统 hilog.error 接口，将包含错误详情的参数输出到系统日志缓冲区，完成数据流出。",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "  warn(...args: string[]): void {",
+              "    hilog.warn(this.domain, this.prefix, this.format, args);",
+              "  }",
+              "",
+              "  error(...args: string[]): void {",
+              "    hilog.error(this.domain, this.prefix, this.format, args);",
+              "  }",
+              "}",
+              "",
+              "export default new Logger('StepsDemo', 0xFF00)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        },
+        {
+          "from": "p5:n2",
+          "to": "p5:n3"
+        },
+        {
+          "from": "p5:n3",
+          "to": "p5:n4"
+        },
+        {
+          "from": "p5:n4",
+          "to": "p5:n5"
+        },
+        {
+          "from": "p5:n3",
+          "to": "p5:n6"
+        },
+        {
+          "from": "p5:n6",
+          "to": "p5:n7"
+        },
+        {
+          "from": "p5:n5",
+          "to": "p5:n8"
+        },
+        {
+          "from": "p5:n7",
+          "to": "p5:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "权限请求结果错误信息",
+          "异常堆栈或错误对象"
+        ],
+        "collectionFrequency": [
+          "事件触发（页面显示时）",
+          "仅在权限请求失败时触发"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（仅本地日志输出）"
+        ],
+        "storageAndEncryption": [
+          "未进行本地持久化存储",
+          "数据未加密（以明文形式传递给日志系统）"
+        ],
+        "permissions": [
+          "ohos.permission.LOCATION (隐含于 CommonConstants.REQUEST_PERMISSIONS)",
+          "ohos.permission.ACTIVITY_MOTION_RECOGNITION (隐含于计步器场景)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 93,
+          "code": "onPageShow() {",
+          "description": "生命周期函数 onPageShow 入口，当页面显示时自动触发，作为数据流的起始点。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "    }).catch((err: Error) => {",
+              "      Logger.error(TAG, 'GetAddressesFromLocation err ' + JSON.stringify(err));",
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 94,
+          "code": "this.init();",
+          "description": "调用 init() 方法，初始化页面状态并准备加载本地存储的计步数据。",
+          "context": {
+            "startLine": 89,
+            "lines": [
+              "      Logger.error(TAG, 'GetAddressesFromLocation err ' + JSON.stringify(err));",
+              "    });",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    sensor.off(sensor.SensorId.PEDOMETER);"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 102,
+          "code": "init() {",
+          "description": "init() 函数定义开始，执行业务逻辑初始化流程。",
+          "context": {
+            "startLine": 97,
+            "lines": [
+              "",
+              "  onPageHide() {",
+              "    sensor.off(sensor.SensorId.PEDOMETER);",
+              "  }",
+              "",
+              "  init() {",
+              "    StepsUtil.getStorageValue(CommonConstants.IS_START).then((res: string) => {",
+              "      if (res === CommonConstants.TRUE) {",
+              "        this.isStart = true;",
+              "        StepsUtil.getStorageValue(CommonConstants.CURRENT_STEPS).then((res: string) => {",
+              "          if (StepsUtil.checkStrIsEmpty(res)) {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 103,
+          "code": "StepsUtil.getStorageValue(CommonConstants.IS_START).then((res: string) => {",
+          "description": "调用 StepsUtil.getStorageValue 请求读取键名为 'IS_START' 的本地存储值，判断应用是否已启动过。",
+          "context": {
+            "startLine": 98,
+            "lines": [
+              "  onPageHide() {",
+              "    sensor.off(sensor.SensorId.PEDOMETER);",
+              "  }",
+              "",
+              "  init() {",
+              "    StepsUtil.getStorageValue(CommonConstants.IS_START).then((res: string) => {",
+              "      if (res === CommonConstants.TRUE) {",
+              "        this.isStart = true;",
+              "        StepsUtil.getStorageValue(CommonConstants.CURRENT_STEPS).then((res: string) => {",
+              "          if (StepsUtil.checkStrIsEmpty(res)) {",
+              "            return;"
+            ]
+          }
+        },
+        {
+          "id": "p6:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 73,
+          "code": "async getStorageValue(key: string): Promise<string> {",
+          "description": "进入 getStorageValue 异步函数，接收 key 参数，准备执行偏好设置读取操作。",
+          "context": {
+            "startLine": 68,
+            "lines": [
+              "   * Get preferences value.",
+              "   *",
+              "   * @param {number} setSteps",
+              "   * @param {Function} callback",
+              "   */",
+              "  async getStorageValue(key: string): Promise<string> {",
+              "    let ret: preferences.ValueType = '';",
+              "    const preferences: preferences.Preferences | undefined = await GlobalContext.getContext()",
+              "      .getObject('getStepsPreferences');",
+              "    if (preferences) {",
+              "      ret = await preferences?.get(key, ret);"
+            ]
+          }
+        },
+        {
+          "id": "p6:n6",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 75,
+          "code": "const preferences: preferences.Preferences | undefined = await GlobalContext.getContext()",
+          "description": "通过 GlobalContext 获取名为 'getStepsPreferences' 的 Preferences 实例对象，用于访问本地数据。",
+          "context": {
+            "startLine": 70,
+            "lines": [
+              "   * @param {number} setSteps",
+              "   * @param {Function} callback",
+              "   */",
+              "  async getStorageValue(key: string): Promise<string> {",
+              "    let ret: preferences.ValueType = '';",
+              "    const preferences: preferences.Preferences | undefined = await GlobalContext.getContext()",
+              "      .getObject('getStepsPreferences');",
+              "    if (preferences) {",
+              "      ret = await preferences?.get(key, ret);",
+              "    }",
+              "    return String(ret);"
+            ]
+          }
+        },
+        {
+          "id": "p6:n7",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 78,
+          "code": "ret = await preferences?.get(key, ret);",
+          "description": "调用 preferences.get(key, ret) 实际从本地文件中读取指定 key 的数据，这是数据流的终点（Sink）。",
+          "context": {
+            "startLine": 73,
+            "lines": [
+              "  async getStorageValue(key: string): Promise<string> {",
+              "    let ret: preferences.ValueType = '';",
+              "    const preferences: preferences.Preferences | undefined = await GlobalContext.getContext()",
+              "      .getObject('getStepsPreferences');",
+              "    if (preferences) {",
+              "      ret = await preferences?.get(key, ret);",
+              "    }",
+              "    return String(ret);",
+              "  }",
+              "",
+              "  /**"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        },
+        {
+          "from": "p6:n3",
+          "to": "p6:n4"
+        },
+        {
+          "from": "p6:n4",
+          "to": "p6:n5"
+        },
+        {
+          "from": "p6:n5",
+          "to": "p6:n6"
+        },
+        {
+          "from": "p6:n6",
+          "to": "p6:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用启动状态标识 (IS_START)",
+          "当前步数数据 (CURRENT_STEPS)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面显示时 onPageShow)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地存储 (ohos.data.preferences)",
+          "未检测到加密处理"
+        ],
+        "permissions": [
+          "ohos.permission.ACCESS_LOCATION (隐含，基于源码片段中 location 相关逻辑推断)",
+          "ohos.permission.MOTION_SENSORS (隐含，基于计步器功能推断)"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 98,
+          "code": "onPageHide() {",
+          "description": "生命周期函数 onPageHide 被调用，标志着页面进入隐藏状态，触发资源清理逻辑。",
+          "context": {
+            "startLine": 93,
+            "lines": [
+              "  onPageShow() {",
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    sensor.off(sensor.SensorId.PEDOMETER);",
+              "  }",
+              "",
+              "  init() {",
+              "    StepsUtil.getStorageValue(CommonConstants.IS_START).then((res: string) => {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/pages/HomePage.ets",
+          "line": 99,
+          "code": "sensor.off(sensor.SensorId.PEDOMETER);",
+          "description": "调用 sensor.off 方法并传入 PEDOMETER 标识，取消对计步器传感器的订阅，停止接收步数相关数据流，释放传感器资源。",
+          "context": {
+            "startLine": 94,
+            "lines": [
+              "    this.init();",
+              "    this.requestPermissions();",
+              "  }",
+              "",
+              "  onPageHide() {",
+              "    sensor.off(sensor.SensorId.PEDOMETER);",
+              "  }",
+              "",
+              "  init() {",
+              "    StepsUtil.getStorageValue(CommonConstants.IS_START).then((res: string) => {",
+              "      if (res === CommonConstants.TRUE) {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "计步器传感器数据 (Pedometer Sensor Data)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面隐藏时停止采集)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无直接存储操作，仅为取消订阅"
+        ],
+        "permissions": [
+          "ohos.permission.ACTIVITY_MOTION"
+        ]
+      }
+    }
+  ]
+}

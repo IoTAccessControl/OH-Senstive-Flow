@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260401-131340",
+    "generatedAt": "2026-04-01T05:17:32.141Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "PrepareLoginPage",
+      "entry": {
+        "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+        "structName": "PrepareLoginPage",
+        "line": 11,
+        "description": "登录准备页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_PrepareLoginPage_21dfebabf7",
+      "kind": "ui",
+      "title": "登录页面"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 17,
+          "code": "aboutToAppear() {",
+          "description": "定义 aboutToAppear 生命周期函数，作为数据流的起点，在组件即将显示时自动触发。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  logTag: string = 'PrepareLoginPage';",
+              "  domainId: number = 0x0000;",
+              "  @State isLogin: boolean = false;",
+              "  @Consume('pageInfos') pageInfos: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Redirect to another page.",
+              "  private jumpLoginPage(quickLoginAnonymousPhone: string) {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 12,
+          "code": "logTag: string = 'PrepareLoginPage';",
+          "description": "读取成员变量 logTag 的值 ('PrepareLoginPage')，准备用于构建日志内容。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "import { BusinessError } from '@kit.BasicServicesKit';",
+              "import { showToast } from '../common/ShowToast';",
+              "import { ErrorCode } from '../common/Constants';",
+              "@Component",
+              "export struct PrepareLoginPage {",
+              "  logTag: string = 'PrepareLoginPage';",
+              "  domainId: number = 0x0000;",
+              "  @State isLogin: boolean = false;",
+              "  @Consume('pageInfos') pageInfos: NavPathStack;",
+              "",
+              "  aboutToAppear() {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 13,
+          "code": "domainId: number = 0x0000;",
+          "description": "读取成员变量 domainId 的值 (0x0000)，作为日志输出的域标识符。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "import { showToast } from '../common/ShowToast';",
+              "import { ErrorCode } from '../common/Constants';",
+              "@Component",
+              "export struct PrepareLoginPage {",
+              "  logTag: string = 'PrepareLoginPage';",
+              "  domainId: number = 0x0000;",
+              "  @State isLogin: boolean = false;",
+              "  @Consume('pageInfos') pageInfos: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);"
+            ]
+          }
+        },
+        {
+          "id": "p6:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PrepareLoginPage.ets",
+          "line": 18,
+          "code": "hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+          "description": "调用 hilog.info 接口，将组件名称和生命周期状态拼接成字符串并输出到系统日志，作为数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  domainId: number = 0x0000;",
+              "  @State isLogin: boolean = false;",
+              "  @Consume('pageInfos') pageInfos: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Redirect to another page.",
+              "  private jumpLoginPage(quickLoginAnonymousPhone: string) {",
+              "    if (quickLoginAnonymousPhone) {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        },
+        {
+          "from": "p6:n3",
+          "to": "p6:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "日志标签 (logTag)",
+          "组件生命周期状态"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件显示前触发)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

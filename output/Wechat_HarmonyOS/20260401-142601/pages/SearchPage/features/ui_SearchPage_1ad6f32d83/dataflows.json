@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260401-142601",
+    "generatedAt": "2026-04-01T06:35:15.202Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "SearchPage",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+        "structName": "SearchPage",
+        "line": 10,
+        "description": "搜索页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_SearchPage_1ad6f32d83",
+      "kind": "ui",
+      "title": "页面设置"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p13",
+      "pathId": "p13",
+      "nodes": [
+        {
+          "id": "p13:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 24,
+          "code": "onBackPress() {",
+          "description": "定义 onBackPress 生命周期回调函数，作为数据流的逻辑起点（锚点），用于拦截返回键事件。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }",
+              "",
+              "  onBackPress() {",
+              "    return this.keyboardHeight > 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p13:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 192,
+          "code": ".onKeyEvent((event: KeyEvent) => {",
+          "description": "在 build 构建函数中注册 onKeyEvent 事件监听器，捕获组件内的键盘事件（锚点）。",
+          "context": {
+            "startLine": 187,
+            "lines": [
+              "    .width(\"100%\")",
+              "    .height(\"100%\")",
+              "    .alignItems(HorizontalAlign.Start)",
+              "    .backgroundColor(\"#f3f3f3\")",
+              "    .padding({ top: WindowManager.statusBarHeight, bottom: WindowManager.navBarHeight })",
+              "    .onKeyEvent((event: KeyEvent) => {",
+              "      if (event.type === KeyType.Up) {",
+              "        prompt.showToast({",
+              "          message: \"按了返回键\"",
+              "        });",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p13:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 193,
+          "code": "if (event.type === KeyType.Up) {",
+          "description": "判断捕获到的事件类型是否为 KeyType.Up（通常对应返回键），过滤特定按键操作。",
+          "context": {
+            "startLine": 188,
+            "lines": [
+              "    .height(\"100%\")",
+              "    .alignItems(HorizontalAlign.Start)",
+              "    .backgroundColor(\"#f3f3f3\")",
+              "    .padding({ top: WindowManager.statusBarHeight, bottom: WindowManager.navBarHeight })",
+              "    .onKeyEvent((event: KeyEvent) => {",
+              "      if (event.type === KeyType.Up) {",
+              "        prompt.showToast({",
+              "          message: \"按了返回键\"",
+              "        });",
+              "      }",
+              "      event.stopPropagation()"
+            ]
+          }
+        },
+        {
+          "id": "p13:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 194,
+          "code": "prompt.showToast({",
+          "description": "调用 prompt.showToast API 显示提示信息，作为数据流的终点（Sink），将按键行为反馈给用户。",
+          "context": {
+            "startLine": 189,
+            "lines": [
+              "    .alignItems(HorizontalAlign.Start)",
+              "    .backgroundColor(\"#f3f3f3\")",
+              "    .padding({ top: WindowManager.statusBarHeight, bottom: WindowManager.navBarHeight })",
+              "    .onKeyEvent((event: KeyEvent) => {",
+              "      if (event.type === KeyType.Up) {",
+              "        prompt.showToast({",
+              "          message: \"按了返回键\"",
+              "        });",
+              "      }",
+              "      event.stopPropagation()",
+              "    })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p13:n1",
+          "to": "p13:n2"
+        },
+        {
+          "from": "p13:n2",
+          "to": "p13:n3"
+        },
+        {
+          "from": "p13:n3",
+          "to": "p13:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "按键事件类型 (KeyEvent.type)",
+          "用户交互行为 (返回键按下)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户按下物理或虚拟返回键时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "数据仅在内存中临时处理用于 UI 提示"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

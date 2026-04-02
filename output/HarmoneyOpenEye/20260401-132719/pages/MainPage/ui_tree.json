@@ -1,0 +1,198 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:30.064Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 6,
+      "edges": 5,
+      "pages": 1,
+      "elements": 5
+    }
+  },
+  "roots": [
+    "page:6e7e1579c5eb"
+  ],
+  "nodes": {
+    "page:6e7e1579c5eb": {
+      "id": "page:6e7e1579c5eb",
+      "category": "Page",
+      "name": "MainPage",
+      "description": "首页",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+      "line": 15,
+      "code": "struct MainPage {",
+      "context": {
+        "startLine": 10,
+        "lines": [
+          "import emitter from '@ohos.events.emitter'",
+          "import { EventKeys, loadingEvent } from '../event/EventKeys'",
+          "",
+          "@Entry",
+          "@Component",
+          "struct MainPage {",
+          "  @State selectedIndex: number = 0",
+          "  @Provide homeTabSelected: number = 0",
+          "  @State loadingTips: string = \"加载中...\"",
+          "  @State loadingShow: boolean = false",
+          "  //全局的loading"
+        ]
+      }
+    },
+    "ui:fd2d6adbb060": {
+      "id": "ui:fd2d6adbb060",
+      "category": "Component",
+      "name": "build",
+      "description": "主页面框架",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+      "line": 48,
+      "code": "build() {",
+      "context": {
+        "startLine": 43,
+        "lines": [
+          "  aboutToDisappear() {",
+          "    this.loadingDialogController = null",
+          "    emitter.off(EventKeys.LOADING_DIALOG_EVENT)",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Tabs({",
+          "        index: this.selectedIndex,",
+          "        barPosition: BarPosition.End,",
+          "      }) {"
+        ]
+      }
+    },
+    "ui:9885203a2049": {
+      "id": "ui:9885203a2049",
+      "category": "Component",
+      "name": "HomePage",
+      "description": "首页",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+      "line": 55,
+      "code": "HomePage()",
+      "context": {
+        "startLine": 50,
+        "lines": [
+          "      Tabs({",
+          "        index: this.selectedIndex,",
+          "        barPosition: BarPosition.End,",
+          "      }) {",
+          "        TabContent() {",
+          "          HomePage()",
+          "        }",
+          "        .tabBar(this.TabBottom(MainViewModel.tabTitle[0], 0))",
+          "",
+          "        TabContent() {",
+          "          FindPage()"
+        ]
+      }
+    },
+    "ui:b6335365cbd1": {
+      "id": "ui:b6335365cbd1",
+      "category": "Component",
+      "name": "FindPage",
+      "description": "发现页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+      "line": 60,
+      "code": "FindPage()",
+      "context": {
+        "startLine": 55,
+        "lines": [
+          "          HomePage()",
+          "        }",
+          "        .tabBar(this.TabBottom(MainViewModel.tabTitle[0], 0))",
+          "",
+          "        TabContent() {",
+          "          FindPage()",
+          "        }",
+          "        .tabBar(this.TabBottom(MainViewModel.tabTitle[1], 1))",
+          "",
+          "        TabContent() {",
+          "          HotPage()"
+        ]
+      }
+    },
+    "ui:fd058f803b63": {
+      "id": "ui:fd058f803b63",
+      "category": "Component",
+      "name": "HotPage",
+      "description": "热门功能页",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+      "line": 65,
+      "code": "HotPage()",
+      "context": {
+        "startLine": 60,
+        "lines": [
+          "          FindPage()",
+          "        }",
+          "        .tabBar(this.TabBottom(MainViewModel.tabTitle[1], 1))",
+          "",
+          "        TabContent() {",
+          "          HotPage()",
+          "        }",
+          "        .tabBar(this.TabBottom(MainViewModel.tabTitle[2], 2))",
+          "",
+          "        TabContent() {",
+          "          MinePage()"
+        ]
+      }
+    },
+    "ui:89eebd1e9831": {
+      "id": "ui:89eebd1e9831",
+      "category": "Component",
+      "name": "MinePage",
+      "description": "我的页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/MainPage.ets",
+      "line": 70,
+      "code": "MinePage()",
+      "context": {
+        "startLine": 65,
+        "lines": [
+          "          HotPage()",
+          "        }",
+          "        .tabBar(this.TabBottom(MainViewModel.tabTitle[2], 2))",
+          "",
+          "        TabContent() {",
+          "          MinePage()",
+          "        }",
+          "        .tabBar(this.TabBottom(MainViewModel.tabTitle[3], 3))",
+          "      }",
+          "      .barMode(BarMode.Fixed)",
+          "      .barWidth('100%')"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:6e7e1579c5eb",
+      "to": "ui:fd2d6adbb060",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6e7e1579c5eb",
+      "to": "ui:9885203a2049",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6e7e1579c5eb",
+      "to": "ui:b6335365cbd1",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6e7e1579c5eb",
+      "to": "ui:fd058f803b63",
+      "kind": "contains"
+    },
+    {
+      "from": "page:6e7e1579c5eb",
+      "to": "ui:89eebd1e9831",
+      "kind": "contains"
+    }
+  ]
+}

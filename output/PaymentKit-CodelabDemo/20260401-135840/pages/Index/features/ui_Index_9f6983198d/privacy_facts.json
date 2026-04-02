@@ -1,0 +1,225 @@
+{
+  "meta": {
+    "runId": "PaymentKit-CodelabDemo_20260401-135840",
+    "featureId": "ui_Index_9f6983198d",
+    "generatedAt": "2026-04-01T06:02:44.327Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "PaymentKit-CodelabDemo",
+        "businessScenario": "用户点击按钮发起支付请求或签约请求",
+        "dataSources": [
+          "用户手动触发（点击按钮）",
+          "代码中硬编码的模拟订单/合约数据"
+        ],
+        "dataItems": [
+          {
+            "name": "支付订单信息",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          },
+          {
+            "name": "应用标识",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n6"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n6"
+              }
+            ]
+          },
+          {
+            "name": "商户编号",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          },
+          {
+            "name": "预支付交易会话标识",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          },
+          {
+            "name": "时间戳",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          },
+          {
+            "name": "随机字符串",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          },
+          {
+            "name": "签名数据",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          },
+          {
+            "name": "授权标识",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n6"
+              }
+            ]
+          },
+          {
+            "name": "预签名编号",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n6"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "通过系统支付服务接口（paymentService）将构造好的订单或合约数据发送至支付服务提供商进行处理",
+        "storageMethod": "源码中为硬编码模拟数据，未展示本地持久化存储行为；传输过程依赖底层服务的安全通道",
+        "dataRecipients": [
+          {
+            "name": "支付服务提供者（云端/第三方）",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n7"
+              },
+              {
+                "flowId": "flow:p2",
+                "nodeId": "p2:n7"
+              },
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n7"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n7"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "完成用户的支付交易或签订支付合约",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCESS_NETWORK_INFO",
+        "businessScenario": "发起支付或签约请求时检测网络状态",
+        "permissionPurpose": "允许应用获取网络连接状态信息，以确保在可用网络环境下发起请求",
+        "denyImpact": "若拒绝该权限，应用可能无法准确判断网络状态，影响支付流程的稳定性",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n7"
+          },
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n7"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "发起支付或签约请求时需要连接网络",
+        "permissionPurpose": "允许应用访问互联网，以便将支付数据发送至支付服务提供者",
+        "denyImpact": "若拒绝该权限，应用无法连接网络，导致支付或签约功能无法使用",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n7"
+          },
+          {
+            "flowId": "flow:p2",
+            "nodeId": "p2:n7"
+          },
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n7"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n7"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      }
+    ]
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "runId": "IntentsKit-codelab-Clientdemo-ArkTS_20260401-134916",
+    "featureId": "src_AppLifecycle_onBackground_49_db5a90f6",
+    "generatedAt": "2026-04-01T05:51:43.724Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "IntentsKit-codelab-Clientdemo-ArkTS",
+        "businessScenario": "当用户将应用切换至后台运行时，系统自动记录应用状态变更日志。",
+        "dataSources": [
+          "应用生命周期状态事件"
+        ],
+        "dataItems": [
+          {
+            "name": "应用生命周期状态事件",
+            "refs": [
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n1"
+              }
+            ]
+          },
+          {
+            "name": "自定义日志标签",
+            "refs": [
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n2"
+              }
+            ]
+          },
+          {
+            "name": "日志域标识",
+            "refs": [
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "调用系统日志接口将包含应用状态信息的字符串格式化并写入缓冲区。",
+        "storageMethod": "临时存储于系统日志环缓冲区，未进行应用层加密处理。",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p7",
+                "nodeId": "p7:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于开发调试及监控应用进入后台的运行状态。",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

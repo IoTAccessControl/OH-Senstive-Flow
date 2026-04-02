@@ -1,0 +1,138 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:30.064Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 4,
+      "edges": 3,
+      "pages": 1,
+      "elements": 3
+    }
+  },
+  "roots": [
+    "page:8015390869a3"
+  ],
+  "nodes": {
+    "page:8015390869a3": {
+      "id": "page:8015390869a3",
+      "category": "Page",
+      "name": "VideoBottomComponent",
+      "description": "VideoBottomComponent页面",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/component/VideoBottomComponent.ets",
+      "line": 7,
+      "code": "export struct VideoBottomComponent {",
+      "context": {
+        "startLine": 2,
+        "lines": [
+          "import { ViewStateConstant } from '../../../constants/ViewStateConstant'",
+          "import { HomeModelIssueListItemList } from '../../../model/HomeModel'",
+          "import VideoDetailViewModel from '../../../viewmodel/VideoDetailViewModel'",
+          "",
+          "@Component",
+          "export struct VideoBottomComponent {",
+          "  @State viewState: string = ViewStateConstant.VIEW_STATE_LOADING",
+          "  @State relationDataList: HomeModelIssueListItemList[] = []",
+          "  @State playIndex: number = -1",
+          "  private onItemClick: (playUrl: string) => void",
+          "  private relationId: number"
+        ]
+      }
+    },
+    "ui:84f2c21c391c": {
+      "id": "ui:84f2c21c391c",
+      "category": "Button",
+      "name": "build",
+      "description": "加载相关视频",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/component/VideoBottomComponent.ets",
+      "line": 26,
+      "code": "build() {",
+      "context": {
+        "startLine": 21,
+        "lines": [
+          "    VideoDetailViewModel.getRelationList((result) => {",
+          "      this.relationDataList = result",
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        List() {"
+        ]
+      }
+    },
+    "ui:823d7ae8dc41": {
+      "id": "ui:823d7ae8dc41",
+      "category": "Button",
+      "name": "StateComponent",
+      "description": "视频底部列表",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/component/VideoBottomComponent.ets",
+      "line": 28,
+      "code": "StateComponent({ viewState: this.viewState, retryCallback: () => {",
+      "context": {
+        "startLine": 23,
+        "lines": [
+          "    })",
+          "  }",
+          "",
+          "  build() {",
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        List() {",
+          "          ForEach(this.relationDataList, (item: HomeModelIssueListItemList, index: number) => {",
+          "            ListItem() {"
+        ]
+      }
+    },
+    "ui:dd1efc34a452": {
+      "id": "ui:dd1efc34a452",
+      "category": "Button",
+      "name": "ForEach",
+      "description": "相关视频列表",
+      "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/commonDetail/component/VideoBottomComponent.ets",
+      "line": 32,
+      "code": "ForEach(this.relationDataList, (item: HomeModelIssueListItemList, index: number) => {",
+      "context": {
+        "startLine": 27,
+        "lines": [
+          "    Stack() {",
+          "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+          "        this.loadNet()",
+          "      } }) {",
+          "        List() {",
+          "          ForEach(this.relationDataList, (item: HomeModelIssueListItemList, index: number) => {",
+          "            ListItem() {",
+          "              this.detailItemBuilder(item, index)",
+          "            }.onClick(() => {",
+          "              this.onItemClick?.(item.data.playUrl)",
+          "              this.playIndex = index"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:8015390869a3",
+      "to": "ui:84f2c21c391c",
+      "kind": "contains"
+    },
+    {
+      "from": "page:8015390869a3",
+      "to": "ui:823d7ae8dc41",
+      "kind": "contains"
+    },
+    {
+      "from": "page:8015390869a3",
+      "to": "ui:dd1efc34a452",
+      "kind": "contains"
+    }
+  ]
+}

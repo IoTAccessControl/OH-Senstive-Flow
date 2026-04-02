@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "runId": "WebCookie_20260401-142348",
+    "generatedAt": "2026-04-01T06:25:19.742Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onWindowStageDestroy_42_d0387d17",
+      "kind": "source",
+      "title": "主窗口销毁时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/WebCookie/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 42,
+          "code": "onWindowStageDestroy() {",
+          "description": "定义 onWindowStageDestroy 生命周期回调函数，作为数据流的起点，当应用窗口阶段销毁时被系统触发。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/WebCookie/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 43,
+          "code": "// Main window is destroyed, release UI related resources.",
+          "description": "代码注释行，说明此阶段需释放 UI 相关资源，不涉及实际数据操作。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground."
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/WebCookie/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 44,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onWindowStageDestroy' 格式化后输出到系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy() {",
+              "    // Main window is destroyed, release UI related resources.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground() {",
+              "    // Ability has brought to foreground.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "生命周期事件标识 (Ability onWindowStageDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 销毁时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储，由系统日志服务临时缓存"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

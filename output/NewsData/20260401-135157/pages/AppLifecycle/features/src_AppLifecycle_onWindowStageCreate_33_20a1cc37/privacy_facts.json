@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "runId": "NewsData_20260401-135157",
+    "featureId": "src_AppLifecycle_onWindowStageCreate_33_20a1cc37",
+    "generatedAt": "2026-04-01T05:58:02.719Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "NewsData",
+        "businessScenario": "应用启动并创建主窗口时记录运行状态及页面加载结果",
+        "dataSources": [
+          "系统生命周期事件",
+          "页面加载回调返回数据"
+        ],
+        "dataItems": [
+          {
+            "name": "应用生命周期事件标识",
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n4"
+              }
+            ]
+          },
+          {
+            "name": "页面加载错误详情",
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n5"
+              }
+            ]
+          },
+          {
+            "name": "页面加载返回数据",
+            "refs": [
+              {
+                "flowId": "flow:p13",
+                "nodeId": "p13:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "序列化后输出至系统日志",
+        "storageMethod": "仅临时存储于系统日志缓冲区，无本地持久化存储",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p9",
+                "nodeId": "p9:n4"
+              },
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n5"
+              },
+              {
+                "flowId": "flow:p13",
+                "nodeId": "p13:n5"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于开发调试及监控应用启动与页面加载过程中的异常或成功状态",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260401-141653",
+    "generatedAt": "2026-04-01T06:22:20.029Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 5,
+      "edges": 4,
+      "pages": 1,
+      "elements": 4
+    }
+  },
+  "roots": [
+    "page:d13e5154834b"
+  ],
+  "nodes": {
+    "page:d13e5154834b": {
+      "id": "page:d13e5154834b",
+      "category": "Page",
+      "name": "VideoPage",
+      "description": "Video页面",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/VideoPage.ets",
+      "line": 7,
+      "code": "export struct VideoPage {",
+      "context": {
+        "startLine": 2,
+        "lines": [
+          "import { initializeOnStartup, VideoItem } from '../viewModel/VideoViewModel';",
+          "import { PageState } from 'common/src/main/ets/constants/Constants';",
+          "import { videoPlayView } from '../view/videoPlayView';",
+          "",
+          "@Component",
+          "export struct VideoPage {",
+          "  @Link @Watch(\"tabIndexChange\") tabCurrentIndex: number;",
+          "  @State videoArray: Array<VideoItem> = [];",
+          "  @State pageState: PageState = PageState.Loading;",
+          "",
+          "  @State play:boolean = false;"
+        ]
+      }
+    },
+    "ui:f1ed0f0c1f80": {
+      "id": "ui:f1ed0f0c1f80",
+      "category": "Component",
+      "name": "build",
+      "description": "视频播放页",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/VideoPage.ets",
+      "line": 26,
+      "code": "build() {",
+      "context": {
+        "startLine": 21,
+        "lines": [
+          "    } else {",
+          "      this.play = false;",
+          "    }",
+          "  }",
+          "",
+          "  build() {",
+          "",
+          "    Column() {",
+          "",
+          "      if (this.pageState === PageState.Loading) {",
+          "        // 加载页面"
+        ]
+      }
+    },
+    "ui:0b2d8efefca0": {
+      "id": "ui:0b2d8efefca0",
+      "category": "Component",
+      "name": "LoadingLayout",
+      "description": "视频加载态",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/VideoPage.ets",
+      "line": 32,
+      "code": "LoadingLayout()",
+      "context": {
+        "startLine": 27,
+        "lines": [
+          "",
+          "    Column() {",
+          "",
+          "      if (this.pageState === PageState.Loading) {",
+          "        // 加载页面",
+          "        LoadingLayout()",
+          "",
+          "      } else if (this.pageState === PageState.Success) {",
+          "",
+          "        // 视频页面",
+          "        videoPlayView({ videoArray: $videoArray,play:$play })"
+        ]
+      }
+    },
+    "ui:4c04c016a2e1": {
+      "id": "ui:4c04c016a2e1",
+      "category": "Component",
+      "name": "videoPlayView",
+      "description": "视频播放区域",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/VideoPage.ets",
+      "line": 37,
+      "code": "videoPlayView({ videoArray: $videoArray,play:$play })",
+      "context": {
+        "startLine": 32,
+        "lines": [
+          "        LoadingLayout()",
+          "",
+          "      } else if (this.pageState === PageState.Success) {",
+          "",
+          "        // 视频页面",
+          "        videoPlayView({ videoArray: $videoArray,play:$play })",
+          "",
+          "      } else {",
+          "        // 加载失败页面",
+          "        FailureLayout({ reloadAction: () => {}})",
+          "      }"
+        ]
+      }
+    },
+    "ui:bf1be2e32d3d": {
+      "id": "ui:bf1be2e32d3d",
+      "category": "Component",
+      "name": "FailureLayout",
+      "description": "加载失败提示",
+      "filePath": "input/app/TodayNews_harmony/video/src/main/ets/pages/VideoPage.ets",
+      "line": 41,
+      "code": "FailureLayout({ reloadAction: () => {}})",
+      "context": {
+        "startLine": 36,
+        "lines": [
+          "        // 视频页面",
+          "        videoPlayView({ videoArray: $videoArray,play:$play })",
+          "",
+          "      } else {",
+          "        // 加载失败页面",
+          "        FailureLayout({ reloadAction: () => {}})",
+          "      }",
+          "",
+          "    }",
+          "",
+          "  }"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:d13e5154834b",
+      "to": "ui:f1ed0f0c1f80",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d13e5154834b",
+      "to": "ui:0b2d8efefca0",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d13e5154834b",
+      "to": "ui:4c04c016a2e1",
+      "kind": "contains"
+    },
+    {
+      "from": "page:d13e5154834b",
+      "to": "ui:bf1be2e32d3d",
+      "kind": "contains"
+    }
+  ]
+}

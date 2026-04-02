@@ -1,0 +1,209 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260401-140248",
+    "featureId": "ui_HomePage_c988fc21ff",
+    "generatedAt": "2026-04-01T06:10:01.511Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.MOTION_SENSING 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "用户在主界面查看实时位置及所在地址信息",
+        "dataSources": [
+          "GPS 定位模块",
+          "系统地理编码服务"
+        ],
+        "dataItems": [
+          {
+            "name": "精确位置信息（纬度/经度）",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n7"
+              }
+            ]
+          },
+          {
+            "name": "地理位置描述（地址/地名）",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n9"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "调用系统接口获取经纬度，并逆地理编码转换为具体地址",
+        "storageMethod": "本地内存暂存（组件状态变量）",
+        "dataRecipients": [
+          {
+            "name": "系统地理定位管理服务",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n9"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "为用户提供当前位置及详细地址展示服务",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "Pedometer",
+        "businessScenario": "用户在主界面进行计步运动监测",
+        "dataSources": [
+          "计步器传感器"
+        ],
+        "dataItems": [
+          {
+            "name": "设备传感器数据（计步器）",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "周期性监听传感器数据回调",
+        "storageMethod": "当前片段未体现本地存储或加密操作",
+        "dataRecipients": [],
+        "processingPurpose": "统计用户运动步数并展示运动状态",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "Pedometer",
+        "businessScenario": "应用初始化时读取用户历史配置",
+        "dataSources": [
+          "本地偏好设置存储"
+        ],
+        "dataItems": [
+          {
+            "name": "应用启动状态标识",
+            "refs": [
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n7"
+              }
+            ]
+          },
+          {
+            "name": "当前步数数据",
+            "refs": [
+              {
+                "flowId": "flow:p6",
+                "nodeId": "p6:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取本地存储文件中的键值对",
+        "storageMethod": "本地存储",
+        "dataRecipients": [],
+        "processingPurpose": "恢复用户上次使用时的应用状态和运动数据",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "Pedometer",
+        "businessScenario": "权限申请失败时记录错误日志",
+        "dataSources": [
+          "系统权限管理模块"
+        ],
+        "dataItems": [
+          {
+            "name": "权限请求结果错误信息",
+            "refs": [
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n8"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "序列化错误对象并输出到系统日志",
+        "storageMethod": "系统日志缓冲区（未加密）",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n8"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "辅助开发者排查权限获取失败的原因",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCELEROMETER",
+        "businessScenario": "用户在主界面进行计步运动监测",
+        "permissionPurpose": "为了统计您的运动步数并展示实时运动状态，需要访问设备的计步器传感器数据。",
+        "denyImpact": "若拒绝授权，应用将无法获取传感器数据，导致计步功能无法正常使用，无法显示您的步数和运动状态。",
+        "refs": [
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n7"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n2"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.APPROXIMATELY_LOCATION",
+        "businessScenario": "获取用户大致地理位置以提供定位服务",
+        "permissionPurpose": "用于获取用户的模糊地理位置信息",
+        "denyImpact": "无法获取大致位置信息，可能影响部分定位功能",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n4"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n7"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      },
+      {
+        "permissionName": "ohos.permission.LOCATION",
+        "businessScenario": "获取用户实时地理位置以提供定位和地址查询服务",
+        "permissionPurpose": "用于获取用户的精确经纬度坐标",
+        "denyImpact": "无法获取当前位置信息，地址显示功能将不可用",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n4"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

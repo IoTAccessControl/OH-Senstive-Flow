@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.732Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p25 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets:37 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "SearchResultPage",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets",
+        "structName": "SearchResultPage",
+        "line": 29,
+        "description": "搜索页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_SearchResultPage_0b1c47d722",
+      "kind": "ui",
+      "title": "搜索结果页"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p25",
+      "pathId": "p25",
+      "nodes": [
+        {
+          "id": "p25:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets",
+          "line": 36,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "  private keyword: string = '';",
+              "  private scroller: Scroller = new Scroller();",
+              "  @State pn: number = 1;",
+              "  @State isLoading: boolean = false;",
+              "",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as SearchResultParams;",
+              "    if (params && params.keyword) {",
+              "      this.keyword = params.keyword;",
+              "    }",
+              "    BLog.i(\"SearchResultPage keyword:\" + this.keyword);"
+            ]
+          }
+        },
+        {
+          "id": "p25:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets",
+          "line": 37,
+          "code": "const params = router.getParams() as SearchResultParams;",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "  private scroller: Scroller = new Scroller();",
+              "  @State pn: number = 1;",
+              "  @State isLoading: boolean = false;",
+              "",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as SearchResultParams;",
+              "    if (params && params.keyword) {",
+              "      this.keyword = params.keyword;",
+              "    }",
+              "    BLog.i(\"SearchResultPage keyword:\" + this.keyword);",
+              "    this.isLoading = true;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p25:n1",
+          "to": "p25:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p25 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/SearchResult.ets:37 之后继续扩展"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p18 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets:22 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "TestPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+        "structName": "TestPage",
+        "line": 11,
+        "description": "功能测试页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_TestPage_ba79bf7550",
+      "kind": "ui",
+      "title": "模拟登录测试"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p18",
+      "pathId": "p18",
+      "nodes": [
+        {
+          "id": "p18:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 28,
+          "code": "build() {",
+          "description": "ArkUI 组件的 UI 构建入口函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    TestViewModel.getHomeBanner((result) => {",
+              "      this.message = JSON.stringify(result, null, 2)",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")"
+            ]
+          }
+        },
+        {
+          "id": "p18:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 31,
+          "code": "Button(\"测试Storage模拟登陆\").onClick(() => {",
+          "description": "onClick Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+              "        setTimeout(() => {",
+              "          StorageUtils.get(StorageKeys.USER_LOGIN).then((result) => {",
+              "            showToast(result.toString())"
+            ]
+          }
+        },
+        {
+          "id": "p18:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/test/TestPage.ets",
+          "line": 32,
+          "code": "StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+          "description": "StorageUtils Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      CommonTopBar({ title: '测试页面', alpha: 1 })",
+              "      Button(\"测试Storage模拟登陆\").onClick(() => {",
+              "        StorageUtils.put(StorageKeys.USER_LOGIN, true)",
+              "        StorageUtils.put(StorageKeys.USER_INFO_KEY, \"allen\")",
+              "        setTimeout(() => {",
+              "          StorageUtils.get(StorageKeys.USER_LOGIN).then((result) => {",
+              "            showToast(result.toString())",
+              "          })"
+            ]
+          }
+        },
+        {
+          "id": "p18:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets",
+          "line": 22,
+          "code": "return await dataPreferences.getPreferences(this.context, preferenceName)",
+          "description": "Obtains a  instance matching a specified preferences file name.\n<p>The  instance loads all data of the preferences file and\nresides in the memory. You can use removePreferencesFromCache to remove the instance from the memory.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "   * 获取Prefer实例",
+              "   * @param preferenceName",
+              "   * @returns",
+              "   */",
+              "  static async getPreferences(preferenceName: string = defaultPreferenceName) {",
+              "    return await dataPreferences.getPreferences(this.context, preferenceName)",
+              "  }",
+              "",
+              "  static async put(key: string, value: ValueType, preferenceName: string = defaultPreferenceName) {",
+              "    // 获取实例",
+              "    let preferences = await this.getPreferences(preferenceName)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p18:n1",
+          "to": "p18:n2"
+        },
+        {
+          "from": "p18:n2",
+          "to": "p18:n3"
+        },
+        {
+          "from": "p18:n3",
+          "to": "p18:n4"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p18 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/HarmoneyOpenEye/entry/src/main/ets/utils/StorageUtils.ets:22 之后继续扩展"
+        ]
+      }
+    }
+  ]
+}

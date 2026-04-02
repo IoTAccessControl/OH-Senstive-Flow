@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "featureId": "ui_Feedback_962ca1705e",
+    "generatedAt": "2026-04-01T06:56:28.213Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "ohbili",
+        "businessScenario": "用户在反馈页面查看并选择本地日志文件以查看详情",
+        "dataSources": [
+          "本地文件系统"
+        ],
+        "dataItems": [
+          {
+            "name": "本地日志文件路径",
+            "refs": [
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n4"
+              },
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n5"
+              }
+            ]
+          },
+          {
+            "name": "日志文件名",
+            "refs": [
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n4"
+              }
+            ]
+          },
+          {
+            "name": "日志文件大小",
+            "refs": [
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取本地存储并通过页面跳转参数明文传递",
+        "storageMethod": "存储在用户设备本地文件系统中",
+        "dataRecipients": [
+          {
+            "name": "日志详情页面",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n5"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于展示日志文件的详细信息以便用户进行问题反馈或调试",
+        "privacyToggleUi": {
+          "where": "反馈页面的日志文件列表区域",
+          "refs": [
+            {
+              "uiNodeId": "ui:b202b241df14"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.READ_MEDIA",
+        "businessScenario": "应用在反馈页面读取本地生成的日志文件列表及内容",
+        "permissionPurpose": "允许应用访问媒体库中的日志文件以展示文件名、大小和路径信息",
+        "denyImpact": "若拒绝该权限，应用无法读取本地日志文件，导致用户无法查看日志列表及详情，影响问题反馈功能的使用",
+        "refs": [
+          {
+            "flowId": "flow:p17",
+            "nodeId": "p17:n4"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

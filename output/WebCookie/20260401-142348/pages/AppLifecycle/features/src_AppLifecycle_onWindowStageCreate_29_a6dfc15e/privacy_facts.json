@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "runId": "WebCookie_20260401-142348",
+    "featureId": "src_AppLifecycle_onWindowStageCreate_29_a6dfc15e",
+    "generatedAt": "2026-04-01T06:25:41.493Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "WebCookie",
+        "businessScenario": "应用启动并创建主窗口时记录运行状态",
+        "dataSources": [
+          "系统生命周期事件"
+        ],
+        "dataItems": [
+          {
+            "name": "生命周期事件标识",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n2"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "格式化文本并输出至系统日志",
+        "storageMethod": "无本地存储，仅留存于系统日志",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n2"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于调试和监控应用窗口创建过程",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "WebCookie",
+        "businessScenario": "主窗口页面加载失败时记录错误详情",
+        "dataSources": [
+          "页面加载回调结果"
+        ],
+        "dataItems": [
+          {
+            "name": "错误对象及详细信息",
+            "refs": [
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "序列化为 JSON 字符串并输出至系统错误日志",
+        "storageMethod": "无本地持久化存储，仅留存于系统日志",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于诊断页面加载失败的原因",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "WebCookie",
+        "businessScenario": "主窗口页面加载成功时记录返回数据",
+        "dataSources": [
+          "页面加载回调结果"
+        ],
+        "dataItems": [
+          {
+            "name": "页面加载回调数据",
+            "refs": [
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "序列化为 JSON 字符串并输出至系统信息日志",
+        "storageMethod": "无本地存储，仅留存于系统日志",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于确认页面加载成功及查看返回数据结构",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

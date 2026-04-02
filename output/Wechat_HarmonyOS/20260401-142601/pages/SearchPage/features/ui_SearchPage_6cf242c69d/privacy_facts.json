@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260401-142601",
+    "featureId": "ui_SearchPage_6cf242c69d",
+    "generatedAt": "2026-04-01T06:37:13.582Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户在搜索页面输入关键词进行内容检索",
+        "dataSources": [
+          "用户手动输入"
+        ],
+        "dataItems": [
+          {
+            "name": "用户输入的搜索文本",
+            "refs": [
+              {
+                "flowId": "flow:p14",
+                "nodeId": "p14:n3"
+              },
+              {
+                "flowId": "flow:p14",
+                "nodeId": "p14:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "本地内存暂存并用于界面提示展示",
+        "storageMethod": "无持久化存储，仅在内存变量中临时保存",
+        "dataRecipients": [
+          {
+            "name": "本应用界面提示组件",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p14",
+                "nodeId": "p14:n6"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "响应用户搜索操作并提供即时反馈",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      },
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户点击取消按钮或物理返回键退出搜索页面",
+        "dataSources": [
+          "系统页面栈信息",
+          "用户按键事件"
+        ],
+        "dataItems": [
+          {
+            "name": "页面路由栈深度",
+            "refs": [
+              {
+                "flowId": "flow:p15",
+                "nodeId": "p15:n3"
+              },
+              {
+                "flowId": "flow:p16",
+                "nodeId": "p16:n4"
+              }
+            ]
+          },
+          {
+            "name": "按键事件类型",
+            "refs": [
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n2"
+              },
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "读取系统状态并进行逻辑判断以执行页面导航",
+        "storageMethod": "无本地存储，仅在内存中临时读取用于逻辑判断",
+        "dataRecipients": [
+          {
+            "name": "本应用路由管理模块",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p16",
+                "nodeId": "p16:n5"
+              }
+            ]
+          },
+          {
+            "name": "本应用界面提示组件",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p17",
+                "nodeId": "p17:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "实现页面返回功能及用户交互反馈",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

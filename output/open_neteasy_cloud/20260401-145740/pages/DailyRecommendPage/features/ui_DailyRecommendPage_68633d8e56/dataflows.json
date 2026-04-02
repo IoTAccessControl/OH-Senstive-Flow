@@ -1,0 +1,189 @@
+{
+  "meta": {
+    "runId": "open_neteasy_cloud_20260401-145740",
+    "generatedAt": "2026-04-01T07:01:04.883Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 5,
+      "edges": 4,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "DailyRecommendPage",
+      "entry": {
+        "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+        "structName": "DailyRecommendPage",
+        "line": 10,
+        "description": "DailyRecommend页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_DailyRecommendPage_68633d8e56",
+      "kind": "ui",
+      "title": "立即体验"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 19,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口 (build)，开始渲染每日推荐页面的 UI 结构，此时可能读取之前通过路由传入的参数。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Image($r('app.media.logo'))",
+              "        .width('62')",
+              "        .height('62')",
+              "        .borderRadius('32')"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 26,
+          "code": "Column(){",
+          "description": "定义垂直布局容器 (Column)，用于包裹登录和体验按钮，属于 UI 层级构建节点。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "      Image($r('app.media.logo'))",
+              "        .width('62')",
+              "        .height('62')",
+              "        .borderRadius('32')",
+              "        .margin({top:134})",
+              "      Column(){",
+              "        Button('手机号登录')",
+              "          .width(282)",
+              "          .height(38)",
+              "          .borderRadius(50)",
+              "          .fontColor('#C20C0C')"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 33,
+          "code": "Button('立即体验')",
+          "description": "实例化‘立即体验’按钮组件，设置其样式属性，作为用户交互的触发源。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "          .width(282)",
+              "          .height(38)",
+              "          .borderRadius(50)",
+              "          .fontColor('#C20C0C')",
+              "          .backgroundColor('#fff')",
+              "        Button('立即体验')",
+              "          .width(282)",
+              "          .height(38)",
+              "          .borderRadius(50)",
+              "          .fontColor('#fff')",
+              "          .backgroundColor('transparent')"
+            ]
+          }
+        },
+        {
+          "id": "p4:n4",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 46,
+          "code": ".onClick(()=>{",
+          "description": "为‘立即体验’按钮绑定点击事件监听器 (onClick)，定义用户点击后的回调逻辑起点。",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "            color:\"#fff\"",
+              "          })",
+              "          .margin({",
+              "            top:25",
+              "          })",
+              "          .onClick(()=>{",
+              "            router.pushUrl({",
+              "              url: CommonConstants.INDEX_PAGE",
+              "            });",
+              "            console.log('ok')",
+              "          })"
+            ]
+          }
+        },
+        {
+          "id": "p4:n5",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 47,
+          "code": "router.pushUrl({",
+          "description": "调用 router.pushUrl 发起页面跳转，将应用导航至首页 (INDEX_PAGE)，此为数据流终点 (Sink)，未携带敏感隐私数据。",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "          })",
+              "          .margin({",
+              "            top:25",
+              "          })",
+              "          .onClick(()=>{",
+              "            router.pushUrl({",
+              "              url: CommonConstants.INDEX_PAGE",
+              "            });",
+              "            console.log('ok')",
+              "          })",
+              "      }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        },
+        {
+          "from": "p4:n3",
+          "to": "p4:n4"
+        },
+        {
+          "from": "p4:n4",
+          "to": "p4:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Page Route Params)",
+          "用户交互事件 (User Click Event)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (一次性)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储行为",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

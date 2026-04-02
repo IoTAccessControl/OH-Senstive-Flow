@@ -1,0 +1,343 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260401-141653",
+    "generatedAt": "2026-04-01T06:22:19.943Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p9 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets:19 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 3,
+      "nodes": 10,
+      "edges": 7,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "DetailPage",
+      "entry": {
+        "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+        "structName": "DetailPage",
+        "line": 11,
+        "description": "Detail页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_DetailPage_585df7c21a",
+      "kind": "ui",
+      "title": "新闻详情页面"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 18,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  @State article: DataModel = new DataModel();",
+              "  @State pageState: PageState = PageState.Loading;",
+              "  @State mediaInfo: MediaInfo = new MediaInfo();",
+              "  controller: webview.WebviewController = new webview.WebviewController()",
+              "",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as DataModel;",
+              "    this.article = params;",
+              "",
+              "    this.mediaInfo = this.article.media_info;",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 19,
+          "code": "const params = router.getParams() as DataModel;",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  @State pageState: PageState = PageState.Loading;",
+              "  @State mediaInfo: MediaInfo = new MediaInfo();",
+              "  controller: webview.WebviewController = new webview.WebviewController()",
+              "",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as DataModel;",
+              "    this.article = params;",
+              "",
+              "    this.mediaInfo = this.article.media_info;",
+              "",
+              "    // this.getHtmlData();"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p9 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets:19 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 61,
+          "code": "onPageShow() {",
+          "description": "定义 onPageShow 生命周期函数入口，作为数据流的起始锚点，当前函数体为空，未执行任何数据采集或处理逻辑。",
+          "context": {
+            "startLine": 56,
+            "lines": [
+              "    } catch (error) {",
+              "      console.log(error);",
+              "    }",
+              "  }",
+              "",
+              "  onPageShow() {",
+              "",
+              "  }",
+              "",
+              "  @Builder NavBar() {",
+              "    Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 72,
+          "code": "router.back();",
+          "description": "执行 router.back() 方法，触发页面返回操作，作为数据流的终止锚点（Sink），该操作仅涉及 UI 导航栈变更，不涉及隐私数据收集、网络传输或本地存储。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "      Image($r('app.media.back_normal_new_Normal'))",
+              "        .width(24)",
+              "        .height(24)",
+              "        .margin({ left: 15, right: 15 })",
+              "        .onClick(() => {",
+              "          router.back();",
+              "        })",
+              "",
+              "      Stack({ alignContent: Alignment.Bottom }) {",
+              "        Image(this.mediaInfo.avatar_url)",
+              "          .width(34)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储操作"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 116,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口 build() 函数开始执行，初始化页面 UI 结构。",
+          "context": {
+            "startLine": 111,
+            "lines": [
+              "    .width('100%')",
+              "    .height(56)",
+              "    .backgroundColor(Color.White)",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      this.NavBar()",
+              "",
+              "      Web({"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 119,
+          "code": "this.NavBar()",
+          "description": "在 build() 中调用自定义 @Builder 方法 NavBar()，将导航栏组件添加到页面布局中。",
+          "context": {
+            "startLine": 114,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "",
+              "      this.NavBar()",
+              "",
+              "      Web({",
+              "        src: this.article.article_url, controller: this.controller",
+              "      })",
+              "        .javaScriptAccess(true)"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 65,
+          "code": "@Builder NavBar() {",
+          "description": "进入 NavBar() 自定义构建函数定义体，准备构建导航栏内部元素。",
+          "context": {
+            "startLine": 60,
+            "lines": [
+              "",
+              "  onPageShow() {",
+              "",
+              "  }",
+              "",
+              "  @Builder NavBar() {",
+              "    Row() {",
+              "      Image($r('app.media.back_normal_new_Normal'))",
+              "        .width(24)",
+              "        .height(24)",
+              "        .margin({ left: 15, right: 15 })"
+            ]
+          }
+        },
+        {
+          "id": "p11:n4",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 66,
+          "code": "Row() {",
+          "description": "创建 Row 容器作为导航栏的根布局，用于横向排列返回按钮和标题等信息。",
+          "context": {
+            "startLine": 61,
+            "lines": [
+              "  onPageShow() {",
+              "",
+              "  }",
+              "",
+              "  @Builder NavBar() {",
+              "    Row() {",
+              "      Image($r('app.media.back_normal_new_Normal'))",
+              "        .width(24)",
+              "        .height(24)",
+              "        .margin({ left: 15, right: 15 })",
+              "        .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n5",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 71,
+          "code": ".onClick(() => {",
+          "description": "为返回按钮 Image 组件注册 onClick 点击事件监听器，定义用户交互触发后的逻辑。",
+          "context": {
+            "startLine": 66,
+            "lines": [
+              "    Row() {",
+              "      Image($r('app.media.back_normal_new_Normal'))",
+              "        .width(24)",
+              "        .height(24)",
+              "        .margin({ left: 15, right: 15 })",
+              "        .onClick(() => {",
+              "          router.back();",
+              "        })",
+              "",
+              "      Stack({ alignContent: Alignment.Bottom }) {",
+              "        Image(this.mediaInfo.avatar_url)"
+            ]
+          }
+        },
+        {
+          "id": "p11:n6",
+          "filePath": "input/app/TodayNews_harmony/home/src/main/ets/pages/DetailPage.ets",
+          "line": 72,
+          "code": "router.back();",
+          "description": "执行 router.back() API 调用，触发页面返回操作，结束当前数据流（Sink 点）。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "      Image($r('app.media.back_normal_new_Normal'))",
+              "        .width(24)",
+              "        .height(24)",
+              "        .margin({ left: 15, right: 15 })",
+              "        .onClick(() => {",
+              "          router.back();",
+              "        })",
+              "",
+              "      Stack({ alignContent: Alignment.Bottom }) {",
+              "        Image(this.mediaInfo.avatar_url)",
+              "          .width(34)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        },
+        {
+          "from": "p11:n3",
+          "to": "p11:n4"
+        },
+        {
+          "from": "p11:n4",
+          "to": "p11:n5"
+        },
+        {
+          "from": "p11:n5",
+          "to": "p11:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储操作",
+          "无加密操作"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

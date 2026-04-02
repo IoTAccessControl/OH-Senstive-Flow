@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "runId": "AdsKit_20260401-131915",
+    "generatedAt": "2026-04-01T05:21:59.723Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onBackground_53_61eb7205",
+      "kind": "source",
+      "title": "应用切到后台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p15",
+      "pathId": "p15",
+      "nodes": [
+        {
+          "id": "p15:n1",
+          "filePath": "input/app/AdsKit/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 53,
+          "code": "onBackground(): void {",
+          "description": "定义 onBackground 生命周期回调函数，作为数据流的起点，当 UIAbility 切换到后台时被系统触发。",
+          "context": {
+            "startLine": 48,
+            "lines": [
+              "  onForeground(): void {",
+              "    // The ability has been brought to the foreground.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // The ability has returned to the background.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p15:n2",
+          "filePath": "input/app/AdsKit/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 54,
+          "code": "// The ability has returned to the background.",
+          "description": "代码注释行，说明当前 Ability 已返回后台，无实际数据操作。",
+          "context": {
+            "startLine": 49,
+            "lines": [
+              "    // The ability has been brought to the foreground.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // The ability has returned to the background.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p15:n3",
+          "filePath": "input/app/AdsKit/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 55,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+          "description": "调用 hilog.info 接口，将固定的公开字符串 'Ability onBackground' 写入系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 50,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // The ability has returned to the background.",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p15:n1",
+          "to": "p15:n2"
+        },
+        {
+          "from": "p15:n2",
+          "to": "p15:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "固定日志字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发（应用切换至后台时）"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅输出至系统日志缓冲区，未进行本地文件存储或加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

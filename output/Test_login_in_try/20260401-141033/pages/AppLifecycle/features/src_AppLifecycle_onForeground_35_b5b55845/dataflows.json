@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "runId": "Test_login_in_try_20260401-141033",
+    "generatedAt": "2026-04-01T06:12:36.873Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onForeground_35_b5b55845",
+      "kind": "source",
+      "title": "应用切到前台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/Test_login_in_try/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 35,
+          "code": "onForeground(): void {",
+          "description": "定义 onForeground 生命周期回调函数，作为数据流的起点，当 UIAbility 切换到前台时被系统触发。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/Test_login_in_try/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 36,
+          "code": "// Ability has brought to foreground",
+          "description": "代码注释行，说明当前逻辑是处理应用进入前台的状态，不涉及实际数据处理。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/Test_login_in_try/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 37,
+          "code": "hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onForeground' 格式化后输出到系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "日志文本字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发（每次应用切换至前台时）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（仅本地日志输出）"
+        ],
+        "storageAndEncryption": [
+          "写入系统日志缓冲区（hilog），未加密，依赖系统日志轮转策略"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

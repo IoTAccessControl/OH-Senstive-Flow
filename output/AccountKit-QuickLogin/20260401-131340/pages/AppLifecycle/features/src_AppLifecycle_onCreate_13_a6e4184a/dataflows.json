@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260401-131340",
+    "generatedAt": "2026-04-01T05:17:32.141Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 4,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onCreate_13_a6e4184a",
+      "kind": "source",
+      "title": "应用创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 13,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "UIAbility 生命周期入口 onCreate 被触发，标志着应用实例开始创建，接收启动参数 want 和 launchParam。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  logTag: string = 'EntryAbility';",
+              "  domainId: number = 0x0000;",
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 10,
+          "code": "logTag: string = 'EntryAbility';",
+          "description": "读取类成员变量 logTag，其值为固定字符串 'EntryAbility'，用于标识日志来源模块。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "import { BusinessError } from '@kit.BasicServicesKit';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  logTag: string = 'EntryAbility';",
+              "  domainId: number = 0x0000;",
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onCreate');",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 11,
+          "code": "domainId: number = 0x0000;",
+          "description": "读取类成员变量 domainId，其值为固定数字 0x0000，用于标识日志所属的领域 ID。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "import { window } from '@kit.ArkUI';",
+              "import { BusinessError } from '@kit.BasicServicesKit';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  logTag: string = 'EntryAbility';",
+              "  domainId: number = 0x0000;",
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onCreate');",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p10:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 14,
+          "code": "hilog.info(this.domainId, this.logTag, 'Ability onCreate');",
+          "description": "调用 hilog.info 接口，将固定的日志内容 'Ability onCreate' 连同 domainId 和 logTag 输出到系统日志缓冲区，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "export default class EntryAbility extends UIAbility {",
+              "  logTag: string = 'EntryAbility';",
+              "  domainId: number = 0x0000;",
+              "",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(this.domainId, this.logTag, 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        },
+        {
+          "from": "p10:n3",
+          "to": "p10:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识",
+          "日志标签 (logTag)",
+          "日志域 ID (domainId)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

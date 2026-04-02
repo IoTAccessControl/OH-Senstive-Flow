@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260401-140248",
+    "featureId": "src_AppLifecycle_onWindowStageCreate_33_fd95b47f",
+    "generatedAt": "2026-04-01T06:09:17.488Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "应用启动并加载主页面时",
+        "dataSources": [
+          "系统窗口创建事件",
+          "页面内容加载结果"
+        ],
+        "dataItems": [
+          {
+            "name": "错误对象详情",
+            "refs": [
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n4"
+              }
+            ]
+          },
+          {
+            "name": "页面加载回调数据",
+            "refs": [
+              {
+                "flowId": "flow:p19",
+                "nodeId": "p19:n5"
+              }
+            ]
+          },
+          {
+            "name": "界面上下文对象",
+            "refs": [
+              {
+                "flowId": "flow:p19",
+                "nodeId": "p19:n4"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "序列化后输出至系统日志及存入内存状态管理",
+        "storageMethod": "仅存在于内存中（全局状态存储及日志缓冲区），无本地文件持久化",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p18",
+                "nodeId": "p18:n4"
+              },
+              {
+                "flowId": "flow:p19",
+                "nodeId": "p19:n5"
+              }
+            ]
+          },
+          {
+            "name": "应用内部全局状态存储",
+            "inferred": false,
+            "refs": [
+              {
+                "flowId": "flow:p19",
+                "nodeId": "p19:n4"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "记录应用启动过程中的加载状态与异常信息，以便调试和维持界面上下文",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "meta": {
+    "runId": "IntentsKit-codelab-Clientdemo-ArkTS_20260401-134916",
+    "generatedAt": "2026-04-01T05:51:02.920Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 7,
+      "edges": 6,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "Index",
+      "entry": {
+        "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+        "structName": "Index",
+        "line": 9,
+        "description": "首页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Index_34fe9a4195",
+      "kind": "ui",
+      "title": "页面主体"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 14,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化页面组件结构。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "struct Index {",
+              "  @LocalStorageProp('result') want: string = 'wait result';",
+              "  @State result: string = this.want;",
+              "  @State input: string = '';",
+              "",
+              "  build() {",
+              "    Flex({",
+              "      direction: FlexDirection.Column,",
+              "      justifyContent: FlexAlign.SpaceBetween,",
+              "      alignItems: ItemAlign.Center",
+              "    }) {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "}) {",
+          "description": "定义 Flex 布局容器，作为页面主要内容区域的根节点。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  build() {",
+              "    Flex({",
+              "      direction: FlexDirection.Column,",
+              "      justifyContent: FlexAlign.SpaceBetween,",
+              "      alignItems: ItemAlign.Center",
+              "    }) {",
+              "      Column() {",
+              "        Text('InsightIntent Test')",
+              "          .fontSize('24fp')",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .maxLines(1)"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 42,
+          "code": "Row() {",
+          "description": "创建 Row 水平布局容器，用于放置操作按钮组。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "        .height('45%')",
+              "        .border({",
+              "          radius: '4vp'",
+              "        })",
+              "",
+              "      Row() {",
+              "        Button() {",
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 49,
+          "code": "}.type(ButtonType.Capsule)",
+          "description": "设置按钮样式为胶囊型（Capsule），定义‘获取 insightIntents'按钮的外观。",
+          "context": {
+            "startLine": 44,
+            "lines": [
+              "          Text('获取insightIntents')",
+              "            .fontWeight(FontWeight.Bold)",
+              "            .maxLines(1)",
+              "            .maxFontSize(15)",
+              "            .minFontSize(9)",
+              "        }.type(ButtonType.Capsule)",
+              "        .layoutWeight(1)",
+              "        .height('100%')",
+              "        .margin({",
+              "          left: '4vp',",
+              "          right: '4vp'"
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 57,
+          "code": ".onClick(async () => {",
+          "description": "注册按钮点击事件监听器，定义异步回调函数以响应用户交互。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "        .margin({",
+              "          left: '4vp',",
+              "          right: '4vp'",
+              "        })",
+              "        .backgroundColor('#0ddffb')",
+              "        .onClick(async () => {",
+              "          Logger.info(TAG, 'refreshShareIntentMessage onclick');",
+              "          let str: string = await InsightIntentSharer.refreshShareIntentMessage(getContext());",
+              "          this.input = str;",
+              "        })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/pages/Index.ets",
+          "line": 58,
+          "code": "Logger.info(TAG, 'refreshShareIntentMessage onclick');",
+          "description": "在点击事件中调用 Logger.info 方法，准备记录操作日志，传入固定标签和消息格式。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "          left: '4vp',",
+              "          right: '4vp'",
+              "        })",
+              "        .backgroundColor('#0ddffb')",
+              "        .onClick(async () => {",
+              "          Logger.info(TAG, 'refreshShareIntentMessage onclick');",
+              "          let str: string = await InsightIntentSharer.refreshShareIntentMessage(getContext());",
+              "          this.input = str;",
+              "        })",
+              "",
+              "        Button() {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n7",
+          "filePath": "input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/utils/Logger.ets",
+          "line": 12,
+          "code": "hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+          "description": "最终 Sink 节点：调用系统 hilog.info 接口，将拼接后的日志信息（含应用 TAG 和操作描述）输出到系统日志流。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  public static debug(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.debug(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static info(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.info(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }",
+              "",
+              "  public static warn(logTag: string, messageFormat: string, ...args: Object[]): void {",
+              "    hilog.warn(Logger.DOMAIN, Logger.TAG, `${Logger.DOMAIN} ${logTag}: ${messageFormat}`, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        },
+        {
+          "from": "p1:n6",
+          "to": "p1:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "用户交互事件（按钮点击）",
+          "日志消息（包含操作标签 'refreshShareIntentMessage'）",
+          "应用标识符（TAG: com.example.insightintentdemo）"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户点击按钮时）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（数据仅输出至系统日志服务 hilog）"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据流向系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

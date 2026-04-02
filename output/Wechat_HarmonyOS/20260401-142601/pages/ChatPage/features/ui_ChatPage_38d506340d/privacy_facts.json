@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260401-142601",
+    "featureId": "ui_ChatPage_38d506340d",
+    "generatedAt": "2026-04-01T06:35:53.049Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Wechat_HarmonyOS",
+        "businessScenario": "用户在聊天页面点击语音输入按钮发送语音消息",
+        "dataSources": [
+          "麦克风"
+        ],
+        "dataItems": [
+          {
+            "name": "麦克风权限状态",
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n4"
+              }
+            ]
+          },
+          {
+            "name": "用户交互事件（点击）",
+            "refs": [
+              {
+                "flowId": "flow:p27",
+                "nodeId": "p27:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "实时采集音频数据",
+        "storageMethod": "无本地持久化存储",
+        "dataRecipients": [],
+        "processingPurpose": "实现语音消息的录制与发送功能",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.MICROPHONE",
+        "businessScenario": "用户在聊天页面使用语音输入功能",
+        "permissionPurpose": "用于录制用户语音以发送语音消息",
+        "denyImpact": "无法使用语音输入功能，系统会提示用户先授权麦克风权限",
+        "refs": [
+          {
+            "flowId": "flow:p27",
+            "nodeId": "p27:n4"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

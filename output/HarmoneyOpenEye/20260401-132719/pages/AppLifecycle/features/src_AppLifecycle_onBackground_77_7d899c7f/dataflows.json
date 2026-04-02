@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 3,
+      "edges": 2,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onBackground_77_7d899c7f",
+      "kind": "source",
+      "title": "应用切到后台时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p63",
+      "pathId": "p63",
+      "nodes": [
+        {
+          "id": "p63:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 77,
+          "code": "onBackground(): void {",
+          "description": "定义 onBackground 生命周期回调函数，作为数据流的起点，当 UIAbility 切换到后台时被系统触发。",
+          "context": {
+            "startLine": 72,
+            "lines": [
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p63:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 78,
+          "code": "// Ability has back to background",
+          "description": "代码注释行，说明当前 Ability 已返回后台，不涉及实际数据处理逻辑。",
+          "context": {
+            "startLine": 73,
+            "lines": [
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p63:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 79,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+          "description": "调用 hilog.info 接口，将字符串常量 'Ability onBackground' 作为公开信息打印到系统日志，此为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 74,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p63:n1",
+          "to": "p63:n2"
+        },
+        {
+          "from": "p63:n2",
+          "to": "p63:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件"
+        ],
+        "collectionFrequency": [
+          "事件触发（应用切换至后台时）"
+        ],
+        "cloudUpload": [
+          "无（仅本地日志输出，未检测到网络发送行为）"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储（日志由系统 hilog 服务处理，通常暂存于内存或系统日志缓冲区，源码中未体现加密操作）"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

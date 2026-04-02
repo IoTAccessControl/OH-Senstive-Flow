@@ -1,0 +1,1783 @@
+{
+  "meta": {
+    "runId": "open_neteasy_cloud_20260401-145740",
+    "generatedAt": "2026-04-01T07:00:28.720Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets:14 之后继续扩展",
+      "数据流 p5 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets:14 之后继续扩展",
+      "数据流 p8 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets:17 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 17,
+      "nodes": 54,
+      "edges": 37,
+      "failedPaths": 3,
+      "fallbackFlows": 3
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/view/CategoryComponent.ets",
+          "line": 12,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化组件渲染流程。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              " */",
+              "@Component",
+              "export struct CategoryComponent {",
+              "  private listData: Array<ListItemData>;",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      List() {",
+              "        ForEach(this.listData, (listItemData: ListItemData) => {",
+              "          ListItem() {",
+              "            Row() {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/view/CategoryComponent.ets",
+          "line": 15,
+          "code": "ForEach(this.listData, (listItemData: ListItemData) => {",
+          "description": "遍历本地数据源 listData 数组，为每个列表项准备渲染上下文，读取 listItemData 对象。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  private listData: Array<ListItemData>;",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      List() {",
+              "        ForEach(this.listData, (listItemData: ListItemData) => {",
+              "          ListItem() {",
+              "            Row() {",
+              "              Text(listItemData.title)",
+              "                .fontSize($r('app.float.sub_title_left_size'))",
+              "                .fontColor($r('app.color.list_item_title'))"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/view/CategoryComponent.ets",
+          "line": 16,
+          "code": "ListItem() {",
+          "description": "创建 ListItem 容器组件，绑定当前遍历到的数据项 listItemData。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      List() {",
+              "        ForEach(this.listData, (listItemData: ListItemData) => {",
+              "          ListItem() {",
+              "            Row() {",
+              "              Text(listItemData.title)",
+              "                .fontSize($r('app.float.sub_title_left_size'))",
+              "                .fontColor($r('app.color.list_item_title'))",
+              "                .margin({ left: $r('app.float.item_text_margin_left') })"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/view/CategoryComponent.ets",
+          "line": 18,
+          "code": "Text(listItemData.title)",
+          "description": "读取并渲染数据项中的 title 字段到 Text 组件，展示在界面上。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "    Column() {",
+              "      List() {",
+              "        ForEach(this.listData, (listItemData: ListItemData) => {",
+              "          ListItem() {",
+              "            Row() {",
+              "              Text(listItemData.title)",
+              "                .fontSize($r('app.float.sub_title_left_size'))",
+              "                .fontColor($r('app.color.list_item_title'))",
+              "                .margin({ left: $r('app.float.item_text_margin_left') })",
+              "              Blank();",
+              "              Text(listItemData.summary)"
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/view/CategoryComponent.ets",
+          "line": 23,
+          "code": "Text(listItemData.summary)",
+          "description": "读取并渲染数据项中的 summary 字段到 Text 组件，展示在界面上。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "              Text(listItemData.title)",
+              "                .fontSize($r('app.float.sub_title_left_size'))",
+              "                .fontColor($r('app.color.list_item_title'))",
+              "                .margin({ left: $r('app.float.item_text_margin_left') })",
+              "              Blank();",
+              "              Text(listItemData.summary)",
+              "                .fontSize($r('app.float.sub_title_right_size'))",
+              "                .fontColor($r('app.color.list_item_summary'))",
+              "                .margin({ right: $r('app.float.item_text_margin_right') })",
+              "              Image(listItemData.imageArrow)",
+              "                .width($r('app.float.image_right_arrow_width'))"
+            ]
+          }
+        },
+        {
+          "id": "p1:n6",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/view/CategoryComponent.ets",
+          "line": 35,
+          "code": ".onClick(() => {",
+          "description": "为列表项注册 onClick 点击事件监听器，等待用户交互触发。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "                .objectFit(ImageFit.Contain)",
+              "                .margin({ right: $r('app.float.sub_item_margin_right') })",
+              "            }",
+              "            .width(CommonConstants.ROW_WIDTH_PERCENT)",
+              "            .height($r('app.float.list_item_height'))",
+              "            .onClick(() => {",
+              "              router.pushUrl({",
+              "                url: CommonConstants.DETAIL_PAGE,",
+              "                params: {",
+              "                  data: listItemData.title",
+              "                }"
+            ]
+          }
+        },
+        {
+          "id": "p1:n7",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/view/CategoryComponent.ets",
+          "line": 36,
+          "code": "router.pushUrl({",
+          "description": "【Sink】调用 router.pushUrl 发起页面跳转，将当前选中的 listItemData.title 作为参数传递至目标页面，完成数据流向终点的发送。",
+          "context": {
+            "startLine": 31,
+            "lines": [
+              "                .margin({ right: $r('app.float.sub_item_margin_right') })",
+              "            }",
+              "            .width(CommonConstants.ROW_WIDTH_PERCENT)",
+              "            .height($r('app.float.list_item_height'))",
+              "            .onClick(() => {",
+              "              router.pushUrl({",
+              "                url: CommonConstants.DETAIL_PAGE,",
+              "                params: {",
+              "                  data: listItemData.title",
+              "                }",
+              "              });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        },
+        {
+          "from": "p1:n5",
+          "to": "p1:n6"
+        },
+        {
+          "from": "p1:n6",
+          "to": "p1:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "listItemData.title",
+          "listItemData.summary"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项)"
+        ],
+        "cloudUpload": [
+          "否 (仅应用内页面跳转传参)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 13,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct DailyRecommendPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 14,
+          "code": "if (router.getParams()) {",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "@Component",
+              "struct DailyRecommendPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets:14 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 13,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，在组件即将显示时触发，作为数据流的起点。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct DailyRecommendPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 14,
+          "code": "if (router.getParams()) {",
+          "description": "调用 router.getParams() 检查是否存在路由跳转携带的参数对象。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "@Component",
+              "struct DailyRecommendPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 15,
+          "code": "this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+          "description": "从路由参数中提取键为 KEY_PARAM_DATA 的数据项，并强制转换为 Resource 类型赋值给成员变量 titleParam，完成敏感数据的接收与本地内存存储。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "struct DailyRecommendPage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Route Params)",
+          "业务数据对象 (KEY_PARAM_DATA)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件显示前触发)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "内存存储 (组件实例变量 titleParam)",
+          "未加密 (明文传递)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 19,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口 (build)，开始渲染每日推荐页面的 UI 结构，此时可能读取之前通过路由传入的参数。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Image($r('app.media.logo'))",
+              "        .width('62')",
+              "        .height('62')",
+              "        .borderRadius('32')"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 26,
+          "code": "Column(){",
+          "description": "定义垂直布局容器 (Column)，用于包裹登录和体验按钮，属于 UI 层级构建节点。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "      Image($r('app.media.logo'))",
+              "        .width('62')",
+              "        .height('62')",
+              "        .borderRadius('32')",
+              "        .margin({top:134})",
+              "      Column(){",
+              "        Button('手机号登录')",
+              "          .width(282)",
+              "          .height(38)",
+              "          .borderRadius(50)",
+              "          .fontColor('#C20C0C')"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 33,
+          "code": "Button('立即体验')",
+          "description": "实例化‘立即体验’按钮组件，设置其样式属性，作为用户交互的触发源。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "          .width(282)",
+              "          .height(38)",
+              "          .borderRadius(50)",
+              "          .fontColor('#C20C0C')",
+              "          .backgroundColor('#fff')",
+              "        Button('立即体验')",
+              "          .width(282)",
+              "          .height(38)",
+              "          .borderRadius(50)",
+              "          .fontColor('#fff')",
+              "          .backgroundColor('transparent')"
+            ]
+          }
+        },
+        {
+          "id": "p4:n4",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 46,
+          "code": ".onClick(()=>{",
+          "description": "为‘立即体验’按钮绑定点击事件监听器 (onClick)，定义用户点击后的回调逻辑起点。",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "            color:\"#fff\"",
+              "          })",
+              "          .margin({",
+              "            top:25",
+              "          })",
+              "          .onClick(()=>{",
+              "            router.pushUrl({",
+              "              url: CommonConstants.INDEX_PAGE",
+              "            });",
+              "            console.log('ok')",
+              "          })"
+            ]
+          }
+        },
+        {
+          "id": "p4:n5",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/DailyRecommendPage.ets",
+          "line": 47,
+          "code": "router.pushUrl({",
+          "description": "调用 router.pushUrl 发起页面跳转，将应用导航至首页 (INDEX_PAGE)，此为数据流终点 (Sink)，未携带敏感隐私数据。",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "          })",
+              "          .margin({",
+              "            top:25",
+              "          })",
+              "          .onClick(()=>{",
+              "            router.pushUrl({",
+              "              url: CommonConstants.INDEX_PAGE",
+              "            });",
+              "            console.log('ok')",
+              "          })",
+              "      }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        },
+        {
+          "from": "p4:n3",
+          "to": "p4:n4"
+        },
+        {
+          "from": "p4:n4",
+          "to": "p4:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Page Route Params)",
+          "用户交互事件 (User Click Event)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (一次性)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储行为",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 13,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 14,
+          "code": "if (router.getParams()) {",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "@Component",
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p5 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets:14 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 13,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，在组件即将显示时触发，作为数据流的起点。",
+          "context": {
+            "startLine": 8,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 14,
+          "code": "if (router.getParams()) {",
+          "description": "调用 router.getParams() 检查是否存在路由跳转携带的参数对象，防止空指针异常。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "@Component",
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 15,
+          "code": "this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+          "description": "从路由参数中提取键为 KEY_PARAM_DATA 的具体业务数据，并强制转换为 Resource 类型赋值给成员变量 titleParam，完成数据接收与内部状态更新。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "struct HomePage {",
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Route Params)",
+          "业务数据对象 (KEY_PARAM_DATA)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件初始化时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "仅内存存储 (组件实例变量)",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 19,
+          "code": "build() {",
+          "description": "ArkUI 组件构建入口 (build)，开始渲染首页 UI 结构，包含登录按钮和体验按钮的布局定义。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Image($r('app.media.logo'))",
+              "        .width('62')",
+              "        .height('62')",
+              "        .borderRadius('32')"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 26,
+          "code": "Column(){",
+          "description": "定义垂直布局容器 (Column)，用于包裹下方的操作按钮组，确立 UI 层级关系。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "      Image($r('app.media.logo'))",
+              "        .width('62')",
+              "        .height('62')",
+              "        .borderRadius('32')",
+              "        .margin({top:134})",
+              "      Column(){",
+              "        Button('手机号登录')",
+              "          .width(282)",
+              "          .height(38)",
+              "          .borderRadius(50)",
+              "          .fontColor('#C20C0C')"
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 33,
+          "code": "Button('立即体验')",
+          "description": "实例化‘立即体验’按钮组件，设置其样式属性（宽高、边框、背景色等），作为用户交互的视觉载体。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "          .width(282)",
+              "          .height(38)",
+              "          .borderRadius(50)",
+              "          .fontColor('#C20C0C')",
+              "          .backgroundColor('#fff')",
+              "        Button('立即体验')",
+              "          .width(282)",
+              "          .height(38)",
+              "          .borderRadius(50)",
+              "          .fontColor('#fff')",
+              "          .backgroundColor('transparent')"
+            ]
+          }
+        },
+        {
+          "id": "p7:n4",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 46,
+          "code": ".onClick(()=>{",
+          "description": "为‘立即体验’按钮注册点击事件监听器 (onClick)，定义用户触发交互后的回调逻辑起点。",
+          "context": {
+            "startLine": 41,
+            "lines": [
+              "            color:\"#fff\"",
+              "          })",
+              "          .margin({",
+              "            top:25",
+              "          })",
+              "          .onClick(()=>{",
+              "            router.pushUrl({",
+              "              url: CommonConstants.INDEX_PAGE",
+              "            });",
+              "            console.log('ok')",
+              "          })"
+            ]
+          }
+        },
+        {
+          "id": "p7:n5",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/HomePage.ets",
+          "line": 47,
+          "code": "router.pushUrl({",
+          "description": "执行路由跳转 (router.pushUrl)，将应用导航至索引页 (INDEX_PAGE)，完成页面间的数据流转控制。",
+          "context": {
+            "startLine": 42,
+            "lines": [
+              "          })",
+              "          .margin({",
+              "            top:25",
+              "          })",
+              "          .onClick(()=>{",
+              "            router.pushUrl({",
+              "              url: CommonConstants.INDEX_PAGE",
+              "            });",
+              "            console.log('ok')",
+              "          })",
+              "      }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        },
+        {
+          "from": "p7:n3",
+          "to": "p7:n4"
+        },
+        {
+          "from": "p7:n4",
+          "to": "p7:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Page Route Parameters)",
+          "用户交互事件 (User Click Event)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (Event Triggered)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储行为",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p8",
+      "pathId": "p8",
+      "nodes": [
+        {
+          "id": "p8:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 16,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "  private controller: TabsController = new TabsController()",
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p8:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 17,
+          "code": "if (router.getParams()) {",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  private controller: TabsController = new TabsController()",
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  @Builder TabTextBuilder(text: string,index:number) {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p8:n1",
+          "to": "p8:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p8 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets:17 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 16,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，当 IndexPage 组件即将显示时被系统调用，作为数据流的起点。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  private titleParam: Resource = $r('app.string.detail_default_title');",
+              "  private controller: TabsController = new TabsController()",
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 17,
+          "code": "if (router.getParams()) {",
+          "description": "调用 router.getParams() 检查是否存在路由跳转携带的参数对象，作为获取数据前的非空判断。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "  private controller: TabsController = new TabsController()",
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  @Builder TabTextBuilder(text: string,index:number) {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/pages/IndexPage.ets",
+          "line": 18,
+          "code": "this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+          "description": "从路由参数对象中提取键值为 CommonConstants.KEY_PARAM_DATA 的数据项，将其强制转换为 Resource 类型并赋值给成员变量 this.titleParam，完成数据从路由到组件状态的流转。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  private swiperController: SwiperController = new SwiperController()",
+              "  @State currentIndex: number = 0",
+              "",
+              "  aboutToAppear() {",
+              "    if (router.getParams()) {",
+              "      this.titleParam = router.getParams()[CommonConstants.KEY_PARAM_DATA] as Resource;",
+              "    }",
+              "  }",
+              "",
+              "  @Builder TabTextBuilder(text: string,index:number) {",
+              "    Text(text)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面路由参数 (Page Route Params)",
+          "资源标识符 (Resource Identifier)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件加载时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地内存赋值)"
+        ],
+        "storageAndEncryption": [
+          "临时存储于组件状态变量 (this.titleParam)",
+          "未加密 (明文内存引用)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 11,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "定义 EntryAbility 的 onCreate 生命周期回调函数，作为数据流的起点，在 UIAbility 实例创建时被系统调用。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "",
+              "/**",
+              " * Lift cycle management of Ability.",
+              " */",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 12,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "调用 hilog.info 接口，将字符串常量 'Ability onCreate' 格式化后输出到系统日志，标记应用创建事件，未涉及敏感隐私数据的采集或传输。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * Lift cycle management of Ability.",
+              " */",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识 (Ability onCreate)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (系统日志缓冲区)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 15,
+          "code": "onDestroy(): void {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时由系统自动触发。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 16,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onDestroy' 格式化后写入系统信息级日志，此处为数据流的终点（Sink），未涉及敏感隐私数据的采集或传输。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态字符串 (Ability onDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (UIAbility 销毁时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储行为",
+          "数据仅输出至系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 19,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "定义 onWindowStageCreate 生命周期回调函数，作为数据流的起点，当 WindowStage 创建时被系统调用。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 21,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onWindowStageCreate' 格式化并输出到系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "生命周期事件标识 (Ability onWindowStageCreate)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时 WindowStage 创建触发)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储",
+          "仅输出至系统日志 (hilog)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p13",
+      "pathId": "p13",
+      "nodes": [
+        {
+          "id": "p13:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 19,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，作为数据流的起始点。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p13:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 23,
+          "code": "windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+          "description": "调用 loadContent 方法异步加载主页内容，该方法执行结果通过回调函数返回，可能产生错误对象 err。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p13:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 24,
+          "code": "if (err.code) {",
+          "description": "判断回调返回的 err 对象是否存在 code 属性，确认是否发生页面加载错误，决定后续错误处理分支。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p13:n4",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 25,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "将错误对象 err 序列化为 JSON 字符串，并通过 hilog.error 接口输出到系统日志，包含敏感格式化标记 %{public}s，构成隐私数据泄露风险点（Sink）。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p13:n1",
+          "to": "p13:n2"
+        },
+        {
+          "from": "p13:n2",
+          "to": "p13:n3"
+        },
+        {
+          "from": "p13:n3",
+          "to": "p13:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面加载错误对象 (err)",
+          "错误详情字符串化数据"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面加载失败时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p14",
+      "pathId": "p14",
+      "nodes": [
+        {
+          "id": "p14:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 19,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，作为数据流的起点。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p14:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 23,
+          "code": "windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+          "description": "调用 windowStage.loadContent 加载主页内容，注册异步回调函数以接收加载结果（err 和 data）。",
+          "context": {
+            "startLine": 18,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        },
+        {
+          "id": "p14:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 24,
+          "code": "if (err.code) {",
+          "description": "在回调中检查 err.code，判断页面加载是否失败，用于控制数据流分支。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p14:n4",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 28,
+          "code": "hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+          "description": "将页面加载成功的回调数据 data 序列化为 JSON 字符串，并通过 hilog.info 输出到系统日志，构成隐私数据泄露的 Sink 点。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "    windowStage.loadContent(\"pages/HomePage\", (err, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p14:n1",
+          "to": "p14:n2"
+        },
+        {
+          "from": "p14:n2",
+          "to": "p14:n3"
+        },
+        {
+          "from": "p14:n3",
+          "to": "p14:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面加载回调数据 (loadContent callback data)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 创建时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p15",
+      "pathId": "p15",
+      "nodes": [
+        {
+          "id": "p15:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 32,
+          "code": "onWindowStageDestroy(): void {",
+          "description": "定义 onWindowStageDestroy 生命周期回调函数，作为数据流的起点，当应用窗口阶段销毁时被系统触发。",
+          "context": {
+            "startLine": 27,
+            "lines": [
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p15:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 33,
+          "code": "// Main window is destroyed, release UI related resources",
+          "description": "代码注释行，说明此处逻辑为释放 UI 相关资源，不涉及具体数据操作。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground"
+            ]
+          }
+        },
+        {
+          "id": "p15:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 34,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串 'Ability onWindowStageDestroy' 格式化后输出到系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p15:n1",
+          "to": "p15:n2"
+        },
+        {
+          "from": "p15:n2",
+          "to": "p15:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "生命周期事件标识 (Ability onWindowStageDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 销毁时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储，由系统日志服务临时缓存"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p16",
+      "pathId": "p16",
+      "nodes": [
+        {
+          "id": "p16:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 37,
+          "code": "onForeground(): void {",
+          "description": "定义 onForeground 生命周期回调函数，作为数据流的起点，当 UIAbility 切换到前台时被系统触发。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p16:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 39,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+          "description": "调用 hilog.info 接口，将固定的字符串常量 'Ability onForeground' 作为信息级日志输出到系统日志中，此为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p16:n1",
+          "to": "p16:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件"
+        ],
+        "collectionFrequency": [
+          "事件触发（每次应用切换至前台时）"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "仅输出到系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p17",
+      "pathId": "p17",
+      "nodes": [
+        {
+          "id": "p17:n1",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 42,
+          "code": "onBackground(): void {",
+          "description": "定义 onBackground 生命周期回调函数，作为数据流的起点，当 UIAbility 切换到后台时被系统触发。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p17:n2",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 43,
+          "code": "// Ability has back to background",
+          "description": "代码注释行，说明当前处于应用回到后台的状态，不涉及实际数据操作。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p17:n3",
+          "filePath": "input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts",
+          "line": 44,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+          "description": "调用 hilog.info 接口，将固定的字符串常量 'Ability onBackground' 格式化后输出到系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p17:n1",
+          "to": "p17:n2"
+        },
+        {
+          "from": "p17:n2",
+          "to": "p17:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件"
+        ],
+        "collectionFrequency": [
+          "事件触发（应用切换至后台时）"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储行为",
+          "数据仅输出至系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

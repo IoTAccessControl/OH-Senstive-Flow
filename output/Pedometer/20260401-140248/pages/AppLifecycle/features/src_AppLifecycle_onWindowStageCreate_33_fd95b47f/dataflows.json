@@ -1,0 +1,385 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260401-140248",
+    "generatedAt": "2026-04-01T06:08:49.922Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p17 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets:35 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 3,
+      "nodes": 11,
+      "edges": 8,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onWindowStageCreate_33_fd95b47f",
+      "kind": "source",
+      "title": "主窗口创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p17",
+      "pathId": "p17",
+      "nodes": [
+        {
+          "id": "p17:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "WindowStage 创建时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p17:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 35,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "Outputs info-level logs.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p17:n1",
+          "to": "p17:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p17 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets:35 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p18",
+      "pathId": "p18",
+      "nodes": [
+        {
+          "id": "p18:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 的入口点，当 WindowStage 创建时被系统调用，启动窗口内容加载流程。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p18:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 37,
+          "code": "windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+          "description": "调用 windowStage.loadContent 异步加载主页内容，注册回调函数以接收加载结果（成功数据或失败错误）。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      let uiContext:  UIContext | undefined = windowStage.getMainWindowSync().getUIContext()"
+            ]
+          }
+        },
+        {
+          "id": "p18:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "if (err.code) {",
+          "description": "在回调函数中检查 err 对象是否存在 code 属性，判断内容加载是否发生错误，作为数据流的条件分支点。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      let uiContext:  UIContext | undefined = windowStage.getMainWindowSync().getUIContext()",
+              "      AppStorage.setOrCreate('uiContext', uiContext);"
+            ]
+          }
+        },
+        {
+          "id": "p18:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+          "description": "【Sink】将错误对象 err 序列化为 JSON 字符串，并通过 hilog.error 接口输出到系统日志，此处泄露了潜在的运行时异常信息。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      let uiContext:  UIContext | undefined = windowStage.getMainWindowSync().getUIContext()",
+              "      AppStorage.setOrCreate('uiContext', uiContext);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p18:n1",
+          "to": "p18:n2"
+        },
+        {
+          "from": "p18:n2",
+          "to": "p18:n3"
+        },
+        {
+          "from": "p18:n3",
+          "to": "p18:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "错误对象 (BusinessError)",
+          "错误码 (err.code)",
+          "错误详情字符串化结果"
+        ],
+        "collectionFrequency": [
+          "事件触发 (仅在窗口内容加载失败时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据仅存在于内存中并输出至系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p19",
+      "pathId": "p19",
+      "nodes": [
+        {
+          "id": "p19:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，标志着数据流开始。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p19:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 37,
+          "code": "windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+          "description": "调用 loadContent 加载主页内容，注册异步回调函数以接收加载结果数据 (data) 或错误信息。",
+          "context": {
+            "startLine": 32,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      let uiContext:  UIContext | undefined = windowStage.getMainWindowSync().getUIContext()"
+            ]
+          }
+        },
+        {
+          "id": "p19:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 42,
+          "code": "let uiContext:  UIContext | undefined = windowStage.getMainWindowSync().getUIContext()",
+          "description": "在加载成功的回调中，获取主窗口的 UIContext 对象，准备进行上下文管理。",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "    windowStage.loadContent('pages/HomePage', (err: BusinessError<void>, data) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      let uiContext:  UIContext | undefined = windowStage.getMainWindowSync().getUIContext()",
+              "      AppStorage.setOrCreate('uiContext', uiContext);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p19:n4",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 43,
+          "code": "AppStorage.setOrCreate('uiContext', uiContext);",
+          "description": "将获取到的 uiContext 存入 AppStorage 全局状态管理，实现数据的本地内存持久化（非文件存储）。",
+          "context": {
+            "startLine": 38,
+            "lines": [
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      let uiContext:  UIContext | undefined = windowStage.getMainWindowSync().getUIContext()",
+              "      AppStorage.setOrCreate('uiContext', uiContext);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p19:n5",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 44,
+          "code": "hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+          "description": "隐私泄露点 (Sink)：将 loadContent 的回调数据 data 序列化为 JSON 字符串并通过 hilog.info 输出到系统日志，若 data 包含敏感信息则会导致明文泄露。",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');",
+              "        return;",
+              "      }",
+              "      let uiContext:  UIContext | undefined = windowStage.getMainWindowSync().getUIContext()",
+              "      AppStorage.setOrCreate('uiContext', uiContext);",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p19:n1",
+          "to": "p19:n2"
+        },
+        {
+          "from": "p19:n2",
+          "to": "p19:n3"
+        },
+        {
+          "from": "p19:n3",
+          "to": "p19:n4"
+        },
+        {
+          "from": "p19:n4",
+          "to": "p19:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "WindowStage 加载回调数据 (data)",
+          "UIContext 对象"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动/窗口创建时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地内存存储 (AppStorage.setOrCreate)",
+          "日志明文输出 (未加密)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

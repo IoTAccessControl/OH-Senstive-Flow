@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.732Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onCreate_15_a87b284d",
+      "kind": "source",
+      "title": "应用创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p34",
+      "pathId": "p34",
+      "nodes": [
+        {
+          "id": "p34:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 15,
+          "code": "onCreate(want: Want, launchParam: Object) {",
+          "description": "UIAbility 生命周期入口 onCreate 被触发，接收启动参数 want 和 launchParam，标志应用实例开始初始化。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "import bundleManager from '@ohos.bundle.bundleManager';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "    private netConn: connection.NetConnection | undefined;",
+              "",
+              "    onCreate(want: Want, launchParam: Object) {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "        globalThis.appContext = this.context;",
+              "        globalThis.resourceMana = this.context.resourceManager;",
+              "        try {",
+              "            // 检查ImageKnife是否已初始化且with方法存在"
+            ]
+          }
+        },
+        {
+          "id": "p34:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 16,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "调用 hilog.info 接口将字符串 'Ability onCreate' 以公开格式写入系统日志，作为数据流的终点（Sink），用于调试或记录应用启动事件。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "    private netConn: connection.NetConnection | undefined;",
+              "",
+              "    onCreate(want: Want, launchParam: Object) {",
+              "        hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "        globalThis.appContext = this.context;",
+              "        globalThis.resourceMana = this.context.resourceManager;",
+              "        try {",
+              "            // 检查ImageKnife是否已初始化且with方法存在",
+              "            if (ImageKnife && typeof ImageKnife.with === 'function') {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p34:n1",
+          "to": "p34:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态标识",
+          "日志文本内容"
+        ],
+        "collectionFrequency": [
+          "一次性（应用启动时）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（仅本地日志输出）"
+        ],
+        "storageAndEncryption": [
+          "系统级日志存储（由 hilog 框架管理，源码未体现加密）"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,885 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 3,
+      "nodes": 29,
+      "edges": 26,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "CategoryPage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+        "structName": "CategoryPage",
+        "line": 12,
+        "description": "分类页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_CategoryPage_87775aaed5",
+      "kind": "ui",
+      "title": "分类列表"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p42",
+      "pathId": "p42",
+      "nodes": [
+        {
+          "id": "p42:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 58,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化页面组件树。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "      this.dataList = result",
+              "      this.dataSource = new BaseDataSourceWrapper<CategoryModelChild>(this.dataList)",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {"
+            ]
+          }
+        },
+        {
+          "id": "p42:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 62,
+          "code": "} }) {",
+          "description": "StateComponent 组件闭合，其内部包含用于展示分类数据的 Grid 布局。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "",
+              "  build() {",
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {",
+              "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+              "            GridItem() {",
+              "              Stack() {",
+              "                Image(ImageRegexUtils(item.bgPicture))"
+            ]
+          }
+        },
+        {
+          "id": "p42:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 63,
+          "code": "Grid() {",
+          "description": "Grid 容器组件开始定义，用于以网格形式排列分类列表项。",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "  build() {",
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {",
+              "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+              "            GridItem() {",
+              "              Stack() {",
+              "                Image(ImageRegexUtils(item.bgPicture))",
+              "                  .border({ radius: $r('app.float.size_5') })"
+            ]
+          }
+        },
+        {
+          "id": "p42:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 64,
+          "code": "LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+          "description": "LazyForEach 遍历数据源 dataSource，为每个分类项 (CategoryModelChild) 创建对应的 UI 节点。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {",
+              "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+              "            GridItem() {",
+              "              Stack() {",
+              "                Image(ImageRegexUtils(item.bgPicture))",
+              "                  .border({ radius: $r('app.float.size_5') })",
+              "                  .alt($r(\"app.media.back_placeholder\"))"
+            ]
+          }
+        },
+        {
+          "id": "p42:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 75,
+          "code": "}.onClick(() => {",
+          "description": "为当前分类项 (GridItem) 绑定 onClick 点击事件监听器，准备响应用户交互。",
+          "context": {
+            "startLine": 70,
+            "lines": [
+              "                Text(item.name)",
+              "                  .fontColor($r('app.color.color_white'))",
+              "                  .fontSize($r('app.float.size_text_20'))",
+              "                  .fontWeight(FontWeight.Bold)",
+              "              }.border({ radius: $r('app.float.size_5') })",
+              "            }.onClick(() => {",
+              "              Router.push(RoutePath.CategoryDetailPage, {",
+              "                \"headerImage\": item.headerImage,",
+              "                \"title\": item.name,",
+              "                \"id\": item.id",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p42:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 76,
+          "code": "Router.push(RoutePath.CategoryDetailPage, {",
+          "description": "点击事件触发，调用自定义 Router.push 方法，传入目标页面路径及包含分类 ID、名称、头图的参数对象。",
+          "context": {
+            "startLine": 71,
+            "lines": [
+              "                  .fontColor($r('app.color.color_white'))",
+              "                  .fontSize($r('app.float.size_text_20'))",
+              "                  .fontWeight(FontWeight.Bold)",
+              "              }.border({ radius: $r('app.float.size_5') })",
+              "            }.onClick(() => {",
+              "              Router.push(RoutePath.CategoryDetailPage, {",
+              "                \"headerImage\": item.headerImage,",
+              "                \"title\": item.name,",
+              "                \"id\": item.id",
+              "              })",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p42:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "进入自定义 Router 类的静态 push 方法，接收页面 URL 和跳转参数。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p42:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用 OpenHarmony 系统路由能力 router.pushUrl，执行实际的页面跳转逻辑。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p42:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 7,
+          "code": "if (err) {",
+          "description": "检查路由跳转回调中的错误对象 err，判断跳转是否失败。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })"
+            ]
+          }
+        },
+        {
+          "id": "p42:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 11,
+          "code": "LogUtils.info('pushUrl success' + url);",
+          "description": "路由跳转成功后，调用 LogUtils.info 记录成功日志，日志内容包含被跳转的 URL 字符串。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }",
+              "}"
+            ]
+          }
+        },
+        {
+          "id": "p42:n11",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 16,
+          "code": "hilog.info(domain, prefix, format, args);",
+          "description": "Sink 节点：调用系统 hilog.info 接口，将包含路由信息的日志数据写入系统日志缓冲区。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p42:n1",
+          "to": "p42:n2"
+        },
+        {
+          "from": "p42:n2",
+          "to": "p42:n3"
+        },
+        {
+          "from": "p42:n3",
+          "to": "p42:n4"
+        },
+        {
+          "from": "p42:n4",
+          "to": "p42:n5"
+        },
+        {
+          "from": "p42:n5",
+          "to": "p42:n6"
+        },
+        {
+          "from": "p42:n6",
+          "to": "p42:n7"
+        },
+        {
+          "from": "p42:n7",
+          "to": "p42:n8"
+        },
+        {
+          "from": "p42:n8",
+          "to": "p42:n9"
+        },
+        {
+          "from": "p42:n9",
+          "to": "p42:n10"
+        },
+        {
+          "from": "p42:n10",
+          "to": "p42:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "分类 ID (item.id)",
+          "分类名称 (item.name)",
+          "分类头图 URL (item.headerImage)",
+          "路由目标页面路径 (RoutePath.CategoryDetailPage)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击分类项时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅在应用内页面间传递及本地日志记录)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储",
+          "无加密处理",
+          "数据通过系统日志接口 (hilog) 输出到本地日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p43",
+      "pathId": "p43",
+      "nodes": [
+        {
+          "id": "p43:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 58,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化页面组件树。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "      this.dataList = result",
+              "      this.dataSource = new BaseDataSourceWrapper<CategoryModelChild>(this.dataList)",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {"
+            ]
+          }
+        },
+        {
+          "id": "p43:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 62,
+          "code": "} }) {",
+          "description": "StateComponent 组件闭合，其内部包含用于展示分类列表的 Grid 容器。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "",
+              "  build() {",
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {",
+              "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+              "            GridItem() {",
+              "              Stack() {",
+              "                Image(ImageRegexUtils(item.bgPicture))"
+            ]
+          }
+        },
+        {
+          "id": "p43:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 63,
+          "code": "Grid() {",
+          "description": "Grid 容器开始定义，用于以网格形式布局分类项目。",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "  build() {",
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {",
+              "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+              "            GridItem() {",
+              "              Stack() {",
+              "                Image(ImageRegexUtils(item.bgPicture))",
+              "                  .border({ radius: $r('app.float.size_5') })"
+            ]
+          }
+        },
+        {
+          "id": "p43:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 64,
+          "code": "LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+          "description": "LazyForEach 开始遍历数据源 dataSource，为每个分类项创建渲染逻辑，获取 item 数据对象。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {",
+              "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+              "            GridItem() {",
+              "              Stack() {",
+              "                Image(ImageRegexUtils(item.bgPicture))",
+              "                  .border({ radius: $r('app.float.size_5') })",
+              "                  .alt($r(\"app.media.back_placeholder\"))"
+            ]
+          }
+        },
+        {
+          "id": "p43:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 75,
+          "code": "}.onClick(() => {",
+          "description": "为当前分类项 (GridItem) 绑定 onClick 点击事件监听器，准备处理用户交互。",
+          "context": {
+            "startLine": 70,
+            "lines": [
+              "                Text(item.name)",
+              "                  .fontColor($r('app.color.color_white'))",
+              "                  .fontSize($r('app.float.size_text_20'))",
+              "                  .fontWeight(FontWeight.Bold)",
+              "              }.border({ radius: $r('app.float.size_5') })",
+              "            }.onClick(() => {",
+              "              Router.push(RoutePath.CategoryDetailPage, {",
+              "                \"headerImage\": item.headerImage,",
+              "                \"title\": item.name,",
+              "                \"id\": item.id",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p43:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 76,
+          "code": "Router.push(RoutePath.CategoryDetailPage, {",
+          "description": "点击事件中调用 Router.push 方法，将当前分类的 id、name、headerImage 作为参数封装，发起页面跳转请求。",
+          "context": {
+            "startLine": 71,
+            "lines": [
+              "                  .fontColor($r('app.color.color_white'))",
+              "                  .fontSize($r('app.float.size_text_20'))",
+              "                  .fontWeight(FontWeight.Bold)",
+              "              }.border({ radius: $r('app.float.size_5') })",
+              "            }.onClick(() => {",
+              "              Router.push(RoutePath.CategoryDetailPage, {",
+              "                \"headerImage\": item.headerImage,",
+              "                \"title\": item.name,",
+              "                \"id\": item.id",
+              "              })",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p43:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 5,
+          "code": "static push(url: string, params?: Object) {",
+          "description": "进入自定义 Router 类的静态 push 方法，接收目标 URL 和包含敏感业务数据 (id, name 等) 的参数对象。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p43:n8",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API 执行实际路由跳转，并注册回调函数以处理潜在的错误结果。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        },
+        {
+          "id": "p43:n9",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 7,
+          "code": "if (err) {",
+          "description": "在路由回调中判断是否存在错误对象 err，若存在则进入错误处理分支。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })"
+            ]
+          }
+        },
+        {
+          "id": "p43:n10",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 8,
+          "code": "LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+          "description": "构造错误日志消息，提取 err.code 和 err.message 隐私相关错误详情，调用 LogUtils.error 进行记录。",
+          "context": {
+            "startLine": 3,
+            "lines": [
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);",
+              "    })",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p43:n11",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 24,
+          "code": "hilog.error(domain, prefix, format, args);",
+          "description": "Sink 节点：调用系统 hilog.error 接口，将包含路由失败原因的错误信息写入系统日志缓冲区。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "  static warn(...args: string[]) {",
+              "    hilog.warn(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static error(...args: string[]) {",
+              "    hilog.error(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static fatal(...args: string[]) {",
+              "    hilog.fatal(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p43:n1",
+          "to": "p43:n2"
+        },
+        {
+          "from": "p43:n2",
+          "to": "p43:n3"
+        },
+        {
+          "from": "p43:n3",
+          "to": "p43:n4"
+        },
+        {
+          "from": "p43:n4",
+          "to": "p43:n5"
+        },
+        {
+          "from": "p43:n5",
+          "to": "p43:n6"
+        },
+        {
+          "from": "p43:n6",
+          "to": "p43:n7"
+        },
+        {
+          "from": "p43:n7",
+          "to": "p43:n8"
+        },
+        {
+          "from": "p43:n8",
+          "to": "p43:n9"
+        },
+        {
+          "from": "p43:n9",
+          "to": "p43:n10"
+        },
+        {
+          "from": "p43:n10",
+          "to": "p43:n11"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "分类 ID (item.id)",
+          "分类名称 (item.name)",
+          "分类头图 URL (item.headerImage)",
+          "路由错误码 (err.code)",
+          "路由错误信息 (err.message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击分类项)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为",
+          "错误日志可能通过系统日志机制上报 (取决于设备配置)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "数据仅在内存中作为路由参数传递",
+          "日志输出未加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p44",
+      "pathId": "p44",
+      "nodes": [
+        {
+          "id": "p44:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 58,
+          "code": "build() {",
+          "description": "UI 构建入口 build 函数开始，初始化页面组件树，准备渲染分类列表。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "      this.dataList = result",
+              "      this.dataSource = new BaseDataSourceWrapper<CategoryModelChild>(this.dataList)",
+              "    })",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {"
+            ]
+          }
+        },
+        {
+          "id": "p44:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 62,
+          "code": "} }) {",
+          "description": "StateComponent 组件结束定义，其内部包含重试逻辑，外部包裹 Grid 布局容器。",
+          "context": {
+            "startLine": 57,
+            "lines": [
+              "",
+              "  build() {",
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {",
+              "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+              "            GridItem() {",
+              "              Stack() {",
+              "                Image(ImageRegexUtils(item.bgPicture))"
+            ]
+          }
+        },
+        {
+          "id": "p44:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 63,
+          "code": "Grid() {",
+          "description": "Grid 布局容器开始，用于以网格形式展示分类列表项。",
+          "context": {
+            "startLine": 58,
+            "lines": [
+              "  build() {",
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {",
+              "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+              "            GridItem() {",
+              "              Stack() {",
+              "                Image(ImageRegexUtils(item.bgPicture))",
+              "                  .border({ radius: $r('app.float.size_5') })"
+            ]
+          }
+        },
+        {
+          "id": "p44:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 64,
+          "code": "LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+          "description": "LazyForEach 开始遍历数据源 dataSource，为每个 CategoryModelChild 数据项生成对应的 UI 节点。",
+          "context": {
+            "startLine": 59,
+            "lines": [
+              "    Stack() {",
+              "      StateComponent({ viewState: this.viewState, retryCallback: () => {",
+              "        this.loadNet()",
+              "      } }) {",
+              "        Grid() {",
+              "          LazyForEach(this.dataSource, (item: CategoryModelChild, index: number) => {",
+              "            GridItem() {",
+              "              Stack() {",
+              "                Image(ImageRegexUtils(item.bgPicture))",
+              "                  .border({ radius: $r('app.float.size_5') })",
+              "                  .alt($r(\"app.media.back_placeholder\"))"
+            ]
+          }
+        },
+        {
+          "id": "p44:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 75,
+          "code": "}.onClick(() => {",
+          "description": "为当前网格项 (GridItem) 绑定 onClick 点击事件监听器，准备响应用户交互。",
+          "context": {
+            "startLine": 70,
+            "lines": [
+              "                Text(item.name)",
+              "                  .fontColor($r('app.color.color_white'))",
+              "                  .fontSize($r('app.float.size_text_20'))",
+              "                  .fontWeight(FontWeight.Bold)",
+              "              }.border({ radius: $r('app.float.size_5') })",
+              "            }.onClick(() => {",
+              "              Router.push(RoutePath.CategoryDetailPage, {",
+              "                \"headerImage\": item.headerImage,",
+              "                \"title\": item.name,",
+              "                \"id\": item.id",
+              "              })"
+            ]
+          }
+        },
+        {
+          "id": "p44:n6",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/find/category/CategoryPage.ets",
+          "line": 76,
+          "code": "Router.push(RoutePath.CategoryDetailPage, {",
+          "description": "在点击回调中调用自定义 Router.push 方法，传入目标页面路径及包含分类 ID、名称、头图的参数对象。",
+          "context": {
+            "startLine": 71,
+            "lines": [
+              "                  .fontColor($r('app.color.color_white'))",
+              "                  .fontSize($r('app.float.size_text_20'))",
+              "                  .fontWeight(FontWeight.Bold)",
+              "              }.border({ radius: $r('app.float.size_5') })",
+              "            }.onClick(() => {",
+              "              Router.push(RoutePath.CategoryDetailPage, {",
+              "                \"headerImage\": item.headerImage,",
+              "                \"title\": item.name,",
+              "                \"id\": item.id",
+              "              })",
+              "            })"
+            ]
+          }
+        },
+        {
+          "id": "p44:n7",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/route/Router.ets",
+          "line": 6,
+          "code": "router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+          "description": "调用系统 router.pushUrl API 执行页面跳转，将包含隐私相关数据项（ID、名称、图片）的参数传递给目标页面，完成数据流终点。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import router from '@ohos.router'",
+              "import { LogUtils } from '../utils/LogUtils';",
+              "",
+              "export class Router {",
+              "  static push(url: string, params?: Object) {",
+              "    router.pushUrl({ url: url, params: params }, router.RouterMode.Standard, (err) => {",
+              "      if (err) {",
+              "        LogUtils.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);",
+              "        return;",
+              "      }",
+              "      LogUtils.info('pushUrl success' + url);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p44:n1",
+          "to": "p44:n2"
+        },
+        {
+          "from": "p44:n2",
+          "to": "p44:n3"
+        },
+        {
+          "from": "p44:n3",
+          "to": "p44:n4"
+        },
+        {
+          "from": "p44:n4",
+          "to": "p44:n5"
+        },
+        {
+          "from": "p44:n5",
+          "to": "p44:n6"
+        },
+        {
+          "from": "p44:n6",
+          "to": "p44:n7"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "分类 ID (item.id)",
+          "分类名称 (item.name)",
+          "分类头图 URL (item.headerImage)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击分类项时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (数据仅在应用内页面间传递)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "无加密处理",
+          "数据暂存于内存对象中用于路由传参"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

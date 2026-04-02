@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "runId": "Health_Service_Kit_20260401-134626",
+    "featureId": "src_AppLifecycle_onCreate_7_4cd8aad7",
+    "generatedAt": "2026-04-01T05:49:07.284Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Health_Service_Kit",
+        "businessScenario": "应用启动初始化时",
+        "dataSources": [
+          "应用上下文"
+        ],
+        "dataItems": [
+          {
+            "name": "应用上下文",
+            "refs": [
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n3"
+              }
+            ]
+          },
+          {
+            "name": "健康服务初始化状态",
+            "refs": [
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "调用系统接口进行初始化配置",
+        "storageMethod": "未在此片段中发现本地存储行为",
+        "dataRecipients": [
+          {
+            "name": "系统健康数据服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n3"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "建立与健康服务套件的连接以准备后续健康数据管理功能",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.HEALTHKIT",
+        "businessScenario": "应用启动初始化时",
+        "permissionPurpose": "访问系统健康服务套件以初始化健康数据管理能力",
+        "denyImpact": "无法初始化健康服务，导致相关健康数据管理功能不可用",
+        "refs": [
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n3"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      }
+    ]
+  }
+}

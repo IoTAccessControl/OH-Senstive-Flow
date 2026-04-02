@@ -1,0 +1,258 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.829Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 8,
+      "edges": 7,
+      "pages": 1,
+      "elements": 7
+    }
+  },
+  "roots": [
+    "page:345a58fdc2b4"
+  ],
+  "nodes": {
+    "page:345a58fdc2b4": {
+      "id": "page:345a58fdc2b4",
+      "category": "Page",
+      "name": "HomeView",
+      "description": "首页",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 20,
+      "code": "export struct HomeView {",
+      "context": {
+        "startLine": 15,
+        "lines": [
+          "import { BingeWatchView } from './BingeWatch';",
+          "import { HomeSearchBar } from '../view/home/SearchBar'",
+          "import { ApiManager } from '../network/ApiManager';",
+          "",
+          "@Component",
+          "export struct HomeView {",
+          "  @State currentIndex: number = 0;",
+          "  @StorageLink(\"isShowPage\") isShowPage: boolean = true;",
+          "  @StorageLink(\"searchDefault\") searchDefault: string = \"\";",
+          "  @StorageLink(\"searchBarPosY\") @Watch('onPosYUpdated') searchBarPosY: number = 0;",
+          "  @State offsetY: number = 0;"
+        ]
+      }
+    },
+    "ui:a9c9d000ca5d": {
+      "id": "ui:a9c9d000ca5d",
+      "category": "Component",
+      "name": "build",
+      "description": "首页内容",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 63,
+      "code": "build() {",
+      "context": {
+        "startLine": 58,
+        "lines": [
+          "    .height('100%')",
+          "    .justifyContent(FlexAlign.Center)",
+          "    .border({width: {bottom: 0.5}, color: '#cccccc'})",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      HomeSearchBar().padding({ top: 16 })",
+          "        .margin({left: 16, right: 16, bottom: 8})",
+          "        .onAreaChange((oldValue: Area, newValue: Area) => {",
+          "          if (newValue.height as number) {"
+        ]
+      }
+    },
+    "ui:37e02654b9ba": {
+      "id": "ui:37e02654b9ba",
+      "category": "Component",
+      "name": "HomeSearchBar",
+      "description": "搜索栏",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 65,
+      "code": "HomeSearchBar().padding({ top: 16 })",
+      "context": {
+        "startLine": 60,
+        "lines": [
+          "    .border({width: {bottom: 0.5}, color: '#cccccc'})",
+          "  }",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      HomeSearchBar().padding({ top: 16 })",
+          "        .margin({left: 16, right: 16, bottom: 8})",
+          "        .onAreaChange((oldValue: Area, newValue: Area) => {",
+          "          if (newValue.height as number) {",
+          "            this.searchBarHeight = newValue.height as number",
+          "          }"
+        ]
+      }
+    },
+    "ui:21f0c9778277": {
+      "id": "ui:21f0c9778277",
+      "category": "Display",
+      "name": "Text",
+      "description": "网络异常提示",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 73,
+      "code": "Text('网络不给力，请检查网络设置。')",
+      "context": {
+        "startLine": 68,
+        "lines": [
+          "          if (newValue.height as number) {",
+          "            this.searchBarHeight = newValue.height as number",
+          "          }",
+          "        })",
+          "      if (!this.netIsAvailable) {",
+          "        Text('网络不给力，请检查网络设置。')",
+          "          .width('100%')",
+          "          .fontSize(14).textAlign(TextAlign.Center)",
+          "          .padding({ top: 16, bottom: 16 })",
+          "          .backgroundColor(\"#ffe1df\")",
+          "      }"
+        ]
+      }
+    },
+    "ui:2025ef967b9a": {
+      "id": "ui:2025ef967b9a",
+      "category": "Component",
+      "name": "RecommendView",
+      "description": "推荐内容",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 81,
+      "code": "RecommendView()",
+      "context": {
+        "startLine": 76,
+        "lines": [
+          "          .padding({ top: 16, bottom: 16 })",
+          "          .backgroundColor(\"#ffe1df\")",
+          "      }",
+          "      Tabs() {",
+          "        TabContent() {",
+          "          RecommendView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_recommend'), 0))",
+          "",
+          "        TabContent() {",
+          "          PopularView()"
+        ]
+      }
+    },
+    "ui:d783b5fca211": {
+      "id": "ui:d783b5fca211",
+      "category": "Component",
+      "name": "PopularView",
+      "description": "热门视频",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 86,
+      "code": "PopularView()",
+      "context": {
+        "startLine": 81,
+        "lines": [
+          "          RecommendView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_recommend'), 0))",
+          "",
+          "        TabContent() {",
+          "          PopularView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_hot'), 1))",
+          "",
+          "        /*TabContent() {",
+          "          BingeWatchView()"
+        ]
+      }
+    },
+    "ui:31a80499168a": {
+      "id": "ui:31a80499168a",
+      "category": "Component",
+      "name": "BingeWatchView",
+      "description": "热门内容",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 91,
+      "code": "BingeWatchView()",
+      "context": {
+        "startLine": 86,
+        "lines": [
+          "          PopularView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_hot'), 1))",
+          "",
+          "        /*TabContent() {",
+          "          BingeWatchView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_animation'), 2))",
+          "",
+          "        TabContent() {",
+          "          Text($r('app.string.func_develop')).fontSize(16)"
+        ]
+      }
+    },
+    "ui:3786a9811f3e": {
+      "id": "ui:3786a9811f3e",
+      "category": "Display",
+      "name": "Text",
+      "description": "功能开发中",
+      "filePath": "input/app/ohbili/entry/src/main/ets/pages/Home.ets",
+      "line": 96,
+      "code": "Text($r('app.string.func_develop')).fontSize(16)",
+      "context": {
+        "startLine": 91,
+        "lines": [
+          "          BingeWatchView()",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_animation'), 2))",
+          "",
+          "        TabContent() {",
+          "          Text($r('app.string.func_develop')).fontSize(16)",
+          "        }",
+          "        .tabBar(this.TabBuilder($r('app.string.home_movie'), 3))*/",
+          "      }.onChange((index) => {",
+          "        this.currentIndex = index",
+          "      }).barWidth('80%').barHeight(40)"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:a9c9d000ca5d",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:37e02654b9ba",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:21f0c9778277",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:2025ef967b9a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:d783b5fca211",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:31a80499168a",
+      "kind": "contains"
+    },
+    {
+      "from": "page:345a58fdc2b4",
+      "to": "ui:3786a9811f3e",
+      "kind": "contains"
+    }
+  ]
+}

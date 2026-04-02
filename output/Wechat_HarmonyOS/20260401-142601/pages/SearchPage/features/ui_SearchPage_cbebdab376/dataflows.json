@@ -1,0 +1,289 @@
+{
+  "meta": {
+    "runId": "Wechat_HarmonyOS_20260401-142601",
+    "generatedAt": "2026-04-01T06:35:15.202Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 8,
+      "edges": 6,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "SearchPage",
+      "entry": {
+        "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+        "structName": "SearchPage",
+        "line": 10,
+        "description": "搜索页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_SearchPage_cbebdab376",
+      "kind": "ui",
+      "title": "取消"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 24,
+          "code": "onBackPress() {",
+          "description": "定义 onBackPress 生命周期回调函数，用于处理物理返回键事件，此处作为数据流的起始锚点（Source），虽未直接产生数据但标志着页面交互上下文的开始。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }",
+              "",
+              "  onBackPress() {",
+              "    return this.keyboardHeight > 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 116,
+          "code": ".onClick(() => {",
+          "description": "为界面上的“取消”按钮绑定 onClick 点击事件监听器，当用户触发点击时启动后续逻辑，是数据流从 UI 层进入业务逻辑层的连接点。",
+          "context": {
+            "startLine": 111,
+            "lines": [
+              "          .fontSize(19)// .alignRules({",
+              "            //   top: { anchor: \"__container__\", align: VerticalAlign.Top },",
+              "            //   right: { anchor: \"__container__\", align: HorizontalAlign.End }",
+              "            // })",
+              "            // .id(\"cancel\")",
+              "          .onClick(() => {",
+              "            if (\"1\" === router.getLength()) {",
+              "              // app退出，一般不会走这里",
+              "              this.context.terminateSelf()",
+              "            } else {",
+              "              router.back()"
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 117,
+          "code": "if (\"1\" === router.getLength()) {",
+          "description": "调用 router.getLength() 获取当前应用页面栈中的页面数量，并将结果与字符串 \"1\" 进行比较，以此判断当前是否处于首页，这是数据流中的关键隐私数据读取点（Sink）。",
+          "context": {
+            "startLine": 112,
+            "lines": [
+              "            //   top: { anchor: \"__container__\", align: VerticalAlign.Top },",
+              "            //   right: { anchor: \"__container__\", align: HorizontalAlign.End }",
+              "            // })",
+              "            // .id(\"cancel\")",
+              "          .onClick(() => {",
+              "            if (\"1\" === router.getLength()) {",
+              "              // app退出，一般不会走这里",
+              "              this.context.terminateSelf()",
+              "            } else {",
+              "              router.back()",
+              "            }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "页面栈深度 (Page Stack Length)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击取消按钮时)"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储行为",
+          "数据仅在内存中临时用于逻辑判断"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p12",
+      "pathId": "p12",
+      "nodes": [
+        {
+          "id": "p12:n1",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 24,
+          "code": "onBackPress() {",
+          "description": "定义 onBackPress 生命周期回调，作为物理返回键事件的入口点，读取本地状态 keyboardHeight 决定默认行为。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }",
+              "",
+              "  onBackPress() {",
+              "    return this.keyboardHeight > 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {"
+            ]
+          }
+        },
+        {
+          "id": "p12:n2",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 18,
+          "code": "currentWindow.on('keyboardHeightChange', (height) => {",
+          "description": "监听系统键盘高度变化事件，收集键盘高度数据并更新到组件状态 this.keyboardHeight，用于后续返回逻辑判断。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "  private keyboardHeight: number = 0",
+              "  @State private searchText: string = ''",
+              "",
+              "  async aboutToAppear() {",
+              "    await window.getLastWindow(getContext(this)).then(currentWindow => {",
+              "      currentWindow.on('keyboardHeightChange', (height) => {",
+              "        this.keyboardHeight = height;",
+              "      })",
+              "    })",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p12:n3",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 116,
+          "code": ".onClick(() => {",
+          "description": "定义搜索页“取消”按钮的点击事件监听器，作为用户主动触发返回操作的起点。",
+          "context": {
+            "startLine": 111,
+            "lines": [
+              "          .fontSize(19)// .alignRules({",
+              "            //   top: { anchor: \"__container__\", align: VerticalAlign.Top },",
+              "            //   right: { anchor: \"__container__\", align: HorizontalAlign.End }",
+              "            // })",
+              "            // .id(\"cancel\")",
+              "          .onClick(() => {",
+              "            if (\"1\" === router.getLength()) {",
+              "              // app退出，一般不会走这里",
+              "              this.context.terminateSelf()",
+              "            } else {",
+              "              router.back()"
+            ]
+          }
+        },
+        {
+          "id": "p12:n4",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 117,
+          "code": "if (\"1\" === router.getLength()) {",
+          "description": "调用 router.getLength() 获取当前应用路由栈的深度，判断是否仅剩当前页面。",
+          "context": {
+            "startLine": 112,
+            "lines": [
+              "            //   top: { anchor: \"__container__\", align: VerticalAlign.Top },",
+              "            //   right: { anchor: \"__container__\", align: HorizontalAlign.End }",
+              "            // })",
+              "            // .id(\"cancel\")",
+              "          .onClick(() => {",
+              "            if (\"1\" === router.getLength()) {",
+              "              // app退出，一般不会走这里",
+              "              this.context.terminateSelf()",
+              "            } else {",
+              "              router.back()",
+              "            }"
+            ]
+          }
+        },
+        {
+          "id": "p12:n5",
+          "filePath": "input/app/Wechat_HarmonyOS/entry/src/main/ets/pages/search/SearchPage.ets",
+          "line": 121,
+          "code": "router.back()",
+          "description": "调用 router.back() 执行页面返回操作，当路由栈深度大于 1 时触发，将用户导航至上一级页面。",
+          "context": {
+            "startLine": 116,
+            "lines": [
+              "          .onClick(() => {",
+              "            if (\"1\" === router.getLength()) {",
+              "              // app退出，一般不会走这里",
+              "              this.context.terminateSelf()",
+              "            } else {",
+              "              router.back()",
+              "            }",
+              "          })",
+              "      }",
+              "      .width(\"100%\")",
+              "      .height(40)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p12:n1",
+          "to": "p12:n2"
+        },
+        {
+          "from": "p12:n2",
+          "to": "p12:n3"
+        },
+        {
+          "from": "p12:n3",
+          "to": "p12:n4"
+        },
+        {
+          "from": "p12:n4",
+          "to": "p12:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "键盘高度状态 (keyboardHeight)",
+          "路由栈深度 (router stack length)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (键盘高度变化)",
+          "一次性 (用户点击取消按钮时)"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "本地内存存储 (组件状态 this.keyboardHeight)",
+          "无加密 (仅用于 UI 逻辑判断)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "runId": "TodayNews_harmony_20260401-141653",
+    "generatedAt": "2026-04-01T06:22:19.943Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p22 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets:74 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 1,
+      "nodes": 2,
+      "edges": 1,
+      "failedPaths": 1,
+      "fallbackFlows": 1
+    },
+    "page": {
+      "pageId": "RefreshPullView",
+      "entry": {
+        "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+        "structName": "RefreshPullView",
+        "line": 8,
+        "description": "RefreshPull页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_RefreshPullView_2cbc76187a",
+      "kind": "ui",
+      "title": "下拉刷新视图"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p22",
+      "pathId": "p22",
+      "nodes": [
+        {
+          "id": "p22:n1",
+          "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+          "line": 72,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "  private canvasSetting?: RenderingContextSettings = new RenderingContextSettings(true);",
+              "  private canvasRefresh?: CanvasRenderingContext2D = new CanvasRenderingContext2D(this.canvasSetting);",
+              "  private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Up | PanDirection.Down })",
+              "",
+              "",
+              "  aboutToAppear() {",
+              "    // 获取屏幕宽度",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "    this.screenWidth = px2vp(displayClass.width);",
+              "  }",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p22:n2",
+          "filePath": "input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets",
+          "line": 74,
+          "code": "let displayClass = display.getDefaultDisplaySync();",
+          "description": "Obtain the default display.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 69,
+            "lines": [
+              "  private panOption: PanGestureOptions = new PanGestureOptions({ direction: PanDirection.Up | PanDirection.Down })",
+              "",
+              "",
+              "  aboutToAppear() {",
+              "    // 获取屏幕宽度",
+              "    let displayClass = display.getDefaultDisplaySync();",
+              "    this.screenWidth = px2vp(displayClass.width);",
+              "  }",
+              "",
+              "  // 初始化画布",
+              "  private initCanvas(): void {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p22:n1",
+          "to": "p22:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p22 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/TodayNews_harmony/common/src/main/ets/pages/RefreshPullView.ets:74 之后继续扩展"
+        ]
+      }
+    }
+  ]
+}

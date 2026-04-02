@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.732Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 5,
+      "edges": 4,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "Feedback",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+        "structName": "Feedback",
+        "line": 32,
+        "description": "反馈页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_Feedback_962ca1705e",
+      "kind": "ui",
+      "title": "日志文件列表"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p17",
+      "pathId": "p17",
+      "nodes": [
+        {
+          "id": "p17:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 69,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始，初始化反馈页面的组件树结构。",
+          "context": {
+            "startLine": 64,
+            "lines": [
+              "      console.error(\"OhBili err: \" + err);",
+              "    }",
+              "    return false;",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '反馈' })",
+              "      Scroll() {",
+              "        Column() {",
+              "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")"
+            ]
+          }
+        },
+        {
+          "id": "p17:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 72,
+          "code": "Scroll() {",
+          "description": "创建 Scroll 滚动容器，作为页面主要内容区域的载体，允许用户浏览长列表。",
+          "context": {
+            "startLine": 67,
+            "lines": [
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '反馈' })",
+              "      Scroll() {",
+              "        Column() {",
+              "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")",
+              "            .fontSize(16)",
+              "            .fontColor(\"#333333\")",
+              "            .padding({ top: 16, left: 16, right: 16 })"
+            ]
+          }
+        },
+        {
+          "id": "p17:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 73,
+          "code": "Column() {",
+          "description": "在滚动容器内创建 Column 布局，用于垂直排列提示文本和操作按钮。",
+          "context": {
+            "startLine": 68,
+            "lines": [
+              "",
+              "  build() {",
+              "    Column() {",
+              "      OhNavBar({ title: '反馈' })",
+              "      Scroll() {",
+              "        Column() {",
+              "          Text(\"为了能更快的定位问题，我们需要您完成以下操作：\\n\\n\")",
+              "            .fontSize(16)",
+              "            .fontColor(\"#333333\")",
+              "            .padding({ top: 16, left: 16, right: 16 })",
+              "          Text(\"1. 开启Debug日志；\\n\\n\" +"
+            ]
+          }
+        },
+        {
+          "id": "p17:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 102,
+          "code": "ForEach(this.logArr, (item: LogFile) => {",
+          "description": "遍历本地日志数组 this.logArr，为每个 LogFile 对象（包含 name, size, path）生成列表项 UI。",
+          "context": {
+            "startLine": 97,
+            "lines": [
+              "              .onClick(() => {",
+              "                this.getLogFiles();",
+              "              })",
+              "          }.width('100%').justifyContent(FlexAlign.Center)",
+              "          .margin({ top: 36, bottom: 36 })",
+              "          ForEach(this.logArr, (item: LogFile) => {",
+              "            Row() {",
+              "              Text(item.name)",
+              "              Blank()",
+              "              Text(StringUtil.generateSizeStr(item.size))",
+              "            }.padding(20).width('100%').onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p17:n5",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/Feedback.ets",
+          "line": 108,
+          "code": "router.pushUrl({ url: \"pages/LogDetail\",",
+          "description": "定义列表项点击事件的处理逻辑：调用 router.pushUrl 跳转至详情页，并将敏感数据 item.path (日志文件绝对路径) 作为参数传递。",
+          "context": {
+            "startLine": 103,
+            "lines": [
+              "            Row() {",
+              "              Text(item.name)",
+              "              Blank()",
+              "              Text(StringUtil.generateSizeStr(item.size))",
+              "            }.padding(20).width('100%').onClick(() => {",
+              "              router.pushUrl({ url: \"pages/LogDetail\",",
+              "                params: { logFilePath: item.path }",
+              "              });",
+              "              /*let logStr = fs.readTextSync(item.path);",
+              "              this.updateFile(logStr);*/",
+              "            })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p17:n1",
+          "to": "p17:n2"
+        },
+        {
+          "from": "p17:n2",
+          "to": "p17:n3"
+        },
+        {
+          "from": "p17:n3",
+          "to": "p17:n4"
+        },
+        {
+          "from": "p17:n4",
+          "to": "p17:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "本地日志文件路径 (logFilePath)",
+          "日志文件名 (name)",
+          "日志文件大小 (size)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)"
+        ],
+        "cloudUpload": [
+          "无 (当前数据流仅涉及页面间跳转，未执行网络上传)"
+        ],
+        "storageAndEncryption": [
+          "读取自本地存储 (item.path 指向本地文件系统)",
+          "传输过程未加密 (通过 router params 明文传递)"
+        ],
+        "permissions": [
+          "ohos.permission.READ_MEDIA (隐含，用于访问日志文件)",
+          "ohos.permission.WRITE_MEDIA (隐含，若之前生成过日志)"
+        ]
+      }
+    }
+  ]
+}

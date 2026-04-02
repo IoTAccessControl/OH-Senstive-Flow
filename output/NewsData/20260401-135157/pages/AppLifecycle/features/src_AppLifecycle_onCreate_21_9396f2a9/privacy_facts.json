@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "runId": "NewsData_20260401-135157",
+    "featureId": "src_AppLifecycle_onCreate_21_9396f2a9",
+    "generatedAt": "2026-04-01T05:57:48.941Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "NewsData",
+        "businessScenario": "应用启动初始化时记录调试信息",
+        "dataSources": [
+          "系统启动参数",
+          "应用启动意图"
+        ],
+        "dataItems": [
+          {
+            "name": "Want 对象",
+            "refs": [
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n1"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n2"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n1"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n2"
+              }
+            ]
+          },
+          {
+            "name": "AbilityConstant.LaunchParam 对象（包含启动模式、窗口模式等）",
+            "refs": [
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n1"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n1"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "序列化为 JSON 字符串并拼接前缀文本，以明文形式输出至系统日志",
+        "storageMethod": "本地临时存储于系统 Log 缓冲区",
+        "dataRecipients": [
+          {
+            "name": "系统日志服务",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n2"
+              },
+              {
+                "flowId": "flow:p5",
+                "nodeId": "p5:n3"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于应用开发阶段的调试与运行状态监控",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": []
+  }
+}

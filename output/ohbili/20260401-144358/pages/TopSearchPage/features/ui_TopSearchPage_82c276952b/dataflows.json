@@ -1,0 +1,322 @@
+{
+  "meta": {
+    "runId": "ohbili_20260401-144358",
+    "generatedAt": "2026-04-01T06:54:54.732Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p31 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets:27 之后继续扩展",
+      "数据流 p32 LLM 分析失败，已回退到锚点数据流：LLM 输出缺少锚点节点 input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets:42"
+    ],
+    "counts": {
+      "flows": 3,
+      "nodes": 9,
+      "edges": 6,
+      "failedPaths": 2,
+      "fallbackFlows": 2
+    },
+    "page": {
+      "pageId": "TopSearchPage",
+      "entry": {
+        "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+        "structName": "TopSearchPage",
+        "line": 23,
+        "description": "搜索页面"
+      }
+    },
+    "feature": {
+      "featureId": "ui_TopSearchPage_82c276952b",
+      "kind": "ui",
+      "title": "返回"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p31",
+      "pathId": "p31",
+      "nodes": [
+        {
+          "id": "p31:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 26,
+          "code": "aboutToAppear() {",
+          "description": "组件即将显示时触发的生命周期函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "@Entry",
+              "@Component",
+              "struct TopSearchPage {",
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p31:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 27,
+          "code": "const params = router.getParams() as TopSearchParams;",
+          "description": "Obtains information about the current page params.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 22,
+            "lines": [
+              "@Component",
+              "struct TopSearchPage {",
+              "  private rankings: Array<RankingItem> = [];",
+              "  ",
+              "  aboutToAppear() {",
+              "    const params = router.getParams() as TopSearchParams;",
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p31:n1",
+          "to": "p31:n2"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p31 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets:27 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p32",
+      "pathId": "p32",
+      "nodes": [
+        {
+          "id": "p32:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 33,
+          "code": "build() {",
+          "description": "ArkUI 组件的 UI 构建入口函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)"
+            ]
+          }
+        },
+        {
+          "id": "p32:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 44,
+          "code": "Text(\"bilibili热搜\")",
+          "description": "textAlign Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 39,
+            "lines": [
+              "          .height(18)",
+              "          .margin({ left: 16 })",
+              "          .onClick(() => {",
+              "            router.back();",
+              "          })",
+              "        Text(\"bilibili热搜\")",
+              "          .fontSize(32)",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .fontColor(\"#1698CE\")",
+              "          .layoutWeight(1)",
+              "          .textAlign(TextAlign.Center)"
+            ]
+          }
+        },
+        {
+          "id": "p32:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 42,
+          "code": "router.back();",
+          "description": "Returns to the previous page or a specified page.（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)",
+              "          .height(18)",
+              "          .margin({ left: 16 })",
+              "          .onClick(() => {",
+              "            router.back();",
+              "          })",
+              "        Text(\"bilibili热搜\")",
+              "          .fontSize(32)",
+              "          .fontWeight(FontWeight.Bold)",
+              "          .fontColor(\"#1698CE\")"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p32:n1",
+          "to": "p32:n2"
+        },
+        {
+          "from": "p32:n2",
+          "to": "p32:n3"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p32 LLM 分析失败，已回退到锚点数据流：LLM 输出缺少锚点节点 input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets:42"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p33",
+      "pathId": "p33",
+      "nodes": [
+        {
+          "id": "p33:n1",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 33,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，准备渲染热搜榜单页面结构。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "    if (params && params.rankings) {",
+              "      this.rankings = params.rankings;",
+              "    }",
+              "  }",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Row() {",
+              "        Image($r('app.media.ic_page_back'))",
+              "          .objectFit(ImageFit.Auto)",
+              "          .width(18)"
+            ]
+          }
+        },
+        {
+          "id": "p33:n2",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 57,
+          "code": "List() {",
+          "description": "创建 List 容器组件，用于展示热搜榜单列表，数据源绑定到 this.rankings。",
+          "context": {
+            "startLine": 52,
+            "lines": [
+              "          .margin({ right: 16 })",
+              "      }.margin({ top: 12, bottom: 24 })",
+              "",
+              "      Flex().width('100%').height(1)",
+              "        .backgroundColor('#ffeeeeee')",
+              "      List() {",
+              "        ForEach(this.rankings, (item: RankingItem) => {",
+              "          ListItem() {",
+              "            Flex({ direction: FlexDirection.Row }) {",
+              "              Text(item.position + \"\")",
+              "                .maxLines(1)"
+            ]
+          }
+        },
+        {
+          "id": "p33:n3",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 58,
+          "code": "ForEach(this.rankings, (item: RankingItem) => {",
+          "description": "使用 ForEach 遍历 this.rankings 数组，为每个榜单项 (RankingItem) 生成列表项视图，此时数据项包含 keyword 和 position。",
+          "context": {
+            "startLine": 53,
+            "lines": [
+              "      }.margin({ top: 12, bottom: 24 })",
+              "",
+              "      Flex().width('100%').height(1)",
+              "        .backgroundColor('#ffeeeeee')",
+              "      List() {",
+              "        ForEach(this.rankings, (item: RankingItem) => {",
+              "          ListItem() {",
+              "            Flex({ direction: FlexDirection.Row }) {",
+              "              Text(item.position + \"\")",
+              "                .maxLines(1)",
+              "                .fontSize(16)"
+            ]
+          }
+        },
+        {
+          "id": "p33:n4",
+          "filePath": "input/app/ohbili/entry/src/main/ets/pages/TopSearch.ets",
+          "line": 83,
+          "code": "router.pushUrl({ url: \"pages/SearchResult\", params: { keyword: item.keyword } })",
+          "description": "定义列表项的点击事件回调：调用 router.pushUrl 跳转至搜索结果页，并将当前项的 keyword 作为参数传递，完成敏感数据（搜索词）的流转。",
+          "context": {
+            "startLine": 78,
+            "lines": [
+              "                .width(18)",
+              "                .height(18)",
+              "                .margin({ left: 16 })",
+              "            }.width('100%').padding({ top: 12, bottom: 12 })",
+              "          }.onClick(() => {",
+              "            router.pushUrl({ url: \"pages/SearchResult\", params: { keyword: item.keyword } })",
+              "          })",
+              "        }, (item: RankingItem) => item.keyword)",
+              "      }",
+              "      .width('100%')",
+              "      .padding({ left: 20, right: 20 })"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p33:n1",
+          "to": "p33:n2"
+        },
+        {
+          "from": "p33:n2",
+          "to": "p33:n3"
+        },
+        {
+          "from": "p33:n3",
+          "to": "p33:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "搜索关键词 (keyword)",
+          "排名位置 (position)",
+          "榜单列表数据 (rankings)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击列表项时)"
+        ],
+        "cloudUpload": [
+          "未在当前片段发现直接网络发送，但通过 router.pushUrl 将数据传递给 SearchResult 页面，可能由该页面后续发起网络请求"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储 (this.rankings)",
+          "页面间参数传递 (未加密)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "meta": {
+    "runId": "HarmoneyOpenEye_20260401-132719",
+    "generatedAt": "2026-04-01T05:42:29.955Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 1,
+      "nodes": 5,
+      "edges": 4,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "CoordinatePage",
+      "entry": {
+        "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+        "structName": "CoordinatePage",
+        "line": 9,
+        "description": "热门坐标页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_CoordinatePage_06f70779b5",
+      "kind": "ui",
+      "title": "热门页面"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p27",
+      "pathId": "p27",
+      "nodes": [
+        {
+          "id": "p27:n1",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 29,
+          "code": "build() {",
+          "description": "UI 构建入口 (build)，初始化页面布局并注册滚动监听器，作为数据流的起始上下文。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      this.tabList.push(item.title)",
+              "    })",
+              "    this.hotCurrentIndex = 0",
+              "  }",
+              "",
+              "  build() {",
+              "    Stack({ alignContent: Alignment.Top }) {",
+              "      CommonTopBar({ title: \"热门\", backButton: true, alpha: this.topBarAlpha })",
+              "        .zIndex(10)",
+              "      CustomTabLayout(",
+              "        { currentIndex: $hotCurrentIndex,"
+            ]
+          }
+        },
+        {
+          "id": "p27:n2",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 93,
+          "code": ".onScroll((xOffset, yOffset) => {",
+          "description": "注册 onScroll 回调函数，当用户滑动页面时触发，接收当前的 xOffset 和 yOffset 参数。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "            }",
+              "            LogUtils.debug(`选中监听：->${scrollPosition}`)",
+              "          })",
+              "        }",
+              "      }",
+              "      .onScroll((xOffset, yOffset) => {",
+              "        this.offsetY = this.scroller.currentOffset().yOffset;",
+              "        LogUtils.debug(`监听滚动1Y>>${this.offsetY}`)",
+              "        this.scrollMap.set(this.hotCurrentIndex, this.offsetY)",
+              "        this.topBarAlpha = this.offsetY > this.topHeaderHeight ? 1 : this.offsetY / this.topHeaderHeight",
+              "        this.tabPosY = (this.topHeaderHeight - this.topBarHeight - this.offsetY <= 0)"
+            ]
+          }
+        },
+        {
+          "id": "p27:n3",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 94,
+          "code": "this.offsetY = this.scroller.currentOffset().yOffset;",
+          "description": "从 scroller 对象获取当前垂直滚动偏移量 (yOffset) 并赋值给成员变量 this.offsetY，完成隐私数据（用户交互轨迹）的采集。",
+          "context": {
+            "startLine": 89,
+            "lines": [
+              "            LogUtils.debug(`选中监听：->${scrollPosition}`)",
+              "          })",
+              "        }",
+              "      }",
+              "      .onScroll((xOffset, yOffset) => {",
+              "        this.offsetY = this.scroller.currentOffset().yOffset;",
+              "        LogUtils.debug(`监听滚动1Y>>${this.offsetY}`)",
+              "        this.scrollMap.set(this.hotCurrentIndex, this.offsetY)",
+              "        this.topBarAlpha = this.offsetY > this.topHeaderHeight ? 1 : this.offsetY / this.topHeaderHeight",
+              "        this.tabPosY = (this.topHeaderHeight - this.topBarHeight - this.offsetY <= 0)",
+              "          ? this.topBarHeight : this.topHeaderHeight - this.offsetY"
+            ]
+          }
+        },
+        {
+          "id": "p27:n4",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/pages/hot/CoordinatePage.ets",
+          "line": 95,
+          "code": "LogUtils.debug(`监听滚动1Y>>${this.offsetY}`)",
+          "description": "调用 LogUtils.debug 方法，将采集到的滚动偏移量 (this.offsetY) 拼接成日志字符串，准备输出。",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "          })",
+              "        }",
+              "      }",
+              "      .onScroll((xOffset, yOffset) => {",
+              "        this.offsetY = this.scroller.currentOffset().yOffset;",
+              "        LogUtils.debug(`监听滚动1Y>>${this.offsetY}`)",
+              "        this.scrollMap.set(this.hotCurrentIndex, this.offsetY)",
+              "        this.topBarAlpha = this.offsetY > this.topHeaderHeight ? 1 : this.offsetY / this.topHeaderHeight",
+              "        this.tabPosY = (this.topHeaderHeight - this.topBarHeight - this.offsetY <= 0)",
+              "          ? this.topBarHeight : this.topHeaderHeight - this.offsetY",
+              "        LogUtils.debug(`监听滚动2Y>>${this.tabPosY}`)"
+            ]
+          }
+        },
+        {
+          "id": "p27:n5",
+          "filePath": "input/app/HarmoneyOpenEye/entry/src/main/ets/utils/LogUtils.ts",
+          "line": 12,
+          "code": "hilog.debug(domain, prefix, format, args);",
+          "description": "执行 hilog.debug 系统 API 调用，将包含滚动数据的日志字符串写入系统调试日志缓冲区，作为数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "/**",
+              " * 本来想用官方的hiLog，真的没搞懂这玩意的使用姿势，心累！！！算了，老老实实用console，搞明白了在做替换吧",
+              " */",
+              "export class LogUtils {",
+              "  static debug(...args: string[]) {",
+              "    hilog.debug(domain, prefix, format, args);",
+              "  }",
+              "",
+              "  static info(...args: string[]) {",
+              "    hilog.info(domain, prefix, format, args);",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p27:n1",
+          "to": "p27:n2"
+        },
+        {
+          "from": "p27:n2",
+          "to": "p27:n3"
+        },
+        {
+          "from": "p27:n3",
+          "to": "p27:n4"
+        },
+        {
+          "from": "p27:n4",
+          "to": "p27:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "UI 滚动偏移量 (Scroll Offset)",
+          "组件透明度 (Alpha)",
+          "组件位置坐标 (Position Y)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户滚动操作时实时触发)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出，未检测到网络发送行为)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (数据仅存在于内存变量及系统日志缓冲区)",
+          "无加密处理 (明文写入日志)"
+        ],
+        "permissions": [
+          "无敏感权限需求 (ohos.permission.* 未涉及)"
+        ]
+      }
+    }
+  ]
+}

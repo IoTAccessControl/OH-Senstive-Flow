@@ -1,0 +1,211 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260401-140248",
+    "generatedAt": "2026-04-01T06:08:49.922Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 2,
+      "nodes": 5,
+      "edges": 3,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "AppLifecycle",
+      "entry": {
+        "filePath": "",
+        "structName": "AppLifecycle",
+        "line": 0,
+        "description": "应用生命周期"
+      }
+    },
+    "feature": {
+      "featureId": "src_AppLifecycle_onCreate_24_d1d8db04",
+      "kind": "source",
+      "title": "应用创建时"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p14",
+      "pathId": "p14",
+      "nodes": [
+        {
+          "id": "p14:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "UIAbility 生命周期入口 onCreate 被触发，标志应用实例开始创建，接收启动参数 want 和 launchParam。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "import { window } from '@kit.ArkUI';",
+              "import StepsUtil from '../common/utils/StepsUtil';",
+              "",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    StepsUtil.createStepsPreferences(this.context);",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {"
+            ]
+          }
+        },
+        {
+          "id": "p14:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 25,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "调用 hilog.info 记录应用创建的生命周期事件日志，输出字符串 'Ability onCreate' 到系统日志缓冲区，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "import StepsUtil from '../common/utils/StepsUtil';",
+              "",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    StepsUtil.createStepsPreferences(this.context);",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p14:n1",
+          "to": "p14:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态标识"
+        ],
+        "collectionFrequency": [
+          "一次性（应用启动时）"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无云端上传",
+          "本地日志存储（系统级，未加密）",
+          "后续步骤将初始化本地偏好设置存储"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p15",
+      "pathId": "p15",
+      "nodes": [
+        {
+          "id": "p15:n1",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "UIAbility 生命周期入口 onCreate，标志着应用启动并开始初始化流程，是数据流的生命周期起点。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "import { window } from '@kit.ArkUI';",
+              "import StepsUtil from '../common/utils/StepsUtil';",
+              "",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    StepsUtil.createStepsPreferences(this.context);",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {"
+            ]
+          }
+        },
+        {
+          "id": "p15:n2",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 26,
+          "code": "StepsUtil.createStepsPreferences(this.context);",
+          "description": "调用工具类方法 createStepsPreferences，将当前 Ability 的上下文对象 (context) 传递下去，用于后续获取偏好设置实例。",
+          "context": {
+            "startLine": 21,
+            "lines": [
+              "",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "    StepsUtil.createStepsPreferences(this.context);",
+              "  }",
+              "",
+              "  onDestroy(): void | Promise<void> {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        },
+        {
+          "id": "p15:n3",
+          "filePath": "input/app/Pedometer/entry/src/main/ets/common/utils/StepsUtil.ets",
+          "line": 30,
+          "code": "let preference: Promise<preferences.Preferences> = preferences.getPreferences(context, PREFERENCES_NAME);",
+          "description": "核心 Sink 节点：调用 preferences.getPreferences API，基于传入的 context 和文件名 'myPreferences' 加载或创建偏好设置实例，将本地存储的计步相关数据加载至内存中。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "/**",
+              " * Steps util function.",
+              " */",
+              "export class StepsUtil {",
+              "  createStepsPreferences(context: common.UIAbilityContext) {",
+              "    let preference: Promise<preferences.Preferences> = preferences.getPreferences(context, PREFERENCES_NAME);",
+              "    GlobalContext.getContext().setObject('getStepsPreferences', preference);",
+              "  }",
+              "",
+              "  /**",
+              "   * Get the progress value."
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p15:n1",
+          "to": "p15:n2"
+        },
+        {
+          "from": "p15:n2",
+          "to": "p15:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用偏好设置数据 (Preferences)",
+          "计步器历史数据 (潜在)"
+        ],
+        "collectionFrequency": [
+          "一次性 (应用启动时)"
+        ],
+        "cloudUpload": [
+          "未检测到网络上传行为"
+        ],
+        "storageAndEncryption": [
+          "本地存储 (Ohos Preferences 文件)",
+          "内存加载",
+          "未检测到显式加密操作 (依赖系统默认存储机制)"
+        ],
+        "permissions": [
+          "无敏感权限直接调用 (preferences 访问通常隐含在应用沙箱内，无需动态申请 ohos.permission.*)"
+        ]
+      }
+    }
+  ]
+}

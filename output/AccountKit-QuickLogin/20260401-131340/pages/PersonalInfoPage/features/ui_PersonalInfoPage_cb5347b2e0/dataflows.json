@@ -1,0 +1,661 @@
+{
+  "meta": {
+    "runId": "AccountKit-QuickLogin_20260401-131340",
+    "generatedAt": "2026-04-01T05:17:32.141Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "flows": 4,
+      "nodes": 20,
+      "edges": 16,
+      "failedPaths": 0,
+      "fallbackFlows": 0
+    },
+    "page": {
+      "pageId": "PersonalInfoPage",
+      "entry": {
+        "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+        "structName": "PersonalInfoPage",
+        "line": 8,
+        "description": "个人信息页"
+      }
+    },
+    "feature": {
+      "featureId": "ui_PersonalInfoPage_cb5347b2e0",
+      "kind": "ui",
+      "title": "个人信息页"
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 15,
+          "code": "aboutToAppear() {",
+          "description": "生命周期函数 aboutToAppear 入口，当组件即将显示时被系统调用，启动数据流。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  domainId: number = 0x0000;",
+              "  // This is only a sample display. The mobile number is displayed by default.",
+              "  @StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Sign out.",
+              "  logOut() {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 9,
+          "code": "logTag: string = 'PersonalInfoPage';",
+          "description": "读取成员变量 logTag，其值为字符串 'PersonalInfoPage'，作为日志标识符。",
+          "context": {
+            "startLine": 4,
+            "lines": [
+              "import { common } from '@kit.AbilityKit';",
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "",
+              "@Component",
+              "export struct PersonalInfoPage {",
+              "  logTag: string = 'PersonalInfoPage';",
+              "  domainId: number = 0x0000;",
+              "  // This is only a sample display. The mobile number is displayed by default.",
+              "  @StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 10,
+          "code": "domainId: number = 0x0000;",
+          "description": "读取成员变量 domainId，其值为数字 0x0000，作为日志域 ID。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "",
+              "@Component",
+              "export struct PersonalInfoPage {",
+              "  logTag: string = 'PersonalInfoPage';",
+              "  domainId: number = 0x0000;",
+              "  // This is only a sample display. The mobile number is displayed by default.",
+              "  @StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 16,
+          "code": "hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+          "description": "调用 hilog.info 接口，将 logTag 和拼接的日志内容输出到系统日志，此为数据流的终点 (Sink)。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "  // This is only a sample display. The mobile number is displayed by default.",
+              "  @StorageProp('quickLoginAnonymousPhone') anonymousPhone: string = '180******00';",
+              "  @Consume('pageInfos') pageInfos?: NavPathStack;",
+              "",
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Sign out.",
+              "  logOut() {",
+              "    this.pageInfos?.pushPathByName('PrepareLoginPage', null, true);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "日志标签 (logTag)",
+          "域 ID (domainId)",
+          "匿名手机号 (anonymousPhone, 定义但未在此流中使用)"
+        ],
+        "collectionFrequency": [
+          "一次性 (组件加载时触发)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储操作",
+          "数据未加密 (明文日志)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 25,
+          "code": "build() {",
+          "description": "UI 构建入口 build() 函数开始执行，初始化个人信息页面布局结构。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "  logOut() {",
+              "    this.pageInfos?.pushPathByName('PrepareLoginPage', null, true);",
+              "    hilog.info(this.domainId, this.logTag, 'Succeeded in logging out.');",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Column() {",
+              "          Row() {",
+              "            Text($r('app.string.personal_info'))"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 60,
+          "code": "Column() {",
+          "description": "构建包含退出按钮的 Column 容器，准备渲染用户操作区域。",
+          "context": {
+            "startLine": 55,
+            "lines": [
+              "          .backgroundColor(Color.White)",
+              "          .justifyContent(FlexAlign.SpaceBetween)",
+              "          .borderRadius(20)",
+              "        }",
+              "",
+              "        Column() {",
+              "          Button() {",
+              "            Text($r('app.string.log_out'))",
+              "              .fontColor('#CE0E2D')",
+              "              .fontSize($r('sys.float.ohos_id_text_size_sub_title2'))",
+              "              .fontWeight(FontWeight.Medium)"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 67,
+          "code": ".width('100%')",
+          "description": "设置退出按钮宽度为 100%，完成按钮样式定义。",
+          "context": {
+            "startLine": 62,
+            "lines": [
+              "            Text($r('app.string.log_out'))",
+              "              .fontColor('#CE0E2D')",
+              "              .fontSize($r('sys.float.ohos_id_text_size_sub_title2'))",
+              "              .fontWeight(FontWeight.Medium)",
+              "          }",
+              "          .width('100%')",
+              "          .constraintSize({ maxWidth: 448 })",
+              "          .height(40)",
+              "          .backgroundColor('#E7E8EA')",
+              "          .margin({",
+              "            bottom: 44,"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 76,
+          "code": ".onClick(() => {",
+          "description": "为退出按钮绑定 onClick 点击事件监听器，定义匿名回调函数。",
+          "context": {
+            "startLine": 71,
+            "lines": [
+              "          .margin({",
+              "            bottom: 44,",
+              "            top: 20",
+              "          })",
+              "          .id('logOutButton')",
+              "          .onClick(() => {",
+              "            this.logOut();",
+              "          })",
+              "        }",
+              "      }",
+              "      .padding({"
+            ]
+          }
+        },
+        {
+          "id": "p3:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 77,
+          "code": "this.logOut();",
+          "description": "在点击事件中调用 this.logOut() 方法，触发登出业务逻辑。",
+          "context": {
+            "startLine": 72,
+            "lines": [
+              "            bottom: 44,",
+              "            top: 20",
+              "          })",
+              "          .id('logOutButton')",
+              "          .onClick(() => {",
+              "            this.logOut();",
+              "          })",
+              "        }",
+              "      }",
+              "      .padding({",
+              "        left: 16,"
+            ]
+          }
+        },
+        {
+          "id": "p3:n6",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 20,
+          "code": "logOut() {",
+          "description": "进入 logOut() 函数体，开始执行登出流程。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "  aboutToAppear() {",
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Sign out.",
+              "  logOut() {",
+              "    this.pageInfos?.pushPathByName('PrepareLoginPage', null, true);",
+              "    hilog.info(this.domainId, this.logTag, 'Succeeded in logging out.');",
+              "  }",
+              "",
+              "  build() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n7",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 21,
+          "code": "this.pageInfos?.pushPathByName('PrepareLoginPage', null, true);",
+          "description": "调用 pushPathByName 导航至登录准备页，隐含清除当前会话状态或跳转逻辑。",
+          "context": {
+            "startLine": 16,
+            "lines": [
+              "    hilog.info(this.domainId, this.logTag, `${this.logTag} aboutToAppear`);",
+              "  }",
+              "",
+              "  // Sign out.",
+              "  logOut() {",
+              "    this.pageInfos?.pushPathByName('PrepareLoginPage', null, true);",
+              "    hilog.info(this.domainId, this.logTag, 'Succeeded in logging out.');",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n8",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 22,
+          "code": "hilog.info(this.domainId, this.logTag, 'Succeeded in logging out.');",
+          "description": "调用 hilog.info 输出登出成功日志，包含 domainId 和 logTag 作为上下文信息，此为数据流终点 (Sink)。",
+          "context": {
+            "startLine": 17,
+            "lines": [
+              "  }",
+              "",
+              "  // Sign out.",
+              "  logOut() {",
+              "    this.pageInfos?.pushPathByName('PrepareLoginPage', null, true);",
+              "    hilog.info(this.domainId, this.logTag, 'Succeeded in logging out.');",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        },
+        {
+          "from": "p3:n4",
+          "to": "p3:n5"
+        },
+        {
+          "from": "p3:n5",
+          "to": "p3:n6"
+        },
+        {
+          "from": "p3:n6",
+          "to": "p3:n7"
+        },
+        {
+          "from": "p3:n7",
+          "to": "p3:n8"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "登录状态变更事件",
+          "匿名手机号 (脱敏)",
+          "日志标签 (logTag)",
+          "域名 ID (domainId)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击退出按钮)"
+        ],
+        "cloudUpload": [
+          "无直接网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "本地存储：@StorageProp 存储脱敏手机号",
+          "无加密操作：仅明文日志记录"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 25,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化个人信息页面的组件树结构。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "  logOut() {",
+              "    this.pageInfos?.pushPathByName('PrepareLoginPage', null, true);",
+              "    hilog.info(this.domainId, this.logTag, 'Succeeded in logging out.');",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Column() {",
+              "          Row() {",
+              "            Text($r('app.string.personal_info'))"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 93,
+          "code": ".onBackPressed(() => {",
+          "description": "注册 onBackPressed 回调监听器，定义当用户在当前页面按下物理或手势返回键时的处理逻辑。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "      .backgroundColor('#F1F3F5')",
+              "      .height('100%')",
+              "      .width('100%')",
+              "    }",
+              "    .hideTitleBar(true)",
+              "    .onBackPressed(() => {",
+              "      // Directly exit the app using a gesture.",
+              "      hilog.info(this.domainId, this.logTag, 'PersonalInfoPage onBackPressed');",
+              "      try {",
+              "        (getContext() as common.UIAbilityContext).terminateSelf();",
+              "      } catch (error) {"
+            ]
+          }
+        },
+        {
+          "id": "p4:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 95,
+          "code": "hilog.info(this.domainId, this.logTag, 'PersonalInfoPage onBackPressed');",
+          "description": "调用 hilog.info 输出 INFO 级别日志，记录'PersonalInfoPage onBackPressed'事件，包含当前类的 domainId 和 logTag 作为上下文信息，标志着数据流的终点（Sink）。",
+          "context": {
+            "startLine": 90,
+            "lines": [
+              "      .width('100%')",
+              "    }",
+              "    .hideTitleBar(true)",
+              "    .onBackPressed(() => {",
+              "      // Directly exit the app using a gesture.",
+              "      hilog.info(this.domainId, this.logTag, 'PersonalInfoPage onBackPressed');",
+              "      try {",
+              "        (getContext() as common.UIAbilityContext).terminateSelf();",
+              "      } catch (error) {",
+              "        hilog.error(this.domainId, this.logTag,",
+              "          `Failed to terminateSelf. errCode is ${error.code}, errMessage is ${error.message}`);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        },
+        {
+          "from": "p4:n2",
+          "to": "p4:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用页面交互事件（返回键按下）",
+          "日志标签（logTag）",
+          "日志域 ID（domainId）"
+        ],
+        "collectionFrequency": [
+          "事件触发（用户按下返回键时）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（仅本地日志输出）"
+        ],
+        "storageAndEncryption": [
+          "临时内存存储（日志缓冲区），未涉及持久化存储或加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 25,
+          "code": "build() {",
+          "description": "UI 组件构建入口 (build 函数)，初始化个人信息页面的视图结构。",
+          "context": {
+            "startLine": 20,
+            "lines": [
+              "  logOut() {",
+              "    this.pageInfos?.pushPathByName('PrepareLoginPage', null, true);",
+              "    hilog.info(this.domainId, this.logTag, 'Succeeded in logging out.');",
+              "  }",
+              "",
+              "  build() {",
+              "    NavDestination() {",
+              "      Column() {",
+              "        Column() {",
+              "          Row() {",
+              "            Text($r('app.string.personal_info'))"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 92,
+          "code": ".hideTitleBar(true)",
+          "description": "调用 hideTitleBar(true) 隐藏页面标题栏，配置页面显示样式。",
+          "context": {
+            "startLine": 87,
+            "lines": [
+              "      .justifyContent(FlexAlign.SpaceBetween)",
+              "      .backgroundColor('#F1F3F5')",
+              "      .height('100%')",
+              "      .width('100%')",
+              "    }",
+              "    .hideTitleBar(true)",
+              "    .onBackPressed(() => {",
+              "      // Directly exit the app using a gesture.",
+              "      hilog.info(this.domainId, this.logTag, 'PersonalInfoPage onBackPressed');",
+              "      try {",
+              "        (getContext() as common.UIAbilityContext).terminateSelf();"
+            ]
+          }
+        },
+        {
+          "id": "p5:n3",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 93,
+          "code": ".onBackPressed(() => {",
+          "description": "注册 onBackPressed 回调监听器，定义用户按下返回键时的处理逻辑。",
+          "context": {
+            "startLine": 88,
+            "lines": [
+              "      .backgroundColor('#F1F3F5')",
+              "      .height('100%')",
+              "      .width('100%')",
+              "    }",
+              "    .hideTitleBar(true)",
+              "    .onBackPressed(() => {",
+              "      // Directly exit the app using a gesture.",
+              "      hilog.info(this.domainId, this.logTag, 'PersonalInfoPage onBackPressed');",
+              "      try {",
+              "        (getContext() as common.UIAbilityContext).terminateSelf();",
+              "      } catch (error) {"
+            ]
+          }
+        },
+        {
+          "id": "p5:n4",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 97,
+          "code": "(getContext() as common.UIAbilityContext).terminateSelf();",
+          "description": "尝试获取 UIAbilityContext 并调用 terminateSelf() 退出应用，此操作可能抛出异常。",
+          "context": {
+            "startLine": 92,
+            "lines": [
+              "    .hideTitleBar(true)",
+              "    .onBackPressed(() => {",
+              "      // Directly exit the app using a gesture.",
+              "      hilog.info(this.domainId, this.logTag, 'PersonalInfoPage onBackPressed');",
+              "      try {",
+              "        (getContext() as common.UIAbilityContext).terminateSelf();",
+              "      } catch (error) {",
+              "        hilog.error(this.domainId, this.logTag,",
+              "          `Failed to terminateSelf. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "      }",
+              "      return true;"
+            ]
+          }
+        },
+        {
+          "id": "p5:n5",
+          "filePath": "input/app/AccountKit-QuickLogin/entry/src/main/ets/pages/PersonalInfoPage.ets",
+          "line": 99,
+          "code": "hilog.error(this.domainId, this.logTag,",
+          "description": "捕获退出应用失败时的异常，调用 hilog.error 将错误码和错误消息写入系统日志，作为数据流的终点。",
+          "context": {
+            "startLine": 94,
+            "lines": [
+              "      // Directly exit the app using a gesture.",
+              "      hilog.info(this.domainId, this.logTag, 'PersonalInfoPage onBackPressed');",
+              "      try {",
+              "        (getContext() as common.UIAbilityContext).terminateSelf();",
+              "      } catch (error) {",
+              "        hilog.error(this.domainId, this.logTag,",
+              "          `Failed to terminateSelf. errCode is ${error.code}, errMessage is ${error.message}`);",
+              "      }",
+              "      return true;",
+              "    })",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        },
+        {
+          "from": "p5:n2",
+          "to": "p5:n3"
+        },
+        {
+          "from": "p5:n3",
+          "to": "p5:n4"
+        },
+        {
+          "from": "p5:n4",
+          "to": "p5:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "异常错误码 (error.code)",
+          "异常错误信息 (error.message)",
+          "日志域标识 (domainId)",
+          "日志标签 (logTag)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (仅在捕获到 terminateSelf 异常时)"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "系统级日志存储 (由 hilog 框架管理，源码未体现加密)"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

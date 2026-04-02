@@ -1,0 +1,1269 @@
+{
+  "meta": {
+    "runId": "codeLab_API_20260401-143720",
+    "generatedAt": "2026-04-01T06:39:01.140Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "warnings": [
+      "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/codeLab_API/entry/src/main/ets/pages/Index.ets:31 之后继续扩展",
+      "数据流 p3 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/codeLab_API/entry/src/main/ets/pages/Index.ets:42 之后继续扩展"
+    ],
+    "counts": {
+      "flows": 11,
+      "nodes": 39,
+      "edges": 28,
+      "failedPaths": 2,
+      "fallbackFlows": 2
+    }
+  },
+  "flows": [
+    {
+      "flowId": "flow:p1",
+      "pathId": "p1",
+      "nodes": [
+        {
+          "id": "p1:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 10,
+          "code": "build() {",
+          "description": "UI 构建入口函数 build() 开始执行，初始化页面布局结构。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "struct FunctionalAPIPage {",
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')"
+            ]
+          }
+        },
+        {
+          "id": "p1:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 12,
+          "code": "Button(this.systemInfo)",
+          "description": "创建 Button 组件，绑定显示文本为 systemInfo 状态变量，作为数据收集的触发器。",
+          "context": {
+            "startLine": 7,
+            "lines": [
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p1:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 17,
+          "code": ".onClick(() => {",
+          "description": "定义按钮的 onClick 事件回调函数，当用户点击时触发内部逻辑。",
+          "context": {
+            "startLine": 12,
+            "lines": [
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })"
+            ]
+          }
+        },
+        {
+          "id": "p1:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 18,
+          "code": "let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+          "description": "定义请求参数数组 arr，指定需要获取的系统信息类型为 'windowWidth'（窗口宽度）。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p1:n5",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 19,
+          "code": "atomicService.getSystemInfo(arr).then((result) => {",
+          "description": "调用 atomicService.getSystemInfo 异步接口，传入参数数组，发起获取系统窗口宽度的请求。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['windowWidth'];",
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              "",
+              "      Button(this.systemInfoSync)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p1:n1",
+          "to": "p1:n2"
+        },
+        {
+          "from": "p1:n2",
+          "to": "p1:n3"
+        },
+        {
+          "from": "p1:n3",
+          "to": "p1:n4"
+        },
+        {
+          "from": "p1:n4",
+          "to": "p1:n5"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "窗口宽度 (windowWidth)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (用户点击按钮)"
+        ],
+        "cloudUpload": [
+          "未检测到网络发送行为"
+        ],
+        "storageAndEncryption": [
+          "仅存储在组件内存状态 (@State) 中，未持久化，未加密"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p2",
+      "pathId": "p2",
+      "nodes": [
+        {
+          "id": "p2:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 10,
+          "code": "build() {",
+          "description": "ArkUI 组件的 UI 构建入口函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "struct FunctionalAPIPage {",
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')"
+            ]
+          }
+        },
+        {
+          "id": "p2:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 24,
+          "code": "Button(this.systemInfoSync)",
+          "description": "onClick Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "          atomicService.getSystemInfo(arr).then((result) => {",
+              "            this.systemInfo = String(result.windowWidth);",
+              "          })",
+              "        })",
+              "",
+              "      Button(this.systemInfoSync)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p2:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 29,
+          "code": ".onClick(() => {",
+          "description": "Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      Button(this.systemInfoSync)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p2:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 31,
+          "code": "let result = atomicService.getSystemInfoSync(arr);",
+          "description": "未提取到SDK注释；请在 input/csv/sdk_api_description_override.csv 补充该 API 描述（api=@kit.ScenarioFusionKit.atomicService.getSystemInfoSync）（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 26,
+            "lines": [
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              "",
+              "      Button(this.systemSettings)",
+              "        .type(ButtonType.Capsule)"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p2:n1",
+          "to": "p2:n2"
+        },
+        {
+          "from": "p2:n2",
+          "to": "p2:n3"
+        },
+        {
+          "from": "p2:n3",
+          "to": "p2:n4"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p2 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/codeLab_API/entry/src/main/ets/pages/Index.ets:31 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p3",
+      "pathId": "p3",
+      "nodes": [
+        {
+          "id": "p3:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 10,
+          "code": "build() {",
+          "description": "ArkUI 组件的 UI 构建入口函数（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "struct FunctionalAPIPage {",
+              "  @State systemInfo: string = 'GetSystemInfo';",
+              "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+              "  @State systemSettings: string = 'GetSystemSettings';",
+              "",
+              "  build() {",
+              "    Column() {",
+              "      Button(this.systemInfo)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')"
+            ]
+          }
+        },
+        {
+          "id": "p3:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 35,
+          "code": "Button(this.systemSettings)",
+          "description": "onClick Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+              "          let result = atomicService.getSystemInfoSync(arr);",
+              "          this.systemInfoSync = String(result.brand);",
+              "        })",
+              "",
+              "      Button(this.systemSettings)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {"
+            ]
+          }
+        },
+        {
+          "id": "p3:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 40,
+          "code": ".onClick(() => {",
+          "description": "Statement/Expression（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "      Button(this.systemSettings)",
+              "        .type(ButtonType.Capsule)",
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemSettingType> = ['deviceOrientation'];",
+              "          let result = atomicService.getSystemSetting(arr);",
+              "          this.systemSettings = String(result.deviceOrientation);",
+              "        })",
+              "    }"
+            ]
+          }
+        },
+        {
+          "id": "p3:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+          "line": 42,
+          "code": "let result = atomicService.getSystemSetting(arr);",
+          "description": "未提取到SDK注释；请在 input/csv/sdk_api_description_override.csv 补充该 API 描述（api=@kit.ScenarioFusionKit.atomicService.getSystemSetting）（LLM 失败，使用锚点回退）",
+          "context": {
+            "startLine": 37,
+            "lines": [
+              "        .margin(20)",
+              "        .backgroundColor('#ff3888be')",
+              "        .width('40%')",
+              "        .onClick(() => {",
+              "          let arr: Array<atomicService.SystemSettingType> = ['deviceOrientation'];",
+              "          let result = atomicService.getSystemSetting(arr);",
+              "          this.systemSettings = String(result.deviceOrientation);",
+              "        })",
+              "    }",
+              "    .justifyContent(FlexAlign.Center)",
+              "    .width('100%')"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p3:n1",
+          "to": "p3:n2"
+        },
+        {
+          "from": "p3:n2",
+          "to": "p3:n3"
+        },
+        {
+          "from": "p3:n3",
+          "to": "p3:n4"
+        }
+      ],
+      "meta": {
+        "fallback": true,
+        "warnings": [
+          "数据流 p3 LLM 分析失败，已回退到锚点数据流：LLM 输出在最终 sink 锚点 input/app/codeLab_API/entry/src/main/ets/pages/Index.ets:42 之后继续扩展"
+        ]
+      }
+    },
+    {
+      "flowId": "flow:p4",
+      "pathId": "p4",
+      "nodes": [
+        {
+          "id": "p4:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 6,
+          "code": "onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+          "description": "定义 EntryAbility 的 onCreate 生命周期回调函数，作为数据流的起点，在 UIAbility 实例创建时被系统调用。",
+          "context": {
+            "startLine": 1,
+            "lines": [
+              "import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';",
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');"
+            ]
+          }
+        },
+        {
+          "id": "p4:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 7,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+          "description": "调用 hilog.info 接口输出日志，将字符串常量 'Ability onCreate' 写入系统日志缓冲区，标记应用创建事件，未涉及敏感隐私数据收集或网络传输。",
+          "context": {
+            "startLine": 2,
+            "lines": [
+              "import { hilog } from '@kit.PerformanceAnalysisKit';",
+              "import { window } from '@kit.ArkUI';",
+              "",
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p4:n1",
+          "to": "p4:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识"
+        ],
+        "collectionFrequency": [
+          "一次性（应用启动时）"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p5",
+      "pathId": "p5",
+      "nodes": [
+        {
+          "id": "p5:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 10,
+          "code": "onDestroy(): void {",
+          "description": "定义 onDestroy 生命周期回调函数，作为数据流的起点，当 UIAbility 实例被销毁时由系统自动触发。",
+          "context": {
+            "startLine": 5,
+            "lines": [
+              "export default class EntryAbility extends UIAbility {",
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability"
+            ]
+          }
+        },
+        {
+          "id": "p5:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 11,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+          "description": "调用 hilog.info 接口记录信息级日志，将字符串 'Ability onDestroy' 格式化输出到系统日志缓冲区，标记为公共数据（%{public}s），作为数据流的终点。",
+          "context": {
+            "startLine": 6,
+            "lines": [
+              "  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');",
+              "  }",
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p5:n1",
+          "to": "p5:n2"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "日志文本内容"
+        ],
+        "collectionFrequency": [
+          "事件触发（UIAbility 销毁时）"
+        ],
+        "cloudUpload": [
+          "无直接云端上传行为（仅本地日志输出）"
+        ],
+        "storageAndEncryption": [
+          "由系统日志服务（hilog）统一存储，未在此代码片段中体现加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p6",
+      "pathId": "p6",
+      "nodes": [
+        {
+          "id": "p6:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 14,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "定义 onWindowStageCreate 生命周期回调函数入口，当应用窗口阶段创建时被系统调用。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p6:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 15,
+          "code": "// Main window is created, set main page for this ability",
+          "description": "代码注释行，说明此处逻辑为设置应用的主页面。",
+          "context": {
+            "startLine": 10,
+            "lines": [
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,"
+            ]
+          }
+        },
+        {
+          "id": "p6:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 16,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "调用 hilog.info 接口，将字符串常量 'Ability onWindowStageCreate' 作为公开信息写入系统日志，标记窗口创建事件发生。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+              "          err.message);"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p6:n1",
+          "to": "p6:n2"
+        },
+        {
+          "from": "p6:n2",
+          "to": "p6:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期事件标识 (Ability onWindowStageCreate)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 创建时单次执行)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出，未检测到网络发送行为)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (数据仅写入系统日志缓冲区，未写入文件或数据库)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p7",
+      "pathId": "p7",
+      "nodes": [
+        {
+          "id": "p7:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 14,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "生命周期函数 onWindowStageCreate 入口，当 WindowStage 创建时被系统调用，启动数据流。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p7:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 18,
+          "code": "windowStage.loadContent('pages/Index', (err) => {",
+          "description": "调用 loadContent 方法异步加载页面内容，注册回调函数以接收加载结果（成功或失败）。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+              "          err.message);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p7:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 19,
+          "code": "if (err.code) {",
+          "description": "在回调中判断加载是否失败，检查 err 对象是否存在 code 属性，作为分支条件。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+              "          err.message);",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');"
+            ]
+          }
+        },
+        {
+          "id": "p7:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 20,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+          "description": "Sink 节点：调用 hilog.error 将错误码 (err.code) 和错误消息 (err.message) 格式化并输出到系统日志，完成数据流出。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+              "          err.message);",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');",
+              "    });"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p7:n1",
+          "to": "p7:n2"
+        },
+        {
+          "from": "p7:n2",
+          "to": "p7:n3"
+        },
+        {
+          "from": "p7:n3",
+          "to": "p7:n4"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "错误码 (err.code)",
+          "错误消息 (err.message)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (页面加载失败时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p8",
+      "pathId": "p8",
+      "nodes": [
+        {
+          "id": "p8:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 14,
+          "code": "onWindowStageCreate(windowStage: window.WindowStage): void {",
+          "description": "数据流起点：onWindowStageCreate 生命周期函数被调用，标志着窗口阶段创建事件的触发。",
+          "context": {
+            "startLine": 9,
+            "lines": [
+              "",
+              "  onDestroy(): void {",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {"
+            ]
+          }
+        },
+        {
+          "id": "p8:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 16,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+          "description": "记录进入窗口创建阶段的日志，输出固定的生命周期状态字符串，不涉及敏感用户数据。",
+          "context": {
+            "startLine": 11,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');",
+              "  }",
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+              "          err.message);"
+            ]
+          }
+        },
+        {
+          "id": "p8:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 18,
+          "code": "windowStage.loadContent('pages/Index', (err) => {",
+          "description": "调用 loadContent 方法异步加载主页面内容，此操作可能隐式读取应用资源文件。",
+          "context": {
+            "startLine": 13,
+            "lines": [
+              "",
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+              "          err.message);",
+              "        return;",
+              "      }"
+            ]
+          }
+        },
+        {
+          "id": "p8:n4",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 19,
+          "code": "if (err.code) {",
+          "description": "检查页面加载回调中的错误对象，判断加载是否失败。",
+          "context": {
+            "startLine": 14,
+            "lines": [
+              "  onWindowStageCreate(windowStage: window.WindowStage): void {",
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+              "          err.message);",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');"
+            ]
+          }
+        },
+        {
+          "id": "p8:n5",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 20,
+          "code": "hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+          "description": "若加载失败，记录包含错误码和错误消息的日志，此处涉及异常数据的收集。",
+          "context": {
+            "startLine": 15,
+            "lines": [
+              "    // Main window is created, set main page for this ability",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');",
+              "",
+              "    windowStage.loadContent('pages/Index', (err) => {",
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+              "          err.message);",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');",
+              "    });"
+            ]
+          }
+        },
+        {
+          "id": "p8:n6",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 24,
+          "code": "hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');",
+          "description": "数据流终点（Sink）：页面加载成功后，调用 hilog.info 输出成功状态日志，未包含任何个人隐私数据。",
+          "context": {
+            "startLine": 19,
+            "lines": [
+              "      if (err.code) {",
+              "        hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}d %{public}s', err.code,",
+              "          err.message);",
+              "        return;",
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p8:n1",
+          "to": "p8:n2"
+        },
+        {
+          "from": "p8:n2",
+          "to": "p8:n3"
+        },
+        {
+          "from": "p8:n3",
+          "to": "p8:n4"
+        },
+        {
+          "from": "p8:n4",
+          "to": "p8:n5"
+        },
+        {
+          "from": "p8:n5",
+          "to": "p8:n6"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态",
+          "页面加载结果状态"
+        ],
+        "collectionFrequency": [
+          "事件触发（WindowStage 创建时）"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "无本地持久化存储",
+          "仅输出到系统日志缓冲区"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p9",
+      "pathId": "p9",
+      "nodes": [
+        {
+          "id": "p9:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 28,
+          "code": "onWindowStageDestroy(): void {",
+          "description": "定义 onWindowStageDestroy 生命周期回调函数，作为数据流的起点，当应用窗口阶段销毁时被系统触发。",
+          "context": {
+            "startLine": 23,
+            "lines": [
+              "      }",
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p9:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 29,
+          "code": "// Main window is destroyed, release UI related resources",
+          "description": "注释行，说明此处逻辑旨在释放与 UI 相关的资源，未涉及实际隐私数据操作。",
+          "context": {
+            "startLine": 24,
+            "lines": [
+              "      hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');",
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground"
+            ]
+          }
+        },
+        {
+          "id": "p9:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 30,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+          "description": "调用 hilog.info 接口，将固定的字符串常量 'Ability onWindowStageDestroy' 格式化后输出到系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 25,
+            "lines": [
+              "    });",
+              "  }",
+              "",
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p9:n1",
+          "to": "p9:n2"
+        },
+        {
+          "from": "p9:n2",
+          "to": "p9:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "生命周期事件标识 (Ability onWindowStageDestroy)"
+        ],
+        "collectionFrequency": [
+          "事件触发 (WindowStage 销毁时)"
+        ],
+        "cloudUpload": [
+          "无 (仅本地日志输出)"
+        ],
+        "storageAndEncryption": [
+          "无持久化存储 (系统日志缓冲区)"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p10",
+      "pathId": "p10",
+      "nodes": [
+        {
+          "id": "p10:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 33,
+          "code": "onForeground(): void {",
+          "description": "定义 onForeground 生命周期函数，作为数据流的起点，当 UIAbility 切换到前台时被系统调用。",
+          "context": {
+            "startLine": 28,
+            "lines": [
+              "  onWindowStageDestroy(): void {",
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {"
+            ]
+          }
+        },
+        {
+          "id": "p10:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 34,
+          "code": "// Ability has brought to foreground",
+          "description": "代码注释行，说明该函数用于处理应用进入前台的逻辑，不涉及实际数据操作。",
+          "context": {
+            "startLine": 29,
+            "lines": [
+              "    // Main window is destroyed, release UI related resources",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background"
+            ]
+          }
+        },
+        {
+          "id": "p10:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 35,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+          "description": "调用 hilog.info 输出日志，将静态字符串 'Ability onForeground' 打印到系统日志，作为数据流的终点（Sink），未涉及敏感隐私数据。",
+          "context": {
+            "startLine": 30,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');",
+              "  }",
+              "",
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');"
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p10:n1",
+          "to": "p10:n2"
+        },
+        {
+          "from": "p10:n2",
+          "to": "p10:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [],
+        "collectionFrequency": [
+          "事件触发（应用切换至前台时）"
+        ],
+        "cloudUpload": [],
+        "storageAndEncryption": [
+          "无本地存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    },
+    {
+      "flowId": "flow:p11",
+      "pathId": "p11",
+      "nodes": [
+        {
+          "id": "p11:n1",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 38,
+          "code": "onBackground(): void {",
+          "description": "定义 onBackground 生命周期回调函数，作为数据流的起点，当 UIAbility 切换到后台时被系统触发。",
+          "context": {
+            "startLine": 33,
+            "lines": [
+              "  onForeground(): void {",
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p11:n2",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 39,
+          "code": "// Ability has back to background",
+          "description": "行内注释，说明当前 Ability 已返回后台，不涉及实际代码执行或数据处理。",
+          "context": {
+            "startLine": 34,
+            "lines": [
+              "    // Ability has brought to foreground",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        },
+        {
+          "id": "p11:n3",
+          "filePath": "input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets",
+          "line": 40,
+          "code": "hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+          "description": "调用 hilog.info 接口，将固定的静态字符串 'Ability onBackground' 写入系统日志，作为数据流的终点（Sink）。",
+          "context": {
+            "startLine": 35,
+            "lines": [
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');",
+              "  }",
+              "",
+              "  onBackground(): void {",
+              "    // Ability has back to background",
+              "    hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');",
+              "  }",
+              "}",
+              ""
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "from": "p11:n1",
+          "to": "p11:n2"
+        },
+        {
+          "from": "p11:n2",
+          "to": "p11:n3"
+        }
+      ],
+      "summary": {
+        "dataItems": [
+          "应用生命周期状态事件",
+          "静态日志字符串"
+        ],
+        "collectionFrequency": [
+          "事件触发（应用切换至后台时）"
+        ],
+        "cloudUpload": [
+          "无云端上传行为"
+        ],
+        "storageAndEncryption": [
+          "仅输出到系统日志缓冲区，无本地文件存储",
+          "无加密处理"
+        ],
+        "permissions": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "meta": {
+    "runId": "map-kit_-codelab_20260401-144148",
+    "featureId": "ui_BasicMapDemo_8c0b343484",
+    "generatedAt": "2026-04-01T06:43:53.418Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.LOCATION 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "map-kit_-codelab",
+        "businessScenario": "用户在地图演示页面查看地图展示及进行交互操作时",
+        "dataSources": [
+          "用户设备传感器",
+          "用户交互行为"
+        ],
+        "dataItems": [
+          {
+            "name": "用户地理位置信息 (经纬度)",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n3"
+              }
+            ]
+          },
+          {
+            "name": "地图配置参数",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n3"
+              }
+            ]
+          },
+          {
+            "name": "地图交互事件回调",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n3"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "通过地图组件初始化渲染及监听用户交互事件进行持续性收集与事件触发处理",
+        "storageMethod": "本地易失性存储，加密情况依赖 SDK 内部实现",
+        "dataRecipients": [
+          {
+            "name": "地图服务商云端",
+            "inferred": true,
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n3"
+              }
+            ]
+          }
+        ],
+        "processingPurpose": "用于渲染地图界面、定位用户当前位置以及响应地图缩放或点击等交互功能",
+        "privacyToggleUi": {
+          "where": "未识别"
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.INTERNET",
+        "businessScenario": "用户在地图演示页面查看地图展示及进行交互操作时",
+        "permissionPurpose": "用于连接网络加载在线地图瓦片数据及路径规划信息",
+        "denyImpact": "若拒绝授权，地图将无法加载在线图层，可能导致地图显示空白或无法更新路况",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n3"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      }
+    ]
+  }
+}

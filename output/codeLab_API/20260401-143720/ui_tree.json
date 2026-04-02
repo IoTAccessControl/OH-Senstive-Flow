@@ -1,0 +1,167 @@
+{
+  "meta": {
+    "runId": "codeLab_API_20260401-143720",
+    "generatedAt": "2026-04-01T06:39:02.276Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-plus"
+    },
+    "counts": {
+      "nodes": 5,
+      "edges": 4,
+      "pages": 1,
+      "elements": 4
+    }
+  },
+  "roots": [
+    "page:237fd9ed1532"
+  ],
+  "nodes": {
+    "page:237fd9ed1532": {
+      "id": "page:237fd9ed1532",
+      "category": "Page",
+      "name": "FunctionalAPIPage",
+      "description": "首页",
+      "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+      "line": 5,
+      "code": "struct FunctionalAPIPage {",
+      "context": {
+        "startLine": 1,
+        "lines": [
+          "import { atomicService } from '@kit.ScenarioFusionKit'",
+          "",
+          "@Entry",
+          "@Component",
+          "struct FunctionalAPIPage {",
+          "  @State systemInfo: string = 'GetSystemInfo';",
+          "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+          "  @State systemSettings: string = 'GetSystemSettings';",
+          "",
+          "  build() {"
+        ]
+      }
+    },
+    "ui:1ec4bb3a29d9": {
+      "id": "ui:1ec4bb3a29d9",
+      "category": "Button",
+      "name": "build",
+      "description": "页面操作区",
+      "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+      "line": 10,
+      "code": "build() {",
+      "context": {
+        "startLine": 5,
+        "lines": [
+          "struct FunctionalAPIPage {",
+          "  @State systemInfo: string = 'GetSystemInfo';",
+          "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+          "  @State systemSettings: string = 'GetSystemSettings';",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Button(this.systemInfo)",
+          "        .type(ButtonType.Capsule)",
+          "        .margin(20)",
+          "        .backgroundColor('#ff3888be')"
+        ]
+      }
+    },
+    "ui:de247131ec74": {
+      "id": "ui:de247131ec74",
+      "category": "Button",
+      "name": "Button",
+      "description": "异步获取信息",
+      "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+      "line": 12,
+      "code": "Button(this.systemInfo)",
+      "context": {
+        "startLine": 7,
+        "lines": [
+          "  @State systemInfoSync: string = 'GetSystemInfoSync';",
+          "  @State systemSettings: string = 'GetSystemSettings';",
+          "",
+          "  build() {",
+          "    Column() {",
+          "      Button(this.systemInfo)",
+          "        .type(ButtonType.Capsule)",
+          "        .margin(20)",
+          "        .backgroundColor('#ff3888be')",
+          "        .width('40%')",
+          "        .onClick(() => {"
+        ]
+      }
+    },
+    "ui:4392a97919ac": {
+      "id": "ui:4392a97919ac",
+      "category": "Button",
+      "name": "Button",
+      "description": "同步获取信息",
+      "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+      "line": 24,
+      "code": "Button(this.systemInfoSync)",
+      "context": {
+        "startLine": 19,
+        "lines": [
+          "          atomicService.getSystemInfo(arr).then((result) => {",
+          "            this.systemInfo = String(result.windowWidth);",
+          "          })",
+          "        })",
+          "",
+          "      Button(this.systemInfoSync)",
+          "        .type(ButtonType.Capsule)",
+          "        .margin(20)",
+          "        .backgroundColor('#ff3888be')",
+          "        .width('40%')",
+          "        .onClick(() => {"
+        ]
+      }
+    },
+    "ui:0ac26114556c": {
+      "id": "ui:0ac26114556c",
+      "category": "Button",
+      "name": "Button",
+      "description": "获取系统设置",
+      "filePath": "input/app/codeLab_API/entry/src/main/ets/pages/Index.ets",
+      "line": 35,
+      "code": "Button(this.systemSettings)",
+      "context": {
+        "startLine": 30,
+        "lines": [
+          "          let arr: Array<atomicService.SystemInfoType> = ['brand'];",
+          "          let result = atomicService.getSystemInfoSync(arr);",
+          "          this.systemInfoSync = String(result.brand);",
+          "        })",
+          "",
+          "      Button(this.systemSettings)",
+          "        .type(ButtonType.Capsule)",
+          "        .margin(20)",
+          "        .backgroundColor('#ff3888be')",
+          "        .width('40%')",
+          "        .onClick(() => {"
+        ]
+      }
+    }
+  },
+  "edges": [
+    {
+      "from": "page:237fd9ed1532",
+      "to": "ui:1ec4bb3a29d9",
+      "kind": "contains"
+    },
+    {
+      "from": "page:237fd9ed1532",
+      "to": "ui:de247131ec74",
+      "kind": "contains"
+    },
+    {
+      "from": "page:237fd9ed1532",
+      "to": "ui:4392a97919ac",
+      "kind": "contains"
+    },
+    {
+      "from": "page:237fd9ed1532",
+      "to": "ui:0ac26114556c",
+      "kind": "contains"
+    }
+  ]
+}
