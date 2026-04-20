@@ -1,0 +1,143 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260420-185315",
+    "featureId": "ui_HomePage_41cf9485d4",
+    "generatedAt": "2026-04-20T10:56:40.813Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-35b-a3b"
+    },
+    "skipped": false
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "用户点击开始按钮启动计步功能时",
+        "dataSources": [
+          "用户操作（点击按钮）",
+          "系统定位服务"
+        ],
+        "dataItems": [
+          {
+            "name": "当前位置",
+            "refs": [
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n6"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n7"
+              }
+            ]
+          },
+          {
+            "name": "起始位置",
+            "refs": [
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n7"
+              },
+              {
+                "flowId": "flow:p8",
+                "nodeId": "p8:n8"
+              }
+            ]
+          },
+          {
+            "name": "运动状态标志",
+            "refs": [
+              {
+                "flowId": "flow:p11",
+                "nodeId": "p11:n5"
+              },
+              {
+                "flowId": "flow:p12",
+                "nodeId": "p12:n5"
+              },
+              {
+                "flowId": "flow:p13",
+                "nodeId": "p13:n5"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "根据用户指令判断是否启动或停止后台定位任务，并记录起始位置与当前状态",
+        "storageMethod": "本地持久化存储",
+        "dataRecipients": [],
+        "processingPurpose": "用于记录运动轨迹起点及维持应用运行状态，以便准确统计步数",
+        "privacyToggleUi": {
+          "where": "首页 - 开始/停止按钮",
+          "refs": [
+            {
+              "uiNodeId": "ui:b1ce3fc86be8"
+            }
+          ]
+        }
+      },
+      {
+        "appName": "Pedometer",
+        "businessScenario": "用户点击停止按钮结束计步功能时",
+        "dataSources": [
+          "用户操作（点击按钮）"
+        ],
+        "dataItems": [
+          {
+            "name": "步数数据",
+            "refs": [
+              {
+                "flowId": "flow:p10",
+                "nodeId": "p10:n6"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "清理本地存储的步数数据并终止后台定位任务",
+        "storageMethod": "本地存储清理",
+        "dataRecipients": [],
+        "processingPurpose": "重置计步器数据以准备下一次运动记录",
+        "privacyToggleUi": {
+          "where": "首页 - 开始/停止按钮",
+          "refs": [
+            {
+              "uiNodeId": "ui:b1ce3fc86be8"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "businessScenario": "用户点击首页开始或停止按钮启动/结束计步功能时",
+        "permissionPurpose": "用于在后台持续运行以记录运动轨迹起点、维持应用运行状态，从而准确统计步数",
+        "denyImpact": "拒绝授权可能导致计步功能无法在后台正常运行，影响步数记录的准确性",
+        "refs": [
+          {
+            "flowId": "flow:p9",
+            "nodeId": "p9:n8"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.LOCATION",
+        "businessScenario": "用户点击开始按钮启动计步功能时",
+        "permissionPurpose": "获取用户当前位置信息以计算步数和记录运动轨迹",
+        "denyImpact": "无法获取位置信息，导致无法记录起始位置，计步功能可能无法正常启动或统计数据不准确",
+        "refs": [
+          {
+            "flowId": "flow:p8",
+            "nodeId": "p8:n6"
+          },
+          {
+            "flowId": "flow:p8",
+            "nodeId": "p8:n9"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

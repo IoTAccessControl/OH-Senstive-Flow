@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "runId": "Pedometer_20260420-185315",
+    "featureId": "ui_HomePage_11ad55420a",
+    "generatedAt": "2026-04-20T10:56:30.618Z",
+    "llm": {
+      "provider": "Qwen",
+      "model": "qwen3.5-35b-a3b"
+    },
+    "skipped": false,
+    "warnings": [
+      "权限 ohos.permission.ACTIVITY_RECOGNITION 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。"
+    ]
+  },
+  "facts": {
+    "dataPractices": [
+      {
+        "appName": "Pedometer",
+        "businessScenario": "页面展示时获取用户当前位置信息并显示",
+        "dataSources": [
+          "设备传感器",
+          "地理位置服务"
+        ],
+        "dataItems": [
+          {
+            "name": "设备位置坐标",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n6"
+              },
+              {
+                "flowId": "flow:p4",
+                "nodeId": "p4:n7"
+              }
+            ]
+          },
+          {
+            "name": "地理位置描述信息",
+            "refs": [
+              {
+                "flowId": "flow:p1",
+                "nodeId": "p1:n7"
+              }
+            ]
+          },
+          {
+            "name": "步数传感器数据",
+            "refs": [
+              {
+                "flowId": "flow:p3",
+                "nodeId": "p3:n7"
+              }
+            ]
+          }
+        ],
+        "processingMethod": "在页面显示时请求权限，验证通过后通过系统 API 获取经纬度并进行反向地理编码解析地址；同时订阅计步器传感器实时接收步数数据。",
+        "storageMethod": "数据暂存于组件属性中用于本地展示，未检测到持久化存储或加密操作。",
+        "dataRecipients": [],
+        "processingPurpose": "用于在首页展示用户的当前地理位置信息及计步状态。",
+        "privacyToggleUi": {
+          "where": "首页构建入口",
+          "refs": [
+            {
+              "uiNodeId": "ui:599a65fa9471"
+            }
+          ]
+        }
+      }
+    ],
+    "permissionPractices": [
+      {
+        "permissionName": "ohos.permission.ACCELEROMETER",
+        "businessScenario": "在首页展示计步状态时获取步数数据",
+        "permissionPurpose": "用于订阅计步器传感器数据，以统计并显示用户的步数信息",
+        "denyImpact": "拒绝授权后，应用将无法获取步数数据，导致首页无法显示计步状态",
+        "refs": [
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n7"
+          },
+          {
+            "flowId": "flow:p7",
+            "nodeId": "p7:n2"
+          }
+        ],
+        "authorizationMode": "preauthorized"
+      },
+      {
+        "permissionName": "ohos.permission.APPROXIMATELY_LOCATION",
+        "businessScenario": "在首页展示用户当前位置信息",
+        "permissionPurpose": "用于监听设备位置变化事件，以获取并显示用户的当前地理位置信息",
+        "denyImpact": "拒绝授权后，应用将无法获取位置变化信息，导致首页无法显示用户的当前地理位置",
+        "refs": [
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n7"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      },
+      {
+        "permissionName": "ohos.permission.LOCATION",
+        "businessScenario": "页面展示时获取用户当前位置",
+        "permissionPurpose": "用于获取设备的经纬度坐标及解析具体的地理位置描述信息。",
+        "denyImpact": "若拒绝授权，应用将无法获取位置信息，导致无法展示当前地理位置及相关功能不可用。",
+        "refs": [
+          {
+            "flowId": "flow:p1",
+            "nodeId": "p1:n4"
+          },
+          {
+            "flowId": "flow:p3",
+            "nodeId": "p3:n5"
+          },
+          {
+            "flowId": "flow:p4",
+            "nodeId": "p4:n4"
+          }
+        ],
+        "authorizationMode": "dynamic"
+      }
+    ]
+  }
+}

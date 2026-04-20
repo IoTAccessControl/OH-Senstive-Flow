@@ -34,6 +34,23 @@ type ReportFeatureInput = {
   dataflows: DataflowsResult;
 };
 
+type ParagraphAnchor = {
+  name: string;
+  jumpTo: { featureId: string; flowId: string; nodeId: string };
+};
+
+type PermissionOccurrence = {
+  permissionName: string;
+  filePath: string;
+  line: number;
+  code: string;
+};
+
+type SyntheticPermissionFlowBuild = {
+  dataflows: DataflowsResult;
+  refsByPermission: Map<string, DataflowNodeRef[]>;
+};
+
 const DETERMINISTIC_PERMISSION_PURPOSE = '使用相关系统能力（由 SDK API 权限映射确定）';
 const DETERMINISTIC_PERMISSION_DENY_IMPACT = '拒绝授权可能导致对应功能无法正常使用。';
 
@@ -61,6 +78,11 @@ function uniq(arr: string[]): string[] {
     out.push(item);
   }
   return out;
+}
+
+function sanitizeIdFragment(text: string): string {
+  const normalized = cleanText(text).replaceAll(/[^\w-]+/gu, '_').replaceAll(/^_+|_+$/gu, '');
+  return normalized || 'item';
 }
 
 function hasCjk(text: string): boolean {
@@ -308,6 +330,125 @@ function toPageDir(outputDirAbs: string, pageId: string): string {
 
 function toFeatureDir(outputDirAbs: string, pageId: string, featureId: string): string {
   return path.join(outputDirAbs, 'pages', pageId, 'features', featureId);
+}
+
+async function collectPermissionOccurrencesFromApp(repoRoot: string, appDirAbs: string): Promise<PermissionOccurrence[]> {
+  const files = await walkFiles(appDirAbs, {
+    extensions: ['ets', 'ts', 'js', 'json', 'json5'],
+    ignoreDirNames: ['node_modules', '.git', 'build', 'dist', 'out', 'hvigor'],
+  });
+
+  const out: PermissionOccurrence[] = [];
+  for (const filePath of files) {
+    const normalized = filePath.split(path.sep).join('/');
+    if (normalized.includes('/src/ohosTest/')) continue;
+
+    let text = '';
+    try {
+      text = await fs.readFile(filePath, 'utf8');
+    } catch {
+      continue;
+    }
+
+    const lines = text.split(/\r?\n/u);
+    for (let index = 0; index < lines.length; index += 1) {
+      const line = lines[index] ?? '';
+      const permissions = extractPermissionNames(line);
+      if (permissions.length === 0) continue;
+      for (const permissionName of permissions) {
+        out.push({
+          permissionName: normalizePermissionToken(permissionName),
+          filePath: path.relative(repoRoot, filePath).split(path.sep).join('/'),
+          line: index + 1,
+          code: line.trim(),
+        });
+      }
+    }
+  }
+
+  return out;
+}
+
+function buildSyntheticPermissionFlows(args: {
+  runId: string;
+  featureId: string;
+  permissions: string[];
+  occurrences: PermissionOccurrence[];
+  sinks: SinkRecord[];
+  csvPermissions: Map<string, string[]>;
+}): SyntheticPermissionFlowBuild {
+  const refsByPermission = new Map<string, DataflowNodeRef[]>();
+  const flowId = `flow:${sanitizeIdFragment(args.featureId)}`;
+  const nodes: Array<{
+    id: string;
+    filePath: string;
+    line: number;
+    code: string;
+    description: string;
+    context: { startLine: number; lines: string[] };
+  }> = [];
+
+  for (const permissionName of args.permissions) {
+    const occurrence = args.occurrences.find((item) => item.permissionName === permissionName);
+    if (occurrence) {
+      const nodeId = `perm:${sanitizeIdFragment(permissionName)}`;
+      nodes.push({
+        id: nodeId,
+        filePath: occurrence.filePath,
+        line: occurrence.line,
+        code: occurrence.code || permissionName,
+        description: `应用源码/配置中声明或引用了 ${permissionName}`,
+        context: { startLine: occurrence.line, lines: [occurrence.code || permissionName] },
+      });
+      refsByPermission.set(permissionName, [{ flowId, nodeId }]);
+      continue;
+    }
+
+    const sink = args.sinks.find((item) => {
+      const sinkApiKey = cleanText((item as any).__apiKey);
+      if (!sinkApiKey) return false;
+      const fromSink = Array.isArray((item as any).__permissions) ? (item as any).__permissions.map(String) : [];
+      const fromCsv = args.csvPermissions.get(sinkApiKey) ?? [];
+      return [...fromSink, ...fromCsv].some((value) => normalizePermissionToken(value) === permissionName);
+    });
+    if (!sink) continue;
+
+    const nodeId = `sink:${sanitizeIdFragment(permissionName)}`;
+    nodes.push({
+      id: nodeId,
+      filePath: cleanText((sink as any)['App源码文件路径']),
+      line: Number((sink as any)['调用行号'] ?? 0) || 1,
+      code: cleanText((sink as any)['调用代码']) || permissionName,
+      description: cleanText((sink as any)['API功能描述']) || `SDK API 权限映射推断出 ${permissionName}`,
+      context: { startLine: Number((sink as any)['调用行号'] ?? 0) || 1, lines: [cleanText((sink as any)['调用代码']) || permissionName] },
+    });
+    refsByPermission.set(permissionName, [{ flowId, nodeId }]);
+  }
+
+  return {
+    refsByPermission,
+    dataflows: {
+      meta: {
+        runId: args.runId,
+        generatedAt: new Date().toISOString(),
+        counts: { flows: nodes.length > 0 ? 1 : 0, nodes: nodes.length, edges: 0 },
+      },
+      flows:
+        nodes.length > 0
+          ? [
+              {
+                flowId,
+                pathId: flowId,
+                nodes,
+                edges: [],
+                summary: {
+                  permissions: args.permissions.slice(),
+                },
+              },
+            ]
+          : [],
+    },
+  };
 }
 
 function groupSinksByCallsite(sinks: SinkRecord[]): Map<string, SinkRecord[]> {
@@ -598,6 +739,7 @@ function applyPermissionAuthorizationModes(
 function buildAppDeclaredPermissionFacts(
   permissions: string[],
   dynamicPermissions: Set<string>,
+  refsByPermission: Map<string, DataflowNodeRef[]>,
 ): FeaturePrivacyFactsContent {
   return {
     dataPractices: [],
@@ -607,7 +749,7 @@ function buildAppDeclaredPermissionFacts(
       businessScenario: '应用源码/配置声明或 SDK API 使用推断的权限',
       permissionPurpose: '当前已在应用源码/配置扫描或 SDK API→权限映射中识别到该权限，但尚未定位到具体功能点数据流。',
       denyImpact: '当前未从已识别的数据流中定位到具体拒绝授权影响。',
-      refs: [],
+      refs: refsByPermission.get(permissionName) ?? [],
     })),
   };
 }
@@ -779,6 +921,7 @@ export async function generatePrivacyReportArtifacts(args: {
 
     const appPathFromMeta = cleanText(metaRaw?.input?.appPath);
     const appDirAbs = appPathFromMeta ? toAbs(args.repoRoot, appPathFromMeta) : path.join(args.repoRoot, 'input', 'app', args.appName);
+    const permissionOccurrences = await collectPermissionOccurrencesFromApp(args.repoRoot, appDirAbs).catch(() => []);
     const declaredAppPermissions = await collectPermissionsFromApp(appDirAbs).catch(() => new Set<string>());
     const dynamicAppPermissions = await collectRuntimeRequestedPermissions(appDirAbs).catch(() => new Set<string>());
     const inferredAppPermissions = new Set<string>();
@@ -793,6 +936,7 @@ export async function generatePrivacyReportArtifacts(args: {
     }
     const knownAppPermissions = new Set<string>([...declaredAppPermissions, ...inferredAppPermissions]);
     const emittedPermissions = new Set<string>();
+    const orphanPermissionNames = new Set<string>();
 
     const featuresForReport: ReportFeatureInput[] = [];
 
@@ -876,10 +1020,25 @@ export async function generatePrivacyReportArtifacts(args: {
       for (const permission of filtered.dropped) {
         warnings.push(`权限 ${permission} 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。`);
       }
+      const flowIndex = buildFlowNodeIndex(dataflows);
+      const anchoredPractices: PrivacyPermissionPractice[] = [];
       for (const practice of facts.permissionPractices) {
         const permissionName = normalizePermissionToken(practice.permissionName);
-        if (permissionName) emittedPermissions.add(permissionName);
+        if (!permissionName) continue;
+        const picked = pickValidRef(Array.isArray(practice.refs) ? practice.refs : [], flowIndex);
+        if (!picked) {
+          orphanPermissionNames.add(permissionName);
+          warnings.push(`权限 ${permissionName} 在当前功能点未定位到有效跳转证据，已转移到应用权限兜底。`);
+          continue;
+        }
+        anchoredPractices.push({
+          ...practice,
+          permissionName,
+          refs: uniqRefs(Array.isArray(practice.refs) ? practice.refs : []),
+        });
+        emittedPermissions.add(permissionName);
       }
+      facts.permissionPractices = anchoredPractices;
 
       const outFile = featureFactsFile({
         runId: args.runId,
@@ -902,25 +1061,38 @@ export async function generatePrivacyReportArtifacts(args: {
     }
 
     const unmatchedPermissions = Array.from(knownAppPermissions)
-      .filter((permission) => !emittedPermissions.has(permission))
+      .filter((permission) => !emittedPermissions.has(permission) || orphanPermissionNames.has(permission))
       .sort((a, b) => a.localeCompare(b));
 
     if (unmatchedPermissions.length > 0) {
+      const pageId = '_app_permissions';
       const featureId = '__app_permissions';
-      const syntheticFacts = buildAppDeclaredPermissionFacts(unmatchedPermissions, dynamicAppPermissions);
+      const syntheticFlowBuild = buildSyntheticPermissionFlows({
+        runId: args.runId,
+        featureId,
+        permissions: unmatchedPermissions,
+        occurrences: permissionOccurrences,
+        sinks,
+        csvPermissions,
+      });
+      const syntheticFacts = buildAppDeclaredPermissionFacts(
+        unmatchedPermissions,
+        dynamicAppPermissions,
+        syntheticFlowBuild.refsByPermission,
+      );
       const syntheticWarnings = [
         `以下权限来自应用源码/配置扫描或 SDK API 权限映射，当前未定位到具体功能点数据流：${unmatchedPermissions.join(', ')}`,
       ];
       const syntheticDataflows: DataflowsResult = {
+        ...syntheticFlowBuild.dataflows,
         meta: {
-          runId: args.runId,
-          generatedAt: new Date().toISOString(),
+          ...syntheticFlowBuild.dataflows.meta,
           warnings: syntheticWarnings,
-          counts: { flows: 0, nodes: 0, edges: 0 },
         },
-        flows: [],
       };
       const syntheticDirAbs = path.join(args.outputDirAbs, 'app_permissions');
+      const syntheticPageDirAbs = toPageDir(args.outputDirAbs, pageId);
+      const syntheticFeatureDirAbs = toFeatureDir(args.outputDirAbs, pageId, featureId);
       const outFile = featureFactsFile({
         runId: args.runId,
         featureId,
@@ -928,7 +1100,62 @@ export async function generatePrivacyReportArtifacts(args: {
         warnings: syntheticWarnings,
         facts: syntheticFacts,
       });
+      await fs.mkdir(path.join(syntheticPageDirAbs, 'features'), { recursive: true });
+      await fs.mkdir(syntheticFeatureDirAbs, { recursive: true });
+      await writeJsonFile(path.join(syntheticDirAbs, 'dataflows.json'), syntheticDataflows);
       await writeJsonFile(path.join(syntheticDirAbs, 'privacy_facts.json'), outFile);
+      await writeJsonFile(path.join(syntheticFeatureDirAbs, 'dataflows.json'), syntheticDataflows);
+      await writeJsonFile(path.join(syntheticFeatureDirAbs, 'privacy_facts.json'), outFile);
+      await writeJsonFile(path.join(syntheticPageDirAbs, 'features', 'index.json'), {
+        meta: {
+          runId: args.runId,
+          generatedAt: new Date().toISOString(),
+          pageId,
+          counts: {
+            features: 1,
+            flows: syntheticDataflows.meta.counts.flows,
+          },
+        },
+        page: {
+          pageId,
+          entry: {
+            filePath: 'app_permissions',
+            structName: 'AppPermissions',
+            line: 1,
+            description: '应用权限兜底',
+          },
+        },
+        features: [
+          {
+            featureId,
+            title: '应用权限兜底',
+            kind: 'source',
+            anchor: { filePath: 'app_permissions', line: 1, functionName: 'permissions' },
+            counts: {
+              flows: syntheticDataflows.meta.counts.flows,
+              nodes: syntheticDataflows.meta.counts.nodes,
+              edges: syntheticDataflows.meta.counts.edges,
+            },
+          },
+        ],
+      });
+      pagesIndex.pages.push({
+        pageId,
+        entry: {
+          filePath: 'app_permissions',
+          structName: 'AppPermissions',
+          line: 1,
+          description: '应用权限兜底',
+        },
+        counts: {
+          features: 1,
+          flows: syntheticDataflows.meta.counts.flows,
+        },
+      });
+      pagesIndex.meta.counts.pages += 1;
+      pagesIndex.meta.counts.features += 1;
+      pagesIndex.meta.counts.flows += syntheticDataflows.meta.counts.flows;
+      await writeJsonFile(pagesIndexPath, pagesIndex);
       featuresForReport.push({
         featureId,
         featureTitle: '应用权限兜底',
@@ -1015,6 +1242,18 @@ function purposeClauseText(v: unknown): string {
   return text.replace(/^用于/gu, '').trim();
 }
 
+function permissionPurposeText(v: unknown): string {
+  const text = cleanText(v);
+  if (!text || text === '未识别') return '';
+  return trimPunctuationEdges(text).replace(/^用于/gu, '').trim();
+}
+
+function permissionDenyImpactText(v: unknown): string {
+  const text = cleanText(v);
+  if (!text || text === '未识别') return '';
+  return trimPunctuationEdges(text);
+}
+
 function buildFlowNodeIndex(dataflows: DataflowsResult): Map<string, Set<string>> {
   const map = new Map<string, Set<string>>();
   for (const flow of dataflows.flows ?? []) {
@@ -1072,11 +1311,6 @@ function collectPracticeFlowIds(
   }
   return out;
 }
-
-type CollectionParagraphAnchor = {
-  name: string;
-  jumpTo: { featureId: string; flowId: string; nodeId: string };
-};
 
 function relatedFlowsForPractice(args: {
   feature: ReportFeatureInput;
@@ -1139,8 +1373,8 @@ function collectionParagraphAnchors(args: {
   feature: ReportFeatureInput;
   practice: PrivacyDataPractice;
   perFlowIndex: Map<string, Set<string>> | undefined;
-}): CollectionParagraphAnchor[] {
-  const out: CollectionParagraphAnchor[] = [];
+}): ParagraphAnchor[] {
+  const out: ParagraphAnchor[] = [];
   const seen = new Set<string>();
   for (const dataItem of args.practice.dataItems ?? []) {
     const name = clauseText(dataItem?.name);
@@ -1174,7 +1408,7 @@ async function collectionParagraphForPractice(args: {
   feature: ReportFeatureInput;
   practice: PrivacyDataPractice;
   perFlowIndex: Map<string, Set<string>> | undefined;
-  anchors: CollectionParagraphAnchor[];
+  anchors: ParagraphAnchor[];
 }): Promise<string> {
   const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
   if (!apiKey || args.anchors.length === 0) return 'SKIP';
@@ -1263,9 +1497,9 @@ async function collectionParagraphForPractice(args: {
   return 'SKIP';
 }
 
-function collectionParagraphTokens(args: {
+function paragraphTokens(args: {
   paragraph: string;
-  anchors: CollectionParagraphAnchor[];
+  anchors: ParagraphAnchor[];
 }): PrivacyReportToken[] {
   const normalizedParagraph = normalizeCollectionParagraphResponse(args.paragraph);
   if (!normalizedParagraph || /^SKIP[。.!！?？]*$/iu.test(normalizedParagraph)) return [];
@@ -1308,17 +1542,33 @@ function permissionReportLabel(permissionName: string, mode: PrivacyPermissionPr
   return `${base}（${permissionAuthorizationLabel(mode)}）`;
 }
 
-function deterministicPermissionSentenceTokens(args: {
+function permissionParagraphAnchors(args: {
   feature: ReportFeatureInput;
   practice: PrivacyPermissionPractice;
   perFlowIndex: Map<string, Set<string>> | undefined;
-}): PrivacyReportToken[] {
+}): ParagraphAnchor[] {
   const permissionName = normalizePermissionName(args.practice.permissionName);
   if (!permissionName) return [];
 
   const picked = pickValidRef(args.practice.refs as Array<{ flowId: string; nodeId: string }> | undefined, args.perFlowIndex);
   if (!picked) return [];
-  const jumpTo = { featureId: args.feature.featureId, flowId: picked.flowId, nodeId: picked.nodeId };
+
+  return [
+    {
+      name: permissionReportLabel(permissionName, args.practice.authorizationMode),
+      jumpTo: { featureId: args.feature.featureId, flowId: picked.flowId, nodeId: picked.nodeId },
+    },
+  ];
+}
+
+async function permissionParagraphForPractice(args: {
+  llm: LlmConfig;
+  feature: ReportFeatureInput;
+  practice: PrivacyPermissionPractice;
+  perFlowIndex: Map<string, Set<string>> | undefined;
+  anchors: ParagraphAnchor[];
+}): Promise<string> {
+  const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
 
   const scenario = clauseText(
     normalizeScenarioForReport(args.practice.businessScenario, {
@@ -1327,25 +1577,92 @@ function deterministicPermissionSentenceTokens(args: {
       pageTitle: args.feature.pageTitle,
     }),
   );
-  const purpose = purposeClauseText(args.practice.permissionPurpose);
-  const denyImpact = clauseText(args.practice.denyImpact);
-  const prefix = scenario ? `在“${scenario}”场景中，我们会调用` : '我们会调用';
-  const permissionText = permissionReportLabel(permissionName, args.practice.authorizationMode);
-  const suffix = purpose ? `，用于${purpose}。` : '。';
+  const purpose = permissionPurposeText(args.practice.permissionPurpose);
+  const denyImpact = permissionDenyImpactText(args.practice.denyImpact);
 
-  return [
-    { text: prefix },
-    { text: permissionText, jumpTo },
-    { text: suffix },
-    ...(denyImpact ? [{ text: `若您拒绝授权，${denyImpact}。` }] : []),
-  ];
+  if (args.anchors.length === 0) return 'SKIP';
+  if (!apiKey) return 'SKIP';
+
+  const system = [
+    '你是隐私声明报告助手。',
+    '你的任务是为“设备权限调用”生成一段正式中文。',
+    '如果当前权限实践不适合写入隐私声明，必须只输出 SKIP。',
+    '如果生成正文，必须只输出一段中文，不要输出 JSON、标题、解释或 Markdown。',
+    '如果正文提到权限，必须直接使用候选权限名称中的原文，不得改写、翻译、拆分、合并或新增名称。',
+  ].join('\n');
+
+  const payload = JSON.stringify(
+    {
+      featureId: cleanText(args.feature.featureId),
+      featureTitle: cleanText(args.feature.featureTitle),
+      pageTitle: cleanText(args.feature.pageTitle),
+      businessScenario: scenario || '未识别',
+      candidatePermissions: args.anchors.map((anchor) => anchor.name),
+      permissionPurpose: purpose,
+      denyImpact,
+    },
+    null,
+    2,
+  );
+
+  const generateParagraph = async (strictAnchorRetry: boolean): Promise<string> => {
+    const user = [
+      strictAnchorRetry ? '你上一次输出未保留候选权限名称原文或段落不完整，请严格重写。' : '请基于以下证据生成权限声明段落，或输出 SKIP：',
+      payload,
+      '',
+      '写作要求：',
+      '- 如果生成正文，至少提到一个 candidatePermissions 中的原始名称',
+      strictAnchorRetry ? '- 必须逐字保留一个 candidatePermissions 中的原始名称，否则只输出 SKIP' : '',
+      strictAnchorRetry ? '- 请优先写完整的业务场景、权限用途和拒绝影响，不要只输出残句' : '',
+      '- 正文应自然、正式、通顺，可直接放入隐私声明',
+      '- 不要写源码术语、路径、函数名、变量名、日志信息或技术调试细节',
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+    const baseUrls = resolveLlmBaseUrls(args.llm.provider);
+    let lastError: unknown = null;
+    for (const baseUrl of baseUrls) {
+      try {
+        const res = await openAiCompatibleChat({
+          baseUrl,
+          apiKey,
+          model: args.llm.model,
+          messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: user },
+          ],
+          temperature: 0,
+        });
+        const paragraph = normalizeCollectionParagraphResponse(res.content);
+        if (!paragraph) return 'SKIP';
+        return /^SKIP[。.!！?？]*$/iu.test(paragraph) ? 'SKIP' : paragraph;
+      } catch (error) {
+        lastError = error;
+        const canRetry =
+          baseUrls.length > 1 &&
+          (error instanceof LlmNetworkError ||
+            (error instanceof LlmHttpError && (error.status === 401 || error.status === 404 || error.status >= 500)));
+        if (!canRetry) break;
+      }
+    }
+
+    void lastError;
+    return 'SKIP';
+  };
+
+  const paragraph = await generateParagraph(false);
+  if (paragraphTokens({ paragraph, anchors: args.anchors }).length > 0) return paragraph;
+  const retriedParagraph = await generateParagraph(true);
+  return paragraphTokens({ paragraph: retriedParagraph, anchors: args.anchors }).length > 0 ? retriedParagraph : 'SKIP';
 }
 
-function ensurePermissionsSectionTokens(args: {
+async function permissionSectionTokens(args: {
+  llm: LlmConfig;
   feature: ReportFeatureInput;
   facts: FeaturePrivacyFactsContent;
   perFlowIndex: Map<string, Set<string>> | undefined;
-}): PrivacyReportToken[] {
+}): Promise<PrivacyReportToken[]> {
   const practices = asPermissionPractices(args.facts)
     .map((practice) => ({
       ...practice,
@@ -1365,29 +1682,21 @@ function ensurePermissionsSectionTokens(args: {
 
   const merged: PrivacyReportToken[] = [];
   for (const practice of practices) {
-    const tokens = deterministicPermissionSentenceTokens({
+    const anchors = permissionParagraphAnchors({
       feature: args.feature,
       practice,
       perFlowIndex: args.perFlowIndex,
     });
+    const paragraph = await permissionParagraphForPractice({
+      llm: args.llm,
+      feature: args.feature,
+      practice,
+      perFlowIndex: args.perFlowIndex,
+      anchors,
+    });
+    const tokens = anchors.length > 0 ? paragraphTokens({ paragraph, anchors }) : [];
     if (tokens.length === 0) continue;
-    if (merged.length > 0) merged.push({ text: '此外，' });
     for (const token of tokens) merged.push(token);
-  }
-
-  if (merged.length === 0 && args.feature.featureId === '__app_permissions') {
-    const names = uniq(
-      practices
-        .map((practice) => permissionReportLabel(practice.permissionName, practice.authorizationMode))
-        .filter(Boolean)
-    );
-    if (names.length > 0) {
-      return [
-        {
-          text: `当前已在应用源码/配置扫描或 SDK API 权限映射中识别到以下权限：${names.join('、')}；但尚未定位到可回溯的功能点数据流，因此本章节暂不生成具体权限声明。`,
-        },
-      ];
-    }
   }
 
   return merged;
@@ -1418,7 +1727,7 @@ async function deterministicCollectionAndUseTokens(args: {
       perFlowIndex: args.perFlowIndex,
       anchors,
     });
-    const tokens = collectionParagraphTokens({ paragraph, anchors });
+    const tokens = paragraphTokens({ paragraph, anchors });
     if (tokens.length === 0) continue;
     for (const token of tokens) out.push(token);
   }
@@ -1450,14 +1759,17 @@ export async function buildPrivacyReport(args: {
     })),
   );
 
-  const permissions: PrivacyReportSection[] = args.features.map((feature) => ({
-    featureId: feature.featureId,
-    tokens: ensurePermissionsSectionTokens({
-      feature,
-      facts: feature.facts,
-      perFlowIndex: flowIndexes.get(feature.featureId),
-    }),
-  }));
+  const permissions: PrivacyReportSection[] = await Promise.all(
+    args.features.map(async (feature) => ({
+      featureId: feature.featureId,
+      tokens: await permissionSectionTokens({
+        llm: args.llm,
+        feature,
+        facts: feature.facts,
+        perFlowIndex: flowIndexes.get(feature.featureId),
+      }),
+    })),
+  );
 
   const warnings = uniq(
     args.features.flatMap((feature) => {

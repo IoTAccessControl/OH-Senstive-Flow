@@ -261,7 +261,7 @@ describe('privacy report evidence rules', () => {
     expect(result.text).toContain('用户搜索关键词');
   });
 
-  it('renders a non-empty fallback sentence for synthetic app-level permissions without refs', async () => {
+  it('omits synthetic app-level permissions from chapter two when no llm paragraph is available', async () => {
     const result = await buildPrivacyReport({
       runId: 'run2',
       appName: 'App',
@@ -295,16 +295,20 @@ describe('privacy report evidence rules', () => {
     });
 
     const permissionSection = result.report.sections.permissions[0];
-    expect(permissionSection?.tokens.length).toBeGreaterThan(0);
-    expect(permissionSection?.tokens[0]?.text).toContain('网络访问权限（预授权）');
-    expect(result.text).toContain('尚未定位到可回溯的功能点数据流');
+    expect(permissionSection?.tokens ?? []).toEqual([]);
+    expect(result.text).not.toContain('网络访问权限（预授权）');
   });
 
-  it('renders authorization labels in permission sentences with valid refs', async () => {
+  it('renders authorization labels in permission sentences with valid refs when llm returns a valid paragraph', async () => {
+    mockChat.mockResolvedValueOnce({
+      content: '在“用户点击拍照”场景中，我们会申请相机权限（动态授权），用于拍照。若您拒绝授权，无法拍照。',
+      raw: {},
+    });
+
     const result = await buildPrivacyReport({
       runId: 'run2b',
       appName: 'App',
-      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3-32b' },
+      llm: { provider: 'Qwen', apiKey: 'test-key', model: 'qwen3-32b' },
       features: [
         {
           featureId: 'feature_camera',

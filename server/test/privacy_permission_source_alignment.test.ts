@@ -3,6 +3,18 @@ import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
+const { mockChat } = vi.hoisted(() => ({
+  mockChat: vi.fn(),
+}));
+
+vi.mock('../src/llm/client.js', async () => {
+  const actual = await vi.importActual<typeof import('../src/llm/client.js')>('../src/llm/client.js');
+  return {
+    ...actual,
+    openAiCompatibleChat: mockChat,
+  };
+});
+
 import { collectPredictedPermissionsFromRun } from '../src/app/run.js';
 
 const mockExtractFeaturePrivacyFacts = vi.fn();
@@ -146,6 +158,7 @@ async function writeMinimalFeatureRun(args: {
 
 describe('privacy permission alignment with app source', () => {
   beforeEach(() => {
+    mockChat.mockReset();
     mockExtractFeaturePrivacyFacts.mockReset();
     mockRewritePermissionPracticeTexts.mockReset();
     mockExtractFeaturePrivacyFacts.mockResolvedValue({
@@ -181,9 +194,7 @@ describe('privacy permission alignment with app source', () => {
     const report = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'privacy_report.json'), 'utf8')) as any;
     const appPermissionSection = report.sections.permissions.find((section: any) => section.featureId === '__app_permissions');
     expect(appPermissionSection).toBeTruthy();
-    expect(appPermissionSection.tokens?.length ?? 0).toBeGreaterThan(0);
-    expect(appPermissionSection.tokens[0]?.text ?? '').toContain('相机权限');
-    expect(appPermissionSection.tokens.some((token: any) => token.jumpTo)).toBe(false);
+    expect(appPermissionSection.tokens ?? []).toEqual([]);
     expect((report.meta.warnings ?? []).some((item: string) => item.includes('权限段落缺少有效跳转引用'))).toBe(false);
   });
 
@@ -232,8 +243,8 @@ export function requestAll(context: UIContext) {
     ]);
 
     const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
-    expect(reportText).toContain('网络访问权限（预授权）');
-    expect(reportText).toContain('动态授权');
+    expect(reportText).not.toContain('网络访问权限（预授权）');
+    expect(reportText).not.toContain('动态授权');
   });
 
   it('rewrites placeholder deterministic permission text with privacy report llm evidence refinement', async () => {
@@ -258,6 +269,10 @@ export function requestAll(context: UIContext) {
       ],
       warnings: [],
     });
+    mockChat.mockResolvedValueOnce({
+      content: '在“用户打开详情页时”，我们会申请网络访问权限（预授权），用于连接网络并打开目标页面。若您拒绝授权，无法加载并打开目标页面。',
+      raw: {},
+    });
 
     await generatePrivacyReportArtifacts({
       repoRoot,
@@ -274,7 +289,10 @@ export function requestAll(context: UIContext) {
     expect(facts.facts.permissionPractices[0]?.denyImpact).toBe('无法加载并打开目标页面');
 
     const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
-    expect(reportText).toContain('网络访问权限（预授权），用于连接网络并打开目标页面。');
+    expect(reportText).toContain('网络访问权限（预授权）');
+    expect(reportText).toContain('用户打开详情页时');
+    expect(reportText).toContain('用于连接网络并打开目标页面');
+    expect(reportText).toContain('无法加载并打开目标页面');
     expect(reportText).not.toContain('使用相关系统能力（由 SDK API 权限映射确定）');
   });
 
@@ -308,6 +326,10 @@ export function requestAll(context: UIContext) {
         ],
       },
       warnings: [],
+    });
+    mockChat.mockResolvedValueOnce({
+      content: '在“网络访问”场景中，我们会申请网络访问权限（预授权），用于联网。若您拒绝授权，无法联网。',
+      raw: {},
     });
 
     await generatePrivacyReportArtifacts({
@@ -350,7 +372,7 @@ export function requestAll(context: UIContext) {
     expect(facts.facts.permissionPractices[0]?.businessScenario).toBe('测试页检查网络连接状态时');
 
     const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
-    expect(reportText).toContain('测试页检查网络连接状态时');
+    expect(reportText).not.toContain('测试页检查网络连接状态时');
     expect(reportText).not.toContain('Checks whether the default data network is activated.');
   });
 });
