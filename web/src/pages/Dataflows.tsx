@@ -128,6 +128,19 @@ function asDataflows(raw: unknown): DataflowsResult {
   return { meta, flows };
 }
 
+function normalizePageFilePath(filePath: string | undefined): string {
+  return typeof filePath === 'string' ? filePath.replaceAll('\\', '/').toLowerCase() : '';
+}
+
+function isRealPageInfo(page: PageInfo): boolean {
+  return normalizePageFilePath(page.entry?.filePath).includes('/pages/');
+}
+
+function pageDisplayName(page: PageInfo | null | undefined): string {
+  const description = page?.entry?.description?.trim();
+  return description || '未命名页面';
+}
+
 function fileName(p: string): string {
   const parts = p.split('/');
   return parts[parts.length - 1] ?? p;
@@ -170,6 +183,10 @@ export function DataflowsPage() {
   const [state, setState] = useState<LoadState>({ state: 'loading' });
   const [selectedFlowId, setSelectedFlowId] = useState<string | undefined>(undefined);
   const [selectedNodeId, setSelectedNodeId] = useState<string | undefined>(undefined);
+
+  const visiblePages = useMemo(() => {
+    return (pagesIndex?.pages ?? []).filter(isRealPageInfo);
+  }, [pagesIndex]);
 
   useEffect(() => {
     let cancelled = false;
@@ -236,12 +253,17 @@ export function DataflowsPage() {
         }
       }
 
-      if (!cancelled) setSelectedPageId((prev) => (prev && pageIds.has(prev) ? prev : pages[0]!.pageId));
+      if (!cancelled) {
+        setSelectedPageId((prev) => {
+          if (prev && pageIds.has(prev)) return prev;
+          return visiblePages[0]?.pageId ?? pages[0]!.pageId;
+        });
+      }
     })();
     return () => {
       cancelled = true;
     };
-  }, [mode, pagesIndex, runId, pageIdFromUrl, featureIdHint]);
+  }, [mode, pagesIndex, visiblePages, runId, pageIdFromUrl, featureIdHint]);
 
   useEffect(() => {
     let cancelled = false;
@@ -363,6 +385,9 @@ export function DataflowsPage() {
     state.state === 'ready' && Array.isArray(state.data.meta?.warnings)
       ? state.data.meta.warnings.filter((x): x is string => typeof x === 'string' && x.trim().length > 0)
       : [];
+  const selectedVisiblePageId = useMemo(() => {
+    return visiblePages.some((page) => page.pageId === selectedPageId) ? (selectedPageId ?? '') : '';
+  }, [visiblePages, selectedPageId]);
   const currentGroupLabel = useMemo(() => {
     if (mode !== 'pageFeature') return '';
     if (!pagesIndex || !selectedPageId || !pageFeaturesIndex || !selectedFeatureId) return '';
@@ -371,9 +396,7 @@ export function DataflowsPage() {
     const feature = pageFeaturesIndex.features.find((f) => f.featureId === selectedFeatureId);
     if (!page || !feature) return '';
 
-    const pageTitle = page.pageId === '_unassigned' ? '未归类' : page.entry?.description?.trim() || page.entry?.structName || page.pageId;
-    const pageCode = page.entry?.structName || page.pageId;
-    const pageLabel = pageTitle && pageCode && pageTitle !== pageCode ? `${pageTitle}（${pageCode}）` : pageTitle || pageCode || '';
+    const pageLabel = page.pageId === '_unassigned' ? '未归类' : pageDisplayName(page);
     const featureLabel = feature.title?.trim() || feature.featureId;
     if (!pageLabel || !featureLabel) return '';
     return `当前分类：${pageLabel} -> ${featureLabel}`;
@@ -400,12 +423,12 @@ export function DataflowsPage() {
         <>
           {indexHint && <div className="status">{indexHint}</div>}
 
-          {mode === 'pageFeature' && pagesIndex && pagesIndex.pages.length > 0 && (
+          {mode === 'pageFeature' && visiblePages.length > 0 && (
             <label className="field">
               <div className="label">选择页面</div>
               <select
                 className="input"
-                value={selectedPageId ?? ''}
+                value={selectedVisiblePageId}
                 onChange={(e) => {
                   setSelectedPageId(e.target.value);
                   setSelectedFeatureId(undefined);
@@ -413,13 +436,11 @@ export function DataflowsPage() {
                   setSelectedNodeId(undefined);
                 }}
               >
-                {pagesIndex.pages.map((p) => {
-                  const title = p.pageId === '_unassigned' ? '未归类' : p.entry?.description?.trim() || p.entry?.structName || p.pageId;
-                  const codeName = p.entry?.structName || p.pageId;
-                  const name = title && codeName && title !== codeName ? `${title}（${codeName}）` : title || codeName;
+                {selectedVisiblePageId === '' && <option value="">请选择页面</option>}
+                {visiblePages.map((p) => {
                   return (
                     <option key={p.pageId} value={p.pageId}>
-                      {name}
+                      {pageDisplayName(p)}
                     </option>
                   );
                 })}

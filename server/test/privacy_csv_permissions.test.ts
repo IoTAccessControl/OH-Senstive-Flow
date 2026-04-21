@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { generatePrivacyReportArtifacts } from '../src/analyzer/privacy/report.js';
 
 describe('privacy facts - deterministic permissions from CSV', () => {
-  it('injects CSV-mapped permissions into privacy_facts.json and privacy_report.json', async () => {
+  it('injects CSV-mapped permissions into privacy_facts.json and keeps permission report empty without report llm', async () => {
     const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-repo-'));
     const outputDirAbs = path.join(repoRoot, 'output', 'App', 'run1');
     const csvDirAbs = path.join(repoRoot, 'input', 'csv');
@@ -198,10 +198,8 @@ describe('privacy facts - deterministic permissions from CSV', () => {
     expect(permPractices.some((p: any) => p.permissionName === 'ohos.permission.INTERNET')).toBe(true);
 
     const permissionSection = (report?.sections?.permissions ?? []).find((s: any) => s.featureId === 'ui_P1_feature');
-    const tokens = permissionSection?.tokens ?? [];
-    const internetToken = tokens.find((t: any) => t.text === '网络访问权限');
-    expect(internetToken).toBeTruthy();
-    expect(internetToken.jumpTo).toEqual({ featureId: 'ui_P1_feature', flowId: 'flow:p1', nodeId: 'p1:n1' });
+    expect(permissionSection?.tokens ?? []).toEqual([]);
+    expect(report?.meta?.skipped).toBe(true);
 
     const permissionSection2 = (report?.sections?.permissions ?? []).find((s: any) => s.featureId === 'ui_P1_feature2');
     expect(permissionSection2?.tokens ?? []).toEqual([]);
