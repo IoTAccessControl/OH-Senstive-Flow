@@ -10,8 +10,6 @@ import type {
   PrivacyDataPractice,
   PrivacyPermissionPractice,
   PrivacyRecipient,
-  PrivacyToggleUi,
-  UiNodeRef,
 } from './types.js';
 
 type LlmConfig = { provider: string; apiKey: string; model: string };
@@ -27,18 +25,8 @@ export type PrivacyFactsFeatureContext = {
 
 export type PrivacyFactsPermissionHint = {
   permissionName: string;
-  businessScenario?: string;
   refs: DataflowNodeRef[];
-  apiKeys?: string[];
   apiDescriptions?: string[];
-};
-
-type PermissionPracticeDraft = {
-  permissionName: string;
-  businessScenario: string;
-  permissionPurpose: string;
-  denyImpact: string;
-  refs: DataflowNodeRef[];
 };
 
 function safeJsonParse(text: string): unknown {
@@ -251,12 +239,6 @@ function normalizeExtractedContent(content: FeaturePrivacyFactsContent, feature:
         ...recipient,
         name: normalizeUserFacingText(recipient.name) || recipient.name,
       })),
-      privacyToggleUi: p.privacyToggleUi
-        ? {
-            ...p.privacyToggleUi,
-            where: normalizeUserFacingText(p.privacyToggleUi.where) || p.privacyToggleUi.where,
-          }
-        : undefined,
     })),
     permissionPractices: (content.permissionPractices ?? []).map((p) => ({
       ...p,
@@ -273,11 +255,6 @@ function buildFlowNodeIndex(dataflows: DataflowsResult): Map<string, Set<string>
     map.set(String(f.flowId ?? ''), set);
   }
   return map;
-}
-
-function buildUiNodeIndex(uiTree: UiTreeResult | null): Set<string> {
-  if (!uiTree) return new Set();
-  return new Set(Object.keys(uiTree.nodes ?? {}));
 }
 
 function filterValidRefs(
@@ -303,20 +280,7 @@ function filterValidRefs(
   return out;
 }
 
-function filterValidUiRefs(raw: unknown, uiNodeIndex: Set<string>): UiNodeRef[] {
-  if (!Array.isArray(raw)) return [];
-  const out: UiNodeRef[] = [];
-  for (const r of raw) {
-    if (!isRecord(r)) continue;
-    const uiNodeId = cleanText(r.uiNodeId);
-    if (!uiNodeId) continue;
-    if (!uiNodeIndex.has(uiNodeId)) continue;
-    out.push({ uiNodeId });
-  }
-  return out;
-}
-
-function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>, uiNodeIndex: Set<string>): {
+function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>): {
   content: FeaturePrivacyFactsContent;
   warnings: string[];
 } {
@@ -348,22 +312,12 @@ function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>, 
         for (const r of recipientsRaw) {
           if (!isRecord(r)) continue;
           const name = cleanTextOrUnknown(r.name);
-          const inferred = typeof r.inferred === 'boolean' ? r.inferred : undefined;
           const refs = filterValidRefs(r.refs, flowNodeIndex, warnings, `dataRecipients(${name})`);
-          recipients.push({ name, inferred, refs: refs.length > 0 ? refs : undefined });
+          recipients.push({ name, refs: refs.length > 0 ? refs : undefined });
         }
       }
 
-      const toggleRaw = (p as any).privacyToggleUi;
-      let privacyToggleUi: PrivacyToggleUi | undefined;
-      if (isRecord(toggleRaw)) {
-        const where = cleanTextOrUnknown(toggleRaw.where);
-        const refs = filterValidUiRefs(toggleRaw.refs, uiNodeIndex);
-        privacyToggleUi = { where, refs: refs.length > 0 ? refs : undefined };
-      }
-
       dataPractices.push({
-        appName: cleanTextOrUnknown(p.appName),
         businessScenario: cleanTextOrUnknown(p.businessScenario),
         dataSources: cleanStringArray(p.dataSources),
         dataItems,
@@ -371,7 +325,6 @@ function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>, 
         storageMethod: cleanTextOrUnknown(p.storageMethod),
         dataRecipients: recipients,
         processingPurpose: cleanTextOrUnknown(p.processingPurpose),
-        privacyToggleUi,
       });
     }
   }
@@ -382,8 +335,10 @@ function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>, 
       if (!isRecord(p)) continue;
       const permissionName = cleanTextOrUnknown(p.permissionName);
       const refs = filterValidRefs(p.refs, flowNodeIndex, warnings, `permissionPractices(${permissionName})`);
+      const authorizationMode = p.authorizationMode === 'preauthorized' || p.authorizationMode === 'dynamic' ? p.authorizationMode : undefined;
       permissionPractices.push({
         permissionName,
+        authorizationMode,
         businessScenario: cleanOptionalText(p.businessScenario),
         permissionPurpose: cleanOptionalText(p.permissionPurpose),
         denyImpact: cleanOptionalText(p.denyImpact),
@@ -395,118 +350,73 @@ function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>, 
   return { content: { dataPractices, permissionPractices }, warnings };
 }
 
-function hasCompletePermissionDraft(practice: PrivacyPermissionPractice | PermissionPracticeDraft | null | undefined): boolean {
-  if (!practice) return false;
-  return Boolean(
-    cleanText(practice.permissionName) &&
-      cleanText(practice.businessScenario) &&
-      cleanText(practice.permissionPurpose) &&
-      cleanText(practice.denyImpact),
-  );
-}
-
 function limitArray<T>(arr: T[], max: number): { items: T[]; truncated: boolean } {
   if (arr.length <= max) return { items: arr, truncated: false };
   return { items: arr.slice(0, max), truncated: true };
 }
 
 function buildPrompt(args: {
-  appName: string;
   feature: PrivacyFactsFeatureContext | null;
   dataflows: DataflowsResult;
-  uiTree: UiTreeResult | null;
   permissionHints?: PrivacyFactsPermissionHint[];
 }): { system: string; user: string } {
   const system = [
     '你是一个静态分析与隐私合规分析助手。',
-    '你将收到一个页面功能点（Feature）的 UI 信息、source 入口信息、以及该功能点下的数据流节点。',
-    '请严格基于证据抽取隐私声明所需的结构化要素。',
+    '你将收到一个页面标题、功能标题、精简后的数据流节点，以及权限提示。',
+    '请严格基于输入证据抽取隐私声明所需的结构化要素。',
     '输出必须是严格 JSON（不要 markdown，不要额外文字）。',
   ].join('\n');
 
-  const featureId = args.feature?.featureId ?? 'unknown';
-  const featureTitle = args.feature?.title ?? '';
-  const featureKind = args.feature?.kind ?? 'source';
-  const featureAnchor = args.feature?.anchor ?? {};
-  const page = args.feature?.page ?? null;
-  const sources = Array.isArray(args.feature?.sources) ? args.feature!.sources : [];
+  const pageTitle = cleanText(args.feature?.page?.entry?.description);
+  const featureTitle = cleanText(args.feature?.title);
 
   const flows = Array.isArray(args.dataflows.flows) ? args.dataflows.flows : [];
-  const flowSummaries = flows.map((f) => ({
-    flowId: f.flowId,
-    pathId: f.pathId,
-    summary: f.summary ?? {},
-    nodes: (f.nodes ?? []).map((n) => ({
-      id: n.id,
-      filePath: n.filePath,
-      line: n.line,
-      code: n.code,
-      description: n.description,
-    })),
+  const { items: limitedFlows } = limitArray(flows, 12);
+  const promptFlows = limitedFlows.map((f) => ({
+    flowId: cleanText(f.flowId),
+    nodes: limitArray(
+      (f.nodes ?? []).map((n) => ({
+        nodeId: cleanText(n.id),
+        description: cleanText(n.description),
+        code: cleanText(n.code),
+      })),
+      80,
+    ).items,
   }));
 
-  const uiNodes = args.uiTree
-    ? Object.entries(args.uiTree.nodes ?? {}).map(([id, n]) => ({
-        id,
-        category: n.category,
-        name: n.name,
-        description: n.description,
-        filePath: n.filePath,
-        line: n.line,
-      }))
-    : [];
+  const permissionHints = (Array.isArray(args.permissionHints) ? args.permissionHints : []).map((hint) => ({
+    permissionName: cleanText(hint.permissionName),
+    refs: Array.isArray(hint.refs) ? hint.refs : [],
+    apiDescriptions: cleanStringArray(hint.apiDescriptions),
+  }));
 
-  const { items: limitedFlows, truncated: flowsTruncated } = limitArray(flowSummaries, 12);
-  const limitedFlowsWithLimitedNodes = limitedFlows.map((f) => {
-    const { items: limitedNodes, truncated: nodesTruncated } = limitArray(f.nodes, 80);
-    return { ...f, nodes: limitedNodes, nodesTruncated };
-  });
-
-  const { items: limitedUiNodes, truncated: uiTruncated } = limitArray(uiNodes, 120);
-  const permissionHints = Array.isArray(args.permissionHints) ? args.permissionHints : [];
+  const inputPayload = {
+    pageTitle,
+    featureTitle,
+    dataflows: { flows: promptFlows },
+    permissionHints,
+  };
 
   const user = [
-    `应用名称(appName)：${args.appName}`,
-    `页面功能点(featureId)：${featureId}`,
-    `功能点标题(title)：${featureTitle || '未识别'}`,
-    `功能点类型(kind)：${featureKind}`,
-    '',
-    '所属页面(page)：',
-    JSON.stringify(page ?? {}),
-    '',
-    '功能点锚点(anchor)：',
-    JSON.stringify(featureAnchor ?? {}),
-    '',
-    'source 入口与业务说明（可用于推断业务场景，必须基于证据）：',
-    JSON.stringify(sources),
-    '',
-    '页面 UI 节点（用于定位“隐私功能在哪个界面开关”；如无法确定请输出“未识别”）：',
-    JSON.stringify({ truncated: uiTruncated, nodes: limitedUiNodes }),
-    '',
-    '功能点数据流（每个 flowId 下的 nodes[] 都包含 nodeId；你在输出 refs 时必须使用这些 nodeId）：',
-    JSON.stringify({ truncated: flowsTruncated, flows: limitedFlowsWithLimitedNodes }),
-    '',
-    '权限候选提示（来自 sink/API/CSV 权限映射；这是 permissionPractices 的必答清单。只要提示与当前功能点数据流一致，就必须逐条覆盖并生成对应权限事实）：',
-    JSON.stringify(permissionHints),
+    '输入 JSON：',
+    JSON.stringify(inputPayload, null, 2),
     '',
     '请输出 JSON，结构如下（字段名必须一致）：',
     '{',
     '  "dataPractices": [',
     '    {',
-    '      "appName": string,',
     '      "businessScenario": string,',
     '      "dataSources": string[],',
     '      "dataItems": [ { "name": string, "refs": [ { "flowId": string, "nodeId": string } ] } ],',
     '      "processingMethod": string,',
     '      "storageMethod": string,',
-    '      "dataRecipients": [ { "name": string, "inferred": boolean?, "refs": [ { "flowId": string, "nodeId": string } ]? } ],',
+    '      "dataRecipients": [ { "name": string, "refs": [ { "flowId": string, "nodeId": string } ]? } ],',
     '      "processingPurpose": string,',
-    '      "privacyToggleUi": { "where": string, "refs": [ { "uiNodeId": string } ]? }?',
     '    }',
     '  ],',
     '  "permissionPractices": [',
     '    {',
-    '      "permissionName": string,',
+      '      "permissionName": string,',
     '      "businessScenario": string,',
     '      "permissionPurpose": string,',
     '      "denyImpact": string,',
@@ -516,17 +426,16 @@ function buildPrompt(args: {
     '}',
     '',
     '硬性要求：',
-    '1) dataItems[].refs 与 permissionPractices[].refs 必须引用上面数据流中真实存在的 {flowId,nodeId}；如果无法找到证据，请将 name/permissionName 设为“未识别”，并使用空 refs 数组。',
-    '2) 禁止凭空编造接收方/权限/数据项；允许对“处理方式/存储方式/处理目的/拒绝影响”等做弱推断，但必须与提供的证据一致。',
+    '1) 你只能基于输入 JSON 中的 4 个字段进行判断：pageTitle、featureTitle、dataflows、permissionHints。',
+    '2) dataItems[].refs、dataRecipients[].refs 与 permissionPractices[].refs 必须引用上面 dataflows 中真实存在的 {flowId,nodeId}；如果无法找到证据，请使用空 refs 数组。',
     '3) 输出必须是严格 JSON（不要多余文本）。',
-    '4) businessScenario 必须写成用户或应用可理解的业务场景，禁止直接输出“build”“onForeground”“onBackground”“onDestroy”“生命周期函数”“UIAbility”“WindowStage”等框架术语；若只能判断到框架阶段，请改写为“页面展示时”“应用切到前台时”“应用退出时”等自然表述。',
-    '5) businessScenario、dataSources、dataItems[].name、dataRecipients[].name、storageMethod、privacyToggleUi.where 必须优先使用面向用户的简体中文；即使证据文本是英文，也必须翻译或改写成中文。',
+    '4) businessScenario 必须写成用户可理解的具体业务场景，优先结合 pageTitle 和 featureTitle 改写，禁止直接输出 build、onForeground、生命周期函数、UIAbility、WindowStage、页面构建入口、功能入口、页面展示与交互、组件展示与交互等框架或结构性标签。',
+    '5) businessScenario、dataSources、dataItems[].name、dataRecipients[].name、processingMethod、storageMethod、processingPurpose、permissionPurpose、denyImpact 必须优先使用面向用户的简体中文；即使证据文本是英文，也必须翻译或改写成中文。',
     '6) 禁止直接输出 currentLocation、startPosition、isStart、stepGoal、build、Foreground、Background 等代码变量名或框架术语；若证据里同时出现“英文标识（中文解释）”，应优先保留中文解释。',
-    '7) permissionHints 中出现的 permissionName、businessScenario、apiDescriptions 是 permissionPractices 的必答清单；若与数据流证据一致，必须为每个 hint 生成一条对应的权限事实。',
-    '8) 如果功能点标题或辅助证据里出现“页面构建入口”“功能入口”“页面展示与交互”“组件展示与交互”等结构性标签，禁止直接把它们原样写成 businessScenario；必须结合 page、permissionHints、dataflows、processingPurpose 等证据，重写成具体业务场景。',
+    '7) 禁止凭空编造数据项、接收方或权限；允许对 processingMethod、storageMethod、processingPurpose、permissionPurpose、denyImpact 做最保守的弱推断，但必须与输入证据一致。',
+    '8) permissionHints 中出现的 permissionName、refs、apiDescriptions 是 permissionPractices 的必答清单；只要这些提示与当前功能点数据流一致，就必须为每个 hint 生成一条权限事实。',
     '9) permissionPractices[].denyImpact 必须写成用户拒绝授权后的具体影响，禁止输出“相关功能可能无法正常使用”“对应功能可能无法正常使用”这类空泛句子；若证据不足，也要明确说出无法完成的具体动作或用户可见结果。',
-    '10) 只要 permissionHints 已提供明确的 permissionName、refs、apiDescriptions/apiKeys，且这些证据与当前功能点数据流一致，就必须为该权限生成具体的 businessScenario、permissionPurpose、denyImpact；不要留空，也不要输出“未识别”。',
-    '11) permissionPractices 中若保留了某个 permissionName，businessScenario、permissionPurpose、denyImpact 不应为空字符串；若证据不足，也应基于 hint 中的 action、page、processingPurpose 给出最保守但完整的中文描述。',
+    '10) permissionPractices 中若保留了某个 permissionName，businessScenario、permissionPurpose、denyImpact 不应为空字符串；若证据不足，也应基于 pageTitle、featureTitle、apiDescriptions、processingPurpose 给出最保守但完整的中文描述。',
   ].join('\n');
 
   return { system, user };
@@ -566,96 +475,6 @@ async function chatJsonWithRetries(args: {
   throw lastError instanceof Error ? lastError : new Error(String(lastError));
 }
 
-async function completePermissionPractices(args: {
-  appName: string;
-  feature: PrivacyFactsFeatureContext | null;
-  llm: LlmConfig;
-  permissionHints: PrivacyFactsPermissionHint[];
-  dataPractices: PrivacyDataPractice[];
-}): Promise<{ practices: PermissionPracticeDraft[]; warnings: string[] }> {
-  const warnings: string[] = [];
-  const hints = (args.permissionHints ?? []).filter((hint) => cleanText(hint.permissionName));
-  if (hints.length === 0) return { practices: [], warnings };
-
-  const featureId = args.feature?.featureId ?? 'unknown';
-  const pageTitle = cleanText(args.feature?.page?.entry?.description);
-  const system = [
-    '你是一个隐私权限事实补全助手。',
-    '你将收到一个功能点下已确定存在的权限清单。',
-    '这些权限已经由静态分析确认存在，你不能删除、遗漏、改名，也不能新增权限。',
-    '你的任务只是为每条权限补全 businessScenario、permissionPurpose、denyImpact。',
-    '输出必须是严格 JSON（不要 markdown，不要额外文字）。',
-  ].join('\n');
-
-  const user = [
-    `应用名称(appName)：${args.appName}`,
-    `页面功能点(featureId)：${featureId}`,
-    `页面标题(pageTitle)：${pageTitle || ''}`,
-    '',
-    '已确认权限清单（必须逐条覆盖，顺序保持一致）：',
-    JSON.stringify(hints),
-    '',
-    '相关数据实践（用于补全权限用途和拒绝影响）：',
-    JSON.stringify(args.dataPractices),
-    '',
-    '请输出 JSON：',
-    '{',
-    '  "permissionPractices": [',
-    '    {',
-    '      "permissionName": string,',
-    '      "businessScenario": string,',
-    '      "permissionPurpose": string,',
-    '      "denyImpact": string,',
-    '      "refs": [ { "flowId": string, "nodeId": string } ]',
-    '    }',
-    '  ]',
-    '}',
-    '',
-    '硬性要求：',
-    '1) permissionPractices 的数量、顺序、permissionName 必须与上面的已确认权限清单完全一致。',
-    '2) refs 必须原样保留，不得新增、删除或修改。',
-    '3) businessScenario、permissionPurpose、denyImpact 必须全部填写，不能为空，也不要输出“未识别”。',
-    '4) 必须使用简体中文，且面向用户表达。',
-    '5) 禁止输出源码术语、路径、函数名、变量名或调试说明。',
-  ].join('\n');
-
-  const raw = await chatJsonWithRetries({ llm: args.llm, system, user });
-  if (!isRecord(raw) || !Array.isArray((raw as any).permissionPractices)) {
-    warnings.push('权限文案补全 LLM 输出格式不正确。');
-    return { practices: [], warnings };
-  }
-
-  const practices: PermissionPracticeDraft[] = [];
-  const outputs = (raw as any).permissionPractices as unknown[];
-  for (let index = 0; index < hints.length; index += 1) {
-    const hint = hints[index]!;
-    const candidate = outputs[index];
-    if (!isRecord(candidate)) {
-      warnings.push(`权限 ${hint.permissionName} 的补全文案缺失。`);
-      continue;
-    }
-    const permissionName = cleanText(candidate.permissionName);
-    if (permissionName !== cleanText(hint.permissionName)) {
-      warnings.push(`权限补全文案输出顺序或名称不匹配：期望 ${hint.permissionName}，实际 ${permissionName || '空值'}。`);
-      continue;
-    }
-    const draft: PermissionPracticeDraft = {
-      permissionName,
-      businessScenario: cleanText(candidate.businessScenario),
-      permissionPurpose: cleanText(candidate.permissionPurpose),
-      denyImpact: cleanText(candidate.denyImpact),
-      refs: Array.isArray(hint.refs) ? hint.refs : [],
-    };
-    if (!hasCompletePermissionDraft(draft)) {
-      warnings.push(`权限 ${permissionName} 的补全文案不完整。`);
-      continue;
-    }
-    practices.push(draft);
-  }
-
-  return { practices, warnings };
-}
-
 export async function extractFeaturePrivacyFacts(args: {
   runId: string;
   appName: string;
@@ -681,55 +500,10 @@ export async function extractFeaturePrivacyFacts(args: {
   }
 
   const flowNodeIndex = buildFlowNodeIndex(args.dataflows);
-  const uiNodeIndex = buildUiNodeIndex(args.uiTree);
-
-  const prompt = buildPrompt({
-    appName: args.appName,
-    feature: args.feature,
-    dataflows: args.dataflows,
-    uiTree: args.uiTree,
-    permissionHints: args.permissionHints,
-  });
+  const prompt = buildPrompt({ feature: args.feature, dataflows: args.dataflows, permissionHints: args.permissionHints });
 
   const raw = await chatJsonWithRetries({ llm: { ...args.llm, apiKey }, system: prompt.system, user: prompt.user });
-  const validated = validateContent(raw, flowNodeIndex, uiNodeIndex);
-  const permissionHints = Array.isArray(args.permissionHints) ? args.permissionHints : [];
-  if (permissionHints.length > 0) {
-    const completed = await completePermissionPractices({
-      appName: args.appName,
-      feature: args.feature,
-      llm: { ...args.llm, apiKey },
-      permissionHints,
-      dataPractices: validated.content.dataPractices,
-    });
-    validated.warnings.push(...completed.warnings);
-    const completedByName = new Map(completed.practices.map((practice) => [cleanText(practice.permissionName), practice]));
-    const merged: PrivacyPermissionPractice[] = [];
-    for (const hint of permissionHints) {
-      const permissionName = cleanText(hint.permissionName);
-      if (!permissionName) continue;
-      const completedPractice = completedByName.get(permissionName);
-      if (completedPractice) {
-        merged.push({
-          permissionName,
-          businessScenario: completedPractice.businessScenario,
-          permissionPurpose: completedPractice.permissionPurpose,
-          denyImpact: completedPractice.denyImpact,
-          refs: Array.isArray(hint.refs) ? hint.refs : [],
-        });
-        continue;
-      }
-      validated.warnings.push(`权限提示 ${permissionName} 未被权限文案补全步骤成功覆盖。`);
-      merged.push({
-        permissionName,
-        businessScenario: '',
-        permissionPurpose: '',
-        denyImpact: '',
-        refs: Array.isArray(hint.refs) ? hint.refs : [],
-      });
-    }
-    validated.content.permissionPractices = merged;
-  }
+  const validated = validateContent(raw, flowNodeIndex);
   return {
     ...validated,
     content: normalizeExtractedContent(validated.content, args.feature),

@@ -36,7 +36,6 @@ describe('privacy facts scenario language normalization', () => {
       content: JSON.stringify({
         dataPractices: [
           {
-            appName: 'App',
             businessScenario: 'Checks whether the default data network is activated.',
             dataSources: ['网络服务'],
             dataItems: [{ name: '网络连接状态', refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }] }],

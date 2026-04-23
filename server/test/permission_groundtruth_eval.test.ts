@@ -41,14 +41,11 @@ describe('permission groundtruth evaluation', () => {
       path.join(factsDir, 'privacy_facts.json'),
       JSON.stringify(
         {
-          meta: { runId: 'App_run1', featureId: 'F1', generatedAt: new Date().toISOString() },
-          facts: {
-            permissionPractices: [
-              { permissionName: 'ohos.permission.INTERNET（可选）' },
-              { permissionName: '未识别' },
-              { permissionName: 'some text with ohos.permission.GET_NETWORK_INFO inside' },
-            ],
-          },
+          permissionPractices: [
+            { permissionName: 'ohos.permission.INTERNET（可选）' },
+            { permissionName: '未识别' },
+            { permissionName: 'some text with ohos.permission.GET_NETWORK_INFO inside' },
+          ],
         },
         null,
         2,

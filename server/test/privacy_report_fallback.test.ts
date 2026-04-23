@@ -35,7 +35,6 @@ describe('privacy report evidence rules', () => {
           facts: {
             dataPractices: [
               {
-                appName: 'App',
                 businessScenario: '用户点击头像',
                 dataSources: ['系统相册'],
                 dataItems: [{ name: '头像图片', refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }] }],
@@ -109,7 +108,6 @@ describe('privacy report evidence rules', () => {
           facts: {
             dataPractices: [
               {
-                appName: 'App',
                 businessScenario: '用户更新头像',
                 dataSources: ['系统相册'],
                 dataItems: [{ name: '头像图片', refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }] }],
@@ -176,7 +174,6 @@ describe('privacy report evidence rules', () => {
           facts: {
             dataPractices: [
               {
-                appName: 'App',
                 businessScenario: '页面返回时',
                 dataSources: ['页面状态'],
                 dataItems: [
@@ -189,7 +186,6 @@ describe('privacy report evidence rules', () => {
                 processingPurpose: '控制页面返回逻辑',
               },
               {
-                appName: 'App',
                 businessScenario: '搜索联系人',
                 dataSources: ['用户输入'],
                 dataItems: [
@@ -375,7 +371,6 @@ describe('privacy report evidence rules', () => {
           facts: {
             dataPractices: [
               {
-                appName: 'App',
                 businessScenario: 'Checks whether the default data network is activated.',
                 dataSources: ['网络服务'],
                 dataItems: [{ name: '网络连接状态', refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }] }],

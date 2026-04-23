@@ -155,9 +155,9 @@ export async function collectPredictedPermissionsFromRun(runDirAbs: string): Pro
   for (const filePath of privacyFactsPaths) {
     try {
       const parsed = (await readJsonFile(filePath)) as {
-        facts?: { permissionPractices?: Array<{ permissionName?: string }> };
+        permissionPractices?: Array<{ permissionName?: string }>;
       };
-      const items = parsed?.facts?.permissionPractices ?? [];
+      const items = parsed?.permissionPractices ?? [];
       for (const item of items) {
         const value = typeof item.permissionName === 'string' ? item.permissionName : '';
         for (const permissionName of extractPermissionNamesFromText(value)) predicted.add(permissionName);

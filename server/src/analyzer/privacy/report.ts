@@ -15,7 +15,6 @@ import { extractFeaturePrivacyFacts, type PrivacyFactsPermissionHint } from './f
 import { getPermissionDisplayName } from './permissionDisplay.js';
 import type {
   DataflowNodeRef,
-  FeaturePrivacyFactsFile,
   FeaturePrivacyFactsContent,
   PrivacyDataPractice,
   PrivacyPermissionPractice,
@@ -222,29 +221,6 @@ async function tryReadJson<T>(filePath: string): Promise<T | null> {
 function toAbs(repoRoot: string, maybeRelativePath: string): string {
   const p = typeof maybeRelativePath === 'string' ? maybeRelativePath : '';
   return path.isAbsolute(p) ? p : path.resolve(repoRoot, p);
-}
-
-function featureFactsFile(args: {
-  runId: string;
-  featureId: string;
-  llm: LlmConfig;
-  skipped?: boolean;
-  skipReason?: string;
-  warnings?: string[];
-  facts: FeaturePrivacyFactsContent;
-}): FeaturePrivacyFactsFile {
-  return {
-    meta: {
-      runId: args.runId,
-      featureId: args.featureId,
-      generatedAt: new Date().toISOString(),
-      llm: { provider: args.llm.provider, model: args.llm.model },
-      skipped: args.skipped,
-      skipReason: args.skipReason,
-      warnings: args.warnings,
-    },
-    facts: args.facts,
-  };
 }
 
 function placeholderReport(args: { runId: string; llm: LlmConfig; features: string[]; skipReason: string }): PrivacyReportFile {
@@ -484,18 +460,6 @@ function uniqRefs(refs: DataflowNodeRef[]): DataflowNodeRef[] {
   return out;
 }
 
-function inferBusinessScenarioFromSinkDescription(desc: string): string {
-  const t = cleanText(desc);
-  if (!t) return '';
-  const parts = t.split(';').map((x) => cleanText(x));
-  const first = parts[0] ?? '';
-  if (!first) return '';
-  if (first.startsWith('权限:')) return '';
-  if (first.startsWith('数据:')) return '';
-  // E.g. "本地录音 / 本地录音" or similar.
-  return first.length > 60 ? `${first.slice(0, 60)}…` : first;
-}
-
 function derivePermissionHintsFromCsv(args: {
   featureId: string;
   featureTitle: string;
@@ -507,8 +471,6 @@ function derivePermissionHintsFromCsv(args: {
   type DerivedPermissionHint = {
     permissionName: string;
     refs: DataflowNodeRef[];
-    scenarios: Set<string>;
-    apiKeys: Set<string>;
     apiDescriptions: Set<string>;
   };
 
@@ -535,14 +497,6 @@ function derivePermissionHintsFromCsv(args: {
         if (perms.length === 0) continue;
 
         const desc = cleanText((s as any)['API功能描述']);
-        const rawScenario = inferBusinessScenarioFromSinkDescription(desc);
-        const scenario = buildChineseScenarioFromContext({
-          featureId: args.featureId,
-          featureTitle: args.featureTitle,
-          pageTitle: args.pageTitle,
-          apiKey,
-          description: rawScenario || desc,
-        });
 
         for (const permNameRaw of perms) {
           const permissionName = normalizePermissionName(permNameRaw);
@@ -550,13 +504,9 @@ function derivePermissionHintsFromCsv(args: {
           const cur = byName.get(permissionName) ?? {
             permissionName,
             refs: [],
-            scenarios: new Set<string>(),
-            apiKeys: new Set<string>(),
             apiDescriptions: new Set<string>(),
           };
           cur.refs.push({ flowId, nodeId });
-          if (scenario) cur.scenarios.add(scenario);
-          cur.apiKeys.add(apiKey);
           if (desc) cur.apiDescriptions.add(desc);
           byName.set(permissionName, cur);
         }
@@ -568,83 +518,14 @@ function derivePermissionHintsFromCsv(args: {
   for (const item of byName.values()) {
     const refs = uniqRefs(item.refs);
     if (refs.length === 0) continue;
-
-    const scenario = Array.from(item.scenarios)[0] ?? '';
-    const businessScenario =
-      scenario ||
-      buildChineseScenarioFromContext({
-        featureId: args.featureId,
-        featureTitle: args.featureTitle,
-        pageTitle: args.pageTitle,
-      });
     out.push({
       permissionName: item.permissionName,
-      businessScenario,
       refs,
-      apiKeys: Array.from(item.apiKeys).sort((a, b) => a.localeCompare(b)),
       apiDescriptions: Array.from(item.apiDescriptions).sort((a, b) => a.localeCompare(b)),
     });
   }
 
   return out.sort((a, b) => a.permissionName.localeCompare(b.permissionName));
-}
-
-function derivePermissionPracticesFromHints(hints: PrivacyFactsPermissionHint[]): PrivacyPermissionPractice[] {
-  return (hints ?? [])
-    .map((hint) => {
-      const permissionName = normalizePermissionName(hint.permissionName);
-      if (!permissionName) return null;
-      return {
-        permissionName,
-        businessScenario: '',
-        permissionPurpose: '',
-        denyImpact: '',
-        refs: uniqRefs(Array.isArray(hint.refs) ? hint.refs : []),
-      };
-    })
-    .filter((item): item is PrivacyPermissionPractice => Boolean(item))
-    .sort((a, b) => a.permissionName.localeCompare(b.permissionName));
-}
-
-function mergePermissionPractices(base: PrivacyPermissionPractice[], extra: PrivacyPermissionPractice[]): PrivacyPermissionPractice[] {
-  const byName = new Map<string, PrivacyPermissionPractice>();
-
-  for (const p of base ?? []) {
-    const name = normalizePermissionName(p.permissionName);
-    if (!name) continue;
-    byName.set(name, {
-      permissionName: name,
-      businessScenario: cleanText(p.businessScenario),
-      permissionPurpose: cleanText(p.permissionPurpose),
-      denyImpact: cleanText(p.denyImpact),
-      refs: uniqRefs(Array.isArray(p.refs) ? p.refs : []),
-    });
-  }
-
-  for (const p of extra ?? []) {
-    const name = normalizePermissionName(p.permissionName);
-    if (!name) continue;
-    const existing = byName.get(name);
-    const refs = uniqRefs(Array.isArray(p.refs) ? p.refs : []);
-    if (!existing) {
-      byName.set(name, {
-        permissionName: name,
-        businessScenario: cleanText(p.businessScenario),
-        permissionPurpose: cleanText(p.permissionPurpose),
-        denyImpact: cleanText(p.denyImpact),
-        refs,
-      });
-      continue;
-    }
-
-    existing.refs = uniqRefs([...(existing.refs ?? []), ...refs]);
-    if (!cleanText(existing.businessScenario) && cleanText(p.businessScenario)) existing.businessScenario = cleanText(p.businessScenario);
-    if (!cleanText(existing.permissionPurpose) && cleanText(p.permissionPurpose)) existing.permissionPurpose = cleanText(p.permissionPurpose);
-    if (!cleanText(existing.denyImpact) && cleanText(p.denyImpact)) existing.denyImpact = cleanText(p.denyImpact);
-    byName.set(name, existing);
-  }
-
-  return Array.from(byName.values()).sort((a, b) => a.permissionName.localeCompare(b.permissionName));
 }
 
 function filterPermissionPracticesByKnownPermissions(args: {
@@ -880,9 +761,6 @@ export async function generatePrivacyReportArtifacts(args: {
       };
 
       let facts: FeaturePrivacyFactsContent = { dataPractices: [], permissionPractices: [] };
-      let skipped = false;
-      let skipReason: string | undefined;
-      let warnings: string[] = [];
 
       const permissionHints = derivePermissionHintsFromCsv({
         featureId,
@@ -893,13 +771,7 @@ export async function generatePrivacyReportArtifacts(args: {
         csvPermissions,
       });
 
-      if (!apiKey) {
-        skipped = true;
-        skipReason = '隐私声明报告 LLM api-key 为空，跳过功能点隐私要素抽取';
-      } else if (!Array.isArray(dataflows.flows) || dataflows.flows.length === 0) {
-        skipped = true;
-        skipReason = '功能点数据流为空，跳过隐私要素抽取';
-      } else {
+      if (apiKey && Array.isArray(dataflows.flows) && dataflows.flows.length > 0) {
         try {
           const extracted = await extractFeaturePrivacyFacts({
             runId: args.runId,
@@ -911,25 +783,16 @@ export async function generatePrivacyReportArtifacts(args: {
             permissionHints,
           });
           facts = extracted.content;
-          warnings = extracted.warnings;
         } catch (e) {
-          skipped = true;
-          skipReason = `功能点隐私要素抽取失败：${e instanceof Error ? e.message : String(e)}`;
+          void e;
         }
       }
 
-      const mergedPermissionPractices = mergePermissionPractices(
-        facts.permissionPractices,
-        derivePermissionPracticesFromHints(permissionHints),
-      );
       const filtered = filterPermissionPracticesByKnownPermissions({
-        practices: mergedPermissionPractices,
+        practices: facts.permissionPractices,
         knownPermissions: knownAppPermissions,
       });
       facts.permissionPractices = applyPermissionAuthorizationModes(filtered.practices, dynamicAppPermissions);
-      for (const permission of filtered.dropped) {
-        warnings.push(`权限 ${permission} 未在应用源码/配置扫描或 SDK API 权限映射中出现，已从识别结果中过滤。`);
-      }
       const flowIndex = buildFlowNodeIndex(dataflows);
       const anchoredPractices: PrivacyPermissionPractice[] = [];
       for (const practice of facts.permissionPractices) {
@@ -938,7 +801,6 @@ export async function generatePrivacyReportArtifacts(args: {
         const picked = pickValidRef(Array.isArray(practice.refs) ? practice.refs : [], flowIndex);
         if (!picked) {
           orphanPermissionNames.add(permissionName);
-          warnings.push(`权限 ${permissionName} 在当前功能点未定位到有效跳转证据，已转移到应用权限兜底。`);
           continue;
         }
         anchoredPractices.push({
@@ -950,17 +812,7 @@ export async function generatePrivacyReportArtifacts(args: {
       }
       facts.permissionPractices = anchoredPractices;
 
-      const outFile = featureFactsFile({
-        runId: args.runId,
-        featureId,
-        llm: args.llm,
-        skipped,
-        skipReason,
-        warnings: warnings.length > 0 ? warnings : undefined,
-        facts,
-      });
-
-      await writeJsonFile(path.join(dirAbs, 'privacy_facts.json'), outFile);
+      await writeJsonFile(path.join(dirAbs, 'privacy_facts.json'), facts);
       featuresForReport.push({
         featureId,
         featureTitle: feature.title,
@@ -1003,19 +855,12 @@ export async function generatePrivacyReportArtifacts(args: {
       const syntheticDirAbs = path.join(args.outputDirAbs, 'app_permissions');
       const syntheticPageDirAbs = toPageDir(args.outputDirAbs, pageId);
       const syntheticFeatureDirAbs = toFeatureDir(args.outputDirAbs, pageId, featureId);
-      const outFile = featureFactsFile({
-        runId: args.runId,
-        featureId,
-        llm: args.llm,
-        warnings: syntheticWarnings,
-        facts: syntheticFacts,
-      });
       await fs.mkdir(path.join(syntheticPageDirAbs, 'features'), { recursive: true });
       await fs.mkdir(syntheticFeatureDirAbs, { recursive: true });
       await writeJsonFile(path.join(syntheticDirAbs, 'dataflows.json'), syntheticDataflows);
-      await writeJsonFile(path.join(syntheticDirAbs, 'privacy_facts.json'), outFile);
+      await writeJsonFile(path.join(syntheticDirAbs, 'privacy_facts.json'), syntheticFacts);
       await writeJsonFile(path.join(syntheticFeatureDirAbs, 'dataflows.json'), syntheticDataflows);
-      await writeJsonFile(path.join(syntheticFeatureDirAbs, 'privacy_facts.json'), outFile);
+      await writeJsonFile(path.join(syntheticFeatureDirAbs, 'privacy_facts.json'), syntheticFacts);
       await writeJsonFile(path.join(syntheticPageDirAbs, 'features', 'index.json'), {
         meta: {
           runId: args.runId,
@@ -1380,7 +1225,6 @@ async function collectionParagraphForPractice(args: {
         storageMethod: userFacingMethodText(args.practice.storageMethod),
         dataRecipients: (args.practice.dataRecipients ?? []).map((recipient) => ({
           name: cleanText(recipient?.name),
-          inferred: Boolean(recipient?.inferred),
         })),
         processingPurpose,
         relatedFlows,

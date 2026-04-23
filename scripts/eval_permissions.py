@@ -77,7 +77,7 @@ def collect_predicted_permissions(run_dir: Path) -> set[str]:
             parsed = json.loads(file_path.read_text(encoding="utf-8"))
         except Exception:
             continue
-        practices = (((parsed or {}).get("facts") or {}).get("permissionPractices")) if isinstance(parsed, dict) else None
+        practices = (parsed or {}).get("permissionPractices") if isinstance(parsed, dict) else None
         if not isinstance(practices, list):
             continue
         for p in practices:

@@ -189,13 +189,16 @@ describe('privacy facts - deterministic permissions from CSV', () => {
     });
 
     const factsPath = path.join(outputDirAbs, 'pages', 'P1', 'features', 'ui_P1_feature', 'privacy_facts.json');
+    const appFactsPath = path.join(outputDirAbs, 'app_permissions', 'privacy_facts.json');
     const reportPath = path.join(outputDirAbs, 'privacy_report.json');
     const facts = JSON.parse(await fs.readFile(factsPath, 'utf8')) as any;
+    const appFacts = JSON.parse(await fs.readFile(appFactsPath, 'utf8')) as any;
     const report = JSON.parse(await fs.readFile(reportPath, 'utf8')) as any;
 
-    const permPractices = facts?.facts?.permissionPractices ?? [];
+    const permPractices = facts?.permissionPractices ?? [];
     expect(Array.isArray(permPractices)).toBe(true);
-    expect(permPractices.some((p: any) => p.permissionName === 'ohos.permission.INTERNET')).toBe(true);
+    expect(permPractices).toEqual([]);
+    expect(appFacts?.permissionPractices?.some((p: any) => p.permissionName === 'ohos.permission.INTERNET')).toBe(true);
 
     const permissionSection = (report?.sections?.permissions ?? []).find((s: any) => s.featureId === 'ui_P1_feature');
     expect(permissionSection?.tokens ?? []).toEqual([]);

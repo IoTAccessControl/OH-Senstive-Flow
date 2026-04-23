@@ -3,10 +3,6 @@ export type DataflowNodeRef = {
   nodeId: string;
 };
 
-export type UiNodeRef = {
-  uiNodeId: string;
-};
-
 export type PrivacyDataItem = {
   name: string;
   refs: DataflowNodeRef[];
@@ -14,17 +10,10 @@ export type PrivacyDataItem = {
 
 export type PrivacyRecipient = {
   name: string;
-  inferred?: boolean;
   refs?: DataflowNodeRef[];
 };
 
-export type PrivacyToggleUi = {
-  where: string;
-  refs?: UiNodeRef[];
-};
-
 export type PrivacyDataPractice = {
-  appName: string;
   businessScenario: string;
   dataSources: string[];
   dataItems: PrivacyDataItem[];
@@ -32,7 +21,6 @@ export type PrivacyDataPractice = {
   storageMethod: string;
   dataRecipients: PrivacyRecipient[];
   processingPurpose: string;
-  privacyToggleUi?: PrivacyToggleUi;
 };
 
 export type PrivacyPermissionPractice = {
@@ -47,19 +35,6 @@ export type PrivacyPermissionPractice = {
 export type FeaturePrivacyFactsContent = {
   dataPractices: PrivacyDataPractice[];
   permissionPractices: PrivacyPermissionPractice[];
-};
-
-export type FeaturePrivacyFactsFile = {
-  meta: {
-    runId: string;
-    featureId: string;
-    generatedAt: string;
-    llm?: { provider: string; model: string };
-    skipped?: boolean;
-    skipReason?: string;
-    warnings?: string[];
-  };
-  facts: FeaturePrivacyFactsContent;
 };
 
 export type PrivacyReportJumpTo = {

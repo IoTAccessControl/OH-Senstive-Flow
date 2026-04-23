@@ -182,9 +182,16 @@ describe('privacy permission alignment with app source', () => {
     const predicted = await collectPredictedPermissionsFromRun(outputDirAbs);
     expect([...predicted].sort()).toEqual(['ohos.permission.CAMERA', 'ohos.permission.INTERNET']);
 
+    const featureFacts = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'pages', 'P1', 'features', 'ui_P1_feature', 'privacy_facts.json'), 'utf8')) as any;
+    expect(featureFacts.permissionPractices).toEqual([]);
+
     const syntheticFacts = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'app_permissions', 'privacy_facts.json'), 'utf8')) as any;
-    expect(syntheticFacts.facts.permissionPractices.map((item: any) => item.permissionName)).toEqual(['ohos.permission.CAMERA']);
-    expect(syntheticFacts.facts.permissionPractices[0]?.authorizationMode).toBe('preauthorized');
+    expect(syntheticFacts.permissionPractices.map((item: any) => item.permissionName)).toEqual([
+      'ohos.permission.CAMERA',
+      'ohos.permission.INTERNET',
+    ]);
+    expect(syntheticFacts.permissionPractices[0]?.authorizationMode).toBe('preauthorized');
+    expect(syntheticFacts.permissionPractices[1]?.authorizationMode).toBe('preauthorized');
 
     const report = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'privacy_report.json'), 'utf8')) as any;
     const appPermissionSection = report.sections.permissions.find((section: any) => section.featureId === '__app_permissions');
@@ -227,13 +234,12 @@ export function requestAll(context: UIContext) {
     });
 
     const featureFacts = JSON.parse(await fs.readFile(path.join(featureDirAbs, 'privacy_facts.json'), 'utf8')) as any;
-    expect(featureFacts.facts.permissionPractices).toHaveLength(1);
-    expect(featureFacts.facts.permissionPractices[0]?.permissionName).toBe('ohos.permission.INTERNET');
-    expect(featureFacts.facts.permissionPractices[0]?.authorizationMode).toBe('preauthorized');
+    expect(featureFacts.permissionPractices).toEqual([]);
 
     const syntheticFacts = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'app_permissions', 'privacy_facts.json'), 'utf8')) as any;
-    expect(syntheticFacts.facts.permissionPractices).toEqual([
+    expect(syntheticFacts.permissionPractices).toEqual([
       expect.objectContaining({ permissionName: 'ohos.permission.CAMERA', authorizationMode: 'dynamic' }),
+      expect.objectContaining({ permissionName: 'ohos.permission.INTERNET', authorizationMode: 'preauthorized' }),
       expect.objectContaining({ permissionName: 'ohos.permission.READ_MEDIA', authorizationMode: 'dynamic' }),
     ]);
 
@@ -253,6 +259,21 @@ export function requestAll(context: UIContext) {
       featureTitle: '页面构建入口',
     });
 
+    mockExtractFeaturePrivacyFacts.mockResolvedValueOnce({
+      content: {
+        dataPractices: [],
+        permissionPractices: [
+          {
+            permissionName: 'ohos.permission.INTERNET',
+            businessScenario: '',
+            permissionPurpose: '',
+            denyImpact: '',
+            refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }],
+          },
+        ],
+      },
+      warnings: [],
+    });
     mockChat.mockResolvedValueOnce({
       content: '在“用户打开详情页时”，我们会申请网络访问权限（预授权），用于连接网络并打开目标页面。若您拒绝授权，无法加载并打开目标页面。',
       raw: {},
@@ -267,12 +288,12 @@ export function requestAll(context: UIContext) {
     });
 
     const facts = JSON.parse(await fs.readFile(path.join(featureDirAbs, 'privacy_facts.json'), 'utf8')) as any;
-    expect(facts.facts.permissionPractices[0]?.authorizationMode).toBe('preauthorized');
-    expect(facts.facts.permissionPractices[0]?.permissionName).toBe('ohos.permission.INTERNET');
-    expect(facts.facts.permissionPractices[0]?.businessScenario).toBe('');
-    expect(facts.facts.permissionPractices[0]?.permissionPurpose).toBe('');
-    expect(facts.facts.permissionPractices[0]?.denyImpact).toBe('');
-    expect(facts.facts.permissionPractices[0]?.refs).toEqual([{ flowId: 'flow:p1', nodeId: 'p1:n1' }]);
+    expect(facts.permissionPractices[0]?.authorizationMode).toBe('preauthorized');
+    expect(facts.permissionPractices[0]?.permissionName).toBe('ohos.permission.INTERNET');
+    expect(facts.permissionPractices[0]?.businessScenario).toBe('');
+    expect(facts.permissionPractices[0]?.permissionPurpose).toBe('');
+    expect(facts.permissionPractices[0]?.denyImpact).toBe('');
+    expect(facts.permissionPractices[0]?.refs).toEqual([{ flowId: 'flow:p1', nodeId: 'p1:n1' }]);
 
     const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
     expect(reportText).toContain('网络访问权限（预授权）');
@@ -327,14 +348,13 @@ export function requestAll(context: UIContext) {
     });
 
     const facts = JSON.parse(await fs.readFile(path.join(featureDirAbs, 'privacy_facts.json'), 'utf8')) as any;
-    expect(facts.facts.permissionPractices.map((item: any) => item.permissionName)).toEqual(['ohos.permission.INTERNET']);
-    expect(facts.meta.warnings.some((item: string) => item.includes('ohos.permission.READ_CONTACTS'))).toBe(true);
+    expect(facts.permissionPractices.map((item: any) => item.permissionName)).toEqual(['ohos.permission.INTERNET']);
 
     const predicted = await collectPredictedPermissionsFromRun(outputDirAbs);
     expect([...predicted]).toEqual(['ohos.permission.INTERNET']);
   });
 
-  it('keeps permission refs even when english sink descriptions are only used as permission hints', async () => {
+  it('moves english-only permission hints to app-level fallback when feature extraction is skipped', async () => {
     const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-perm-'));
     const { outputDirAbs, featureDirAbs } = await writeMinimalFeatureRun({
       repoRoot,
@@ -354,10 +374,11 @@ export function requestAll(context: UIContext) {
     });
 
     const facts = JSON.parse(await fs.readFile(path.join(featureDirAbs, 'privacy_facts.json'), 'utf8')) as any;
-    expect(facts.facts.permissionPractices).toHaveLength(1);
-    expect(facts.facts.permissionPractices[0]?.permissionName).toBe('ohos.permission.INTERNET');
-    expect(facts.facts.permissionPractices[0]?.businessScenario).toBe('');
-    expect(facts.facts.permissionPractices[0]?.refs).toEqual([{ flowId: 'flow:p1', nodeId: 'p1:n1' }]);
+    expect(facts.permissionPractices).toEqual([]);
+
+    const syntheticFacts = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'app_permissions', 'privacy_facts.json'), 'utf8')) as any;
+    expect(syntheticFacts.permissionPractices).toHaveLength(1);
+    expect(syntheticFacts.permissionPractices[0]?.permissionName).toBe('ohos.permission.INTERNET');
 
     const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
     expect(reportText).not.toContain('测试页检查网络连接状态时');
