@@ -2,6 +2,7 @@ import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat
 import type { DataflowsResult } from '../dataflow/types.js';
 import type { SourceRef } from '../extract/sources.js';
 import type { UiTreeResult } from '../feature/types.js';
+import type { PrivacyRules } from '../extract/csv.js';
 
 import type {
   DataflowNodeRef,
@@ -224,22 +225,38 @@ function normalizeUserFacingTextArray(values: string[] | undefined): string[] {
   return out;
 }
 
-function normalizeExtractedContent(content: FeaturePrivacyFactsContent, feature: PrivacyFactsFeatureContext | null): FeaturePrivacyFactsContent {
+function applyDataItemRule(name: string, rules: PrivacyRules): string {
+  const lower = name.toLowerCase();
+  const matched = rules.dataItems.find((rule) => rule.keywords.some((keyword) => lower.includes(keyword.toLowerCase())));
+  return matched?.outputName ?? name;
+}
+
+function normalizeExtractedContent(
+  content: FeaturePrivacyFactsContent,
+  feature: PrivacyFactsFeatureContext | null,
+  rules: PrivacyRules,
+): FeaturePrivacyFactsContent {
+  const allowedDataItems = new Set(rules.dataItems.map((rule) => rule.outputName));
   return {
-    dataPractices: (content.dataPractices ?? []).map((p) => ({
-      ...p,
-      businessScenario: normalizeBusinessScenario(p.businessScenario, feature),
-      dataSources: normalizeUserFacingTextArray(p.dataSources),
-      dataItems: (p.dataItems ?? []).map((item) => ({
-        ...item,
-        name: normalizeUserFacingText(item.name) || item.name,
-      })),
-      storageMethod: normalizeUserFacingText(p.storageMethod) || p.storageMethod,
-      dataRecipients: (p.dataRecipients ?? []).map((recipient) => ({
-        ...recipient,
-        name: normalizeUserFacingText(recipient.name) || recipient.name,
-      })),
-    })),
+    dataPractices: (content.dataPractices ?? [])
+      .map((p) => ({
+        ...p,
+        businessScenario: normalizeBusinessScenario(p.businessScenario, feature),
+        processingSubject: cleanText(p.processingSubject) || '本应用',
+        dataSources: normalizeUserFacingTextArray(p.dataSources),
+        dataItems: (p.dataItems ?? [])
+          .map((item) => ({
+            ...item,
+            name: applyDataItemRule(normalizeUserFacingText(item.name) || item.name, rules),
+          }))
+          .filter((item) => allowedDataItems.size === 0 || allowedDataItems.has(item.name)),
+        storageMethod: normalizeUserFacingText(p.storageMethod) || p.storageMethod,
+        dataRecipients: (p.dataRecipients ?? []).map((recipient) => ({
+          ...recipient,
+          name: normalizeUserFacingText(recipient.name) || recipient.name,
+        })),
+      }))
+      .filter((practice) => practice.dataItems.length > 0),
     permissionPractices: (content.permissionPractices ?? []).map((p) => ({
       ...p,
       businessScenario: normalizeBusinessScenario(p.businessScenario, feature),
@@ -319,6 +336,7 @@ function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>):
 
       dataPractices.push({
         businessScenario: cleanTextOrUnknown(p.businessScenario),
+        processingSubject: cleanOptionalText(p.processingSubject) || '本应用',
         dataSources: cleanStringArray(p.dataSources),
         dataItems,
         processingMethod: cleanTextOrUnknown(p.processingMethod),
@@ -359,6 +377,7 @@ function buildPrompt(args: {
   feature: PrivacyFactsFeatureContext | null;
   dataflows: DataflowsResult;
   permissionHints?: PrivacyFactsPermissionHint[];
+  privacyRules?: PrivacyRules;
 }): { system: string; user: string } {
   const system = [
     '你是一个静态分析与隐私合规分析助手。',
@@ -397,6 +416,7 @@ function buildPrompt(args: {
     permissionHints,
   };
 
+  const customRules = args.privacyRules?.descriptionRules ?? [];
   const user = [
     '输入 JSON：',
     JSON.stringify(inputPayload, null, 2),
@@ -406,6 +426,7 @@ function buildPrompt(args: {
     '  "dataPractices": [',
     '    {',
     '      "businessScenario": string,',
+    '      "processingSubject": string,',
     '      "dataSources": string[],',
     '      "dataItems": [ { "name": string, "refs": [ { "flowId": string, "nodeId": string } ] } ],',
     '      "processingMethod": string,',
@@ -436,6 +457,8 @@ function buildPrompt(args: {
     '8) permissionHints 中出现的 permissionName、refs、apiDescriptions 是 permissionPractices 的必答清单；只要这些提示与当前功能点数据流一致，就必须为每个 hint 生成一条权限事实。',
     '9) permissionPractices[].denyImpact 必须写成用户拒绝授权后的具体影响，禁止输出“相关功能可能无法正常使用”“对应功能可能无法正常使用”这类空泛句子；若证据不足，也要明确说出无法完成的具体动作或用户可见结果。',
     '10) permissionPractices 中若保留了某个 permissionName，businessScenario、permissionPurpose、denyImpact 不应为空字符串；若证据不足，也应基于 pageTitle、featureTitle、apiDescriptions、processingPurpose 给出最保守但完整的中文描述。',
+    '11) processingSubject 表示实施隐私数据操作的主体；没有更具体证据时填写“本应用”。',
+    ...(customRules.length > 0 ? ['', '用户自定义描述规则：', ...customRules.map((rule, index) => `${index + 1}) ${rule}`)] : []),
   ].join('\n');
 
   return { system, user };
@@ -483,6 +506,7 @@ export async function extractFeaturePrivacyFacts(args: {
   uiTree: UiTreeResult | null;
   llm: LlmConfig;
   permissionHints?: PrivacyFactsPermissionHint[];
+  privacyRules?: PrivacyRules;
 }): Promise<{ content: FeaturePrivacyFactsContent; warnings: string[] }> {
   const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
   if (!apiKey) {
@@ -500,12 +524,18 @@ export async function extractFeaturePrivacyFacts(args: {
   }
 
   const flowNodeIndex = buildFlowNodeIndex(args.dataflows);
-  const prompt = buildPrompt({ feature: args.feature, dataflows: args.dataflows, permissionHints: args.permissionHints });
+  const privacyRules = args.privacyRules ?? { dataItems: [], descriptionRules: [] };
+  const prompt = buildPrompt({
+    feature: args.feature,
+    dataflows: args.dataflows,
+    permissionHints: args.permissionHints,
+    privacyRules,
+  });
 
   const raw = await chatJsonWithRetries({ llm: { ...args.llm, apiKey }, system: prompt.system, user: prompt.user });
   const validated = validateContent(raw, flowNodeIndex);
   return {
     ...validated,
-    content: normalizeExtractedContent(validated.content, args.feature),
+    content: normalizeExtractedContent(validated.content, args.feature, privacyRules),
   };
 }

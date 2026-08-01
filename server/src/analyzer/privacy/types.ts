@@ -15,6 +15,7 @@ export type PrivacyRecipient = {
 
 export type PrivacyDataPractice = {
   businessScenario: string;
+  processingSubject?: string;
   dataSources: string[];
   dataItems: PrivacyDataItem[];
   processingMethod: string;

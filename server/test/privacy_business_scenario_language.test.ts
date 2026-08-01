@@ -103,4 +103,55 @@ describe('privacy facts scenario language normalization', () => {
     expect(result.content.dataPractices[0]?.businessScenario).toBe('快速登录页展示与交互');
     expect(result.content.permissionPractices[0]?.businessScenario).toBe('快速登录页展示与交互');
   });
+
+  it('applies custom data item names and description rules', async () => {
+    mockOpenAiCompatibleChat.mockResolvedValue({
+      content: JSON.stringify({
+        dataPractices: [{
+          businessScenario: '用户填写资料',
+          processingSubject: '',
+          dataSources: ['用户输入'],
+          dataItems: [
+            { name: 'phone', refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }] },
+            { name: '调试日志', refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }] },
+          ],
+          processingMethod: '读取',
+          storageMethod: '不存储',
+          dataRecipients: [],
+          processingPurpose: '完成登录',
+        }],
+        permissionPractices: [],
+      }),
+      raw: {},
+    });
+
+    const result = await extractFeaturePrivacyFacts({
+      runId: 'run1',
+      appName: 'App',
+      feature: null,
+      dataflows: {
+        meta: { runId: 'run1', generatedAt: new Date().toISOString(), counts: { flows: 1, nodes: 1, edges: 0 } },
+        flows: [{
+          flowId: 'flow:p1',
+          pathId: 'p1',
+          nodes: [{
+            id: 'p1:n1', filePath: 'app/main.ets', line: 1, description: '读取手机号',
+            context: { startLine: 1, lines: ['phone'] },
+          }],
+          edges: [],
+        }],
+      },
+      uiTree: null,
+      llm: { provider: 'Qwen', apiKey: 'test-key', model: 'test-model' },
+      privacyRules: {
+        dataItems: [{ keywords: ['phone'], outputName: '联系电话' }],
+        descriptionRules: ['操作主体填写本应用'],
+      },
+    });
+
+    expect(result.content.dataPractices[0]?.dataItems[0]?.name).toBe('联系电话');
+    expect(result.content.dataPractices[0]?.dataItems).toHaveLength(1);
+    expect(result.content.dataPractices[0]?.processingSubject).toBe('本应用');
+    expect(mockOpenAiCompatibleChat.mock.calls[0]?.[0]?.messages[1]?.content).toContain('操作主体填写本应用');
+  });
 });

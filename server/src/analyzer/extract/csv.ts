@@ -175,6 +175,44 @@ export async function loadCsvApiPermissions(csvDir: string): Promise<Map<string,
 
 type OverrideRow = { api?: string; description?: string };
 
+export type PrivacyRules = {
+  dataItems: Array<{ keywords: string[]; outputName: string }>;
+  descriptionRules: string[];
+};
+
+type PrivacyRuleRow = { type?: string; keywords?: string; outputName?: string; rule?: string };
+
+export async function loadPrivacyRules(csvDir: string): Promise<PrivacyRules> {
+  const filePath = path.join(csvDir, 'privacy_rules.csv');
+  let text: string;
+  try {
+    text = stripBom(await fs.readFile(filePath, 'utf8'));
+  } catch {
+    return { dataItems: [], descriptionRules: [] };
+  }
+
+  let rows: PrivacyRuleRow[];
+  try {
+    rows = parse(text, { columns: true, skip_empty_lines: true, trim: true }) as PrivacyRuleRow[];
+  } catch {
+    return { dataItems: [], descriptionRules: [] };
+  }
+
+  const dataItems: PrivacyRules['dataItems'] = [];
+  const descriptionRules: string[] = [];
+  for (const row of rows) {
+    if (row.type?.trim() === 'data_item') {
+      const keywords = (row.keywords ?? '').split('|').map((item) => item.trim()).filter(Boolean);
+      const outputName = row.outputName?.trim() ?? '';
+      if (keywords.length > 0 && outputName) dataItems.push({ keywords, outputName });
+    } else if (row.type?.trim() === 'description_rule') {
+      const rule = row.rule?.trim() ?? '';
+      if (rule) descriptionRules.push(rule);
+    }
+  }
+  return { dataItems, descriptionRules };
+}
+
 export async function loadOverrideDescriptions(csvDir: string): Promise<Map<string, string>> {
   const filePath = path.join(csvDir, 'sdk_api_description_override.csv');
   let text: string;

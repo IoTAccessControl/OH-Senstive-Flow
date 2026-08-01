@@ -7,25 +7,19 @@ REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
 
 cd "${REPO_ROOT}"
 
-: "${QWEN_API_KEY:?Please export QWEN_API_KEY before running this script.}"
-
-for app in input/app/*/; do
-  [ -d "${app}" ] || continue
-
-  echo "==> $(basename "${app}")"
-
+analyze_app() {
+  local app="$1"
+  echo "==> ${app}"
   npm run analyze -- \
-    --appPath "${app}" \
+    --appPath "input/app/${app}/" \
     --sdkPath input/sdk/default/openharmony/ets/ \
     --csvDir input/csv/ \
-    --graphBackend cpg \
-    --llmProvider Qwen \
-    --llmApiKey "${QWEN_API_KEY}" \
-    --llmModel qwen3.5-plus \
-    --uiLlmProvider Qwen \
-    --uiLlmApiKey "${QWEN_API_KEY}" \
-    --uiLlmModel qwen3.5-plus \
-    --privacyReportLlmProvider Qwen \
-    --privacyReportLlmApiKey "${QWEN_API_KEY}" \
-    --privacyReportLlmModel qwen3.5-plus
-done
+    --graphBackend cpg
+}
+
+export -f analyze_app
+export REPO_ROOT
+
+for gt in groundtruth/permission/*.txt; do
+  basename "${gt}" .txt
+done | xargs -I{} -P "${MAX_PARALLEL:-3}" bash -c 'cd "${REPO_ROOT}" && analyze_app "$1"' _ {}

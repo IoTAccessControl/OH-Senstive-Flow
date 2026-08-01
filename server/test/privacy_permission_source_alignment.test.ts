@@ -24,6 +24,13 @@ vi.mock('../src/analyzer/privacy/facts.js', () => ({
 
 import { generatePrivacyReportArtifacts } from '../src/analyzer/privacy/report.js';
 
+function reportDraftContent(input: { collectionAndUse?: string[]; permissions?: string[] }): string {
+  return JSON.stringify({
+    collectionAndUse: input.collectionAndUse ?? [],
+    permissions: input.permissions ?? [],
+  });
+}
+
 async function writeJson(filePath: string, data: unknown): Promise<void> {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
   await fs.writeFile(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
@@ -275,7 +282,9 @@ export function requestAll(context: UIContext) {
       warnings: [],
     });
     mockChat.mockResolvedValueOnce({
-      content: '在“用户打开详情页时”，我们会申请网络访问权限（预授权），用于连接网络并打开目标页面。若您拒绝授权，无法加载并打开目标页面。',
+      content: reportDraftContent({
+        permissions: ['在“用户打开详情页时”，我们会申请 ohos.permission.INTERNET，用于连接网络并打开目标页面。若您拒绝授权，无法加载并打开目标页面。'],
+      }),
       raw: {},
     });
 
@@ -335,7 +344,9 @@ export function requestAll(context: UIContext) {
       warnings: [],
     });
     mockChat.mockResolvedValueOnce({
-      content: '在“网络访问”场景中，我们会申请网络访问权限（预授权），用于联网。若您拒绝授权，无法联网。',
+      content: reportDraftContent({
+        permissions: ['在“网络访问”场景中，我们会申请 ohos.permission.INTERNET，用于联网。若您拒绝授权，无法联网。'],
+      }),
       raw: {},
     });
 

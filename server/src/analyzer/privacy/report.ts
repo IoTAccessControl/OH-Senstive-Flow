@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/client.js';
 import { readJsonFile, walkFiles, writeJsonFile } from '../../utils/accessWorkspace.js';
-import { loadCsvApiPermissions } from '../extract/csv.js';
+import { loadCsvApiPermissions, loadPrivacyRules, type PrivacyRules } from '../extract/csv.js';
 import { collectPermissionsFromApp, extractPermissionNames, normalizePermissionToken } from '../extract/app.js';
 import type { Dataflow, DataflowsResult } from '../dataflow/types.js';
 import type { PageFeaturesIndex, PagesIndex, PageEntryInfo, UiTreeResult } from '../feature/types.js';
@@ -35,7 +35,13 @@ type ReportFeatureInput = {
 
 type ParagraphAnchor = {
   name: string;
+  outputText?: string;
   jumpTo: { featureId: string; flowId: string; nodeId: string };
+};
+
+type PrivacyReportDraft = {
+  collectionAndUse: string[];
+  permissions: string[];
 };
 
 type PermissionOccurrence = {
@@ -59,11 +65,6 @@ function cleanText(v: unknown): string {
   return v.replaceAll(/\s+/gu, ' ').trim();
 }
 
-function isUnknownText(v: unknown): boolean {
-  const t = cleanText(v);
-  return !t || t === '未识别';
-}
-
 function uniq(arr: string[]): string[] {
   const out: string[] = [];
   const seen = new Set<string>();
@@ -79,112 +80,6 @@ function uniq(arr: string[]): string[] {
 function sanitizeIdFragment(text: string): string {
   const normalized = cleanText(text).replaceAll(/[^\w-]+/gu, '_').replaceAll(/^_+|_+$/gu, '');
   return normalized || 'item';
-}
-
-function hasCjk(text: string): boolean {
-  return /[\u4e00-\u9fff]/u.test(text);
-}
-
-function normalizeScenarioKey(text: string): string {
-  return cleanText(text).replaceAll(/[“”"'`、，,。.!！？?；;：:\-_\s]+/gu, '').toLowerCase();
-}
-
-function isGenericScenarioText(text: string): boolean {
-  const key = normalizeScenarioKey(text);
-  if (!key) return true;
-  return new Set([
-    '功能入口',
-    '页面构建入口',
-    '页面主布局容器',
-    '页面展示与交互',
-    '组件展示与交互',
-    '页面展示时',
-    '组件展示时',
-    '相关功能处理过程中',
-    '相关功能处理时',
-    '相关操作时',
-  ]).has(key);
-}
-
-function isFrameworkishScenario(text: string): boolean {
-  return /(ArkUI|UIAbility|WindowStage|生命周期函数|\bbuild\b|\bonDestroy\b|\bonForeground\b|\bonBackground\b|\bonWindowStage)/u.test(text);
-}
-
-function isEnglishLikeScenario(text: string): boolean {
-  const cleaned = cleanText(text);
-  if (!cleaned) return false;
-  if (!hasCjk(cleaned) && /[A-Za-z]/u.test(cleaned)) return true;
-
-  const englishWords = cleaned.match(/[A-Za-z][A-Za-z0-9-]*/gu) ?? [];
-  const cjkChars = cleaned.match(/[\u4e00-\u9fff]/gu) ?? [];
-  return englishWords.length >= 4 && cjkChars.length <= 2;
-}
-
-function isLowQualityScenario(text: string): boolean {
-  const cleaned = cleanText(text);
-  if (!cleaned) return true;
-  if (isFrameworkishScenario(cleaned)) return true;
-  if (isGenericScenarioText(cleaned)) return true;
-  if (isEnglishLikeScenario(cleaned)) return true;
-  return false;
-}
-
-function inferChineseActionFromApi(args: { apiKey?: string; description?: string }): string {
-  const apiKey = cleanText(args.apiKey).toLowerCase();
-  const desc = cleanText(args.description).toLowerCase();
-
-  if (apiKey.includes('hasdefaultnet') || desc.includes('default data network')) return '检查网络连接状态';
-  if (apiKey.includes('startbackgroundrunning') || desc.includes('start running in background')) return '请求后台持续运行';
-  if (apiKey.includes('stopbackgroundrunning') || desc.includes('stop running in background')) return '停止后台持续运行';
-  if (apiKey.includes('requestpermissionsfromuser') || desc.includes('permissions from the user')) return '请求系统权限';
-  if (desc.includes('location changed')) return '监听位置变化';
-  if (apiKey.includes('@ohos.sensor.on') || desc.includes('accelerometer') || desc.includes('sensor data')) return '监听传感器数据';
-  if (apiKey.includes('pushurl') || apiKey.includes('replaceurl') || desc.includes('页面跳转') || desc.includes('jump page'))
-    return '页面跳转';
-  if (desc.includes('location')) return '获取或监听位置信息';
-  if (desc.includes('network')) return '检查网络状态';
-  if (/^subscribe\b/u.test(desc)) return '订阅系统事件';
-  if (/^unsubscribe\b/u.test(desc)) return '取消订阅系统事件';
-  if (/^check(?:s)?\b/u.test(desc)) return '检查系统状态';
-  if (/^load(?:s)?\b/u.test(desc)) return '加载相关内容';
-  if (/^start(?:s)?\b/u.test(desc)) return '启动相关功能';
-  if (/^stop(?:s)?\b/u.test(desc)) return '停止相关功能';
-  return '';
-}
-
-function buildChineseScenarioFromContext(args: {
-  featureId: string;
-  featureTitle?: string;
-  pageTitle?: string;
-  apiKey?: string;
-  description?: string;
-}): string {
-  const featureTitle = cleanText(args.featureTitle);
-  if (featureTitle && !isLowQualityScenario(featureTitle)) return featureTitle;
-
-  const pageTitle = cleanText(args.pageTitle);
-  const action = inferChineseActionFromApi({ apiKey: args.apiKey, description: args.description });
-
-  if (pageTitle && !isLowQualityScenario(pageTitle)) {
-    if (action) return `${pageTitle}${action}时`;
-    return `${pageTitle}相关功能处理时`;
-  }
-  if (action) return `${action}时`;
-  return '相关功能处理过程中';
-}
-
-function normalizeScenarioForReport(raw: unknown, feature: { featureId: string; featureTitle?: string; pageTitle?: string }): string {
-  const scenario = cleanText(raw);
-  if (scenario && !isLowQualityScenario(scenario)) return scenario;
-  return buildChineseScenarioFromContext(feature);
-}
-
-function shouldReplaceScenario(current: unknown, next: unknown): boolean {
-  const currentText = cleanText(current);
-  const nextText = cleanText(next);
-  if (!nextText || isUnknownText(nextText)) return false;
-  if (!currentText || isUnknownText(currentText)) return true;
-  return isLowQualityScenario(currentText) && !isLowQualityScenario(nextText);
 }
 
 function asPagesIndex(raw: unknown): PagesIndex {
@@ -642,15 +537,45 @@ function buildAppDeclaredPermissionFacts(
 ): FeaturePrivacyFactsContent {
   return {
     dataPractices: [],
-    permissionPractices: permissions.map((permissionName) => ({
-      permissionName,
-      authorizationMode: permissionAuthorizationMode(permissionName, dynamicPermissions),
-      businessScenario: '应用源码/配置声明或 SDK API 使用推断的权限',
-      permissionPurpose: '当前已在应用源码/配置扫描或 SDK API→权限映射中识别到该权限，但尚未定位到具体功能点数据流。',
-      denyImpact: '当前未从已识别的数据流中定位到具体拒绝授权影响。',
-      refs: refsByPermission.get(permissionName) ?? [],
-    })),
+    permissionPractices: permissions.map((permissionName) => {
+      const displayName = cleanText(getPermissionDisplayName(permissionName)) || permissionName;
+      return {
+        permissionName,
+        authorizationMode: permissionAuthorizationMode(permissionName, dynamicPermissions),
+        businessScenario: `应用使用${displayName}对应的系统能力时`,
+        permissionPurpose: `用于支持${displayName}相关功能`,
+        denyImpact: `拒绝授权后，${displayName}对应功能将无法使用。`,
+        refs: refsByPermission.get(permissionName) ?? [],
+      };
+    }),
   };
+}
+
+async function collectConfiguredDataItemsFromApp(appDirAbs: string, rules: PrivacyRules): Promise<Set<string>> {
+  const files = await walkFiles(appDirAbs, {
+    extensions: ['.ets', '.ts', '.js', '.json', '.json5'],
+    ignoreDirNames: ['node_modules', '.git', 'output', 'dist', 'build', 'ohosTest', 'hvigor'],
+  });
+  const contents = await Promise.all(files.map((filePath) => fs.readFile(filePath, 'utf8').catch(() => '')));
+  const sourceText = contents.join('\n').toLowerCase();
+  const out = new Set<string>();
+  for (const rule of rules.dataItems) {
+    if (rule.keywords.some((keyword) => sourceText.includes(keyword.toLowerCase()))) out.add(rule.outputName);
+  }
+  return out;
+}
+
+function buildFallbackDataPractices(dataItems: string[]): PrivacyDataPractice[] {
+  return dataItems.map((name) => ({
+    businessScenario: `${name}相关功能`,
+    processingSubject: '本应用',
+    dataSources: ['用户输入或系统 API'],
+    dataItems: [{ name, refs: [] }],
+    processingMethod: `读取并使用${name}`,
+    storageMethod: '根据具体功能在应用运行期间处理',
+    dataRecipients: [],
+    processingPurpose: `用于实现与${name}相关的应用功能`,
+  }));
 }
 
 function buildFlowNodeLookup(dataflows: DataflowsResult): Map<string, Map<string, Dataflow['nodes'][number]>> {
@@ -682,6 +607,7 @@ export async function generatePrivacyReportArtifacts(args: {
     const csvDirFromMeta = cleanText(metaRaw?.input?.csvDir);
     const csvDirAbs = csvDirFromMeta ? toAbs(args.repoRoot, csvDirFromMeta) : path.join(args.repoRoot, 'input', 'csv');
     const csvPermissions = await loadCsvApiPermissions(csvDirAbs);
+    const privacyRules = await loadPrivacyRules(csvDirAbs);
 
     const sinksRaw = await tryReadJson<unknown>(path.join(args.outputDirAbs, 'sinks.json'));
     const sinks = asSinkRecords(sinksRaw);
@@ -731,7 +657,9 @@ export async function generatePrivacyReportArtifacts(args: {
       }
     }
     const knownAppPermissions = new Set<string>([...declaredAppPermissions, ...inferredAppPermissions]);
+    const knownAppDataItems = await collectConfiguredDataItemsFromApp(appDirAbs, privacyRules).catch(() => new Set<string>());
     const emittedPermissions = new Set<string>();
+    const emittedDataItems = new Set<string>();
     const orphanPermissionNames = new Set<string>();
 
     const featuresForReport: ReportFeatureInput[] = [];
@@ -781,6 +709,7 @@ export async function generatePrivacyReportArtifacts(args: {
             uiTree,
             llm: { provider: args.llm.provider, apiKey, model: args.llm.model },
             permissionHints,
+            privacyRules,
           });
           facts = extracted.content;
         } catch (e) {
@@ -811,6 +740,12 @@ export async function generatePrivacyReportArtifacts(args: {
         emittedPermissions.add(permissionName);
       }
       facts.permissionPractices = anchoredPractices;
+      for (const practice of facts.dataPractices) {
+        for (const dataItem of practice.dataItems ?? []) {
+          const name = cleanText(dataItem.name);
+          if (name) emittedDataItems.add(name);
+        }
+      }
 
       await writeJsonFile(path.join(dirAbs, 'privacy_facts.json'), facts);
       featuresForReport.push({
@@ -825,8 +760,11 @@ export async function generatePrivacyReportArtifacts(args: {
     const unmatchedPermissions = Array.from(knownAppPermissions)
       .filter((permission) => !emittedPermissions.has(permission) || orphanPermissionNames.has(permission))
       .sort((a, b) => a.localeCompare(b));
+    const unmatchedDataItems = Array.from(knownAppDataItems)
+      .filter((dataItem) => !emittedDataItems.has(dataItem))
+      .sort((a, b) => a.localeCompare(b));
 
-    if (unmatchedPermissions.length > 0) {
+    if (unmatchedPermissions.length > 0 || unmatchedDataItems.length > 0) {
       const pageId = '_app_permissions';
       const featureId = '__app_permissions';
       const syntheticFlowBuild = buildSyntheticPermissionFlows({
@@ -842,8 +780,14 @@ export async function generatePrivacyReportArtifacts(args: {
         dynamicAppPermissions,
         syntheticFlowBuild.refsByPermission,
       );
+      syntheticFacts.dataPractices = buildFallbackDataPractices(unmatchedDataItems);
       const syntheticWarnings = [
-        `以下权限来自应用源码/配置扫描或 SDK API 权限映射，当前未定位到具体功能点数据流：${unmatchedPermissions.join(', ')}`,
+        ...(unmatchedPermissions.length > 0
+          ? [`以下权限来自应用源码/配置扫描或 SDK API 权限映射，当前未定位到具体功能点数据流：${unmatchedPermissions.join(', ')}`]
+          : []),
+        ...(unmatchedDataItems.length > 0
+          ? [`以下个人信息数据项来自应用源码扫描，当前未定位到具体功能点数据流：${unmatchedDataItems.join(', ')}`]
+          : []),
       ];
       const syntheticDataflows: DataflowsResult = {
         ...syntheticFlowBuild.dataflows,
@@ -991,24 +935,6 @@ function clauseText(v: unknown): string {
   return text ? trimPunctuationEdges(text) : '';
 }
 
-function purposeClauseText(v: unknown): string {
-  const text = clauseText(v);
-  if (!text) return '';
-  return text.replace(/^用于/gu, '').trim();
-}
-
-function permissionPurposeText(v: unknown): string {
-  const text = cleanText(v);
-  if (!text || text === '未识别') return '';
-  return trimPunctuationEdges(text).replace(/^用于/gu, '').trim();
-}
-
-function permissionDenyImpactText(v: unknown): string {
-  const text = cleanText(v);
-  if (!text || text === '未识别') return '';
-  return trimPunctuationEdges(text);
-}
-
 function buildFlowNodeIndex(dataflows: DataflowsResult): Map<string, Set<string>> {
   const map = new Map<string, Set<string>>();
   for (const flow of dataflows.flows ?? []) {
@@ -1043,104 +969,25 @@ function pickValidRef(
   return null;
 }
 
-const REPORT_LOCAL_HANDLING_SENTENCE = '相关数据仅在本地处理。';
-const REPORT_SERVER_HANDLING_SENTENCE = '相关数据会上传至应用服务端。';
-
-function collectPracticeFlowIds(
-  practice: PrivacyDataPractice,
-  perFlowIndex: Map<string, Set<string>> | undefined,
-): string[] {
-  const out: string[] = [];
-  const seen = new Set<string>();
-  for (const item of practice.dataItems ?? []) {
-    for (const ref of Array.isArray(item?.refs) ? item.refs : []) {
-      const flowId = cleanText(ref?.flowId);
-      const nodeId = cleanText(ref?.nodeId);
-      if (!flowId) continue;
-      const nodes = perFlowIndex?.get(flowId);
-      if (nodes && nodeId && !nodes.has(nodeId)) continue;
-      if (seen.has(flowId)) continue;
-      seen.add(flowId);
-      out.push(flowId);
-    }
-  }
-  return out;
-}
-
-function relatedFlowsForPractice(args: {
+function collectionAnchorsForFacts(args: {
   feature: ReportFeatureInput;
-  practice: PrivacyDataPractice;
-  perFlowIndex: Map<string, Set<string>> | undefined;
-}): Array<{
-  flowId: string;
-  pathId: string;
-  summary: {
-    dataItems: string[];
-    collectionFrequency: string[];
-    cloudUpload: string[];
-    storageAndEncryption: string[];
-    permissions: string[];
-  };
-  evidenceNodes: Array<{ filePath: string; line: number; code: string; description: string }>;
-}> {
-  const referencedFlowIds = collectPracticeFlowIds(args.practice, args.perFlowIndex);
-  const candidateFlowIds =
-    referencedFlowIds.length > 0
-      ? new Set(referencedFlowIds)
-      : (args.feature.dataflows.flows?.length ?? 0) === 1
-        ? new Set([cleanText(args.feature.dataflows.flows[0]?.flowId)])
-        : new Set<string>();
-
-  if (candidateFlowIds.size === 0) return [];
-
-  return args.feature.dataflows.flows
-    .filter((flow) => {
-      const flowId = cleanText(flow?.flowId);
-      return flowId && candidateFlowIds.has(flowId);
-    })
-    .map((flow) => ({
-      flowId: cleanText(flow.flowId),
-      pathId: cleanText(flow.pathId),
-      summary: {
-        dataItems: Array.isArray(flow.summary?.dataItems) ? flow.summary.dataItems.map(cleanText).filter(Boolean) : [],
-        collectionFrequency: Array.isArray(flow.summary?.collectionFrequency)
-          ? flow.summary.collectionFrequency.map(cleanText).filter(Boolean)
-          : [],
-        cloudUpload: Array.isArray(flow.summary?.cloudUpload) ? flow.summary.cloudUpload.map(cleanText).filter(Boolean) : [],
-        storageAndEncryption: Array.isArray(flow.summary?.storageAndEncryption)
-          ? flow.summary.storageAndEncryption.map(cleanText).filter(Boolean)
-          : [],
-        permissions: Array.isArray(flow.summary?.permissions) ? flow.summary.permissions.map(cleanText).filter(Boolean) : [],
-      },
-      evidenceNodes: (flow.nodes ?? [])
-        .slice(0, 10)
-        .map((node) => ({
-          filePath: cleanText(node.filePath),
-          line: Number(node.line ?? 0) || 0,
-          code: cleanText(node.code),
-          description: cleanText(node.description),
-        }))
-        .filter((node) => node.filePath && node.line > 0 && (node.code || node.description)),
-    }));
-}
-
-function collectionParagraphAnchors(args: {
-  feature: ReportFeatureInput;
-  practice: PrivacyDataPractice;
+  facts: FeaturePrivacyFactsContent;
   perFlowIndex: Map<string, Set<string>> | undefined;
 }): ParagraphAnchor[] {
   const out: ParagraphAnchor[] = [];
   const seen = new Set<string>();
-  for (const dataItem of args.practice.dataItems ?? []) {
-    const name = clauseText(dataItem?.name);
-    if (!name || seen.has(name)) continue;
-    const picked = pickValidRef(dataItem?.refs as Array<{ flowId: string; nodeId: string }> | undefined, args.perFlowIndex);
-    if (!picked) continue;
-    seen.add(name);
-    out.push({
-      name,
-      jumpTo: { featureId: args.feature.featureId, flowId: picked.flowId, nodeId: picked.nodeId },
-    });
+  for (const practice of asDataPractices(args.facts)) {
+    for (const dataItem of practice.dataItems ?? []) {
+      const name = clauseText(dataItem?.name);
+      if (!name || isNonDisclosableCollectionDataItem(name) || seen.has(name)) continue;
+      const picked = pickValidRef(dataItem?.refs as Array<{ flowId: string; nodeId: string }> | undefined, args.perFlowIndex);
+      if (!picked) continue;
+      seen.add(name);
+      out.push({
+        name,
+        jumpTo: { featureId: args.feature.featureId, flowId: picked.flowId, nodeId: picked.nodeId },
+      });
+    }
   }
   return out;
 }
@@ -1158,88 +1005,31 @@ function normalizeCollectionParagraphResponse(text: string): string {
   return normalized.replaceAll(/\s+/gu, ' ').trim();
 }
 
-function userFacingMethodText(text: unknown): string {
-  const value = cleanText(text);
-  if (!value) return '';
-  if (/未检测到显式加密|未检测到加密/u.test(value)) return '相关数据保存在设备本地，未发现加密存储证据';
-  if (/未检测到持久化存储/u.test(value)) return '相关数据仅在本地处理';
-  if (/组件实例变量|本地内存|回调函数/u.test(value)) return '相关数据仅在本地处理';
-  return value;
-}
-
 function isNonDisclosableCollectionDataItem(text: string): boolean {
   const value = cleanText(text);
   if (!value) return true;
   return /(日志|log\b|错误堆栈|stack\b|调试|debug\b|上下文|context\b|内部状态|状态标识|配置参数|生命周期)/iu.test(value);
 }
 
-async function collectionParagraphForPractice(args: {
-  llm: LlmConfig;
-  feature: ReportFeatureInput;
-  practice: PrivacyDataPractice;
-  perFlowIndex: Map<string, Set<string>> | undefined;
-  anchors: ParagraphAnchor[];
-}): Promise<string> {
+async function reportDraftForPrivacyFacts(args: { llm: LlmConfig; facts: FeaturePrivacyFactsContent }): Promise<PrivacyReportDraft> {
   const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
-  const filteredAnchors = args.anchors.filter((anchor) => !isNonDisclosableCollectionDataItem(anchor.name));
-  if (!apiKey || filteredAnchors.length === 0) return 'SKIP';
-
-  const scenario = clauseText(
-    normalizeScenarioForReport(args.practice.businessScenario, {
-      featureId: args.feature.featureId,
-      featureTitle: args.feature.featureTitle,
-      pageTitle: args.feature.pageTitle,
-    }),
-  );
-  const dataSources = uniq((args.practice.dataSources ?? []).map(clauseText).filter(Boolean));
-  const allDataItems = uniq(
-    (args.practice.dataItems ?? [])
-      .map((item) => clauseText(item?.name))
-      .filter((name) => Boolean(name) && !isNonDisclosableCollectionDataItem(name)),
-  );
-  const processingPurpose = purposeClauseText(args.practice.processingPurpose);
-  const relatedFlows = relatedFlowsForPractice(args);
-
+  if (!apiKey) return { collectionAndUse: [], permissions: [] };
   const system = [
     '你是隐私声明报告助手。',
-    '你的任务是为“我们如何收集和使用您的个人信息”判断并生成一段正式中文。',
-    '如果当前数据实践不涉及应披露的个人信息/隐私数据，必须只输出 SKIP。',
-    '如果生成正文，必须只输出一段中文，不要输出 JSON、标题、解释或 Markdown。',
-    '如果正文提到数据项，必须直接使用候选数据项名称中的原文，不得改写、翻译、拆分、合并或新增名称。',
+    '你将收到一个功能点的 privacy_facts.json；user 消息只包含该 JSON。',
+    '请只基于输入 JSON 生成隐私声明报告段落，不得新增输入中不存在的数据项、权限、接收方、用途或业务场景。',
+    '输出必须是严格 JSON，不要输出 Markdown、标题或解释。',
+    '输出结构必须是：{"collectionAndUse": string[], "permissions": string[]}。',
+    '如果没有适合写入的内容，对应数组必须为空数组。',
+    '如果 collectionAndUse 段落提到数据项，必须直接使用 dataItems[].name 原文。',
+    '如果 permissions 段落提到权限，必须直接使用 permissionPractices[].permissionName 原文，不要改写、翻译或追加后缀。',
+    'permissions 是“设备权限调用”章节的完整声明段落数组，不是权限名称列表。',
+    'permissions 的每个元素必须是完整中文句子，不能只包含 permissionPractices[].permissionName，也不能只是多个 permissionName 的拼接。',
+    '如果无法写成完整权限声明段落，应跳过该权限，不要输出权限名列表。',
     '日志、生命周期状态、页面控制状态、路由参数、权限状态、设备参数、索引、内部状态变量等，不应写入个人信息段。',
-    `关于数据处理位置，请严格基于证据表述；若证据不足或未明确上传服务端，应表述为“${REPORT_LOCAL_HANDLING_SENTENCE}”；只有证据明确指向应用服务端上传时，才能表述为“${REPORT_SERVER_HANDLING_SENTENCE}”`,
   ].join('\n');
 
-  const user = [
-    '请基于以下证据生成隐私声明段落，或输出 SKIP：',
-    JSON.stringify(
-      {
-        featureId: cleanText(args.feature.featureId),
-        featureTitle: cleanText(args.feature.featureTitle),
-        pageTitle: cleanText(args.feature.pageTitle),
-        businessScenario: scenario || '未识别',
-        dataSources,
-        candidateDataItems: filteredAnchors.map((anchor) => anchor.name),
-        allRecognizedDataItems: allDataItems,
-        processingMethod: userFacingMethodText(args.practice.processingMethod),
-        storageMethod: userFacingMethodText(args.practice.storageMethod),
-        dataRecipients: (args.practice.dataRecipients ?? []).map((recipient) => ({
-          name: cleanText(recipient?.name),
-        })),
-        processingPurpose,
-        relatedFlows,
-      },
-      null,
-      2,
-    ),
-    '',
-    '写作要求：',
-    '- 如果没有合适的候选数据项可以写入个人信息段，输出 SKIP',
-    '- 如果生成正文，至少提到一个 candidateDataItems 中的原始名称',
-    '- 正文应自然、正式、通顺，可直接放入隐私声明',
-    '- 不要写源码术语、路径、函数名、变量名、日志信息或技术调试细节',
-    '- 不要直接复述“未检测到显式加密”“组件实例变量”“本地内存回调函数”等静态分析术语，请改写成用户能理解的表述',
-  ].join('\n');
+  const user = JSON.stringify(args.facts, null, 2);
 
   const baseUrls = resolveLlmBaseUrls(args.llm.provider);
   let lastError: unknown = null;
@@ -1254,10 +1044,9 @@ async function collectionParagraphForPractice(args: {
           { role: 'user', content: user },
         ],
         temperature: 0,
+        jsonMode: true,
       });
-      const paragraph = normalizeCollectionParagraphResponse(res.content);
-      if (!paragraph) return 'SKIP';
-      return /^SKIP[。.!！?？]*$/iu.test(paragraph) ? 'SKIP' : paragraph;
+      return parsePrivacyReportDraft(res.content);
     } catch (error) {
       lastError = error;
       const canRetry =
@@ -1268,8 +1057,7 @@ async function collectionParagraphForPractice(args: {
     }
   }
 
-  void lastError;
-  return 'SKIP';
+  throw lastError instanceof Error ? lastError : new Error(String(lastError));
 }
 
 function paragraphTokens(args: {
@@ -1296,7 +1084,7 @@ function paragraphTokens(args: {
       out.push({ text: buffer });
       buffer = '';
     }
-    out.push({ text: matched.name, jumpTo: matched.jumpTo });
+    out.push({ text: matched.outputText ?? matched.name, jumpTo: matched.jumpTo });
     anchored = true;
     cursor += matched.name.length;
   }
@@ -1317,200 +1105,90 @@ function permissionReportLabel(permissionName: string, mode: PrivacyPermissionPr
   return `${base}（${permissionAuthorizationLabel(mode)}）`;
 }
 
-function permissionParagraphAnchors(args: {
-  feature: ReportFeatureInput;
-  practice: PrivacyPermissionPractice;
-  perFlowIndex: Map<string, Set<string>> | undefined;
-}): ParagraphAnchor[] {
-  const permissionName = normalizePermissionName(args.practice.permissionName);
-  if (!permissionName) return [];
-
-  const picked = pickValidRef(args.practice.refs as Array<{ flowId: string; nodeId: string }> | undefined, args.perFlowIndex);
-  if (!picked) return [];
-
-  return [
-    {
-      name: permissionReportLabel(permissionName, args.practice.authorizationMode),
-      jumpTo: { featureId: args.feature.featureId, flowId: picked.flowId, nodeId: picked.nodeId },
-    },
-  ];
-}
-
-async function permissionParagraphForPractice(args: {
-  llm: LlmConfig;
-  feature: ReportFeatureInput;
-  practice: PrivacyPermissionPractice;
-  perFlowIndex: Map<string, Set<string>> | undefined;
-  anchors: ParagraphAnchor[];
-}): Promise<string> {
-  const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
-
-  const scenario = clauseText(
-    normalizeScenarioForReport(args.practice.businessScenario, {
-      featureId: args.feature.featureId,
-      featureTitle: args.feature.featureTitle,
-      pageTitle: args.feature.pageTitle,
-    }),
-  );
-  const purpose = permissionPurposeText(args.practice.permissionPurpose);
-  const denyImpact = permissionDenyImpactText(args.practice.denyImpact);
-
-  if (args.anchors.length === 0) return 'SKIP';
-  if (!apiKey) return 'SKIP';
-
-  const system = [
-    '你是隐私声明报告助手。',
-    '你的任务是为“设备权限调用”生成一段正式中文。',
-    '如果当前权限实践不适合写入隐私声明，必须只输出 SKIP。',
-    '如果生成正文，必须只输出一段中文，不要输出 JSON、标题、解释或 Markdown。',
-    '如果正文提到权限，必须直接使用候选权限名称中的原文，不得改写、翻译、拆分、合并或新增名称。',
-  ].join('\n');
-
-  const payload = JSON.stringify(
-    {
-      featureId: cleanText(args.feature.featureId),
-      featureTitle: cleanText(args.feature.featureTitle),
-      pageTitle: cleanText(args.feature.pageTitle),
-      businessScenario: scenario || '未识别',
-      candidatePermissions: args.anchors.map((anchor) => anchor.name),
-      permissionPurpose: purpose,
-      denyImpact,
-    },
-    null,
-    2,
-  );
-
-  const generateParagraph = async (strictAnchorRetry: boolean): Promise<string> => {
-    const user = [
-      strictAnchorRetry ? '你上一次输出未保留候选权限名称原文或段落不完整，请严格重写。' : '请基于以下证据生成权限声明段落，或输出 SKIP：',
-      payload,
-      '',
-      '写作要求：',
-      '- 如果生成正文，至少提到一个 candidatePermissions 中的原始名称',
-      strictAnchorRetry ? '- 必须逐字保留一个 candidatePermissions 中的原始名称，否则只输出 SKIP' : '',
-      strictAnchorRetry ? '- 请优先写完整的业务场景、权限用途和拒绝影响，不要只输出残句' : '',
-      '- 正文应自然、正式、通顺，可直接放入隐私声明',
-      '- 不要写源码术语、路径、函数名、变量名、日志信息或技术调试细节',
-    ]
-      .filter(Boolean)
-      .join('\n');
-
-    const baseUrls = resolveLlmBaseUrls(args.llm.provider);
-    let lastError: unknown = null;
-    for (const baseUrl of baseUrls) {
-      try {
-        const res = await openAiCompatibleChat({
-          baseUrl,
-          apiKey,
-          model: args.llm.model,
-          messages: [
-            { role: 'system', content: system },
-            { role: 'user', content: user },
-          ],
-          temperature: 0,
-        });
-        const paragraph = normalizeCollectionParagraphResponse(res.content);
-        if (!paragraph) return 'SKIP';
-        return /^SKIP[。.!！?？]*$/iu.test(paragraph) ? 'SKIP' : paragraph;
-      } catch (error) {
-        lastError = error;
-        const canRetry =
-          baseUrls.length > 1 &&
-          (error instanceof LlmNetworkError ||
-            (error instanceof LlmHttpError && (error.status === 401 || error.status === 404 || error.status >= 500)));
-        if (!canRetry) break;
-      }
-    }
-
-    void lastError;
-    return 'SKIP';
-  };
-
-  const paragraph = await generateParagraph(false);
-  if (paragraphTokens({ paragraph, anchors: args.anchors }).length > 0) return paragraph;
-  const retriedParagraph = await generateParagraph(true);
-  return paragraphTokens({ paragraph: retriedParagraph, anchors: args.anchors }).length > 0 ? retriedParagraph : 'SKIP';
-}
-
-async function permissionSectionTokens(args: {
-  llm: LlmConfig;
+function permissionAnchorsForFacts(args: {
   feature: ReportFeatureInput;
   facts: FeaturePrivacyFactsContent;
   perFlowIndex: Map<string, Set<string>> | undefined;
-}): Promise<PrivacyReportToken[]> {
+}): ParagraphAnchor[] {
+  const out: ParagraphAnchor[] = [];
+  const seen = new Set<string>();
   const practices = asPermissionPractices(args.facts)
     .map((practice) => ({
       ...practice,
       permissionName: normalizePermissionName(practice.permissionName),
-      businessScenario: normalizeScenarioForReport(practice.businessScenario, {
-        featureId: args.feature.featureId,
-        featureTitle: args.feature.featureTitle,
-        pageTitle: args.feature.pageTitle,
-      }),
-      permissionPurpose: cleanText(practice.permissionPurpose) || '未识别',
-      denyImpact: cleanText(practice.denyImpact) || '未识别',
       refs: Array.isArray(practice.refs) ? practice.refs : [],
     }))
     .filter((practice) => Boolean(practice.permissionName));
 
-  if (practices.length === 0) return [];
-
-  const merged: PrivacyReportToken[] = [];
   for (const practice of practices) {
-    const anchors = permissionParagraphAnchors({
-      feature: args.feature,
-      practice,
-      perFlowIndex: args.perFlowIndex,
+    const permissionName = practice.permissionName;
+    if (seen.has(permissionName)) continue;
+    const picked = pickValidRef(practice.refs as Array<{ flowId: string; nodeId: string }> | undefined, args.perFlowIndex);
+    if (!picked) continue;
+    seen.add(permissionName);
+    out.push({
+      name: permissionName,
+      outputText: permissionReportLabel(permissionName, practice.authorizationMode),
+      jumpTo: { featureId: args.feature.featureId, flowId: picked.flowId, nodeId: picked.nodeId },
     });
-    const paragraph = await permissionParagraphForPractice({
-      llm: args.llm,
-      feature: args.feature,
-      practice,
-      perFlowIndex: args.perFlowIndex,
-      anchors,
-    });
-    const tokens = anchors.length > 0 ? paragraphTokens({ paragraph, anchors }) : [];
-    if (tokens.length === 0) continue;
-    for (const token of tokens) merged.push(token);
   }
 
-  return merged;
+  return out;
 }
 
-async function deterministicCollectionAndUseTokens(args: {
-  llm: LlmConfig;
-  feature: ReportFeatureInput;
-  facts: FeaturePrivacyFactsContent;
-  perFlowIndex: Map<string, Set<string>> | undefined;
-}): Promise<PrivacyReportToken[]> {
-  const practices = asDataPractices(args.facts);
-  if (practices.length === 0) return [];
-
+function tokensFromDraftParagraphs(paragraphs: string[], anchors: ParagraphAnchor[]): PrivacyReportToken[] {
+  if (anchors.length === 0) return [];
   const out: PrivacyReportToken[] = [];
-  for (const practice of practices) {
-    const anchors = collectionParagraphAnchors({
-      feature: args.feature,
-      practice,
-      perFlowIndex: args.perFlowIndex,
-    });
-    if (anchors.length === 0) continue;
-
-    const paragraph = await collectionParagraphForPractice({
-      llm: args.llm,
-      feature: args.feature,
-      practice,
-      perFlowIndex: args.perFlowIndex,
-      anchors,
-    });
-    const tokens = paragraphTokens({
-      paragraph,
-      anchors: anchors.filter((anchor) => !isNonDisclosableCollectionDataItem(anchor.name)),
-    });
+  for (const paragraph of paragraphs) {
+    const tokens = paragraphTokens({ paragraph, anchors });
     if (tokens.length === 0) continue;
     for (const token of tokens) out.push(token);
   }
 
   return out;
+}
+
+function normalizePermissionOnlyText(text: string): string {
+  return cleanText(text).replaceAll(/[\s，,。.!！？?；;：:、（）()\[\]【】"'“”‘’`]/gu, '').replaceAll(/权限/gu, '');
+}
+
+function isPermissionNameOnlyParagraph(paragraph: string, anchors: ParagraphAnchor[]): boolean {
+  let remaining = normalizePermissionOnlyText(paragraph);
+  let matched = false;
+  for (const anchor of anchors) {
+    const name = normalizePermissionOnlyText(anchor.name);
+    if (!name || !remaining.includes(name)) continue;
+    matched = true;
+    remaining = remaining.replaceAll(name, '');
+  }
+  return matched && remaining.length === 0;
+}
+
+function permissionTokensFromDraftParagraphs(paragraphs: string[], anchors: ParagraphAnchor[]): PrivacyReportToken[] {
+  if (anchors.length === 0) return [];
+  const out: PrivacyReportToken[] = [];
+  for (const paragraph of paragraphs) {
+    if (isPermissionNameOnlyParagraph(paragraph, anchors)) continue;
+    const tokens = paragraphTokens({ paragraph, anchors });
+    if (tokens.length === 0) continue;
+    for (const token of tokens) out.push(token);
+  }
+
+  return out;
+}
+
+function parsePrivacyReportDraft(content: string): PrivacyReportDraft {
+  const raw = JSON.parse(content.trim()) as unknown;
+  if (!isRecord(raw)) throw new Error('隐私声明报告 LLM 输出不是 JSON 对象');
+
+  const collectionAndUse = parseDraftStringArray((raw as any).collectionAndUse, 'collectionAndUse');
+  const permissions = parseDraftStringArray((raw as any).permissions, 'permissions');
+  return { collectionAndUse, permissions };
+}
+
+function parseDraftStringArray(value: unknown, fieldName: string): string[] {
+  if (!Array.isArray(value)) throw new Error(`隐私声明报告 LLM 输出缺少 ${fieldName} 数组`);
+  return value.map(cleanText).filter(Boolean);
 }
 
 export async function buildPrivacyReport(args: {
@@ -1525,29 +1203,31 @@ export async function buildPrivacyReport(args: {
 
   const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
 
-  const collectionAndUse: PrivacyReportSection[] = await Promise.all(
-    args.features.map(async (feature) => ({
-      featureId: feature.featureId,
-      tokens: await deterministicCollectionAndUseTokens({
-        llm: args.llm,
-        feature,
-        facts: feature.facts,
-        perFlowIndex: flowIndexes.get(feature.featureId),
-      }),
-    })),
+  const featureSections = await Promise.all(
+    args.features.map(async (feature) => {
+      const perFlowIndex = flowIndexes.get(feature.featureId);
+      const collectionAnchors = collectionAnchorsForFacts({ feature, facts: feature.facts, perFlowIndex });
+      const permissionAnchors = permissionAnchorsForFacts({ feature, facts: feature.facts, perFlowIndex });
+      const draft =
+        apiKey && (collectionAnchors.length > 0 || permissionAnchors.length > 0)
+          ? await reportDraftForPrivacyFacts({ llm: args.llm, facts: feature.facts })
+          : { collectionAndUse: [], permissions: [] };
+
+      return {
+        collectionAndUse: {
+          featureId: feature.featureId,
+          tokens: tokensFromDraftParagraphs(draft.collectionAndUse, collectionAnchors),
+        },
+        permissions: {
+          featureId: feature.featureId,
+          tokens: permissionTokensFromDraftParagraphs(draft.permissions, permissionAnchors),
+        },
+      };
+    }),
   );
 
-  const permissions: PrivacyReportSection[] = await Promise.all(
-    args.features.map(async (feature) => ({
-      featureId: feature.featureId,
-      tokens: await permissionSectionTokens({
-        llm: args.llm,
-        feature,
-        facts: feature.facts,
-        perFlowIndex: flowIndexes.get(feature.featureId),
-      }),
-    })),
-  );
+  const collectionAndUse: PrivacyReportSection[] = featureSections.map((section) => section.collectionAndUse);
+  const permissions: PrivacyReportSection[] = featureSections.map((section) => section.permissions);
 
   const warnings = uniq(
     args.features.flatMap((feature) => {
