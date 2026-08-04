@@ -18,6 +18,7 @@ type BuildCallGraphOptions = {
     provider: string;
     apiKey: string;
     model: string;
+    baseUrl?: string;
   };
 };
 
@@ -190,11 +191,11 @@ function extractDescriptionFromLlmJson(raw: unknown): string {
 }
 
 async function chatWithFallbackBaseUrls(args: {
-  llm: { provider: string; apiKey: string; model: string };
+  llm: { provider: string; apiKey: string; model: string; baseUrl?: string };
   system: string;
   user: string;
 }): Promise<string> {
-  const baseUrls = resolveLlmBaseUrls(args.llm.provider);
+  const baseUrls = resolveLlmBaseUrls(args.llm.provider, args.llm.baseUrl);
   let lastError: unknown = null;
 
   for (const baseUrl of baseUrls) {

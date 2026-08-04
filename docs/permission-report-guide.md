@@ -34,14 +34,13 @@
 
 **评估命令示例**
 
-当前仓库保留了 Python 评估脚本，指标口径与后端运行器中的权限评估辅助函数一致：
+运行统一评估脚本，评估每个应用最新一次分析结果中的权限和个人信息识别效果：
 
 ```bash
-python3 scripts/eval_permissions.py \
-  --app Wechat_HarmonyOS \
-  --run-id Wechat_HarmonyOS_20260306-212407 \
-  --details
+python3 scripts/eval_all.py
 ```
+
+评估结果保存在 `output/evaluation/permission_evaluation.csv` 和 `output/evaluation/personal_info_evaluation.csv`。
 
 **使用注意事项**
 

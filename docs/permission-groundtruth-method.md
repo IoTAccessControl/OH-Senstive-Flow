@@ -83,15 +83,21 @@ python3 scripts/gen_permission_groundtruth.py
 - 然后对每个功能点的权限识别结果做过滤（降低幻觉误报）
 - 并在 run 目录下生成一个 synthetic 功能点 `__app_permissions`，兜底补齐“已知但未被任何功能点数据流覆盖”的权限，确保评估覆盖率不受 LLM/数据流为空等情况影响
 
-## 4.脚本：评估（Recall 与误报率）
+## 4.脚本：评估（覆盖率、误报率与要素完整度）
 
-Python 评估脚本：
+统一评估脚本会读取每个应用最新一次分析结果，并同时评估权限和个人信息识别效果：
 
 ```bash
-python3 scripts/eval_permissions.py --app Wechat_HarmonyOS --run-id Wechat_HarmonyOS_20260306-212407 --details
+python3 scripts/eval_all.py
 ```
 
 指标：
 
 - 覆盖率（Recall）= TP / |GT|
 - 误报率（False Positive Rate）= FP / |Pred|
+- 要素完整度：针对每个 Ground Truth 权限检查权限名、业务场景、权限目的、拒绝授权影响和证据引用；模板化内容降分，缺失或无有效引用不计分
+
+评估结果保存在：
+
+- `output/evaluation/permission_evaluation.csv`
+- `output/evaluation/personal_info_evaluation.csv`

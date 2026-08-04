@@ -29,6 +29,7 @@ type LlmConfig = {
   provider: string;
   apiKey: string;
   model: string;
+  baseUrl?: string;
 };
 
 type AnalyzePipelineRequest = {
@@ -294,15 +295,18 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
   const llmProvider = pickNonEmptyText(req.llmProvider, process.env.LLM_PROVIDER) ?? 'Qwen';
   const llmModel = pickNonEmptyText(req.llmModel, process.env.LLM_MODEL) ?? 'qwen3.5-397b-a17b';
   const llmApiKey = pickNonEmptyText(req.llmApiKey, process.env.LLM_API_KEY) ?? '';
+  const llmBaseUrl = pickNonEmptyText(process.env.LLM_BASE_URL);
   const uiLlmProvider = pickNonEmptyText(req.uiLlmProvider, process.env.UI_LLM_PROVIDER, process.env.LLM_PROVIDER) ?? 'Qwen';
   const uiLlmModel = pickNonEmptyText(req.uiLlmModel, process.env.UI_LLM_MODEL, process.env.LLM_MODEL) ?? 'qwen3.5-27b';
   const uiLlmApiKey = pickNonEmptyText(req.uiLlmApiKey, process.env.UI_LLM_API_KEY, process.env.LLM_API_KEY) ?? '';
+  const uiLlmBaseUrl = pickNonEmptyText(process.env.UI_LLM_BASE_URL);
   const privacyReportLlmProvider =
     pickNonEmptyText(req.privacyReportLlmProvider, process.env.PRIVACY_REPORT_LLM_PROVIDER, process.env.LLM_PROVIDER) ?? 'Qwen';
   const privacyReportLlmModel =
     pickNonEmptyText(req.privacyReportLlmModel, process.env.PRIVACY_REPORT_LLM_MODEL, process.env.LLM_MODEL) ?? 'qwen3.5-27b';
   const privacyReportLlmApiKey =
     pickNonEmptyText(req.privacyReportLlmApiKey, process.env.PRIVACY_REPORT_LLM_API_KEY, process.env.LLM_API_KEY) ?? '';
+  const privacyReportLlmBaseUrl = pickNonEmptyText(process.env.PRIVACY_REPORT_LLM_BASE_URL);
 
   const appAbs = resolveWorkspacePath(repoRoot, appPath);
   const sdkAbs = resolveWorkspacePath(repoRoot, sdkPath);
@@ -330,8 +334,8 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
     outputDirAbs,
     maxDataflowPaths,
     graphBackend,
-    llm: { provider: llmProvider, apiKey: llmApiKey, model: llmModel },
-    uiLlm: { provider: uiLlmProvider, apiKey: uiLlmApiKey, model: uiLlmModel },
+    llm: { provider: llmProvider, apiKey: llmApiKey, model: llmModel, baseUrl: llmBaseUrl },
+    uiLlm: { provider: uiLlmProvider, apiKey: uiLlmApiKey, model: uiLlmModel, baseUrl: uiLlmBaseUrl },
   };
 
   const { appFiles, sinks, sources, callGraph, dataflows, uiTree, groupedPages } = await analyzeProject(analysisRequest, {
@@ -420,7 +424,12 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
     runId,
     appName,
     outputDirAbs,
-    llm: { provider: privacyReportLlmProvider, apiKey: privacyReportLlmApiKey, model: privacyReportLlmModel },
+    llm: {
+      provider: privacyReportLlmProvider,
+      apiKey: privacyReportLlmApiKey,
+      model: privacyReportLlmModel,
+      baseUrl: privacyReportLlmBaseUrl,
+    },
   });
 
   emitProgress(RUN_ANALYSIS_STAGES, 13, options.onProgress);

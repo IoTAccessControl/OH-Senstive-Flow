@@ -13,7 +13,7 @@ import type {
   PrivacyRecipient,
 } from './types.js';
 
-type LlmConfig = { provider: string; apiKey: string; model: string };
+type LlmConfig = { provider: string; apiKey: string; model: string; baseUrl?: string };
 
 export type PrivacyFactsFeatureContext = {
   featureId: string;
@@ -255,8 +255,7 @@ function normalizeExtractedContent(
           ...recipient,
           name: normalizeUserFacingText(recipient.name) || recipient.name,
         })),
-      }))
-      .filter((practice) => practice.dataItems.length > 0),
+      })),
     permissionPractices: (content.permissionPractices ?? []).map((p) => ({
       ...p,
       businessScenario: normalizeBusinessScenario(p.businessScenario, feature),
@@ -416,6 +415,28 @@ function buildPrompt(args: {
     permissionHints,
   };
 
+  if (args.feature?.featureId === '__app_permissions' && permissionHints.length > 0) {
+    const user = [
+      '根据输入中的权限清单和代码证据，补充每项权限的中文用途说明。',
+      JSON.stringify(inputPayload),
+      '只输出以下 JSON 结构，权限名和 refs 必须原样保留：',
+      '{"dataPractices":[],"permissionPractices":[{"permissionName":"ohos.permission.X","businessScenario":"用户进行具体操作时","permissionPurpose":"用于完成具体操作","denyImpact":"拒绝后无法完成的具体操作","refs":[{"flowId":"原值","nodeId":"原值"}]}]}',
+      'permissionHints 中每个权限都必须输出一次；不要输出 collectionAndUse 或 permissions。',
+    ].join('\n');
+    return { system, user };
+  }
+
+  if (args.feature?.featureId === '__app_permissions' && featureTitle.startsWith('个人信息处理：')) {
+    const user = [
+      '根据输入中的源码证据，补充标题所列个人信息的中文处理说明。',
+      JSON.stringify({ featureTitle, dataflows: inputPayload.dataflows }),
+      '只输出以下 JSON 结构，数据项名称和 refs 必须使用输入原值：',
+      '{"dataPractices":[{"businessScenario":"具体用户场景","processingSubject":"本应用","dataSources":["具体来源"],"dataItems":[{"name":"原数据项名称","refs":[{"flowId":"原值","nodeId":"原值"}]}],"processingMethod":"具体处理方式","storageMethod":"具体保存方式或处理期间","dataRecipients":[],"processingPurpose":"具体用途"}],"permissionPractices":[]}',
+      '标题中的每个数据项都必须输出一次；不要输出 collectionAndUse 或 permissions。',
+    ].join('\n');
+    return { system, user };
+  }
+
   const customRules = args.privacyRules?.descriptionRules ?? [];
   const user = [
     '输入 JSON：',
@@ -469,7 +490,7 @@ async function chatJsonWithRetries(args: {
   system: string;
   user: string;
 }): Promise<unknown> {
-  const baseUrls = resolveLlmBaseUrls(args.llm.provider);
+  const baseUrls = resolveLlmBaseUrls(args.llm.provider, args.llm.baseUrl);
   let lastError: unknown = null;
 
   for (const baseUrl of baseUrls) {
@@ -482,8 +503,11 @@ async function chatJsonWithRetries(args: {
           { role: 'system', content: args.system },
           { role: 'user', content: args.user },
         ],
-        temperature: 0.2,
+        temperature: 0,
+        maxTokens: 512,
         jsonMode: true,
+        enableThinking: false,
+        timeoutMs: 20_000,
       });
       return safeJsonParse(res.content);
     } catch (e) {

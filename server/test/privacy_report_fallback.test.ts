@@ -26,7 +26,30 @@ describe('privacy report evidence rules', () => {
     mockChat.mockReset();
   });
 
-  it('drops collection paragraphs when the llm output does not keep exact data item names', async () => {
+  it('uses privacy-statement language when both chapters have no applicable facts', async () => {
+    const result = await buildPrivacyReport({
+      runId: 'run0',
+      appName: 'App',
+      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3-32b' },
+      features: [
+        {
+          featureId: 'feature_empty',
+          facts: { dataPractices: [], permissionPractices: [] },
+          dataflows: {
+            meta: { runId: 'run0', generatedAt: new Date().toISOString(), counts: { flows: 0, nodes: 0, edges: 0 } },
+            flows: [],
+          },
+        },
+      ],
+    });
+
+    expect(result.text).toContain('本应用当前提供的功能不涉及个人信息的收集和使用。');
+    expect(result.text).toContain('本应用当前提供的功能无需申请设备权限。');
+    expect(result.text).not.toContain('经检测');
+    expect(result.text).not.toContain('经分析');
+  });
+
+  it('uses deterministic evidence text when the llm output does not keep exact data item names', async () => {
     mockChat.mockResolvedValueOnce({
       content: reportDraftContent({
         collectionAndUse: ['在“用户点击头像”场景中，我们会从系统相册收集头像，用于展示头像。相关数据仅在本地处理。'],
@@ -94,10 +117,10 @@ describe('privacy report evidence rules', () => {
     const collectionSection = result.report.sections.collectionAndUse[0];
     const permissionSection = result.report.sections.permissions[0];
 
-    expect(collectionSection?.tokens ?? []).toEqual([]);
-    expect(permissionSection?.tokens ?? []).toEqual([]);
-    expect(result.text).not.toContain('头像图片');
-    expect(result.text).not.toContain('ohos.permission.READ_MEDIA');
+    expect(collectionSection?.tokens.some((token) => token.text === '头像图片')).toBe(true);
+    expect(permissionSection?.tokens.length).toBeGreaterThan(0);
+    expect(result.text).toContain('头像图片');
+    expect(result.text).toContain('ohos.permission.READ_MEDIA');
     expect(result.warnings).toEqual([]);
   });
 
@@ -268,7 +291,7 @@ describe('privacy report evidence rules', () => {
     expect(result.text).toContain('用户搜索关键词');
   });
 
-  it('omits synthetic app-level permissions from chapter two when no llm paragraph is available', async () => {
+  it('renders synthetic app-level permissions with deterministic text when no llm paragraph is available', async () => {
     const result = await buildPrivacyReport({
       runId: 'run2',
       appName: 'App',
@@ -302,8 +325,8 @@ describe('privacy report evidence rules', () => {
     });
 
     const permissionSection = result.report.sections.permissions[0];
-    expect(permissionSection?.tokens ?? []).toEqual([]);
-    expect(result.text).not.toContain('网络访问权限（预授权）');
+    expect(permissionSection?.tokens.length).toBeGreaterThan(0);
+    expect(result.text).toContain('ohos.permission.INTERNET');
   });
 
   it('renders authorization labels in permission sentences with valid refs when llm returns a valid paragraph', async () => {
@@ -366,7 +389,7 @@ describe('privacy report evidence rules', () => {
     expect(result.text).toContain('若您拒绝授权，无法拍照。');
   });
 
-  it('drops permission paragraphs that only list permission names', async () => {
+  it('replaces permission-name-only paragraphs with deterministic statements', async () => {
     mockChat.mockResolvedValueOnce({
       content: reportDraftContent({
         permissions: ['ohos.permission.CAMERA'],
@@ -422,8 +445,63 @@ describe('privacy report evidence rules', () => {
       ],
     });
 
-    expect(result.report.sections.permissions[0]?.tokens ?? []).toEqual([]);
-    expect(result.text).not.toContain('相机权限（动态授权）');
+    expect(result.report.sections.permissions[0]?.tokens.length).toBeGreaterThan(0);
+    expect(result.text).toContain('相机权限（动态授权）');
+    expect(result.text).toContain('如果您拒绝授权，无法拍照');
+  });
+
+  it('falls back per feature when the report llm returns invalid json', async () => {
+    mockChat.mockResolvedValueOnce({ content: '{"collectionAndUse":[invalid]}', raw: {} });
+
+    const result = await buildPrivacyReport({
+      runId: 'run2d',
+      appName: 'App',
+      llm: { provider: 'Qwen', apiKey: 'test-key', model: 'qwen3-32b' },
+      features: [
+        {
+          featureId: 'feature_search',
+          facts: {
+            dataPractices: [
+              {
+                businessScenario: '用户搜索内容时',
+                processingSubject: '本应用',
+                dataSources: ['用户输入'],
+                dataItems: [{ name: '搜索关键词', refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }] }],
+                processingMethod: '读取并匹配',
+                storageMethod: '仅在内存中处理',
+                dataRecipients: [],
+                processingPurpose: '返回搜索结果',
+              },
+            ],
+            permissionPractices: [],
+          },
+          dataflows: {
+            meta: { runId: 'run2d', generatedAt: new Date().toISOString(), counts: { flows: 1, nodes: 1, edges: 0 } },
+            flows: [
+              {
+                flowId: 'flow:p1',
+                pathId: 'p1',
+                nodes: [
+                  {
+                    id: 'p1:n1',
+                    filePath: 'app/search.ets',
+                    line: 10,
+                    code: 'search(this.keyword)',
+                    description: '搜索内容',
+                    context: { startLine: 10, lines: ['search(this.keyword)'] },
+                  },
+                ],
+                edges: [],
+              },
+            ],
+          },
+        },
+      ],
+    });
+
+    expect(result.report.meta.skipped).toBe(false);
+    expect(result.text).toContain('搜索关键词');
+    expect(result.warnings.some((warning) => warning.includes('已使用确定性模板'))).toBe(true);
   });
 
   it('uses privacy_facts.json as the exact report llm input', async () => {
@@ -532,5 +610,56 @@ describe('privacy report evidence rules', () => {
     expect(result.text).toContain('网络连接状态');
     expect(result.text).toContain('获取网络信息权限（预授权）');
     expect(result.text).not.toContain('Checks whether the default data network is activated.');
+  });
+
+  it('avoids duplicated temporal and denial phrases in permission statements', async () => {
+    const result = await buildPrivacyReport({
+      runId: 'run4',
+      appName: 'App',
+      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3-32b' },
+      features: [
+        {
+          featureId: 'feature_sensor',
+          facts: {
+            dataPractices: [],
+            permissionPractices: [
+              {
+                permissionName: 'ohos.permission.ACCELEROMETER',
+                authorizationMode: 'preauthorized',
+                businessScenario: '设备运动传感器可用时启用运动追踪',
+                permissionPurpose: '读取运动信息',
+                denyImpact: '缺少该权限后无法提供运动信息',
+                refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }],
+              },
+            ],
+          },
+          dataflows: {
+            meta: { runId: 'run4', generatedAt: new Date().toISOString(), counts: { flows: 1, nodes: 1, edges: 0 } },
+            flows: [
+              {
+                flowId: 'flow:p1',
+                pathId: 'p1',
+                nodes: [
+                  {
+                    id: 'p1:n1',
+                    filePath: 'app/main.ets',
+                    line: 10,
+                    code: 'sensor.on();',
+                    description: '订阅运动传感器',
+                    context: { startLine: 10, lines: ['sensor.on();'] },
+                  },
+                ],
+                edges: [],
+              },
+            ],
+          },
+        },
+      ],
+    });
+
+    expect(result.text).toContain('当设备运动传感器可用时启用运动追踪，本应用会申请');
+    expect(result.text).toContain('如果您拒绝授权，无法提供运动信息');
+    expect(result.text).not.toContain('运动追踪时，本应用');
+    expect(result.text).not.toContain('如果您拒绝授权，缺少该权限后');
   });
 });

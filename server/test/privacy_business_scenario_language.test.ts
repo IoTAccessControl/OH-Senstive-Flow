@@ -154,4 +154,5 @@ describe('privacy facts scenario language normalization', () => {
     expect(result.content.dataPractices[0]?.processingSubject).toBe('本应用');
     expect(mockOpenAiCompatibleChat.mock.calls[0]?.[0]?.messages[1]?.content).toContain('操作主体填写本应用');
   });
+
 });

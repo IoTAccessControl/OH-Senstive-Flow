@@ -11,6 +11,8 @@ export type LlmChatRequest = {
   temperature?: number;
   maxTokens?: number;
   jsonMode?: boolean;
+  enableThinking?: boolean;
+  timeoutMs?: number;
 };
 
 export type LlmChatResponse = {
@@ -22,8 +24,8 @@ function normalizeProviderName(provider: string): string {
   return provider.trim().toLowerCase();
 }
 
-export function resolveLlmBaseUrls(provider: string): string[] {
-  const override = process.env.LLM_BASE_URL?.trim();
+export function resolveLlmBaseUrls(provider: string, baseUrl?: string): string[] {
+  const override = baseUrl?.trim();
   if (override) return [override];
 
   const normalizedProvider = normalizeProviderName(provider);
@@ -32,11 +34,11 @@ export function resolveLlmBaseUrls(provider: string): string[] {
   }
   if (normalizedProvider === 'openai') return ['https://api.openai.com/v1'];
 
-  throw new Error(`不支持的 LLM provider=${provider}；请使用 Qwen/OpenAI，或通过环境变量 LLM_BASE_URL 指定 OpenAI 兼容 baseURL`);
+  throw new Error(`不支持的 LLM provider=${provider}；请使用 Qwen/OpenAI，或为该 LLM 配置 OpenAI 兼容 baseURL`);
 }
 
-export function resolveLlmBaseUrl(provider: string): string {
-  const urls = resolveLlmBaseUrls(provider);
+export function resolveLlmBaseUrl(provider: string, baseUrl?: string): string {
+  const urls = resolveLlmBaseUrls(provider, baseUrl);
   if (urls.length === 0) throw new Error(`无法解析 LLM baseURL（provider=${provider}）`);
   return urls[0]!;
 }
@@ -59,6 +61,10 @@ function shouldDisableThinking(baseUrl: string): boolean {
 
 function asErrorText(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+export function stripLeadingThinkBlock(content: string): string {
+  return content.replace(/^\s*<think\b[^>]*>[\s\S]*?<\/think>\s*/iu, '');
 }
 
 function resolveTimeoutMs(): number {
@@ -88,7 +94,7 @@ export class LlmHttpError extends Error {
 
 export async function openAiCompatibleChat(request: LlmChatRequest): Promise<LlmChatResponse> {
   const url = joinUrl(request.baseUrl, '/chat/completions');
-  const timeoutMs = resolveTimeoutMs();
+  const timeoutMs = request.timeoutMs ?? resolveTimeoutMs();
 
   const body: Record<string, unknown> = {
     model: request.model,
@@ -97,6 +103,7 @@ export async function openAiCompatibleChat(request: LlmChatRequest): Promise<Llm
   };
   if (typeof request.maxTokens === 'number') body.max_tokens = request.maxTokens;
   if (request.jsonMode) body.response_format = { type: 'json_object' };
+  if (typeof request.enableThinking === 'boolean') body.enable_thinking = request.enableThinking;
   if (shouldDisableThinking(request.baseUrl)) body.enable_thinking = false;
 
   let response: Response;
@@ -132,10 +139,11 @@ export async function openAiCompatibleChat(request: LlmChatRequest): Promise<Llm
     throw new Error(`LLM 返回非 JSON：${text.slice(0, 2000)}`);
   }
 
-  const content =
+  const rawContent =
     typeof (json as { choices?: Array<{ message?: { content?: unknown } }> })?.choices?.[0]?.message?.content === 'string'
       ? (((json as { choices: Array<{ message: { content: string } }> }).choices[0]!.message.content as string) ?? '')
       : '';
+  const content = stripLeadingThinkBlock(rawContent);
   if (!content) throw new Error(`LLM 返回缺少 message.content：${text.slice(0, 2000)}`);
 
   return { content, raw: json };

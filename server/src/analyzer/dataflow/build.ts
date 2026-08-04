@@ -19,6 +19,7 @@ type BuildDataflowsOptions = {
     provider: string;
     apiKey: string;
     model: string;
+    baseUrl?: string;
   };
   contextRadiusLines?: number; // default 5
 };
@@ -545,7 +546,7 @@ export async function buildDataflows(options: BuildDataflowsOptions): Promise<Da
     };
   }
 
-  const baseUrls = resolveLlmBaseUrls(options.llm.provider);
+  const baseUrls = resolveLlmBaseUrls(options.llm.provider, options.llm.baseUrl);
   const sinkMap = groupSinkRecordsByCallsite(options.sinks);
   const sourceMap = groupSourceRecordsByKey(options.sources);
   const sourceLineKeys = buildSourceLineKeySet(options.sources);

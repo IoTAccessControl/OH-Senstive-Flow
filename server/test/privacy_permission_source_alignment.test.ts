@@ -203,7 +203,7 @@ describe('privacy permission alignment with app source', () => {
     const report = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'privacy_report.json'), 'utf8')) as any;
     const appPermissionSection = report.sections.permissions.find((section: any) => section.featureId === '__app_permissions');
     expect(appPermissionSection).toBeTruthy();
-    expect(appPermissionSection.tokens ?? []).toEqual([]);
+    expect(appPermissionSection.tokens.length).toBeGreaterThan(0);
     expect((report.meta.warnings ?? []).some((item: string) => item.includes('权限段落缺少有效跳转引用'))).toBe(false);
   });
 
@@ -251,8 +251,8 @@ export function requestAll(context: UIContext) {
     ]);
 
     const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
-    expect(reportText).not.toContain('网络访问权限（预授权）');
-    expect(reportText).not.toContain('动态授权');
+    expect(reportText).toContain('网络访问权限（预授权）');
+    expect(reportText).toContain('相机权限（动态授权）');
   });
 
   it('keeps permission refs deterministic and lets report llm write the final paragraph', async () => {
@@ -363,6 +363,144 @@ export function requestAll(context: UIContext) {
 
     const predicted = await collectPredictedPermissionsFromRun(outputDirAbs);
     expect([...predicted]).toEqual(['ohos.permission.INTERNET']);
+  });
+
+  it('keeps same-name permission fields when other standard fields are missing', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-perm-'));
+    const { outputDirAbs, featureDirAbs } = await writeMinimalFeatureRun({
+      repoRoot,
+      appPermissions: ['ohos.permission.INTERNET'],
+      sinkApiKey: '@ohos.router.pushUrl',
+    });
+
+    mockExtractFeaturePrivacyFacts.mockResolvedValue({
+      content: {
+        dataPractices: [],
+        permissionPractices: [
+          {
+            permissionName: 'ohos.permission.INTERNET',
+            businessScenario: '',
+            permissionPurpose: '',
+            denyImpact: '',
+            refs: [],
+          },
+        ],
+      },
+      warnings: [],
+    });
+    mockChat.mockResolvedValue({ content: reportDraftContent({}), raw: {} });
+
+    await generatePrivacyReportArtifacts({
+      repoRoot,
+      runId: 'App_run1',
+      appName: 'App',
+      outputDirAbs,
+      llm: { provider: 'Qwen', apiKey: 'test-key', model: 'base-model' },
+    });
+
+    const facts = JSON.parse(await fs.readFile(path.join(featureDirAbs, 'privacy_facts.json'), 'utf8')) as any;
+    expect(facts.permissionPractices).toEqual([
+      {
+        permissionName: 'ohos.permission.INTERNET',
+        authorizationMode: 'preauthorized',
+        businessScenario: '',
+        permissionPurpose: '',
+        denyImpact: '',
+        refs: [],
+      },
+    ]);
+
+    const syntheticFacts = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'app_permissions', 'privacy_facts.json'), 'utf8')) as any;
+    expect(syntheticFacts.permissionPractices.map((item: any) => item.permissionName)).toEqual(['ohos.permission.INTERNET']);
+  });
+
+  it('drops all hallucinated permissions when the app has no known permissions', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-perm-'));
+    const { outputDirAbs, featureDirAbs } = await writeMinimalFeatureRun({
+      repoRoot,
+      appPermissions: [],
+      sinkApiKey: '',
+      dataflowNodeCode: "console.log('hello');",
+    });
+
+    mockExtractFeaturePrivacyFacts.mockResolvedValue({
+      content: {
+        dataPractices: [],
+        permissionPractices: [
+          {
+            permissionName: '系统权限',
+            businessScenario: '页面展示',
+            permissionPurpose: '运行应用',
+            denyImpact: '应用不可用',
+            refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }],
+          },
+          {
+            permissionName: 'ohos.permission.CAMERA',
+            businessScenario: '页面展示',
+            permissionPurpose: '拍照',
+            denyImpact: '无法拍照',
+            refs: [{ flowId: 'flow:p1', nodeId: 'p1:n1' }],
+          },
+        ],
+      },
+      warnings: [],
+    });
+
+    await generatePrivacyReportArtifacts({
+      repoRoot,
+      runId: 'App_run1',
+      appName: 'App',
+      outputDirAbs,
+      llm: { provider: 'Qwen', apiKey: 'test-key', model: 'qwen3-32b' },
+    });
+
+    const facts = JSON.parse(await fs.readFile(path.join(featureDirAbs, 'privacy_facts.json'), 'utf8')) as any;
+    expect(facts.permissionPractices).toEqual([]);
+    const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
+    expect(reportText).not.toContain('系统权限');
+    expect(reportText).not.toContain('相机权限');
+  });
+
+  it('groups source-matched login data into one readable fallback statement', async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-perm-'));
+    const { outputDirAbs, appDirAbs } = await writeMinimalFeatureRun({
+      repoRoot,
+      appPermissions: [],
+      sinkApiKey: '',
+    });
+    const csvDirAbs = path.join(repoRoot, 'input', 'csv');
+    await fs.writeFile(
+      path.join(csvDirAbs, 'privacy_rules.csv'),
+      [
+        'type,keywords,outputName,rule',
+        "data_item,placeholder: '账号',登录账号,",
+        "data_item,placeholder: '密码',登录密码,",
+      ].join('\n'),
+      'utf8',
+    );
+    await fs.mkdir(path.join(appDirAbs, 'entry', 'src', 'main', 'ets', 'pages'), { recursive: true });
+    await fs.writeFile(
+      path.join(appDirAbs, 'entry', 'src', 'main', 'ets', 'pages', 'Index.ets'),
+      "TextInput({ placeholder: '账号' });\nTextInput({ placeholder: '密码' });\n",
+      'utf8',
+    );
+
+    await generatePrivacyReportArtifacts({
+      repoRoot,
+      runId: 'App_run1',
+      appName: 'App',
+      outputDirAbs,
+      llm: { provider: 'Qwen', apiKey: '', model: 'qwen3-32b' },
+    });
+
+    const syntheticFacts = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'app_permissions', 'privacy_facts.json'), 'utf8')) as any;
+    expect(syntheticFacts.dataPractices).toHaveLength(1);
+    expect(syntheticFacts.dataPractices[0]?.dataItems.map((item: any) => item.name).sort()).toEqual(['登录密码', '登录账号']);
+    const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
+    expect(reportText).toContain('用户登录或验证账号时');
+    expect(reportText).toContain('登录密码、登录账号');
+    expect(reportText).not.toContain('用于用于');
+    expect(reportText).not.toContain('用户输入或系统 API');
   });
 
   it('moves english-only permission hints to app-level fallback when feature extraction is skipped', async () => {

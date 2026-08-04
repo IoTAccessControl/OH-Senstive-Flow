@@ -16,7 +16,7 @@ type BuildUiTreeOptions = {
   runId: string;
   appRootAbs: string;
   appFiles: string[]; // absolute paths
-  llm: { provider: string; apiKey: string; model: string };
+  llm: { provider: string; apiKey: string; model: string; baseUrl?: string };
   describeNodes?: (nodes: UiTreeNode[]) => Promise<Map<string, string>>;
   contextRadiusLines?: number; // default 5
   maxNodesPerLlmBatch?: number; // default 15
@@ -707,7 +707,7 @@ export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeRe
 
   const radius = options.contextRadiusLines ?? 5;
   const batchSize = options.maxNodesPerLlmBatch ?? 15;
-  const baseUrls = options.describeNodes || !apiKey ? [] : resolveLlmBaseUrls(options.llm.provider);
+  const baseUrls = options.describeNodes || !apiKey ? [] : resolveLlmBaseUrls(options.llm.provider, options.llm.baseUrl);
   const strings = await loadArkuiStringTable(options.appRootAbs);
 
   const scanRootAbs = path.join(options.appRootAbs, DEFAULT_APP_SCAN_SUBDIR);

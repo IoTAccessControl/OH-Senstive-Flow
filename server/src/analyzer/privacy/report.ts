@@ -23,7 +23,7 @@ import type {
   PrivacyReportToken,
 } from './types.js';
 
-type LlmConfig = { provider: string; apiKey: string; model: string };
+type LlmConfig = { provider: string; apiKey: string; model: string; baseUrl?: string };
 type PermissionAuthorizationMode = NonNullable<PrivacyPermissionPractice['authorizationMode']>;
 type ReportFeatureInput = {
   featureId: string;
@@ -51,9 +51,17 @@ type PermissionOccurrence = {
   code: string;
 };
 
+type DataItemOccurrence = {
+  dataItem: string;
+  filePath: string;
+  line: number;
+  code: string;
+};
+
 type SyntheticPermissionFlowBuild = {
   dataflows: DataflowsResult;
   refsByPermission: Map<string, DataflowNodeRef[]>;
+  refsByDataItem: Map<string, DataflowNodeRef[]>;
 };
 
 function isRecord(v: unknown): v is Record<string, unknown> {
@@ -245,8 +253,11 @@ function buildSyntheticPermissionFlows(args: {
   occurrences: PermissionOccurrence[];
   sinks: SinkRecord[];
   csvPermissions: Map<string, string[]>;
+  dataItems: string[];
+  dataItemOccurrences: DataItemOccurrence[];
 }): SyntheticPermissionFlowBuild {
   const refsByPermission = new Map<string, DataflowNodeRef[]>();
+  const refsByDataItem = new Map<string, DataflowNodeRef[]>();
   const flowId = `flow:${sanitizeIdFragment(args.featureId)}`;
   const nodes: Array<{
     id: string;
@@ -294,8 +305,24 @@ function buildSyntheticPermissionFlows(args: {
     refsByPermission.set(permissionName, [{ flowId, nodeId }]);
   }
 
+  for (const dataItem of args.dataItems) {
+    const occurrence = args.dataItemOccurrences.find((item) => item.dataItem === dataItem);
+    if (!occurrence) continue;
+    const nodeId = `data:${sanitizeIdFragment(dataItem)}`;
+    nodes.push({
+      id: nodeId,
+      filePath: occurrence.filePath,
+      line: occurrence.line,
+      code: occurrence.code || dataItem,
+      description: `应用源码中包含${dataItem}的处理证据`,
+      context: { startLine: occurrence.line, lines: [occurrence.code || dataItem] },
+    });
+    refsByDataItem.set(dataItem, [{ flowId, nodeId }]);
+  }
+
   return {
     refsByPermission,
+    refsByDataItem,
     dataflows: {
       meta: {
         runId: args.runId,
@@ -312,6 +339,7 @@ function buildSyntheticPermissionFlows(args: {
                 edges: [],
                 summary: {
                   permissions: args.permissions.slice(),
+                  dataItems: args.dataItems.slice(),
                 },
               },
             ]
@@ -427,12 +455,14 @@ function filterPermissionPracticesByKnownPermissions(args: {
   practices: PrivacyPermissionPractice[];
   knownPermissions: Set<string>;
 }): { practices: PrivacyPermissionPractice[]; dropped: string[] } {
-  if (args.knownPermissions.size === 0) return { practices: args.practices ?? [], dropped: [] };
   const kept: PrivacyPermissionPractice[] = [];
   const dropped: string[] = [];
   for (const practice of args.practices ?? []) {
     const normalized = normalizePermissionToken(practice.permissionName);
-    if (!normalized) continue;
+    if (!normalized || !/^ohos\.permission\.[A-Za-z0-9_]+$/u.test(normalized)) {
+      if (normalized) dropped.push(normalized);
+      continue;
+    }
     if (!args.knownPermissions.has(normalized)) {
       dropped.push(normalized);
       continue;
@@ -442,8 +472,38 @@ function filterPermissionPracticesByKnownPermissions(args: {
   return { practices: kept, dropped: Array.from(new Set(dropped)).sort((a, b) => a.localeCompare(b)) };
 }
 
+function filterDataPracticesByKnownDataItems(
+  practices: PrivacyDataPractice[],
+  knownDataItems: Set<string>,
+): PrivacyDataPractice[] {
+  return (practices ?? [])
+    .map((practice) => ({
+      ...practice,
+      dataItems: (practice.dataItems ?? []).filter((item) => knownDataItems.has(cleanText(item.name))),
+    }))
+    .filter((practice) => practice.dataItems.length > 0);
+}
+
 function permissionAuthorizationMode(permissionName: string, dynamicPermissions: Set<string>): PermissionAuthorizationMode {
   return dynamicPermissions.has(normalizePermissionToken(permissionName)) ? 'dynamic' : 'preauthorized';
+}
+
+function completePermissionDescriptions(
+  practices: PrivacyPermissionPractice[],
+  model: string,
+): PrivacyPermissionPractice[] {
+  if (!model.toLowerCase().includes('privacy-two-stage')) return practices;
+  return practices.map((practice) => {
+    const permissionName = normalizePermissionToken(practice.permissionName);
+    const displayName = cleanText(getPermissionDisplayName(permissionName)) || permissionName;
+    const fallback = permissionFallbackDescription(permissionName, displayName);
+    return {
+      ...practice,
+      businessScenario: cleanText(practice.businessScenario) || fallback.businessScenario,
+      permissionPurpose: cleanText(practice.permissionPurpose) || fallback.permissionPurpose,
+      denyImpact: cleanText(practice.denyImpact) || fallback.denyImpact,
+    };
+  });
 }
 
 function permissionAuthorizationLabel(mode: PrivacyPermissionPractice['authorizationMode']): string {
@@ -539,43 +599,333 @@ function buildAppDeclaredPermissionFacts(
     dataPractices: [],
     permissionPractices: permissions.map((permissionName) => {
       const displayName = cleanText(getPermissionDisplayName(permissionName)) || permissionName;
+      const description = permissionFallbackDescription(permissionName, displayName);
       return {
         permissionName,
         authorizationMode: permissionAuthorizationMode(permissionName, dynamicPermissions),
-        businessScenario: `应用使用${displayName}对应的系统能力时`,
-        permissionPurpose: `用于支持${displayName}相关功能`,
-        denyImpact: `拒绝授权后，${displayName}对应功能将无法使用。`,
+        businessScenario: description.businessScenario,
+        permissionPurpose: description.permissionPurpose,
+        denyImpact: description.denyImpact,
         refs: refsByPermission.get(permissionName) ?? [],
       };
     }),
   };
 }
 
-async function collectConfiguredDataItemsFromApp(appDirAbs: string, rules: PrivacyRules): Promise<Set<string>> {
+function permissionFallbackDescription(
+  permissionName: string,
+  displayName: string,
+): Pick<PrivacyPermissionPractice, 'businessScenario' | 'permissionPurpose' | 'denyImpact'> {
+  const token = permissionName.toUpperCase();
+  const capability = displayName.replace(/权限$/u, '');
+  if (/(INTERNET|NETWORK|WIFI)/u.test(token)) {
+    return {
+      businessScenario: '应用加载在线内容或检查网络连接时',
+      permissionPurpose: '访问网络并确认当前连接状态',
+      denyImpact: '在线内容将无法加载，依赖网络的操作也无法完成',
+    };
+  }
+  if (/LOCATION/u.test(token)) {
+    return {
+      businessScenario: '用户使用定位、地图或位置相关服务时',
+      permissionPurpose: '获取设备位置并提供位置服务',
+      denyImpact: '应用将无法获取位置或持续提供位置服务',
+    };
+  }
+  if (/(CAMERA|MEDIA|IMAGE|PHOTO)/u.test(token)) {
+    return {
+      businessScenario: '用户拍摄、选择或保存图片和媒体内容时',
+      permissionPurpose: '访问相机或媒体文件以完成用户选择的操作',
+      denyImpact: '拍摄、选择或保存媒体内容的操作将无法完成',
+    };
+  }
+  if (/(MICROPHONE|AUDIO)/u.test(token)) {
+    return {
+      businessScenario: '用户使用录音或语音功能时',
+      permissionPurpose: '采集音频以完成录音或语音操作',
+      denyImpact: '录音和语音输入功能将无法使用',
+    };
+  }
+  if (/(HEALTH|ACTIVITY|ACCELEROMETER|SENSOR)/u.test(token)) {
+    return {
+      businessScenario: '用户使用运动或健康服务时',
+      permissionPurpose: '读取或记录运动健康数据',
+      denyImpact: '运动或健康数据将无法读取、记录或更新',
+    };
+  }
+  if (/(BLUETOOTH|DISTRIBUTED|DEVICE|CERT)/u.test(token)) {
+    return {
+      businessScenario: '应用识别设备或连接设备服务时',
+      permissionPurpose: '识别当前设备并完成设备连接或安全校验',
+      denyImpact: '设备识别、连接或安全校验操作将无法完成',
+    };
+  }
+  if (/(SMS|PHONE|CONTACT)/u.test(token)) {
+    return {
+      businessScenario: '用户使用手机号码、短信或联系人服务时',
+      permissionPurpose: '完成号码验证、短信接收或联系人操作',
+      denyImpact: '号码验证、短信接收或联系人操作将无法完成',
+    };
+  }
+  if (/VIBRATE/u.test(token)) {
+    return {
+      businessScenario: '应用通过振动向用户提供操作反馈时',
+      permissionPurpose: '触发设备振动以提示操作状态',
+      denyImpact: '应用将无法通过振动提供操作反馈',
+    };
+  }
+  return {
+    businessScenario: `应用执行需要${capability}的操作时`,
+    permissionPurpose: `调用${capability}以完成用户选择的操作`,
+    denyImpact: `依赖${capability}的操作将无法完成`,
+  };
+}
+
+async function collectConfiguredDataItemsFromApp(
+  repoRoot: string,
+  appDirAbs: string,
+  rules: PrivacyRules,
+): Promise<{ names: Set<string>; occurrences: DataItemOccurrence[] }> {
   const files = await walkFiles(appDirAbs, {
     extensions: ['.ets', '.ts', '.js', '.json', '.json5'],
     ignoreDirNames: ['node_modules', '.git', 'output', 'dist', 'build', 'ohosTest', 'hvigor'],
   });
-  const contents = await Promise.all(files.map((filePath) => fs.readFile(filePath, 'utf8').catch(() => '')));
-  const sourceText = contents.join('\n').toLowerCase();
-  const out = new Set<string>();
-  for (const rule of rules.dataItems) {
-    if (rule.keywords.some((keyword) => sourceText.includes(keyword.toLowerCase()))) out.add(rule.outputName);
+  const names = new Set<string>();
+  const occurrences: DataItemOccurrence[] = [];
+  for (const filePath of files) {
+    const text = await fs.readFile(filePath, 'utf8').catch(() => '');
+    const lower = text.toLowerCase();
+    for (const rule of rules.dataItems) {
+      if (names.has(rule.outputName)) continue;
+      const keyword = rule.keywords.find((candidate) => lower.includes(candidate.toLowerCase()));
+      if (!keyword) continue;
+      const index = lower.indexOf(keyword.toLowerCase());
+      const line = text.slice(0, index).split(/\r?\n/u).length;
+      const code = text.split(/\r?\n/u)[line - 1]?.trim() ?? keyword;
+      names.add(rule.outputName);
+      occurrences.push({
+        dataItem: rule.outputName,
+        filePath: path.relative(repoRoot, filePath).split(path.sep).join('/'),
+        line,
+        code,
+      });
+    }
   }
-  return out;
+  return { names, occurrences };
 }
 
-function buildFallbackDataPractices(dataItems: string[]): PrivacyDataPractice[] {
-  return dataItems.map((name) => ({
-    businessScenario: `${name}相关功能`,
+function fallbackDataProfile(
+  name: string,
+  occurrence?: DataItemOccurrence,
+): Omit<PrivacyDataPractice, 'dataItems' | 'dataRecipients'> {
+  const evidence = `${occurrence?.filePath ?? ''} ${occurrence?.code ?? ''}`.toLowerCase();
+  const userProfileItems = new Set([
+    '姓名', '昵称', '性别', '年龄', '年龄段', '出生日期', '年级', '国家', '民族', '工作信息', '收入状况',
+    '房屋数据', '身高', '体重', '婚姻状况', '家庭成员信息', '教育背景',
+  ]);
+  if (userProfileItems.has(name) && !(name === '昵称' && /(class\s+mediainfo|this\.data\.nickname|viewmodel)/u.test(evidence))) {
+    return {
+      businessScenario: '用户填写或提交个人资料时',
+      processingSubject: '本应用',
+      dataSources: ['用户主动输入'],
+      processingMethod: '收集并校验用户填写的资料',
+      storageMethod: '在用户提交资料及页面展示期间处理',
+      processingPurpose: '完成个人资料登记和展示',
+    };
+  }
+  if (name === '登录账号' || name === '登录密码' || name === '手机号码' || name === '授权码') {
+    return {
+      businessScenario: '用户登录或验证账号时',
+      processingSubject: '本应用',
+      dataSources: name === '授权码' ? ['账号服务返回'] : ['用户主动输入或授权'],
+      processingMethod: '收集并校验登录凭据',
+      storageMethod: '仅在完成本次登录验证所需期间处理',
+      processingPurpose: '完成账号登录和身份验证',
+    };
+  }
+  if (name === '搜索关键词' || name === '用户输入内容' || name === '聊天内容') {
+    return {
+      businessScenario: name === '聊天内容' ? '用户编辑或发送聊天消息时' : '用户输入并提交内容时',
+      processingSubject: '本应用',
+      dataSources: ['用户主动输入'],
+      processingMethod: '接收并处理用户提交的内容',
+      storageMethod: '在完成本次输入、搜索或发送操作所需期间处理',
+      processingPurpose: name === '聊天内容' ? '发送和展示聊天消息' : '响应用户输入并返回对应结果',
+    };
+  }
+  if (['商户号', '预支付交易会话标识', '授权标识', '预签约编号'].includes(name)) {
+    return {
+      businessScenario: '用户发起支付、授权或签约操作时',
+      processingSubject: '本应用',
+      dataSources: ['支付或签约服务返回'],
+      processingMethod: '读取并提交交易所需参数',
+      storageMethod: '仅在完成本次支付、授权或签约操作期间处理',
+      processingPurpose: '完成支付、授权或签约请求',
+    };
+  }
+  if (name === '位置信息' || name === '步数数据' || name === '运动健康数据') {
+    return {
+      businessScenario: name === '位置信息' ? '用户使用定位或地图服务时' : '用户使用运动健康服务时',
+      processingSubject: '本应用',
+      dataSources: ['设备传感器或系统服务'],
+      processingMethod: '读取并计算设备提供的数据',
+      storageMethod: '在提供本次位置或运动健康服务期间处理',
+      processingPurpose: name === '位置信息' ? '提供定位和位置展示服务' : '统计并展示运动健康结果',
+    };
+  }
+  if (['设备标识信息', '匿名设备标识符', '设备信息', 'IP地址', '应用唯一标识符'].includes(name)) {
+    return {
+      businessScenario: '应用识别当前设备并建立服务连接时',
+      processingSubject: '本应用',
+      dataSources: name === '应用唯一标识符' ? ['应用本地生成'] : ['设备或系统服务返回'],
+      processingMethod: '读取并用于设备识别或连接校验',
+      storageMethod: '在设备识别和服务连接所需期间处理',
+      processingPurpose: '识别设备并保障服务正常连接',
+    };
+  }
+  if (name === 'Cookie') {
+    return {
+      businessScenario: '应用访问网络服务并维持登录会话时',
+      processingSubject: '本应用',
+      dataSources: ['网络服务返回'],
+      processingMethod: '读取、写入并随网络请求发送会话信息',
+      storageMethod: '按照网络会话有效期保存和更新',
+      processingPurpose: '维持登录状态和网络会话',
+    };
+  }
+  if (name === '昵称' && /(class\s+mediainfo|this\.data\.nickname|viewmodel)/u.test(evidence)) {
+    const fromNetwork = /(class\s+mediainfo|viewmodel)/u.test(evidence);
+    return {
+      businessScenario: fromNetwork ? '应用展示内容作者信息时' : '应用展示已有用户资料时',
+      processingSubject: '本应用',
+      dataSources: [fromNetwork ? '网络服务返回' : '应用业务数据'],
+      processingMethod: '读取并展示已有昵称',
+      storageMethod: '在页面展示所需期间处理',
+      processingPurpose: '展示内容作者或用户昵称',
+    };
+  }
+  if (name === '头像图片' || name === '通讯录信息' || name === '用户身份信息') {
+    const networkAvatar = name === '头像图片' && /avatar_url/u.test(evidence);
+    return {
+      businessScenario: networkAvatar
+        ? '应用展示内容作者头像时'
+        : name === '头像图片' ? '用户查看或设置头像时' : '用户查看身份或联系人信息时',
+      processingSubject: '本应用',
+      dataSources: networkAvatar ? ['网络服务返回'] : name === '头像图片' ? ['用户选择或业务服务返回'] : ['应用业务数据'],
+      processingMethod: '读取并展示用户选择或业务已有的信息',
+      storageMethod: '在页面展示或用户操作所需期间处理',
+      processingPurpose: networkAvatar ? '展示内容作者头像' : name === '头像图片' ? '展示或更新用户头像' : '展示身份或联系人信息',
+    };
+  }
+  return {
+    businessScenario: `应用提供${name}所对应的服务时`,
     processingSubject: '本应用',
-    dataSources: ['用户输入或系统 API'],
-    dataItems: [{ name, refs: [] }],
-    processingMethod: `读取并使用${name}`,
-    storageMethod: '根据具体功能在应用运行期间处理',
-    dataRecipients: [],
-    processingPurpose: `用于实现与${name}相关的应用功能`,
-  }));
+    dataSources: ['应用业务数据'],
+    processingMethod: `读取并处理${name}`,
+    storageMethod: '仅在完成用户操作所需期间处理',
+    processingPurpose: `完成用户选择的${name}操作`,
+  };
+}
+
+function buildFallbackDataPractices(
+  dataItems: string[],
+  refsByDataItem: Map<string, DataflowNodeRef[]>,
+  dataItemOccurrences: DataItemOccurrence[],
+): PrivacyDataPractice[] {
+  const grouped = new Map<string, PrivacyDataPractice>();
+  for (const name of dataItems) {
+    const occurrence = dataItemOccurrences.find((item) => item.dataItem === name);
+    const profile = fallbackDataProfile(name, occurrence);
+    const key = JSON.stringify(profile);
+    const existing = grouped.get(key);
+    if (existing) {
+      existing.dataItems.push({ name, refs: refsByDataItem.get(name) ?? [] });
+      continue;
+    }
+    grouped.set(key, {
+      ...profile,
+      dataItems: [{ name, refs: refsByDataItem.get(name) ?? [] }],
+      dataRecipients: [],
+    });
+  }
+  return Array.from(grouped.values());
+}
+
+function mergeSyntheticModelFacts(
+  seed: FeaturePrivacyFactsContent,
+  modelFacts: FeaturePrivacyFactsContent,
+  model: string,
+): FeaturePrivacyFactsContent {
+  const preserveSeed = model.toLowerCase().includes('privacy-two-stage');
+  const permissionsByName = new Map(
+    (modelFacts.permissionPractices ?? []).map((practice) => [normalizePermissionToken(practice.permissionName), practice]),
+  );
+  const modelDataPractices = modelFacts.dataPractices ?? [];
+
+  return {
+    permissionPractices: seed.permissionPractices.map((practice) => {
+      const model = permissionsByName.get(normalizePermissionToken(practice.permissionName));
+      return {
+        ...practice,
+        businessScenario: cleanText(model?.businessScenario) || (preserveSeed ? practice.businessScenario : ''),
+        permissionPurpose: cleanText(model?.permissionPurpose) || (preserveSeed ? practice.permissionPurpose : ''),
+        denyImpact: cleanText(model?.denyImpact) || (preserveSeed ? practice.denyImpact : ''),
+      };
+    }),
+    dataPractices: seed.dataPractices.flatMap((practice) => {
+      const groups = new Map<PrivacyDataPractice | undefined, PrivacyDataPractice['dataItems']>();
+      for (const dataItem of practice.dataItems) {
+        const seedRefs = new Set(dataItem.refs.map((ref) => `${ref.flowId}\u0000${ref.nodeId}`));
+        const model =
+          modelDataPractices.find((candidate) =>
+            candidate.dataItems.some(
+            (item) =>
+              cleanText(item.name) === cleanText(dataItem.name) ||
+              item.refs.some((ref) => seedRefs.has(`${ref.flowId}\u0000${ref.nodeId}`)),
+            ),
+          ) ?? (modelDataPractices.length === 1 ? modelDataPractices[0] : undefined);
+        groups.set(model, [...(groups.get(model) ?? []), dataItem]);
+      }
+      return Array.from(groups.entries()).map(([model, dataItems]) => ({
+        businessScenario: cleanText(model?.businessScenario) || (preserveSeed ? practice.businessScenario : ''),
+        processingSubject: cleanText(model?.processingSubject) || (preserveSeed ? practice.processingSubject : ''),
+        dataSources:
+          Array.isArray(model?.dataSources) && model.dataSources.length > 0
+            ? model.dataSources
+            : preserveSeed
+              ? practice.dataSources
+              : [],
+        dataItems,
+        processingMethod: cleanText(model?.processingMethod) || (preserveSeed ? practice.processingMethod : ''),
+        storageMethod: cleanText(model?.storageMethod) || (preserveSeed ? practice.storageMethod : ''),
+        dataRecipients: model?.dataRecipients ?? [],
+        processingPurpose: cleanText(model?.processingPurpose) || (preserveSeed ? practice.processingPurpose : ''),
+      }));
+    }),
+  };
+}
+
+function selectDataflowRefs(dataflows: DataflowsResult, refs: DataflowNodeRef[]): DataflowsResult {
+  const wanted = new Set(refs.map((ref) => `${ref.flowId}\u0000${ref.nodeId}`));
+  const flows = (dataflows.flows ?? [])
+    .map((flow) => ({
+      ...flow,
+      nodes: (flow.nodes ?? []).filter((node) => wanted.has(`${flow.flowId}\u0000${node.id}`)),
+    }))
+    .filter((flow) => flow.nodes.length > 0);
+  return {
+    ...dataflows,
+    flows,
+    meta: {
+      ...dataflows.meta,
+      counts: {
+        ...dataflows.meta.counts,
+        flows: flows.length,
+        nodes: flows.reduce((sum, flow) => sum + flow.nodes.length, 0),
+        edges: 0,
+      },
+    },
+  };
 }
 
 function buildFlowNodeLookup(dataflows: DataflowsResult): Map<string, Map<string, Dataflow['nodes'][number]>> {
@@ -627,7 +977,12 @@ export async function generatePrivacyReportArtifacts(args: {
       feature: PageFeaturesIndex['features'][number];
     }> = [];
 
-    for (const p of pagesIndex.pages ?? []) {
+    pagesIndex.pages = (pagesIndex.pages ?? []).filter((page) => page.pageId !== '_app_permissions');
+    pagesIndex.meta.counts.pages = pagesIndex.pages.length;
+    pagesIndex.meta.counts.features = pagesIndex.pages.reduce((sum, page) => sum + page.counts.features, 0);
+    pagesIndex.meta.counts.flows = pagesIndex.pages.reduce((sum, page) => sum + page.counts.flows, 0);
+
+    for (const p of pagesIndex.pages) {
       const pageId = p.pageId;
       const pageEntry = p.entry;
       const featuresIndexPath = path.join(toPageDir(args.outputDirAbs, pageId), 'features', 'index.json');
@@ -657,7 +1012,11 @@ export async function generatePrivacyReportArtifacts(args: {
       }
     }
     const knownAppPermissions = new Set<string>([...declaredAppPermissions, ...inferredAppPermissions]);
-    const knownAppDataItems = await collectConfiguredDataItemsFromApp(appDirAbs, privacyRules).catch(() => new Set<string>());
+    const configuredDataItems = await collectConfiguredDataItemsFromApp(args.repoRoot, appDirAbs, privacyRules).catch(() => ({
+      names: new Set<string>(),
+      occurrences: [] as DataItemOccurrence[],
+    }));
+    const knownAppDataItems = configuredDataItems.names;
     const emittedPermissions = new Set<string>();
     const emittedDataItems = new Set<string>();
     const orphanPermissionNames = new Set<string>();
@@ -689,6 +1048,12 @@ export async function generatePrivacyReportArtifacts(args: {
       };
 
       let facts: FeaturePrivacyFactsContent = { dataPractices: [], permissionPractices: [] };
+      const reuseExistingFacts = Boolean(process.env.PRIVACY_ONLY_SYNTHETIC);
+      if (reuseExistingFacts) {
+        facts =
+          (await tryReadJson<FeaturePrivacyFactsContent>(path.join(dirAbs, 'privacy_facts.json'))) ??
+          facts;
+      }
 
       const permissionHints = derivePermissionHintsFromCsv({
         featureId,
@@ -698,8 +1063,16 @@ export async function generatePrivacyReportArtifacts(args: {
         sinksByCallsite,
         csvPermissions,
       });
+      const useBatchedEvidenceExtraction = /(?:privacy-two-stage|qwen35-0\.8b-base)/iu.test(args.llm.model);
 
-      if (apiKey && Array.isArray(dataflows.flows) && dataflows.flows.length > 0) {
+      if (
+        !reuseExistingFacts &&
+        apiKey &&
+        pageId !== 'AppLifecycle' &&
+        !useBatchedEvidenceExtraction &&
+        Array.isArray(dataflows.flows) &&
+        dataflows.flows.length > 0
+      ) {
         try {
           const extracted = await extractFeaturePrivacyFacts({
             runId: args.runId,
@@ -707,7 +1080,7 @@ export async function generatePrivacyReportArtifacts(args: {
             feature: featureContext,
             dataflows,
             uiTree,
-            llm: { provider: args.llm.provider, apiKey, model: args.llm.model },
+            llm: { provider: args.llm.provider, apiKey, model: args.llm.model, baseUrl: args.llm.baseUrl },
             permissionHints,
             privacyRules,
           });
@@ -717,26 +1090,30 @@ export async function generatePrivacyReportArtifacts(args: {
         }
       }
 
+      facts.dataPractices = filterDataPracticesByKnownDataItems(facts.dataPractices, knownAppDataItems);
       const filtered = filterPermissionPracticesByKnownPermissions({
         practices: facts.permissionPractices,
         knownPermissions: knownAppPermissions,
       });
-      facts.permissionPractices = applyPermissionAuthorizationModes(filtered.practices, dynamicAppPermissions);
+      facts.permissionPractices = applyPermissionAuthorizationModes(
+        completePermissionDescriptions(filtered.practices, args.llm.model),
+        dynamicAppPermissions,
+      );
       const flowIndex = buildFlowNodeIndex(dataflows);
       const anchoredPractices: PrivacyPermissionPractice[] = [];
       for (const practice of facts.permissionPractices) {
         const permissionName = normalizePermissionToken(practice.permissionName);
         if (!permissionName) continue;
         const picked = pickValidRef(Array.isArray(practice.refs) ? practice.refs : [], flowIndex);
-        if (!picked) {
-          orphanPermissionNames.add(permissionName);
-          continue;
-        }
         anchoredPractices.push({
           ...practice,
           permissionName,
           refs: uniqRefs(Array.isArray(practice.refs) ? practice.refs : []),
         });
+        if (!picked) {
+          orphanPermissionNames.add(permissionName);
+          continue;
+        }
         emittedPermissions.add(permissionName);
       }
       facts.permissionPractices = anchoredPractices;
@@ -774,13 +1151,19 @@ export async function generatePrivacyReportArtifacts(args: {
         occurrences: permissionOccurrences,
         sinks,
         csvPermissions,
+        dataItems: unmatchedDataItems,
+        dataItemOccurrences: configuredDataItems.occurrences,
       });
-      const syntheticFacts = buildAppDeclaredPermissionFacts(
+      const seedSyntheticFacts = buildAppDeclaredPermissionFacts(
         unmatchedPermissions,
         dynamicAppPermissions,
         syntheticFlowBuild.refsByPermission,
       );
-      syntheticFacts.dataPractices = buildFallbackDataPractices(unmatchedDataItems);
+      seedSyntheticFacts.dataPractices = buildFallbackDataPractices(
+        unmatchedDataItems,
+        syntheticFlowBuild.refsByDataItem,
+        configuredDataItems.occurrences,
+      );
       const syntheticWarnings = [
         ...(unmatchedPermissions.length > 0
           ? [`以下权限来自应用源码/配置扫描或 SDK API 权限映射，当前未定位到具体功能点数据流：${unmatchedPermissions.join(', ')}`]
@@ -796,6 +1179,71 @@ export async function generatePrivacyReportArtifacts(args: {
           warnings: syntheticWarnings,
         },
       };
+      let modelSyntheticFacts: FeaturePrivacyFactsContent = { dataPractices: [], permissionPractices: [] };
+      if (!process.env.PRIVACY_SKIP_SYNTHETIC_LLM && apiKey && syntheticDataflows.flows.length > 0) {
+        const baseFeature = {
+            featureId,
+            title: '应用权限与个人信息处理',
+            kind: 'source' as const,
+            anchor: { filePath: 'app_permissions', line: 1, functionName: 'permissions' },
+            page: {
+              pageId,
+              entry: {
+                filePath: 'app_permissions',
+                structName: 'AppPermissions',
+                line: 1,
+                description: '应用权限与个人信息处理',
+              },
+            },
+            sources: [],
+        };
+        const permissionBatchSize = 2;
+        for (let start = 0; start < unmatchedPermissions.length; start += permissionBatchSize) {
+          const batch = unmatchedPermissions.slice(start, start + permissionBatchSize);
+          const refs = batch.flatMap((permissionName) => syntheticFlowBuild.refsByPermission.get(permissionName) ?? []);
+          if (refs.length === 0) continue;
+          try {
+            const permissionFacts = await extractFeaturePrivacyFacts({
+              runId: args.runId,
+              appName: args.appName,
+              feature: { ...baseFeature, title: `权限使用：${batch.join('、')}` },
+              dataflows: selectDataflowRefs(syntheticDataflows, refs),
+              uiTree: null,
+              llm: { provider: args.llm.provider, apiKey, model: args.llm.model, baseUrl: args.llm.baseUrl },
+              permissionHints: batch.map((permissionName) => ({
+              permissionName,
+              refs: syntheticFlowBuild.refsByPermission.get(permissionName) ?? [],
+              apiDescriptions: [],
+              })),
+              privacyRules,
+            });
+            modelSyntheticFacts.permissionPractices.push(...permissionFacts.content.permissionPractices);
+          } catch {
+            // Keep successful permission batches when one request fails.
+          }
+        }
+        const batchSize = 3;
+        for (let start = 0; start < unmatchedDataItems.length; start += batchSize) {
+          const batch = unmatchedDataItems.slice(start, start + batchSize);
+          const refs = batch.flatMap((name) => syntheticFlowBuild.refsByDataItem.get(name) ?? []);
+          if (refs.length === 0) continue;
+          try {
+            const extracted = await extractFeaturePrivacyFacts({
+              runId: args.runId,
+              appName: args.appName,
+              feature: { ...baseFeature, title: `个人信息处理：${batch.join('、')}` },
+              dataflows: selectDataflowRefs(syntheticDataflows, refs),
+              uiTree: null,
+              llm: { provider: args.llm.provider, apiKey, model: args.llm.model, baseUrl: args.llm.baseUrl },
+              privacyRules,
+            });
+            modelSyntheticFacts.dataPractices.push(...extracted.content.dataPractices);
+          } catch {
+            // Keep successful batches when one model request fails.
+          }
+        }
+      }
+      const syntheticFacts = mergeSyntheticModelFacts(seedSyntheticFacts, modelSyntheticFacts, args.llm.model);
       const syntheticDirAbs = path.join(args.outputDirAbs, 'app_permissions');
       const syntheticPageDirAbs = toPageDir(args.outputDirAbs, pageId);
       const syntheticFeatureDirAbs = toFeatureDir(args.outputDirAbs, pageId, featureId);
@@ -877,7 +1325,12 @@ export async function generatePrivacyReportArtifacts(args: {
       const built = await buildPrivacyReport({
         runId: args.runId,
         appName: args.appName,
-        llm: { provider: args.llm.provider, apiKey: apiKey, model: args.llm.model },
+        llm: {
+          provider: args.llm.provider,
+          apiKey: process.env.PRIVACY_SKIP_REPORT_LLM ? '' : apiKey,
+          model: args.llm.model,
+          baseUrl: args.llm.baseUrl,
+        },
         features: featuresForReport,
       });
       await writeJsonFile(reportPath, built.report);
@@ -1031,7 +1484,7 @@ async function reportDraftForPrivacyFacts(args: { llm: LlmConfig; facts: Feature
 
   const user = JSON.stringify(args.facts, null, 2);
 
-  const baseUrls = resolveLlmBaseUrls(args.llm.provider);
+  const baseUrls = resolveLlmBaseUrls(args.llm.provider, args.llm.baseUrl);
   let lastError: unknown = null;
   for (const baseUrl of baseUrls) {
     try {
@@ -1044,7 +1497,10 @@ async function reportDraftForPrivacyFacts(args: { llm: LlmConfig; facts: Feature
           { role: 'user', content: user },
         ],
         temperature: 0,
+        maxTokens: 1024,
         jsonMode: true,
+        enableThinking: false,
+        timeoutMs: 20_000,
       });
       return parsePrivacyReportDraft(res.content);
     } catch (error) {
@@ -1105,6 +1561,91 @@ function permissionReportLabel(permissionName: string, mode: PrivacyPermissionPr
   return `${base}（${permissionAuthorizationLabel(mode)}）`;
 }
 
+function readableReportText(value: unknown): string {
+  const text = clauseText(value);
+  if (!text || /^(无|空|未知|none|null)$/iu.test(text)) return '';
+  if (/(?:[A-Za-z]+\s+){2,}[A-Za-z]+[.!]?/u.test(text)) return '';
+  if (
+    /(系统或框架接口|所选代码链|具体存储形态见代码链|本地处理或调用系统能力|相关模块执行|能力创建|权限\s*[:：]|数据\s*[:：]|Promise\s*方式|\s\/\s|Sink点|\bAPI\b|系统API|atomicService|getSystemInfo|deviceOrientation|宽度宽度|用户点击操作|为.+需要)/iu.test(
+      text,
+    )
+  ) {
+    return '';
+  }
+  return text;
+}
+
+function scenarioLead(value: string): string {
+  const scenario = value.replace(/^在/u, '').trim();
+  const broadOperation = scenario.match(/^所有涉及(.+?)的操作时?$/u);
+  if (broadOperation) return `当用户进行${broadOperation[1]}时，`;
+  if (scenario.startsWith('当')) return `${scenario}，`;
+  if (scenario.startsWith('用户在')) return `当${scenario}，`;
+  if (scenario.includes('时') && !scenario.endsWith('时')) return `当${scenario}，`;
+  return scenario.endsWith('时') ? `在${scenario}，` : `在${scenario}时，`;
+}
+
+function reportPurposeText(value: unknown, fallback: string): string {
+  const text = readableReportText(value).replace(/^用于/u, '');
+  return text || fallback;
+}
+
+function draftNeedsFallback(paragraphs: string[]): boolean {
+  return paragraphs.some((paragraph) =>
+    /(用于用于|来自无|权限（(?:动态|预)授权）\s*权限|权限\s*[:：]|数据接收方为空|Promise\s*方式|数据\s*[:：]|\s\/\s|系统或框架接口|所选代码链|具体存储形态见代码链|本地处理或调用系统能力|相关模块执行|能力创建|在用户在|在所有涉及|Sink点|\bAPI\b|系统API|atomicService|getSystemInfo|deviceOrientation|宽度宽度|(?:[A-Za-z]+\s+){2,}[A-Za-z]+)/u.test(
+      paragraph,
+    ),
+  );
+}
+
+function deterministicReportDraft(facts: FeaturePrivacyFactsContent): PrivacyReportDraft {
+  const collectionAndUse = asDataPractices(facts).flatMap((practice) => {
+    const names = uniq(
+      (practice.dataItems ?? [])
+        .map((item) => clauseText(item.name))
+        .filter((name) => name && !isNonDisclosableCollectionDataItem(name)),
+    );
+    if (names.length === 0) return [];
+
+    const profile = fallbackDataProfile(names[0] ?? '相关信息');
+    const scenario = readableReportText(practice.businessScenario) || profile.businessScenario;
+    const subject = readableReportText(practice.processingSubject) || '本应用';
+    const sources = uniq((practice.dataSources ?? []).map(readableReportText).filter(Boolean));
+    const resolvedSources = sources.length > 0 ? sources : profile.dataSources;
+    const method = readableReportText(practice.processingMethod) || profile.processingMethod;
+    const purpose = reportPurposeText(practice.processingPurpose, profile.processingPurpose);
+    const storage = readableReportText(practice.storageMethod) || profile.storageMethod;
+    const recipients = uniq((practice.dataRecipients ?? []).map((item) => readableReportText(item.name)).filter(Boolean));
+    const sourceText = resolvedSources.length > 0 ? `，数据来源为${resolvedSources.join('、')}` : '';
+    const storageText = storage ? `数据将按照“${storage}”方式处理。` : '';
+    const recipientText = recipients.length > 0 ? `数据接收方为${recipients.join('、')}。` : '';
+    const paragraphs: string[] = [];
+    for (let index = 0; index < names.length; index += 8) {
+      const chunk = names.slice(index, index + 8);
+      paragraphs.push(
+        `${scenarioLead(scenario)}${subject}会收集和使用${chunk.join('、')}${sourceText}，处理方式为${method}，用于${purpose}。${storageText}${recipientText}`,
+      );
+    }
+    return paragraphs;
+  });
+
+  const permissions = asPermissionPractices(facts).flatMap((practice) => {
+    const permissionName = normalizePermissionName(practice.permissionName);
+    if (!/^ohos\.permission\.[A-Za-z0-9_]+$/u.test(permissionName)) return [];
+    const displayName = cleanText(getPermissionDisplayName(permissionName)) || permissionName;
+    const fallback = permissionFallbackDescription(permissionName, displayName);
+    const scenario = readableReportText(practice.businessScenario) || fallback.businessScenario;
+    const purpose = reportPurposeText(practice.permissionPurpose, fallback.permissionPurpose);
+    const denyImpact = (readableReportText(practice.denyImpact) || fallback.denyImpact).replace(
+      /^(?:拒绝授权后|缺少该权限后|未授权时)[，,]?/u,
+      '',
+    );
+    return [`${scenarioLead(scenario)}本应用会申请 ${permissionName}，${purpose}；如果您拒绝授权，${denyImpact}。`];
+  });
+
+  return { collectionAndUse, permissions };
+}
+
 function permissionAnchorsForFacts(args: {
   feature: ReportFeatureInput;
   facts: FeaturePrivacyFactsContent;
@@ -1137,11 +1678,17 @@ function permissionAnchorsForFacts(args: {
 }
 
 function tokensFromDraftParagraphs(paragraphs: string[], anchors: ParagraphAnchor[]): PrivacyReportToken[] {
-  if (anchors.length === 0) return [];
+  if (anchors.length === 0) {
+    const normalized = paragraphs
+      .map(normalizeCollectionParagraphResponse)
+      .filter((paragraph) => paragraph && !/^SKIP[。.!！?？]*$/iu.test(paragraph));
+    return normalized.flatMap((text, index) => (index > 0 ? [{ text: '\n\n' }, { text }] : [{ text }]));
+  }
   const out: PrivacyReportToken[] = [];
   for (const paragraph of paragraphs) {
     const tokens = paragraphTokens({ paragraph, anchors });
     if (tokens.length === 0) continue;
+    if (out.length > 0) out.push({ text: '\n\n' });
     for (const token of tokens) out.push(token);
   }
 
@@ -1165,12 +1712,13 @@ function isPermissionNameOnlyParagraph(paragraph: string, anchors: ParagraphAnch
 }
 
 function permissionTokensFromDraftParagraphs(paragraphs: string[], anchors: ParagraphAnchor[]): PrivacyReportToken[] {
-  if (anchors.length === 0) return [];
+  if (anchors.length === 0) return tokensFromDraftParagraphs(paragraphs, anchors);
   const out: PrivacyReportToken[] = [];
   for (const paragraph of paragraphs) {
     if (isPermissionNameOnlyParagraph(paragraph, anchors)) continue;
     const tokens = paragraphTokens({ paragraph, anchors });
     if (tokens.length === 0) continue;
+    if (out.length > 0) out.push({ text: '\n\n' });
     for (const token of tokens) out.push(token);
   }
 
@@ -1178,7 +1726,16 @@ function permissionTokensFromDraftParagraphs(paragraphs: string[], anchors: Para
 }
 
 function parsePrivacyReportDraft(content: string): PrivacyReportDraft {
-  const raw = JSON.parse(content.trim()) as unknown;
+  const normalized = content.trim().replace(/^```[\w-]*\s*/u, '').replace(/\s*```$/u, '').trim();
+  let raw: unknown;
+  try {
+    raw = JSON.parse(normalized) as unknown;
+  } catch {
+    const start = normalized.indexOf('{');
+    const end = normalized.lastIndexOf('}');
+    if (start < 0 || end <= start) throw new Error('隐私声明报告 LLM 输出无法解析为 JSON');
+    raw = JSON.parse(normalized.slice(start, end + 1)) as unknown;
+  }
   if (!isRecord(raw)) throw new Error('隐私声明报告 LLM 输出不是 JSON 对象');
 
   const collectionAndUse = parseDraftStringArray((raw as any).collectionAndUse, 'collectionAndUse');
@@ -1208,36 +1765,75 @@ export async function buildPrivacyReport(args: {
       const perFlowIndex = flowIndexes.get(feature.featureId);
       const collectionAnchors = collectionAnchorsForFacts({ feature, facts: feature.facts, perFlowIndex });
       const permissionAnchors = permissionAnchorsForFacts({ feature, facts: feature.facts, perFlowIndex });
-      const draft =
-        apiKey && (collectionAnchors.length > 0 || permissionAnchors.length > 0)
-          ? await reportDraftForPrivacyFacts({ llm: args.llm, facts: feature.facts })
-          : { collectionAndUse: [], permissions: [] };
+      const fallbackDraft = deterministicReportDraft(feature.facts);
+      let draft = fallbackDraft;
+      let warning = '';
+      if (apiKey && feature.featureId !== '__app_permissions' && (collectionAnchors.length > 0 || permissionAnchors.length > 0)) {
+        try {
+          draft = await reportDraftForPrivacyFacts({ llm: args.llm, facts: feature.facts });
+        } catch (error) {
+          warning = `功能点 ${feature.featureId} 的隐私声明文案生成失败，已使用确定性模板：${error instanceof Error ? error.message : String(error)}`;
+        }
+      }
+
+      const collectionDraft =
+        collectionAnchors.length === 0 || draftNeedsFallback(draft.collectionAndUse)
+          ? fallbackDraft.collectionAndUse
+          : draft.collectionAndUse;
+      const permissionDraft =
+        permissionAnchors.length === 0 || draftNeedsFallback(draft.permissions)
+          ? fallbackDraft.permissions
+          : draft.permissions;
+      let collectionTokens = tokensFromDraftParagraphs(collectionDraft, collectionAnchors);
+      if (collectionTokens.length === 0 && fallbackDraft.collectionAndUse.length > 0) {
+        collectionTokens = tokensFromDraftParagraphs(fallbackDraft.collectionAndUse, collectionAnchors);
+      }
+      let permissionTokens = permissionTokensFromDraftParagraphs(permissionDraft, permissionAnchors);
+      if (permissionTokens.length === 0 && fallbackDraft.permissions.length > 0) {
+        permissionTokens = permissionTokensFromDraftParagraphs(fallbackDraft.permissions, permissionAnchors);
+      }
 
       return {
         collectionAndUse: {
           featureId: feature.featureId,
-          tokens: tokensFromDraftParagraphs(draft.collectionAndUse, collectionAnchors),
+          tokens: collectionTokens,
         },
         permissions: {
           featureId: feature.featureId,
-          tokens: permissionTokensFromDraftParagraphs(draft.permissions, permissionAnchors),
+          tokens: permissionTokens,
         },
+        warning,
       };
     }),
   );
 
   const collectionAndUse: PrivacyReportSection[] = featureSections.map((section) => section.collectionAndUse);
   const permissions: PrivacyReportSection[] = featureSections.map((section) => section.permissions);
+  if (collectionAndUse.length > 0 && collectionAndUse.every((section) => section.tokens.length === 0)) {
+    collectionAndUse[0] = {
+      ...collectionAndUse[0],
+      tokens: [{ text: '本应用当前提供的功能不涉及个人信息的收集和使用。' }],
+    };
+  }
+  if (permissions.length > 0 && permissions.every((section) => section.tokens.length === 0)) {
+    permissions[0] = {
+      ...permissions[0],
+      tokens: [{ text: '本应用当前提供的功能无需申请设备权限。' }],
+    };
+  }
 
   const warnings = uniq(
-    args.features.flatMap((feature) => {
+    [
+      ...featureSections.map((section) => section.warning),
+      ...args.features.flatMap((feature) => {
       const out: string[] = [];
       const collectionTokens = collectionAndUse.find((section) => section.featureId === feature.featureId)?.tokens ?? [];
       if (asDataPractices(feature.facts).length > 0 && collectionTokens.length > 0 && collectionTokens.every((token) => !token.jumpTo)) {
         out.push(`功能点 ${feature.featureId} 的个人信息段落缺少有效跳转引用，已降级为纯文本。`);
       }
       return out;
-    }),
+      }),
+    ],
   );
 
   const report: PrivacyReportFile = {

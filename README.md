@@ -43,16 +43,18 @@ cp .env.example .env
 LLM_PROVIDER=
 LLM_API_KEY=
 LLM_MODEL=
+LLM_BASE_URL=
 
 UI_LLM_PROVIDER=
 UI_LLM_API_KEY=
 UI_LLM_MODEL=
+UI_LLM_BASE_URL=
 
 PRIVACY_REPORT_LLM_PROVIDER=
 PRIVACY_REPORT_LLM_API_KEY=
 PRIVACY_REPORT_LLM_MODEL=
+PRIVACY_REPORT_LLM_BASE_URL=
 
-LLM_BASE_URL=
 LLM_TIMEOUT_MS=
 ```
 
@@ -135,6 +137,10 @@ output/<appName>/<timestamp>/
 ## 评估脚本
 
 ```bash
-python3 scripts/eval_permissions.py
-python3 scripts/eval_sinks.py
+python3 scripts/eval_all.py
 ```
+
+评估结果会写入：
+
+- `output/evaluation/permission_evaluation.csv`
+- `output/evaluation/personal_info_evaluation.csv`
