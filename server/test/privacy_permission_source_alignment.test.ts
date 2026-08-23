@@ -496,6 +496,22 @@ export function requestAll(context: UIContext) {
     const syntheticFacts = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'app_permissions', 'privacy_facts.json'), 'utf8')) as any;
     expect(syntheticFacts.dataPractices).toHaveLength(1);
     expect(syntheticFacts.dataPractices[0]?.dataItems.map((item: any) => item.name).sort()).toEqual(['登录密码', '登录账号']);
+    const syntheticDataflows = JSON.parse(
+      await fs.readFile(path.join(outputDirAbs, 'app_permissions', 'dataflows.json'), 'utf8'),
+    ) as any;
+    const dataNodes = syntheticDataflows.flows[0]?.nodes.filter((node: any) => node.id.startsWith('data:')) ?? [];
+    expect(dataNodes).toHaveLength(2);
+    expect(new Set(dataNodes.map((node: any) => node.id)).size).toBe(2);
+    const dataItems = syntheticFacts.dataPractices[0]?.dataItems ?? [];
+    expect(new Set(dataItems.flatMap((item: any) => item.refs.map((ref: any) => ref.nodeId))).size).toBe(2);
+    const report = JSON.parse(await fs.readFile(path.join(outputDirAbs, 'privacy_report.json'), 'utf8')) as any;
+    const collectionSection = report.sections.collectionAndUse.find(
+      (section: any) => section.featureId === '__app_permissions',
+    );
+    const jumpNodeIds = collectionSection.tokens
+      .map((token: any) => token.jumpTo?.nodeId)
+      .filter((nodeId: unknown): nodeId is string => typeof nodeId === 'string');
+    expect(new Set(jumpNodeIds).size).toBe(2);
     const reportText = await fs.readFile(path.join(outputDirAbs, 'privacy_report.txt'), 'utf8');
     expect(reportText).toContain('用户登录或验证账号时');
     expect(reportText).toContain('登录密码、登录账号');

@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -88,6 +89,13 @@ function uniq(arr: string[]): string[] {
 function sanitizeIdFragment(text: string): string {
   const normalized = cleanText(text).replaceAll(/[^\w-]+/gu, '_').replaceAll(/^_+|_+$/gu, '');
   return normalized || 'item';
+}
+
+function dataItemNodeId(dataItem: string): string {
+  const normalized = cleanText(dataItem);
+  const readable = sanitizeIdFragment(normalized);
+  const hash = crypto.createHash('sha1').update(normalized).digest('hex').slice(0, 10);
+  return `data:${readable}_${hash}`;
 }
 
 function asPagesIndex(raw: unknown): PagesIndex {
@@ -308,7 +316,10 @@ function buildSyntheticPermissionFlows(args: {
   for (const dataItem of args.dataItems) {
     const occurrence = args.dataItemOccurrences.find((item) => item.dataItem === dataItem);
     if (!occurrence) continue;
-    const nodeId = `data:${sanitizeIdFragment(dataItem)}`;
+    const nodeId = dataItemNodeId(dataItem);
+    if (nodes.some((node) => node.id === nodeId)) {
+      throw new Error(`合成数据流节点 ID 重复：${nodeId}`);
+    }
     nodes.push({
       id: nodeId,
       filePath: occurrence.filePath,
