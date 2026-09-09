@@ -163,6 +163,10 @@ export function GraphView({
   const rafRef = useRef<number | null>(null);
   const [popoverPos, setPopoverPos] = useState<{ left: number; top: number } | null>(null);
 
+  // Pan/drag state
+  const [isPanning, setIsPanning] = useState(false);
+  const panStartRef = useRef<{ x: number; y: number; scrollLeft: number; scrollTop: number } | null>(null);
+
   const layout = useMemo(() => {
     const pad = 16;
     const nodeW = 260;
@@ -400,6 +404,60 @@ export function GraphView({
     return () => el.removeEventListener('wheel', onWheel);
   }, [requestZoom]);
 
+  // Pan/drag functionality
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+
+    const onMouseDown = (e: MouseEvent) => {
+      // Only pan with left mouse button and no modifiers
+      if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+
+      // Don't pan if clicking on a node or button
+      const target = e.target as HTMLElement;
+      if (target.closest('g[style*="cursor"]') || target.closest('button')) return;
+
+      e.preventDefault();
+      setIsPanning(true);
+      panStartRef.current = {
+        x: e.clientX,
+        y: e.clientY,
+        scrollLeft: el.scrollLeft,
+        scrollTop: el.scrollTop,
+      };
+      el.style.cursor = 'grabbing';
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!panStartRef.current) return;
+      e.preventDefault();
+
+      const dx = e.clientX - panStartRef.current.x;
+      const dy = e.clientY - panStartRef.current.y;
+
+      el.scrollLeft = panStartRef.current.scrollLeft - dx;
+      el.scrollTop = panStartRef.current.scrollTop - dy;
+    };
+
+    const onMouseUp = () => {
+      if (panStartRef.current) {
+        setIsPanning(false);
+        panStartRef.current = null;
+        el.style.cursor = '';
+      }
+    };
+
+    el.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+
+    return () => {
+      el.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, []);
+
   const zoomPct = Math.round(zoom * 100);
   const canZoomOut = zoom > MIN_ZOOM + 1e-4;
   const canZoomIn = zoom < MAX_ZOOM - 1e-4;
@@ -441,7 +499,7 @@ export function GraphView({
         </div>
       </div>
 
-      <div ref={wrapRef} className="graphWrap" role="img" aria-label="graph">
+      <div ref={wrapRef} className="graphWrap" role="img" aria-label="graph" style={{ cursor: isPanning ? 'grabbing' : 'grab' }}>
         <svg
           width={layout.width * zoom}
           height={layout.height * zoom}

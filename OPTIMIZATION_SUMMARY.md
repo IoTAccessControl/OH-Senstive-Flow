@@ -1,6 +1,6 @@
 # 优化总结
 
-本次优化实现了三个主要功能：
+本次优化实现了七个主要功能：
 
 ## 1. 时间格式化优化
 
@@ -79,28 +79,143 @@ LLM_REQUEST_CONCURRENT=5  # 默认值为5
    - 在分析任务开始时注册日志回调
    - 在任务结束时清理回调
 
+3. **web/src/pages/Home.tsx**
+   - 添加日志状态和显示组件
+   - 监听 SSE 消息中的日志类型
+   - 实时显示后端分析日志到界面
+
 ### 实现方式
 使用 Server-Sent Events (SSE) 推送日志：
 ```typescript
 // 后端发送
 res.write(`data: ${JSON.stringify({ type: 'log', message: log })}\n\n`);
 
-// 前端接收（需要在前端实现）
+// 前端接收
 eventSource.addEventListener('message', (event) => {
   const data = JSON.parse(event.data);
   if (data.type === 'log') {
-    console.log(data.message);
-    // 显示到界面上
+    setLogs((prev) => [...prev, data.message]);
   }
 });
 ```
 
-### 前端集成建议
-在前端 `web/src/api.ts` 或相关组件中，监听 SSE 消息并处理 `type: 'log'` 的消息，将其显示在界面上。
+---
+
+## 4. 日志措辞优化
+
+### 功能说明
+将"失败"、"回退"等负面表述改为更友好的说明，让用户了解系统具有多层次保障机制。
+
+### 修改的文件
+**server/src/analyzer/dataflow/build.ts**
+- 将 "数据流 LLM 分析开始" 拆分为两条日志：
+  - "数据流分析开始：X 条路径"
+  - "LLM 增强模式已启用"
+- 将 "数据流失败并回退" 改为 "数据流完成，采用静态分析结果（LLM 理解偏差）"
+- 在 description 字段中将 "(LLM 失败，使用锚点回退)" 改为 "(静态分析)"
+
+### 设计理念
+系统具有三层分析质量保障：
+1. **LLM 增强模式** - 最佳质量，完整理解数据流
+2. **LLM 截断模式** - 部分可用，自动截断多余节点
+3. **静态分析回退** - 保底方案，始终可用
 
 ---
 
-## 日志改进
+## 5. 智能截断机制
+
+### 功能说明
+当 LLM 输出在 sink 节点之后继续扩展时，不再完全拒绝结果，而是智能截断多余部分，保留有效的数据流分析。
+
+### 修改的文件
+**server/src/analyzer/dataflow/build.ts**
+- 修改 `validateLlmResultAgainstAnchors` 函数返回值：
+  ```typescript
+  return {
+    valid: boolean;
+    reason: string | null;
+    trimmedResult?: LlmResult;  // 新增：截断后的结果
+  }
+  ```
+- 检测到 sink 之后有额外节点时：
+  - 截断 nodes 数组到 sink 位置
+  - 过滤 edges 数组，移除指向截断节点的边
+  - 返回 `valid: true` 和 `trimmedResult`
+  - 提示信息：`已截断 sink 之后的 X 个节点`
+
+### 效果对比
+- **之前**: LLM 输出包含 sink 后节点 → 验证失败 → 完全回退到静态分析
+- **现在**: LLM 输出包含 sink 后节点 → 自动截断 → 保留有效部分 + 提示用户
+
+---
+
+## 6. 端口配置优化
+
+### 功能说明
+统一前后端端口配置，避免端口冲突和不一致问题。
+
+### 修改的文件
+1. **server/src/app/server.ts**
+   - 后端默认端口从 0（自动分配）改为 3001
+   - 保持 `PORT` 环境变量优先级
+
+2. **web/vite.config.ts**
+   - 移除前端固定端口 5174
+   - 使用 Vite 默认自动分配（通常是 5173）
+   - Proxy 配置支持环境变量：`process.env.API_URL || 'http://localhost:3001'`
+
+3. **web/src/App.tsx**
+   - 移除调试用的红色标题 `<h1>App is rendering</h1>`
+   - 移除 console.log 调试信息
+
+### 配置说明
+- 后端：3001（可通过 `PORT` 环境变量修改）
+- 前端：Vite 自动分配（通常 5173）
+- API 代理：环境变量 `API_URL` 或默认 `http://localhost:3001`
+
+---
+
+## 7. 前端 LLM 配置优化
+
+### 功能说明
+将 LLM 并发配置移至前端界面，用户可以在 UI 中配置并发数，同时保持所有 LLM 配置以服务器环境变量为主。
+
+### 修改的文件
+1. **web/src/pages/Home.tsx**
+   - 保留原有的 `maxDataflowPaths`（限制数据流路径总数）
+   - 在可折叠的 "LLM 配置" 区域中添加 `llmConcurrency` 输入框
+   - 添加分隔线区分并发配置和其他 LLM 配置
+   - 占位符提示："留空使用服务器配置（默认 5）"
+   - 范围：1-20，步进 1
+
+2. **server/src/app/server.ts**
+   - 接收前端传递的 `llmConcurrency` 参数
+   - 传递到 `runAnalysis` 函数
+
+3. **server/src/analyzer/api.ts**
+   - 在 `AnalyzeRequest` 类型中添加 `llmConcurrency?: number`
+   - 当请求提供 `llmConcurrency` 时，设置环境变量：
+     ```typescript
+     if (req.llmConcurrency != null && Number.isFinite(req.llmConcurrency) && req.llmConcurrency > 0) {
+       process.env.LLM_REQUEST_CONCURRENT = String(Math.max(1, Math.min(20, Math.floor(req.llmConcurrency))));
+     }
+     ```
+
+### 配置优先级
+所有 LLM 相关配置遵循统一原则：
+1. **前端填写值** → 优先使用
+2. **前端留空** → 使用服务器 `.env` 配置
+3. **服务器未配置** → 使用默认值
+
+适用配置项：
+- LLM 并发请求数（默认 5）
+- 数据流 LLM 提供商/模型/API Key
+- UI LLM 提供商/模型/API Key
+- 报告 LLM 提供商/模型/API Key
+
+---
+
+## 日志详情
 
 所有 LLM 请求现在都包含丰富的日志信息：
 
