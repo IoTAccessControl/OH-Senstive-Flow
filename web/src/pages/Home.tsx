@@ -172,6 +172,7 @@ export function HomePage() {
   const [maxDataflowPaths, setMaxDataflowPaths] = useState<string>(
     snapshot?.maxDataflowPaths == null ? '' : String(snapshot.maxDataflowPaths),
   );
+  const [llmConcurrency, setLlmConcurrency] = useState<string>('');
   const [llmConfigExpanded, setLlmConfigExpanded] = useState(false);
   const [graphBackend, setGraphBackend] = useState<'heuristic' | 'cpg'>(snapshot?.graphBackend ?? 'heuristic');
   const [llmProvider, setLlmProvider] = useState(snapshot?.llmProvider ?? '');
@@ -340,11 +341,13 @@ export function HomePage() {
   async function onAnalyze() {
     try {
       const safeMax = parseMaxDataflowPathsInput(maxDataflowPaths);
+      const safeConcurrency = llmConcurrency.trim() ? Number(llmConcurrency) : undefined;
       const params = {
         appPath,
         sdkPath,
         csvDir,
         maxDataflowPaths: safeMax,
+        llmConcurrency: safeConcurrency,
         graphBackend,
         llmProvider: llmProvider.trim() || 'Qwen',
         llmApiKey,
@@ -517,15 +520,6 @@ export function HomePage() {
         </label>
 
         <label className="field">
-          <div className="label" title="LLM 并发请求数（默认 5，由服务器环境变量 LLM_REQUEST_CONCURRENT 控制）">
-            LLM 并发请求数
-          </div>
-          <div className="input" style={{ background: '#f5f5f5', color: '#666' }}>
-            由服务器配置控制（默认 5）
-          </div>
-        </label>
-
-        <label className="field">
           <div className="label" title="TypeScript AST 模式：基于 TypeScript AST 扫描函数和调用关系；CPG 模式：先生成 CPG 再分析路径">
             图分析模式
           </div>
@@ -555,6 +549,24 @@ export function HomePage() {
 
         {llmConfigExpanded && (
           <div className="llmGrid">
+            <label className="field">
+              <div className="label" title="LLM 并发请求数（默认 5，留空使用服务器配置的 LLM_REQUEST_CONCURRENT）">
+                LLM 并发请求数
+              </div>
+              <input
+                className="input"
+                type="number"
+                min={1}
+                max={20}
+                step={1}
+                placeholder="留空使用服务器配置（默认 5）"
+                value={llmConcurrency}
+                onChange={(e) => setLlmConcurrency(e.target.value)}
+              />
+            </label>
+
+            <div className="field" style={{ gridColumn: '1 / -1', height: '1px', background: '#ddd', margin: '8px 0' }} />
+
             <label className="field">
               <div className="label" title="数据流分析的 LLM 提供商名称（留空使用服务器配置，否则默认 Qwen）">
                 数据流 LLM 提供商

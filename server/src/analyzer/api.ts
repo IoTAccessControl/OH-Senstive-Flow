@@ -60,6 +60,7 @@ export type AnalyzeRequest = {
   sdkPath?: string;
   csvDir?: string;
   maxDataflowPaths?: number | null;
+  llmConcurrency?: number;
   graphBackend?: GraphBackend;
   llmProvider?: string;
   llmApiKey?: string;
@@ -292,6 +293,12 @@ export async function runAnalysis(req: AnalyzeRequest, options: RunAnalysisOptio
     ? Math.max(1, Math.floor(req.maxDataflowPaths as number))
     : null;
   const graphBackend = normalizeGraphBackend(req.graphBackend);
+
+  // Set LLM concurrency from request or environment variable
+  if (req.llmConcurrency != null && Number.isFinite(req.llmConcurrency) && req.llmConcurrency > 0) {
+    process.env.LLM_REQUEST_CONCURRENT = String(Math.max(1, Math.min(20, Math.floor(req.llmConcurrency))));
+  }
+
   const llmProvider = pickNonEmptyText(req.llmProvider, process.env.LLM_PROVIDER) ?? 'Qwen';
   const llmModel = pickNonEmptyText(req.llmModel, process.env.LLM_MODEL) ?? 'qwen3.5-397b-a17b';
   const llmApiKey = pickNonEmptyText(req.llmApiKey, process.env.LLM_API_KEY) ?? '';

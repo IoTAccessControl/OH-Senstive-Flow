@@ -310,6 +310,7 @@ export function startServer(): void {
               sdkPath: body.sdkPath as string | undefined,
               csvDir: body.csvDir as string | undefined,
               maxDataflowPaths: body.maxDataflowPaths as number | null | undefined,
+              llmConcurrency: body.llmConcurrency as number | undefined,
               graphBackend: body.graphBackend as GraphBackend | undefined,
               llmProvider: body.llmProvider as string | undefined,
               llmApiKey: body.llmApiKey as string | undefined,
