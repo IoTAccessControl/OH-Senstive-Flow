@@ -189,7 +189,7 @@ export function HomePage() {
 
   const [runs, setRuns] = useState<RunsState>({ state: 'idle' });
   const [selectedRunId, setSelectedRunId] = useState<string>(() => {
-    return runIdFromQuery || readSelectedRunIdFromSessionStorage() || snapshot?.result.runId || '';
+    return runIdFromQuery || readSelectedRunIdFromSessionStorage() || snapshot?.result?.runId || '';
   });
 
   const canJump = Boolean(selectedRunId);

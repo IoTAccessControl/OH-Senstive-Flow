@@ -10,6 +10,7 @@ import type { AnalyzeResponse, GraphBackend } from '../analyzer/api.js';
 import { runAnalysis } from '../analyzer/api.js';
 import { listRunRegistry, readResultJson } from './run.js';
 import { normalizeWorkspaceSubpath, resolveSafeWorkspaceChild } from '../utils/accessWorkspace.js';
+import { setAnalysisLogCallback } from '../utils/analysisLog.js';
 
 dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..', '.env'), quiet: true });
 
@@ -84,7 +85,7 @@ class AnalyzeJobManager {
   public updateJob(
     jobId: string,
     patch: Partial<Omit<AnalyzeJobSnapshot, 'jobId'>>,
-    options: { broadcast?: boolean } = {},
+    options: { broadcast?: boolean; log?: string } = {},
   ): AnalyzeJobSnapshot | null {
     const job = this.jobs.get(jobId);
     if (!job) return null;
@@ -97,7 +98,7 @@ class AnalyzeJobManager {
     job.snapshot = next;
     job.updatedAt = Date.now();
 
-    if (options.broadcast !== false) this.broadcast(job);
+    if (options.broadcast !== false) this.broadcast(job, options.log);
     return { ...next };
   }
 
@@ -119,11 +120,15 @@ class AnalyzeJobManager {
     return snapshot;
   }
 
-  private broadcast(job: AnalyzeJobInternal): void {
+  private broadcast(job: AnalyzeJobInternal, log?: string): void {
     const payload = toSseDataLine(job.snapshot);
     for (const res of job.subscribers) {
       try {
         res.write(payload);
+        // Also send log message if provided
+        if (log) {
+          res.write(`data: ${JSON.stringify({ type: 'log', message: log })}\n\n`);
+        }
       } catch {
         // ignore dead connections
       }
@@ -139,6 +144,12 @@ class AnalyzeJobManager {
       }
     }
     job.subscribers.clear();
+  }
+
+  public sendLog(jobId: string, message: string): void {
+    const job = this.jobs.get(jobId);
+    if (!job) return;
+    this.broadcast(job, message);
   }
 
   private cleanup(): void {
@@ -287,6 +298,11 @@ export function startServer(): void {
 
       void (async () => {
         try {
+          // Set up log callback for this job
+          setAnalysisLogCallback((message) => {
+            analyzeJobs.sendLog(snapshot.jobId, message);
+          });
+
           const result = await runAnalysis(
             {
               repoRoot,
@@ -319,6 +335,9 @@ export function startServer(): void {
         } catch (error) {
           const message = error instanceof Error ? error.message : String(error);
           analyzeJobs.failJob(snapshot.jobId, message);
+        } finally {
+          // Clean up log callback
+          setAnalysisLogCallback(null);
         }
       })();
 

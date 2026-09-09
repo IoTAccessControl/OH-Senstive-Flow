@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { runAnalysis, type AnalyzeRequest, type GraphBackend } from '../analyzer/api.js';
 import { ensureDir, readJsonFile, writeJsonFile } from '../utils/accessWorkspace.js';
+import { analysisLog, formatElapsedTime} from '../utils/analysisLog.js';
 
 dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..', '.env'), quiet: true });
 
@@ -253,6 +254,8 @@ async function main(): Promise<void> {
 
   const thisFile = fileURLToPath(import.meta.url);
   const repoRoot = args.repoRoot ? path.resolve(args.repoRoot) : path.resolve(path.dirname(thisFile), '..', '..', '..');
+  const analysisStartedAt = Date.now();
+  let previousProgressAt = analysisStartedAt;
   const result = await runAnalysis({
     repoRoot,
     appPath: args.appPath,
@@ -269,6 +272,15 @@ async function main(): Promise<void> {
     privacyReportLlmProvider: args.privacyReportLlmProvider,
     privacyReportLlmApiKey: args.privacyReportLlmApiKey,
     privacyReportLlmModel: args.privacyReportLlmModel,
+  }, {
+    onProgress: (progress) => {
+      const now = Date.now();
+      const elapsedMs = now - previousProgressAt;
+      previousProgressAt = now;
+      analysisLog(
+        `${progress.stage}（${progress.percent}%）开始；上个阶段耗时 ${formatElapsedTime(elapsedMs)}；累计耗时 ${formatElapsedTime(now - analysisStartedAt)}`,
+      );
+    },
   });
 
   process.stdout.write(`${JSON.stringify({ ok: true, result }, null, 2)}\n`);

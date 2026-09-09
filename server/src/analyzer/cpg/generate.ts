@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { analysisLog } from '../../utils/analysisLog.js';
 
 type GenerateCpgJsonOptions = {
   repoRoot: string;
@@ -67,7 +68,11 @@ export async function generateCpgJson(options: GenerateCpgJsonOptions): Promise<
   const outputPath = path.join(options.outputDirAbs, 'cpg.json');
   const args = ['--no-neo4j', `--export-json=${outputPath}`, `--top-level=${options.appRootAbs}`, ...options.appFiles];
 
+  analysisLog(`CPG 开始：输入 ArkTS 文件 ${options.appFiles.length} 个`);
+  const startedAt = Date.now();
   await runCommand(binaryPath, args, options.repoRoot);
   await assertReadableFile(outputPath);
+  const stat = await fs.stat(outputPath);
+  analysisLog(`CPG 完成：${outputPath}（${stat.size} bytes，${Date.now() - startedAt}ms）`);
   return outputPath;
 }

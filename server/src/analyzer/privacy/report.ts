@@ -13,6 +13,7 @@ import type { SinkRecord, SourceRecord } from '../extract/types.js';
 import { sourceRecordToRef, type SourceRef } from '../extract/sources.js';
 
 import { extractFeaturePrivacyFacts, type PrivacyFactsPermissionHint } from './facts.js';
+import { analysisLog } from '../../utils/analysisLog.js';
 import { getPermissionDisplayName } from './permissionDisplay.js';
 import type {
   DataflowNodeRef,
@@ -960,6 +961,7 @@ export async function generatePrivacyReportArtifacts(args: {
   outputDirAbs: string;
   llm: LlmConfig;
 }): Promise<void> {
+  analysisLog('隐私报告生成开始');
   const reportPath = path.join(args.outputDirAbs, 'privacy_report.json');
   const reportTextPath = path.join(args.outputDirAbs, 'privacy_report.txt');
 
@@ -1006,6 +1008,7 @@ export async function generatePrivacyReportArtifacts(args: {
 
     const featureIds = featureList.map((x) => x.feature.featureId);
     const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
+    analysisLog(`隐私事实抽取准备：${featureList.length} 个功能点，LLM=${apiKey ? '启用' : '未启用'}`);
 
     const appPathFromMeta = cleanText(metaRaw?.input?.appPath);
     const appDirAbs = appPathFromMeta ? toAbs(args.repoRoot, appPathFromMeta) : path.join(args.repoRoot, 'input', 'app', args.appName);
@@ -1034,11 +1037,27 @@ export async function generatePrivacyReportArtifacts(args: {
 
     const featuresForReport: ReportFeatureInput[] = [];
 
-    for (const item of featureList) {
-      const pageId = item.pageId;
-      const feature = item.feature;
-      const featureId = feature.featureId;
-      const dirAbs = toFeatureDir(args.outputDirAbs, pageId, featureId);
+    const concurrency = (() => {
+      const raw = Number(process.env.LLM_REQUEST_CONCURRENT ?? 5);
+      if (!Number.isFinite(raw) || raw <= 0) return 5;
+      return Math.max(1, Math.floor(raw));
+    })();
+
+    analysisLog(`隐私事实处理开始：${featureList.length} 个功能点（并发数：${concurrency}）`);
+
+    // 并发批次处理
+    for (let batchStart = 0; batchStart < featureList.length; batchStart += concurrency) {
+      const batchEnd = Math.min(batchStart + concurrency, featureList.length);
+      const batch = featureList.slice(batchStart, batchEnd);
+
+      const batchPromises = batch.map(async (item, batchIndex) => {
+        const featureIndex = batchStart + batchIndex;
+        const pageId = item.pageId;
+        const feature = item.feature;
+        const featureId = feature.featureId;
+        const startTime = Date.now();
+        analysisLog(`隐私事实处理：${featureIndex + 1}/${featureList.length}（${featureId}）`);
+        const dirAbs = toFeatureDir(args.outputDirAbs, pageId, featureId);
 
       const dataflowsPath = path.join(dirAbs, 'dataflows.json');
       const uiTreePath = path.join(toPageDir(args.outputDirAbs, pageId), 'ui_tree.json');
@@ -1135,14 +1154,54 @@ export async function generatePrivacyReportArtifacts(args: {
         }
       }
 
-      await writeJsonFile(path.join(dirAbs, 'privacy_facts.json'), facts);
-      featuresForReport.push({
-        featureId,
-        featureTitle: feature.title,
-        pageTitle: cleanText(item.pageEntry.description),
-        facts,
-        dataflows,
+        await writeJsonFile(path.join(dirAbs, 'privacy_facts.json'), facts);
+
+        const elapsed = Date.now() - startTime;
+        analysisLog(`隐私事实完成：${featureIndex + 1}/${featureList.length}（${featureId}），${elapsed}ms`);
+
+        return {
+          featureId,
+          featureTitle: feature.title,
+          pageTitle: cleanText(item.pageEntry.description),
+          facts,
+          dataflows,
+          permissionNames: anchoredPractices.map(p => normalizePermissionToken(p.permissionName)).filter(Boolean),
+          dataItems: facts.dataPractices.flatMap(practice =>
+            (practice.dataItems ?? []).map(d => cleanText(d.name)).filter(Boolean)
+          ),
+          orphanPermissions: anchoredPractices
+            .filter(p => {
+              const permissionName = normalizePermissionToken(p.permissionName);
+              if (!permissionName) return false;
+              const picked = pickValidRef(Array.isArray(p.refs) ? p.refs : [], flowIndex);
+              return !picked;
+            })
+            .map(p => normalizePermissionToken(p.permissionName))
+            .filter(Boolean),
+        };
       });
+
+      const batchResults = await Promise.all(batchPromises);
+
+      for (const result of batchResults) {
+        featuresForReport.push({
+          featureId: result.featureId,
+          featureTitle: result.featureTitle,
+          pageTitle: result.pageTitle,
+          facts: result.facts,
+          dataflows: result.dataflows,
+        });
+
+        for (const permissionName of result.permissionNames) {
+          emittedPermissions.add(permissionName);
+        }
+        for (const orphan of result.orphanPermissions) {
+          orphanPermissionNames.add(orphan);
+        }
+        for (const dataItem of result.dataItems) {
+          emittedDataItems.add(dataItem);
+        }
+      }
     }
 
     const unmatchedPermissions = Array.from(knownAppPermissions)

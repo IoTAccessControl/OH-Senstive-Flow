@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import ts from 'typescript';
 
 import { toWorkspaceRelativePath } from '../../utils/accessWorkspace.js';
+import { analysisLog } from '../../utils/analysisLog.js';
 import type { SinkRecord, SourceRecord } from '../extract/types.js';
 import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/client.js';
 
@@ -507,6 +508,9 @@ export async function buildCallGraph(options: BuildCallGraphOptions): Promise<Ca
     const llm = { provider: options.llm.provider, apiKey, model: options.llm.model };
     const targets = keptNodes.filter((n) => n.type === 'function' && !n.description);
     const uniqueTargets = new Map(targets.map((n) => [n.id, n] as const));
+    let started = 0;
+    let completed = 0;
+    analysisLog(`调用图函数描述开始：${uniqueTargets.size} 个函数，最大并发 3`);
     let aborted = false;
     await withConcurrencyLimit(Array.from(uniqueTargets.values()), 3, async (n) => {
       if (aborted || n.description) return;
@@ -525,11 +529,17 @@ export async function buildCallGraph(options: BuildCallGraphOptions): Promise<Ca
       });
 
       try {
+        started += 1;
+        analysisLog(`调用图函数描述请求：${started}/${uniqueTargets.size}（${info.block.name}）`);
         const content = await chatWithFallbackBaseUrls({ llm, system: prompt.system, user: prompt.user });
         const parsed = safeJsonParse(content);
         const desc = extractDescriptionFromLlmJson(parsed);
         if (desc) n.description = clampText(desc, 120);
+        completed += 1;
+        analysisLog(`调用图函数描述完成：${completed}/${uniqueTargets.size}（${info.block.name}）`);
       } catch (e) {
+        completed += 1;
+        analysisLog(`调用图函数描述失败：${completed}/${uniqueTargets.size}（${info.block.name}）：${e instanceof Error ? e.message : String(e)}`);
         // Abort quickly on auth errors to avoid spamming requests.
         if (e instanceof LlmHttpError && e.status === 401) aborted = true;
       }

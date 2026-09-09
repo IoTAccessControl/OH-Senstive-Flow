@@ -1,3 +1,5 @@
+import { analysisLog } from '../utils/analysisLog.js';
+
 export type LlmChatMessage = {
   role: 'system' | 'user' | 'assistant';
   content: string;
@@ -17,6 +19,11 @@ export type LlmChatRequest = {
 
 export type LlmChatResponse = {
   content: string;
+  usage?: {
+    promptTokens?: number;
+    completionTokens?: number;
+    totalTokens?: number;
+  };
   raw: unknown;
 };
 
@@ -106,11 +113,17 @@ export async function openAiCompatibleChat(request: LlmChatRequest): Promise<Llm
   if (typeof request.enableThinking === 'boolean') body.enable_thinking = request.enableThinking;
   if (shouldDisableThinking(request.baseUrl)) body.enable_thinking = false;
 
+  const requestStartTime = Date.now();
   let response: Response;
   let text = '';
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  let fetchStartTime = 0;
+  let fetchEndTime = 0;
+  let parseStartTime = 0;
+
   try {
+    fetchStartTime = Date.now();
     response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -120,11 +133,21 @@ export async function openAiCompatibleChat(request: LlmChatRequest): Promise<Llm
       body: JSON.stringify(body),
       signal: controller.signal,
     });
+    fetchEndTime = Date.now();
+    const networkTime = fetchEndTime - fetchStartTime;
+    analysisLog(`LLM 网络响应：${networkTime}ms, status: ${response.status}`);
+
+    parseStartTime = Date.now();
     text = await response.text();
+    const parseTime = Date.now() - parseStartTime;
+    analysisLog(`LLM 响应体读取：${parseTime}ms, size: ${text.length} bytes`);
   } catch (error) {
+    const elapsedTime = Date.now() - requestStartTime;
     if ((error as { name?: string })?.name === 'AbortError') {
+      analysisLog(`LLM 请求超时：${elapsedTime}ms（配置超时 ${timeoutMs}ms）`);
       throw new LlmNetworkError(`LLM 请求失败（超时 ${timeoutMs}ms）`);
     }
+    analysisLog(`LLM 网络错误：${elapsedTime}ms, error: ${asErrorText(error)}`);
     throw new LlmNetworkError(`LLM 请求失败（网络错误）：${asErrorText(error)}`);
   } finally {
     clearTimeout(timeoutId);
@@ -146,5 +169,15 @@ export async function openAiCompatibleChat(request: LlmChatRequest): Promise<Llm
   const content = stripLeadingThinkBlock(rawContent);
   if (!content) throw new Error(`LLM 返回缺少 message.content：${text.slice(0, 2000)}`);
 
-  return { content, raw: json };
+  const usage = (json as { usage?: unknown })?.usage;
+  const usageData =
+    usage && typeof usage === 'object'
+      ? {
+          promptTokens: typeof (usage as { prompt_tokens?: unknown }).prompt_tokens === 'number' ? (usage as { prompt_tokens: number }).prompt_tokens : undefined,
+          completionTokens: typeof (usage as { completion_tokens?: unknown }).completion_tokens === 'number' ? (usage as { completion_tokens: number }).completion_tokens : undefined,
+          totalTokens: typeof (usage as { total_tokens?: unknown }).total_tokens === 'number' ? (usage as { total_tokens: number }).total_tokens : undefined,
+        }
+      : undefined;
+
+  return { content, usage: usageData, raw: json };
 }

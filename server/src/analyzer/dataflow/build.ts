@@ -4,6 +4,7 @@ import path from 'node:path';
 import type { CallGraph, CallGraphNode, CallGraphPath } from '../callgraph/types.js';
 import type { SinkRecord, SourceRecord } from '../extract/types.js';
 import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/client.js';
+import { analysisLog } from '../../utils/analysisLog.js';
 
 import type { Dataflow, DataflowsResult } from './types.js';
 
@@ -308,7 +309,7 @@ async function requestDataflowLlm(args: {
   model: string;
   system: string;
   user: string;
-}): Promise<LlmResult> {
+}): Promise<{ llmResult: LlmResult; elapsed: number; inputTokens: number; outputTokens: number; totalTokens: number }> {
   const retryDelaysMs = [300, 800];
   const maxAttempts = retryDelaysMs.length + 1;
   let lastError: unknown = null;
@@ -317,6 +318,7 @@ async function requestDataflowLlm(args: {
     for (let i = 0; i < args.baseUrls.length; i += 1) {
       const baseUrl = args.baseUrls[i]!;
       try {
+        const startTime = Date.now();
         const llmRes = await openAiCompatibleChat({
           baseUrl,
           apiKey: args.apiKey,
@@ -328,10 +330,14 @@ async function requestDataflowLlm(args: {
           temperature: 0.2,
           jsonMode: true,
         });
+        const elapsed = Date.now() - startTime;
+        const inputTokens = llmRes.usage?.promptTokens ?? 0;
+        const outputTokens = llmRes.usage?.completionTokens ?? 0;
+        const totalTokens = llmRes.usage?.totalTokens ?? 0;
         const parsed = safeJsonParse(llmRes.content);
         const llmResult = validateLlmResult(parsed);
         if (llmResult.nodes.length === 0) throw new Error('LLM JSON nodes 为空');
-        return llmResult;
+        return { llmResult, elapsed, inputTokens, outputTokens, totalTokens };
       } catch (error) {
         lastError = error;
         const hasMoreBaseUrls = i < args.baseUrls.length - 1;
@@ -442,7 +448,7 @@ function validateLlmResultAgainstAnchors(args: {
   anchors: CallGraphNode[];
   llmResult: LlmResult;
   sourceLineKeys: Set<string>;
-}): string | null {
+}): { valid: boolean; reason: string | null; trimmedResult?: LlmResult } {
   const llmKeys = args.llmResult.nodes.map((node) =>
     nodeKey({
       filePath: normalizeWorkspacePath(args.repoRoot, node.filePath),
@@ -454,30 +460,45 @@ function validateLlmResultAgainstAnchors(args: {
   let previousAnchorIndex = -1;
   for (const anchorKey of anchorKeys) {
     const idx = llmKeys.findIndex((key, index) => index > previousAnchorIndex && key === anchorKey);
-    if (idx < 0) return `LLM 输出缺少锚点节点 ${anchorKey}`;
-    if (idx <= previousAnchorIndex) return `LLM 输出中的锚点顺序异常：${anchorKey}`;
+    if (idx < 0) return { valid: false, reason: `LLM 输出缺少锚点节点 ${anchorKey}` };
+    if (idx <= previousAnchorIndex) return { valid: false, reason: `LLM 输出中的锚点顺序异常：${anchorKey}` };
     previousAnchorIndex = idx;
   }
 
   const anchorSourceKeys = new Set(args.anchors.filter((anchor) => anchor.type === 'source').map((anchor) => nodeKey(anchor)));
   for (const key of llmKeys) {
     if (args.sourceLineKeys.has(key) && !anchorSourceKeys.has(key)) {
-      return `LLM 输出跨入了当前路径之外的 source：${key}`;
+      return { valid: false, reason: `LLM 输出跨入了当前路径之外的 source：${key}` };
     }
   }
 
   const sinkAnchor = findLastSinkAnchor(args.anchors);
-  if (!sinkAnchor) return null;
+  if (!sinkAnchor) return { valid: true, reason: null };
+
   const sinkIndex = llmKeys.indexOf(nodeKey(sinkAnchor));
   if (sinkIndex >= 0 && sinkIndex !== llmKeys.length - 1) {
-    return `LLM 输出在最终 sink 锚点 ${sinkAnchor.filePath}:${sinkAnchor.line} 之后继续扩展`;
+    // Sink 之后还有节点，但可以截断使用
+    const trimmedNodes = args.llmResult.nodes.slice(0, sinkIndex + 1);
+    const trimmedEdges = (args.llmResult.edges ?? []).filter(
+      (edge) => edge.from < trimmedNodes.length && edge.to < trimmedNodes.length
+    );
+    const trimmedResult: LlmResult = {
+      ...args.llmResult,
+      nodes: trimmedNodes,
+      edges: trimmedEdges,
+    };
+    return {
+      valid: true,
+      reason: `已截断 sink 之后的 ${args.llmResult.nodes.length - trimmedNodes.length} 个节点`,
+      trimmedResult,
+    };
   }
 
-  return null;
+  return { valid: true, reason: null };
 }
 
 function fallbackDescriptionForAnchor(anchor: CallGraphNode): string {
-  const suffix = '（LLM 失败，使用锚点回退）';
+  const suffix = '（静态分析）';
   const detail = anchor.description?.trim();
   if (detail) return `${detail}${suffix}`;
   const label = anchor.name?.trim() || anchor.code?.trim() || `${anchor.filePath}:${anchor.line}`;
@@ -530,6 +551,11 @@ async function buildFallbackFlow(args: {
 
 export async function buildDataflows(options: BuildDataflowsOptions): Promise<DataflowsResult> {
   const radius = options.contextRadiusLines ?? 5;
+  const concurrency = (() => {
+    const raw = Number(process.env.LLM_REQUEST_CONCURRENT ?? 5);
+    if (!Number.isFinite(raw) || raw <= 0) return 5;
+    return Math.max(1, Math.floor(raw));
+  })();
   const apiKey = typeof options.llm.apiKey === 'string' ? options.llm.apiKey.trim() : '';
 
   if (!apiKey) {
@@ -558,71 +584,114 @@ export async function buildDataflows(options: BuildDataflowsOptions): Promise<Da
   let failedPaths = 0;
   let fallbackFlows = 0;
 
-  for (const p of options.paths) {
-    const anchors = normalizeAnchors(buildPathAnchors(options.callGraph, p));
-    if (anchors.length === 0) continue;
+  analysisLog(`数据流分析开始：${options.paths.length} 条路径（并发数：${concurrency}）`);
+  analysisLog(`LLM 增强模式，模型：${options.llm.model}，baseURL：${baseUrls[0]}`);
 
-    let sinkAnchor = anchors[anchors.length - 1]!;
-    for (let i = anchors.length - 1; i >= 0; i -= 1) {
-      if (anchors[i]!.type === 'sinkCall') {
-        sinkAnchor = anchors[i]!;
-        break;
+  // 并发批次处理
+  for (let batchStart = 0; batchStart < options.paths.length; batchStart += concurrency) {
+    const batchEnd = Math.min(batchStart + concurrency, options.paths.length);
+    const batch = options.paths.slice(batchStart, batchEnd);
+
+    const batchPromises = batch.map(async (p, batchIndex) => {
+      const pathIndex = batchStart + batchIndex;
+      analysisLog(`数据流分析：${pathIndex + 1}/${options.paths.length}（${p.pathId}）`);
+
+      const anchors = normalizeAnchors(buildPathAnchors(options.callGraph, p));
+      if (anchors.length === 0) return null;
+
+      let sinkAnchor = anchors[anchors.length - 1]!;
+      for (let i = anchors.length - 1; i >= 0; i -= 1) {
+        if (anchors[i]!.type === 'sinkCall') {
+          sinkAnchor = anchors[i]!;
+          break;
+        }
+      }
+      const sinkKey = `${sinkAnchor.filePath}:${sinkAnchor.line}`;
+      const sinkRecords = sinkMap.get(sinkKey) ?? [];
+
+      const sourceAnchor = anchors.find((a) => a.type === 'source') ?? anchors[0];
+      const sourceKey = `${sourceAnchor.filePath}:${sourceAnchor.line}:${sourceAnchor.name ?? ''}`;
+      const sourceRecord = sourceMap.get(sourceKey);
+      const sourceDetails = sourceRecord ? `${sourceRecord['函数名称']}：${sourceRecord['描述']}` : '';
+      const sinkDetails = sinkRecords.length > 0 ? formatSinkDetailsForPrompt(sinkRecords) : '';
+
+      const codeSnippets = await buildCodeSnippetsForAnchors(options.repoRoot, anchors);
+      const prompt = buildLlmPrompt({ anchors, sinkDetails, sourceDetails, codeSnippets });
+
+      try {
+        const llmResponse = await requestDataflowLlm({
+          baseUrls,
+          apiKey,
+          model: options.llm.model,
+          system: prompt.system,
+          user: prompt.user,
+        });
+
+        const validation = validateLlmResultAgainstAnchors({
+          repoRoot: options.repoRoot,
+          anchors,
+          llmResult: llmResponse.llmResult,
+          sourceLineKeys,
+        });
+
+        if (!validation.valid) {
+          throw new Error(validation.reason ?? 'LLM 输出验证失败');
+        }
+
+        // 使用截断后的结果（如果有的话）
+        const finalLlmResult = validation.trimmedResult ?? llmResponse.llmResult;
+        const flow = await buildFlowFromLlmResult({
+          repoRoot: options.repoRoot,
+          radius,
+          path: p,
+          anchors,
+          llmResult: finalLlmResult,
+        });
+
+        if (validation.reason) {
+          // 有截断，但仍然成功
+          analysisLog(
+            `数据流完成：${pathIndex + 1}/${options.paths.length}（${p.pathId}），${llmResponse.elapsed}ms（${validation.reason}）`,
+          );
+        } else {
+          // 完全成功
+          analysisLog(
+            `数据流完成：${pathIndex + 1}/${options.paths.length}（${p.pathId}），${llmResponse.elapsed}ms, tokens: ${llmResponse.inputTokens} input + ${llmResponse.outputTokens} output = ${llmResponse.totalTokens} total`,
+          );
+        }
+        return { success: true, flow, pathIndex };
+      } catch (error) {
+        const warning = `数据流 ${p.pathId} LLM 分析失败，已回退到锚点数据流：${asErrorMessage(error)}`;
+        const flow = await buildFallbackFlow({
+          repoRoot: options.repoRoot,
+          radius,
+          path: p,
+          anchors,
+          warning,
+        });
+        analysisLog(`数据流完成：${pathIndex + 1}/${options.paths.length}（${p.pathId}），采用静态分析结果（LLM 理解偏差）`);
+        return { success: false, flow, warning, pathIndex };
+      }
+    });
+
+    const batchResults = await Promise.all(batchPromises);
+
+    for (const result of batchResults) {
+      if (!result) continue;
+      flows.push(result.flow);
+      totalNodes += result.flow.nodes.length;
+      totalEdges += result.flow.edges.length;
+      if (!result.success) {
+        warnings.push(result.warning ?? '');
+        failedPaths += 1;
+        fallbackFlows += 1;
       }
     }
-    const sinkKey = `${sinkAnchor.filePath}:${sinkAnchor.line}`;
-    const sinkRecords = sinkMap.get(sinkKey) ?? [];
-
-    const sourceAnchor = anchors.find((a) => a.type === 'source') ?? anchors[0];
-    const sourceKey = `${sourceAnchor.filePath}:${sourceAnchor.line}:${sourceAnchor.name ?? ''}`;
-    const sourceRecord = sourceMap.get(sourceKey);
-    const sourceDetails = sourceRecord ? `${sourceRecord['函数名称']}：${sourceRecord['描述']}` : '';
-    const sinkDetails = sinkRecords.length > 0 ? formatSinkDetailsForPrompt(sinkRecords) : '';
-
-    const codeSnippets = await buildCodeSnippetsForAnchors(options.repoRoot, anchors);
-    const prompt = buildLlmPrompt({ anchors, sinkDetails, sourceDetails, codeSnippets });
-
-    try {
-      const llmResult = await requestDataflowLlm({
-        baseUrls,
-        apiKey,
-        model: options.llm.model,
-        system: prompt.system,
-        user: prompt.user,
-      });
-      const invalidReason = validateLlmResultAgainstAnchors({
-        repoRoot: options.repoRoot,
-        anchors,
-        llmResult,
-        sourceLineKeys,
-      });
-      if (invalidReason) throw new Error(invalidReason);
-      const flow = await buildFlowFromLlmResult({
-        repoRoot: options.repoRoot,
-        radius,
-        path: p,
-        anchors,
-        llmResult,
-      });
-      flows.push(flow);
-      totalNodes += flow.nodes.length;
-      totalEdges += flow.edges.length;
-    } catch (error) {
-      const warning = `数据流 ${p.pathId} LLM 分析失败，已回退到锚点数据流：${asErrorMessage(error)}`;
-      warnings.push(warning);
-      const flow = await buildFallbackFlow({
-        repoRoot: options.repoRoot,
-        radius,
-        path: p,
-        anchors,
-        warning,
-      });
-      flows.push(flow);
-      totalNodes += flow.nodes.length;
-      totalEdges += flow.edges.length;
-      failedPaths += 1;
-      fallbackFlows += 1;
-    }
   }
+
+  analysisLog(
+    `数据流分析完成：${flows.length} 条路径（LLM 增强：${flows.length - fallbackFlows}，静态分析：${fallbackFlows}）`,
+  );
 
   return {
     meta: {

@@ -6,6 +6,7 @@ import ts from 'typescript';
 import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/client.js';
 import { DEFAULT_APP_SCAN_SUBDIR } from '../extract/app.js';
 import { toPosixPath, toWorkspaceRelativePath } from '../../utils/accessWorkspace.js';
+import { analysisLog } from '../../utils/analysisLog.js';
 import { scanFunctionBlocks, type FunctionBlock } from '../callgraph/functionBlocks.js';
 import { buildLineStarts, findMatchingDelimiter, lineNumberAt } from '../../utils/scanSourceText.js';
 
@@ -954,23 +955,52 @@ export async function buildUiTree(options: BuildUiTreeOptions): Promise<UiTreeRe
   const allNodeIds = Object.keys(nodes).sort();
   const allNodes = allNodeIds.map((id) => nodes[id]!);
 
-  for (const batch of chunk(allNodes, batchSize)) {
-    const hintsById = new Map<string, UiNodeTitleHints>();
-    for (const n of batch) hintsById.set(n.id, buildUiNodeTitleHints({ node: n, strings }));
+  const batches = chunk(allNodes, batchSize);
+  const concurrency = (() => {
+    const raw = Number(process.env.LLM_REQUEST_CONCURRENT ?? 5);
+    if (!Number.isFinite(raw) || raw <= 0) return 5;
+    return Math.max(1, Math.floor(raw));
+  })();
 
-    let descMap = new Map<string, string>();
-    try {
-      if (options.describeNodes) descMap = await options.describeNodes(batch);
-      else if (apiKey && baseUrls.length > 0) descMap = await describeNodesWithLlm({ llm: { ...options.llm, apiKey }, nodes: batch, baseUrls, hintsById });
-    } catch {
-      descMap = new Map();
-    }
-    for (const n of batch) {
-      const suggested = hintsById.get(n.id)?.suggested ?? '';
-      const raw = (descMap.get(n.id) ?? '').trim();
-      const picked = raw && isGoodHumanTitle({ category: n.category, title: raw }) ? raw : suggested;
-      const normalized = normalizeUiTitle({ category: n.category, title: picked || fallbackDescription(n) });
-      nodes[n.id]!.description = normalized || fallbackDescription(n);
+  analysisLog(`UI 节点描述开始：${allNodes.length} 个节点，${batches.length} 批（并发数：${concurrency}）`);
+
+  // 并发批次处理
+  for (let batchStart = 0; batchStart < batches.length; batchStart += concurrency) {
+    const batchEnd = Math.min(batchStart + concurrency, batches.length);
+    const concurrentBatches = batches.slice(batchStart, batchEnd);
+
+    const batchPromises = concurrentBatches.map(async (batch, idx) => {
+      const batchIndex = batchStart + idx;
+      const startTime = Date.now();
+      analysisLog(`UI 描述请求：${batchIndex + 1}/${batches.length}（${batch.length} 个节点）`);
+
+      const hintsById = new Map<string, UiNodeTitleHints>();
+      for (const n of batch) hintsById.set(n.id, buildUiNodeTitleHints({ node: n, strings }));
+
+      let descMap = new Map<string, string>();
+      try {
+        if (options.describeNodes) descMap = await options.describeNodes(batch);
+        else if (apiKey && baseUrls.length > 0) descMap = await describeNodesWithLlm({ llm: { ...options.llm, apiKey }, nodes: batch, baseUrls, hintsById });
+      } catch {
+        descMap = new Map();
+      }
+
+      const elapsed = Date.now() - startTime;
+      analysisLog(`UI 描述完成：${batchIndex + 1}/${batches.length}，${elapsed}ms`);
+
+      return { batch, descMap, hintsById };
+    });
+
+    const results = await Promise.all(batchPromises);
+
+    for (const { batch, descMap, hintsById } of results) {
+      for (const n of batch) {
+        const suggested = hintsById.get(n.id)?.suggested ?? '';
+        const raw = (descMap.get(n.id) ?? '').trim();
+        const picked = raw && isGoodHumanTitle({ category: n.category, title: raw }) ? raw : suggested;
+        const normalized = normalizeUiTitle({ category: n.category, title: picked || fallbackDescription(n) });
+        nodes[n.id]!.description = normalized || fallbackDescription(n);
+      }
     }
   }
 
