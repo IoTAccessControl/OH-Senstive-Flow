@@ -506,9 +506,10 @@ export function startServer(): void {
   });
 
   const port = Number(process.env.PORT ?? 3001);
-  app.listen(port, () => {
+  const server = app.listen(port, () => {
+    const actualPort = (server.address() as any)?.port ?? port;
     // eslint-disable-next-line no-console
-    console.log(`API server listening on http://localhost:${port}`);
+    console.log(`API server listening on http://localhost:${actualPort}`);
   });
 }
 
