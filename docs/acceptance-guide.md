@@ -329,11 +329,26 @@ cp output/evaluation/*.csv evaluation_results/tuned/
 
 `N/A` 的判断规则：groundtruth 总数为 0 时显示 `N/A` 是正常情况；groundtruth 非空但完整度为 `N/A` 时，需要检查对应应用的最新运行目录。
 
+此外，如果需要更直观地查看指标达成情况与各应用要素明细，可以运行可视化验收脚本：
+
+```bash
+python3 scripts/generate_html_report.py
+```
+
+执行后会输出终端判定结论，并在以下路径生成独立的可视化 HTML 验收报告：
+
+```text
+output/evaluation/acceptance_report.html
+```
+
+直接使用浏览器打开该文件即可查看权限一致性、流向分析与合规要素生成的图表及明细抽屉。
+
 验收时确认：
 
 - 分析命令或批量脚本成功结束；
 - 每个 App 都有 `output/<应用名>/<时间戳>/`；
 - `output/evaluation/` 下生成两张 CSV；
+- 可选打开 `output/evaluation/acceptance_report.html` 查看可视化验收报告；
 - groundtruth 非空的应用没有异常 `N/A`；
 - 覆盖率、误报率和要素完整度达到项目要求。
 

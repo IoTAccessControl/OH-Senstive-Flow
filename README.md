@@ -134,13 +134,25 @@ output/<appName>/<timestamp>/
 - `privacy_report.json`
 - `privacy_report.txt`
 
-## 评估脚本
+## 评估与验收脚本
+
+基础评估：
 
 ```bash
 python3 scripts/eval_all.py
 ```
 
-评估结果会写入：
+评估结果写入：
 
 - `output/evaluation/permission_evaluation.csv`
 - `output/evaluation/personal_info_evaluation.csv`
+
+生成可视化验收报告：
+
+```bash
+python3 scripts/generate_html_report.py
+```
+
+执行后会生成独立的可视化 HTML 报告，可在浏览器中直接查看全指标达成与各应用要素明细：
+
+- `output/evaluation/acceptance_report.html`
