@@ -97,5 +97,13 @@ export async function analyzeSources(repoRoot: string, appFiles: string[]): Prom
     }
   }
 
+  records.sort((a, b) => {
+    const fileCmp = a['App源码文件路径'].replace(/\\/g, '/').localeCompare(b['App源码文件路径'].replace(/\\/g, '/'));
+    if (fileCmp !== 0) return fileCmp;
+    const lineCmp = a['行号'] - b['行号'];
+    if (lineCmp !== 0) return lineCmp;
+    return a['函数名称'].localeCompare(b['函数名称']);
+  });
+
   return records;
 }

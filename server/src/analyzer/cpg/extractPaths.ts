@@ -207,7 +207,10 @@ function buildLocalInvocationAdjacency(cpg: ParsedCpg): Map<number, SearchEdge[]
     pushToMapArray(functionsByLocalName, localName, functionNode);
   }
 
-  for (const [filePath, callNodes] of cpg.callNodesByFile) {
+  const sortedCallFiles = Array.from(cpg.callNodesByFile.entries()).sort(([a], [b]) =>
+    a.replace(/\\/g, '/').localeCompare(b.replace(/\\/g, '/')),
+  );
+  for (const [filePath, callNodes] of sortedCallFiles) {
     for (const callNode of callNodes) {
       const callName = nodeDisplayName(callNode);
       if (!callName) continue;
@@ -413,7 +416,22 @@ export function buildCallGraphAndPathsFromParsedCpg(
 ): { callGraph: CallGraph; paths: CallGraphPath[] } {
   const maxPaths = Number.isFinite(options.maxPaths) ? Math.max(1, Math.floor(options.maxPaths as number)) : Number.POSITIVE_INFINITY;
   const groupedSinks = Array.from(groupSinkRecordsByCallsite(options.sinks).values());
-  const matches = buildPathMatches(options.cpg, options.sources, groupedSinks, maxPaths);
+  groupedSinks.sort((a, b) => {
+    const a0 = a[0];
+    const b0 = b[0];
+    if (!a0 || !b0) return 0;
+    const fileCmp = a0['App源码文件路径'].replace(/\\/g, '/').localeCompare(b0['App源码文件路径'].replace(/\\/g, '/'));
+    if (fileCmp !== 0) return fileCmp;
+    return a0['调用行号'] - b0['调用行号'];
+  });
+  const sortedSources = options.sources.slice().sort((a, b) => {
+    const fileCmp = a['App源码文件路径'].replace(/\\/g, '/').localeCompare(b['App源码文件路径'].replace(/\\/g, '/'));
+    if (fileCmp !== 0) return fileCmp;
+    const lineCmp = a['行号'] - b['行号'];
+    if (lineCmp !== 0) return lineCmp;
+    return a['函数名称'].localeCompare(b['函数名称']);
+  });
+  const matches = buildPathMatches(options.cpg, sortedSources, groupedSinks, maxPaths);
 
   const nodeById = new Map<string, CallGraphNode>();
   const edgeSet = new Set<string>();

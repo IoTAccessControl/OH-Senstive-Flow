@@ -403,5 +403,13 @@ export async function analyzeSinks(options: SinkAnalyzeOptions): Promise<SinkRec
     }
   }
 
+  records.sort((a, b) => {
+    const fileCmp = a['App源码文件路径'].replace(/\\/g, '/').localeCompare(b['App源码文件路径'].replace(/\\/g, '/'));
+    if (fileCmp !== 0) return fileCmp;
+    const lineCmp = a['调用行号'] - b['调用行号'];
+    if (lineCmp !== 0) return lineCmp;
+    return (a.__apiKey ?? '').localeCompare(b.__apiKey ?? '');
+  });
+
   return records;
 }

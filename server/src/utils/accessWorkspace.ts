@@ -99,19 +99,24 @@ export async function walkFiles(rootDir: string, options: WalkOptions = {}): Pro
       continue;
     }
 
-    for (const entry of entries) {
-      const fullPath = path.join(current, entry.name);
+    entries.sort((a, b) => a.name.localeCompare(b.name));
+
+    for (let i = entries.length - 1; i >= 0; i -= 1) {
+      const entry = entries[i]!;
       if (entry.isDirectory()) {
         if (ignoreDirNames.has(entry.name)) continue;
-        stack.push(fullPath);
-        continue;
+        stack.push(path.join(current, entry.name));
       }
+    }
 
+    for (const entry of entries) {
       if (!entry.isFile()) continue;
       if (extensions && !extensions.some((ext) => entry.name.endsWith(ext))) continue;
-      results.push(fullPath);
+      results.push(path.join(current, entry.name));
     }
   }
+
+  results.sort((a, b) => a.split(path.sep).join('/').localeCompare(b.split(path.sep).join('/')));
 
   return results;
 }
