@@ -228,3 +228,31 @@ description_rule,,,处理目的必须说明为什么需要该数据
 ```
 
 保存后重新运行分析即可生效。
+
+## 8. 实战示例：WebCookie 接口适配
+
+以应用调用鸿蒙 Webview Cookie 管理接口为例，展示从 API 登记、功能描述到数据项规则的轻量配置：
+
+### 8.1 登记 API 行为与权限 (`sdk_api_and_permission.csv`)
+
+在文件末尾追加同步读写清空接口，并将其敏感数据项直接挂接至 `Cookie`：
+
+```csv
+读取Cookie,读取Cookie,"@ohos.web.webview.WebCookieManager.fetchCookieSync(url: string): string",,Cookie,会话Cookie
+设置Cookie,设置Cookie,"@ohos.web.webview.WebCookieManager.configCookieSync(url: string, value: string): void",,Cookie,会话Cookie
+删除Cookie,删除Cookie,"@ohos.web.webview.WebCookieManager.clearAllCookiesSync(): void",,Cookie,会话Cookie
+```
+
+### 8.2 补充 API 功能语义描述 (`sdk_api_description_override.csv`)
+
+提供准确的动词描述，指导大模型生成准确的操作目的：
+
+```csv
+@ohos.web.webview.WebCookieManager.fetchCookieSync,Synchronously fetch cookie value for the given URL.
+@ohos.web.webview.WebCookieManager.configCookieSync,Synchronously configure and store cookie value for the given URL.
+@ohos.web.webview.WebCookieManager.clearAllCookiesSync,Synchronously clear all stored cookies.
+```
+
+### 8.3 数据项规则说明 (`privacy_rules.csv`)
+
+保持使用通用的抽象类名与协议头模式（如 `CookieManager|@Header('Cookie')|let cookies =|set-cookie`），切忌硬编码具体的同步/异步方法名，以保证跨应用的通用泛化性。
