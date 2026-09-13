@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { mockChat } = vi.hoisted(() => ({
   mockChat: vi.fn(),
@@ -29,6 +29,11 @@ async function makeRepoFile(lines: string[]): Promise<{ repoRoot: string; filePa
 
 beforeEach(() => {
   mockChat.mockReset();
+});
+
+afterEach(() => {
+  mockChat.mockReset();
+  vi.clearAllMocks();
 });
 
 describe('buildDataflows resilience', () => {
@@ -156,11 +161,12 @@ describe('buildDataflows resilience', () => {
       { App源码文件路径: fileRel, 行号: 7, 函数名称: 'build2', 描述: 'source2' },
     ];
 
-    mockChat
-      .mockRejectedValueOnce(new LlmNetworkError('temporary network issue 1'))
-      .mockRejectedValueOnce(new LlmNetworkError('temporary network issue 2'))
-      .mockRejectedValueOnce(new LlmNetworkError('temporary network issue 3'))
-      .mockResolvedValueOnce({
+    mockChat.mockImplementation(async (req: { messages?: Array<{ role: string; content: string }> }) => {
+      const userMsg = req.messages?.find((m) => m.role === 'user')?.content ?? '';
+      if (userMsg.includes('api=@ohos.router.pushUrl')) {
+        throw new LlmNetworkError('temporary network issue for path 1');
+      }
+      return {
         content: JSON.stringify({
           nodes: [
             { filePath: fileRel, line: 7, description: '进入 build2' },
@@ -169,7 +175,8 @@ describe('buildDataflows resilience', () => {
           edges: [{ from: 0, to: 1 }],
         }),
         raw: {},
-      });
+      };
+    });
 
     const result = await buildDataflows({
       repoRoot,

@@ -21,6 +21,7 @@ type ImportedCallHit = {
   kind: ImportedCallKind;
   localName: string;
   methodName?: string;
+  subProperties?: string[];
 };
 
 type BindingPair = {
@@ -33,6 +34,7 @@ type ResolvedImportedCall = {
   resolved: ResolvedBinding;
   segments: string[];
   apiKey: string;
+  kind: ImportedCallKind;
 };
 
 type InstanceTypeInfo = {
@@ -87,7 +89,7 @@ function isCallLike(expr: ts.Expression): expr is ts.CallExpression | ts.NewExpr
 }
 
 function extractImportedCallHit(node: ts.CallExpression | ts.NewExpression): ImportedCallHit | null {
-  const callee = node.expression;
+  const callee = unwrapExpression(node.expression);
 
   if (ts.isIdentifier(callee)) {
     const localName = callee.text;
@@ -95,16 +97,26 @@ function extractImportedCallHit(node: ts.CallExpression | ts.NewExpression): Imp
     return { kind: ts.isNewExpression(node) ? 'new' : 'direct', localName };
   }
 
-  if (ts.isCallExpression(node) && isPropertyAccessLike(callee)) {
-    const base = unwrapExpression(callee.expression);
-    if (!ts.isIdentifier(base)) return null;
-    const localName = base.text;
-    const methodName = callee.name?.text ?? '';
-    if (!localName || !methodName) return null;
-    return { kind: 'method', localName, methodName };
+  if (!ts.isCallExpression(node) && !ts.isNewExpression(node)) return null;
+  if (!isPropertyAccessLike(callee)) return null;
+
+  const propChain: string[] = [callee.name?.text ?? ''];
+  let cur: ts.Expression = unwrapExpression(callee.expression);
+  while (isPropertyAccessLike(cur)) {
+    propChain.unshift(cur.name?.text ?? '');
+    cur = unwrapExpression(cur.expression);
+  }
+  if (!ts.isIdentifier(cur) || propChain.some((p) => !p)) return null;
+
+  const localName = cur.text;
+  if (!localName) return null;
+  if (ts.isNewExpression(node)) {
+    return { kind: 'new', localName, subProperties: propChain };
   }
 
-  return null;
+  const methodName = propChain.pop() ?? '';
+  if (!methodName) return null;
+  return { kind: 'method', localName, methodName, subProperties: propChain };
 }
 
 async function buildSegmentsForImportedHit(args: {
@@ -113,21 +125,22 @@ async function buildSegmentsForImportedHit(args: {
   hit: ImportedCallHit;
 }): Promise<string[]> {
   const defaultKind = args.binding.importKind === 'default' ? await args.sdkDocStore.getDefaultExportKind(args.binding.module) : 'unknown';
+  const sub = args.hit.subProperties ?? [];
 
   if (args.hit.kind === 'new') {
-    if (args.binding.importKind === 'named') return [args.binding.importedName];
-    return [args.binding.localName];
+    if (args.binding.importKind === 'named') return [args.binding.importedName, ...sub];
+    return sub.length > 0 ? [...sub] : [args.binding.localName];
   }
 
   if (args.hit.kind === 'direct') {
-    if (args.binding.importKind === 'named') return [args.binding.importedName];
-    return [args.binding.localName];
+    if (args.binding.importKind === 'named') return [args.binding.importedName, ...sub];
+    return [args.binding.localName, ...sub];
   }
 
   if (args.hit.kind === 'method' && args.hit.methodName) {
-    if (args.binding.importKind === 'named') return [args.binding.importedName, args.hit.methodName];
-    if (args.binding.importKind === 'default' && defaultKind !== 'namespace') return [args.binding.localName, args.hit.methodName];
-    return [args.hit.methodName];
+    if (args.binding.importKind === 'named') return [args.binding.importedName, ...sub, args.hit.methodName];
+    if (args.binding.importKind === 'default' && defaultKind !== 'namespace') return [args.binding.localName, ...sub, args.hit.methodName];
+    return [...sub, args.hit.methodName];
   }
 
   return [];
@@ -180,13 +193,19 @@ async function resolveImportedSdkCall(args: {
   const segments = await buildSegmentsForImportedHit({ sdkDocStore: args.sdkDocStore, binding: pair.resolved, hit });
   if (segments.length === 0) return null;
   const apiKey = buildApiKey(pair.resolved.module, segments);
-  return { original: pair.original, resolved: pair.resolved, segments, apiKey };
+  return { original: pair.original, resolved: pair.resolved, segments, apiKey, kind: hit.kind };
 }
 
 async function inferInstanceTypeFromImportedCall(args: {
   sdkDocStore: SdkDocStore;
   importedCall: ResolvedImportedCall;
 }): Promise<{ module: string; typeName: string } | null> {
+  if (args.importedCall.kind === 'new') {
+    const typeName = (args.importedCall.segments[args.importedCall.segments.length - 1] ?? '').trim();
+    if (!typeName) return null;
+    return { module: args.importedCall.resolved.module, typeName };
+  }
+
   const returnTypes = await args.sdkDocStore.getReturnTypes(args.importedCall.resolved.module, args.importedCall.segments);
   const typeName = (returnTypes[0] ?? '').trim();
   if (!typeName) return null;
@@ -289,6 +308,9 @@ export async function analyzeSinks(options: SinkAnalyzeOptions): Promise<SinkRec
 
       const segments = await buildSegmentsForImportedHit({ sdkDocStore, binding: pair.resolved, hit });
       if (segments.length === 0) continue;
+
+      // Constructors provide instance type information but are not privacy sinks.
+      if (hit.kind === 'new') continue;
 
       const api = await buildApiInfo({
         sdkDocStore,

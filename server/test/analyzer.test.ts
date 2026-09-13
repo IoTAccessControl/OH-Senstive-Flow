@@ -64,6 +64,41 @@ describe('app analysis', () => {
     expect(sinks.find((r) => r.__apiKey === '@ohos.router.pushUrl')?.['API功能描述']).toContain('Navigates');
   });
 
+  it('resolves nested SDK members and excludes constructors as sinks', async () => {
+    const sdkIndex = await buildSdkModuleIndex(SDK_ROOT);
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-'));
+    const filePath = path.join(tmpDir, 'nested.ets');
+    await fs.writeFile(
+      filePath,
+      [
+        "import webview from '@ohos.web.webview';",
+        "import * as adv from '@ohos.advertising';",
+        '',
+        'function f() {',
+        '  webview.WebCookieManager.configCookieSync(\'https://example.com\', \'a=b\');',
+        '  const loader = new adv.AdLoader();',
+        '  loader.loadAd({} as any, {} as any, {} as any);',
+        '  new adv.AdLoader().loadAd({} as any, {} as any, {} as any);',
+        '}',
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+
+    const sinks = await analyzeSinks({
+      repoRoot: REPO_ROOT,
+      appFiles: [filePath],
+      sdkIndex,
+      csvDescriptions: new Map(),
+      overrideDescriptions: new Map(),
+    });
+    const keys = sinks.map((r) => r.__apiKey);
+    expect(keys).toContain('@ohos.web.webview.WebCookieManager.configCookieSync');
+    expect(keys.filter((key) => key === '@ohos.advertising.AdLoader.loadAd')).toHaveLength(2);
+    expect(keys).not.toContain('@ohos.advertising.AdLoader');
+    expect(keys.every((key) => !key?.endsWith('.'))).toBe(true);
+  });
+
   it('finds source function build() definition', async () => {
     const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'cx-oh-'));
     const filePath = path.join(tmpDir, 'ui.ets');
