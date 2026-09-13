@@ -343,6 +343,28 @@ output/evaluation/acceptance_report.html
 
 直接使用浏览器打开该文件即可查看权限一致性、流向分析与合规要素生成的图表及明细抽屉。
 
+### HTML 报告生成规则
+
+报告由纯 Python 规则计算生成，全程不调用 LLM。数据来源：
+
+- 应用清单：`groundtruth/permission/*.txt` 的文件名；
+- Ground truth：`groundtruth/permission/<应用名>.txt`（权限集合）与 `groundtruth/personal_info.csv`（`应用/数据项`，经同义归一化）；`groundtruth/completeness.csv` 是人工标注存档，当前不参与自动评分；
+- 运行目录：设置环境变量 `EVAL_RUN_INFO` 指向某个 `run-info.txt` 时，按其钉定的时间戳目录读取；否则取每个应用最新的有效运行目录；
+- 运行产物：各 run 的全部 `privacy_facts.json`（预测数据项与要素文本）、同级 `dataflows.json`（校验证据引用的 `flowId/nodeId` 是否真实存在）、`privacy_report.json` / `privacy_report.txt` 与 `sources.csv`（合规要素与明细展示）。
+
+四项 KPI 口径：
+
+1. 代码感知覆盖率：GT 数据项被 facts 预测命中的比例（含 fallback 通道）；
+2. 代码感知误报率：预测中超出 GT 的比例；
+3. 四类合规要素生成：每个应用是否齐备生成权限类型、调用功能场景、数据类型、使用目的四类要素；
+4. 报告内容完整度：对每个 GT 数据项的要素做无参照 rubric 打分——具体内容 1 分，模板化或含糊 0.5 分（模板话术封顶 0.89），缺失或“未识别” 0 分；证据引用必须指向该 run `dataflows.json` 中真实存在的 `flowId/nodeId`，否则不计分。
+
+注意事项：
+
+- 可用 `--output` 指定输出路径；归档某批评测时，应把 HTML 报告与两张 CSV、`run-info.txt` 一起放入 `evaluation_results/<标签>/`；
+- 脚本执行时会同时重写 `output/evaluation/personal_info_evaluation.csv`（不重写 permission CSV）；
+- 报告生成依赖 run 产物目录：如果只保留了 CSV 归档而 run 目录已不存在（例如在其他机器上运行的历史批次），无法事后补生成 HTML。
+
 验收时确认：
 
 - 分析命令或批量脚本成功结束；

@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OH-Senstive-Flow 敏感数据流合规感知验收报告</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #475569;
+      --muted-light: #64748b;
+      --border: #e2e8f0;
+      --border-dark: #cbd5e1;
+      --blue: #2563eb;
+      --blue-700: #1d4ed8;
+      --blue-50: #eff6ff;
+      --green: #16a34a;
+      --green-700: #15803d;
+      --green-50: #f0fdf4;
+      --green-100: #dcfce7;
+      --purple: #7c3aed;
+      --purple-50: #faf5ff;
+      --purple-700: #6d28d9;
+      --error: #b91c1c;
+      --error-50: #fef2f2;
+      --surface: #f8fafc;
+      --card-bg: #ffffff;
+      --font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --mono-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      line-height: 1.5;
+      color: var(--fg);
+      background-color: var(--surface);
+      min-width: 320px;
+      padding: 24px 16px 48px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .badge-pass {
+      background-color: var(--green-100);
+      color: var(--green-700);
+      border: 1px solid #bbf7d0;
+    }
+
+    .badge-fail {
+      background-color: var(--error-50);
+      color: var(--error);
+      border: 1px solid #fecaca;
+    }
+
+    .badge-blue {
+      background-color: var(--blue-50);
+      color: var(--blue-700);
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-purple {
+      background-color: var(--purple-50);
+      color: var(--purple-700);
+      border: 1px solid #e9d5ff;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 24px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Verdict Banner */
+    .verdict-banner {
+      background: var(--green-50);
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .verdict-banner.fail {
+      background: var(--error-50) !important;
+      border: 1px solid #fca5a5 !important;
+    }
+
+    .verdict-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--green-700);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .verdict-banner.fail .verdict-text {
+      color: var(--error) !important;
+    }
+
+    .verdict-desc {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .verdict-banner.fail .verdict-desc {
+      color: #991b1b !important;
+    }
+
+    /* KPI Grid (全局统一总览，置顶全展示) */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+
+    .kpi-card.fail {
+      border: 1px solid #fca5a5 !important;
+      background: #fffafa !important;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .kpi-title {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kpi-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--fg);
+      line-height: 1.1;
+      margin-bottom: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kpi-target {
+      color: var(--muted-light);
+    }
+
+    /* Section Card */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+    }
+
+    /* 明细选项卡控制栏 (原地平滑切表，绝不跳转页面) */
+    .detail-tab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+    }
+
+    .tab-btn-group {
+      display: inline-flex;
+      background: var(--surface);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      gap: 4px;
+    }
+
+    .tab-toggle-btn {
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 7px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 150ms ease;
+    }
+
+    .tab-toggle-btn:hover {
+      color: var(--fg);
+    }
+
+    .tab-toggle-btn.active {
+      background: #ffffff;
+      color: var(--blue-700);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .table-caption {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Search Bar */
+    .search-input {
+      padding: 6px 12px;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      outline: none;
+      width: 220px;
+      background: #ffffff;
+    }
+
+    .search-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 2px var(--blue-50);
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .table th {
+      background: var(--surface);
+      color: var(--muted);
+      font-weight: 600;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      color: var(--fg);
+      vertical-align: middle;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .table tr.clickable {
+      cursor: pointer;
+    }
+
+    .app-code {
+      font-family: var(--mono-family);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .total-top-row {
+      background: linear-gradient(90deg, #f0fdf4 0%, #eff6ff 100%) !important;
+      font-weight: 700;
+      border-bottom: 2px solid var(--blue) !important;
+    }
+
+    .total-top-row td {
+      padding: 12px 14px;
+      color: #0f172a;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .total-top-row.fail {
+      background: linear-gradient(90deg, #fef2f2 0%, #fff1f2 100%) !important;
+      border-bottom: 2px solid var(--error) !important;
+    }
+
+    .table th.col-action, .table td.col-action {
+      width: 90px;
+      min-width: 90px;
+      max-width: 90px;
+      text-align: center;
+      white-space: nowrap;
+      padding: 8px 10px;
+    }
+
+    .detail-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      height: 28px;
+      min-width: 72px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--blue-700);
+      background: #ffffff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      cursor: pointer;
+      line-height: 1;
+      box-sizing: border-box;
+      transition: all 120ms ease;
+    }
+
+    .detail-btn:hover {
+      background: var(--blue-50);
+      border-color: var(--blue);
+    }
+
+    /* Detail Drawer */
+    .row-detail {
+      background-color: #fafbfc;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: none;
+    }
+
+    .row-detail td {
+      white-space: normal !important;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      padding: 8px 4px;
+    }
+
+    .detail-item {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    .detail-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .detail-content {
+      font-size: 12px;
+      color: var(--fg);
+      line-height: 1.6;
+      word-break: break-word;
+      white-space: normal;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted-light);
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div>
+          <h1 class="title">
+            OH-Senstive-Flow 敏感数据流合规感知验收报告
+            <span class="badge badge-pass">验收结论: 全部达标通过</span>
+          </h1>
+          <p class="subtitle" style="margin-top: 8px; margin-bottom: 0;">
+            面向 OpenHarmony 生态的敏感数据流静态分析与大模型合规报告自动化生成系统 · 真实产物自动化验收评估
+          </p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <span class="badge badge-blue">OpenHarmony SDK</span>
+          <span class="badge badge-blue">ArkTS 5.0</span>
+          <span class="badge badge-purple">全量实测数据驱动</span>
+        </div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-item">
+          <strong>被测应用总数:</strong> 18 个基准应用
+        </div>
+        <div class="meta-item">
+          <strong>代码感知覆盖率:</strong> 100.00% (49/49 敏感数据, 零漏报)
+        </div>
+        <div class="meta-item">
+          <strong>四要素生成率:</strong> 100.0% (18/18 应用全量完备)
+        </div>
+        <div class="meta-item">
+          <strong>内容完整度得分:</strong> 98.81% (实得分 290.5/294)
+        </div>
+        <div class="meta-item">
+          <strong>生成时间:</strong> <span>2026-09-13 22:21:28</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Verdict Banner -->
+    <div class="verdict-banner ">
+      <div class="verdict-text">
+        <span>综合验收判定结论：全部考核指标达到或优于任务书要求，予以验收通过</span>
+      </div>
+      <div class="verdict-desc">
+        判定依据：隐私数据项覆盖率达到 100% 零漏报、误报率 &lt; 20%；四类要素全量生成，内容完整度达到 60% 以上，所有基准应用全项达标
+      </div>
+    </div>
+
+    <!-- KPI Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card ">
+        <div class="kpi-title">
+          <span>指标一 · 代码感知覆盖率</span>
+          <span class='badge badge-pass'>PASS</span>
+        </div>
+        <div class="kpi-value" style="color: var(--green);">100.00%</div>
+        <div class="kpi-sub">
+          <span>49/49 敏感数据, 零漏报</span>
+          <span class="kpi-target">指标: 达到 100% 无漏报</span>
+        </div>
+      </div>
+
+      <div class="kpi-card ">
+        <div class="kpi-title">
+          <span>指标一 · 代码感知误报率</span>
+          <span class='badge badge-pass'>PASS</span>
+        </div>
+        <div class="kpi-value" style="color: var(--blue);">0.00%</div>
+        <div class="kpi-sub">
+          <span>0/49 误报项</span>
+          <span class="kpi-target">指标: 小于 20%</span>
+        </div>
+      </div>
+
+      <div class="kpi-card ">
+        <div class="kpi-title">
+          <span>指标二 · 四类法定要素生成</span>
+          <span class='badge badge-pass'>PASS</span>
+        </div>
+        <div class="kpi-value" style="color: #0284c7;">18 / 18</div>
+        <div class="kpi-sub">
+          <span>场景、操作、主体、数据项全量生成</span>
+          <span class="kpi-target">指标: 四类要素全量生成</span>
+        </div>
+      </div>
+
+      <div class="kpi-card ">
+        <div class="kpi-title">
+          <span>指标二 · 报告内容完整度</span>
+          <span class='badge badge-pass'>PASS</span>
+        </div>
+        <div class="kpi-value" style="color: var(--purple);">98.81%</div>
+        <div class="kpi-sub">
+          <span>实得分 290.5 / 294 (官方评测)</span>
+          <span class="kpi-target">指标: 达到 60% 以上</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Card -->
+    <section class="section-card">
+      <div class="detail-tab-header">
+        <div class="tab-btn-group">
+          <button class="tab-toggle-btn active" id="btn-tab1" onclick="switchDetailTab('tab1')">
+            指标一明细：隐私数据覆盖度表 (18 应用)
+          </button>
+          <button class="tab-toggle-btn" id="btn-tab2" onclick="switchDetailTab('tab2')">
+            指标二明细：报告四要素与完整度表 (18 应用)
+          </button>
+        </div>
+        <div class="filter-bar">
+          <input type="text" id="appSearchInput" class="search-input" placeholder="搜索应用名称..." oninput="filterCurrentTable()">
+        </div>
+      </div>
+
+      <!-- TAB 1: 指标一明细表 -->
+      <div class="tab-pane active" id="tab1">
+        <div class="table-caption">
+          <strong>考核要求：</strong>对给定 API 和用户敏感信息输入的代码感知覆盖率达到 100%，无漏报，误报率小于 20%（总结果已置顶，点击行查看敏感项与代码指针）
+        </div>
+        <div class="table-container">
+          <table class="table" id="table1">
+            <thead>
+              <tr>
+                <th>应用名称</th>
+                <th>绑定运行批次 (Run ID)</th>
+                <th>敏感信息真值数 (GT)</th>
+                <th>感知检出数 (TP)</th>
+                <th>误报数 (FP)</th>
+                <th>预测总数 (Pred)</th>
+                <th>代码感知覆盖率</th>
+                <th>代码感知误报率</th>
+                <th>达标判定</th>
+                <th class="col-action">操作</th>
+              </tr>
+            </thead>
+            <tbody id="tbody1">
+              
+    <tr class="total-top-row">
+      <td><strong>【全量汇总 TOTAL】</strong></td>
+      <td><strong>18 个基准应用</strong></td>
+      <td><strong>49 项</strong></td>
+      <td><strong style="color:var(--green); font-size:14px;">49 项</strong></td>
+      <td><strong>0 项</strong></td>
+      <td><strong>49 项</strong></td>
+      <td><span class="badge badge-pass" style="font-size:13px; font-weight:700;">100.00%</span></td>
+      <td><strong style="color:var(--muted);">0.00%</strong></td>
+      <td><span class='badge badge-pass'>全部 PASS</span></td>
+      <td class="col-action">-</td>
+    </tr>
+    
+              
+        <tr class="app-row clickable" data-app="AccountKit-QuickLogin" data-detail="detail_t1_row_1" onclick="toggleDetail('detail_t1_row_1')">
+          <td><span class="app-code">AccountKit-QuickLogin</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-191243</code></td>
+          <td><strong>2</strong></td>
+          <td><strong style="color:var(--green);">2</strong></td>
+          <td>0</td>
+          <td>2</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_1" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用启动或执行网络相关功能时</li><li style='margin-bottom:4px;'>应用权限配置</li><li style='margin-bottom:4px;'>用户浏览内容、下载资源或与服务器交互时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>手机号码</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>授权码</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets:13 (onCreate)<br>input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets:17 (onDestroy)<br>input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets:21 (onWindowStageCreate)<br>input/app/AccountKit-QuickLogin/entry/src/main/ets/entryability/EntryAbility.ets:44 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\AccountKit-QuickLogin\20260913-191243</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="AdsKit" data-detail="detail_t1_row_2" onclick="toggleDetail('detail_t1_row_2')">
+          <td><span class="app-code">AdsKit</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-191243</code></td>
+          <td><strong>1</strong></td>
+          <td><strong style="color:var(--green);">1</strong></td>
+          <td>0</td>
+          <td>1</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_2" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>插屏广告演示</li><li style='margin-bottom:4px;'>用户启动应用或进入需要个性化推荐/广告追踪的功能页面时</li><li style='margin-bottom:4px;'>系统接收到新短信通知时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>匿名设备标识符</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/AdsKit/entry/src/main/ets/entryability/EntryAbility.ets:22 (onCreate)<br>input/app/AdsKit/entry/src/main/ets/entryability/EntryAbility.ets:26 (onDestroy)<br>input/app/AdsKit/entry/src/main/ets/entryability/EntryAbility.ets:30 (onWindowStageCreate)<br>input/app/AdsKit/entry/src/main/ets/entryability/EntryAbility.ets:43 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\AdsKit\20260913-191243</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="ArkTS-wphui1.0" data-detail="detail_t1_row_3" onclick="toggleDetail('detail_t1_row_3')">
+          <td><span class="app-code">ArkTS-wphui1.0</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-191243</code></td>
+          <td><strong>1</strong></td>
+          <td><strong style="color:var(--green);">1</strong></td>
+          <td>0</td>
+          <td>1</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_3" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><div style='padding:2px 0;'>用户在应用内进行搜索操作</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>搜索关键词</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts:6 (onCreate)<br>input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts:10 (onDestroy)<br>input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts:14 (onWindowStageCreate)<br>input/app/ArkTS-wphui1.0/entry/src/main/ets/entryability/EntryAbility.ts:27 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\ArkTS-wphui1.0\20260913-191243</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="Health_Service_Kit" data-detail="detail_t1_row_4" onclick="toggleDetail('detail_t1_row_4')">
+          <td><span class="app-code">Health_Service_Kit</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-191645</code></td>
+          <td><strong>2</strong></td>
+          <td><strong style="color:var(--green);">2</strong></td>
+          <td>0</td>
+          <td>2</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_4" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>初始化健康数据存储模块时</li><li style='margin-bottom:4px;'>用户完成运动并保存记录时</li><li style='margin-bottom:4px;'>用户授权应用访问健康数据时</li><li style='margin-bottom:4px;'>用户查看运动记录或历史健康数据时</li><li style='margin-bottom:4px;'>获取设备标识信息以关联用户账户或同步数据</li><li style='margin-bottom:4px;'>记录和分析用户的运动健康数据</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>设备标识信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>运动健康数据</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/Health_Service_Kit/entry/src/main/ets/entryability/EntryAbility.ets:7 (onCreate)<br>input/app/Health_Service_Kit/entry/src/main/ets/entryability/EntryAbility.ets:12 (onDestroy)<br>input/app/Health_Service_Kit/entry/src/main/ets/entryability/EntryAbility.ets:16 (onWindowStageCreate)<br>input/app/Health_Service_Kit/entry/src/main/ets/entryability/EntryAbility.ets:29 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\Health_Service_Kit\20260913-191645</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="IntentsKit-codelab-Clientdemo-ArkTS" data-detail="detail_t1_row_5" onclick="toggleDetail('detail_t1_row_5')">
+          <td><span class="app-code">IntentsKit-codelab-Clientdemo-ArkTS</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-191703</code></td>
+          <td><strong>1</strong></td>
+          <td><strong style="color:var(--green);">1</strong></td>
+          <td>0</td>
+          <td>1</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_5" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用运行过程中记录调试信息或获取会话标识时</li><li style='margin-bottom:4px;'>用户触发分享意图消息刷新操作</li><li style='margin-bottom:4px;'>用户触发分享或意图发送操作时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>用户输入内容</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets:13 (onCreate)<br>input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets:20 (onDestroy)<br>input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets:24 (onWindowStageCreate)<br>input/app/IntentsKit-codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets:39 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\IntentsKit-codelab-Clientdemo-ArkTS\20260913-191703</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="NewsData" data-detail="detail_t1_row_6" onclick="toggleDetail('detail_t1_row_6')">
+          <td><span class="app-code">NewsData</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-191939</code></td>
+          <td><strong>0</strong></td>
+          <td><strong style="color:var(--green);">0</strong></td>
+          <td>0</td>
+          <td>0</td>
+          <td><span class='badge badge-blue'>N/A</span></td>
+          <td><span style='color:var(--muted);'>N/A</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_6" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><div style='padding:2px 0;'>应用需要连接网络以加载内容、同步数据或访问在线服务时</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><span style='color:var(--muted);'>无个人敏感数据项 (基准真值为空)</span></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets:21 (onCreate)<br>input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets:28 (onDestroy)<br>input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets:33 (onWindowStageCreate)<br>input/app/NewsData/entry/src/main/ets/entryability/EntryAbility.ets:49 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\NewsData\20260913-191939</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="PaymentKit-CodelabDemo" data-detail="detail_t1_row_7" onclick="toggleDetail('detail_t1_row_7')">
+          <td><span class="app-code">PaymentKit-CodelabDemo</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-192236</code></td>
+          <td><strong>4</strong></td>
+          <td><strong style="color:var(--green);">4</strong></td>
+          <td>0</td>
+          <td>4</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_7" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>商户支付订单创建与预签约</li><li style='margin-bottom:4px;'>用户发起支付请求时</li><li style='margin-bottom:4px;'>预支付交易会话标识</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>商户号</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>授权标识</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>预支付交易会话标识</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>预签约编号</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets:6 (onCreate)<br>input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets:10 (onDestroy)<br>input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets:14 (onWindowStageCreate)<br>input/app/PaymentKit-CodelabDemo/PaymentKit-Codelab-Clientdemo-ArkTS/entry/src/main/ets/entryability/EntryAbility.ets:27 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\PaymentKit-CodelabDemo\20260913-192236</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="Pedometer" data-detail="detail_t1_row_8" onclick="toggleDetail('detail_t1_row_8')">
+          <td><span class="app-code">Pedometer</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-192403</code></td>
+          <td><strong>2</strong></td>
+          <td><strong style="color:var(--green);">2</strong></td>
+          <td>0</td>
+          <td>2</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_8" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用停止计步或运动监测功能时</li><li style='margin-bottom:4px;'>应用启动并请求获取用户活动状态权限时</li><li style='margin-bottom:4px;'>应用在后台执行特定任务（如音乐播放、导航、下载）时</li><li style='margin-bottom:4px;'>应用在后台运行期间需要持续追踪用户位置的场景（如运动轨迹记录、后台地理围栏监控）</li><li style='margin-bottom:4px;'>用户在使用需要定位功能的应用场景时（如地图导航、附近服务查找）</li><li style='margin-bottom:4px;'>用户需要获取大致位置信息以提供基于位置的服务时</li><li style='margin-bottom:4px;'>计步器应用记录用户运动数据</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>位置信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>步数数据</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets:24 (onCreate)<br>input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets:29 (onDestroy)<br>input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets:33 (onWindowStageCreate)<br>input/app/Pedometer/entry/src/main/ets/entryability/EntryAbility.ets:48 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\Pedometer\20260913-192403</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="Test_login_in_try" data-detail="detail_t1_row_9" onclick="toggleDetail('detail_t1_row_9')">
+          <td><span class="app-code">Test_login_in_try</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-192455</code></td>
+          <td><strong>2</strong></td>
+          <td><strong style="color:var(--green);">2</strong></td>
+          <td>0</td>
+          <td>2</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_9" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><div style='padding:2px 0;'>用户登录</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>登录密码</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>登录账号</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/Test_login_in_try/entry/src/main/ets/entryability/EntryAbility.ets:8 (onCreate)<br>input/app/Test_login_in_try/entry/src/main/ets/entryability/EntryAbility.ets:13 (onDestroy)<br>input/app/Test_login_in_try/entry/src/main/ets/entryability/EntryAbility.ets:17 (onWindowStageCreate)<br>input/app/Test_login_in_try/entry/src/main/ets/entryability/EntryAbility.ets:30 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\Test_login_in_try\20260913-192455</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="Test_user_info" data-detail="detail_t1_row_10" onclick="toggleDetail('detail_t1_row_10')">
+          <td><span class="app-code">Test_user_info</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-192702</code></td>
+          <td><strong>17</strong></td>
+          <td><strong style="color:var(--green);">17</strong></td>
+          <td>0</td>
+          <td>17</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_10" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>用户个人信息录入</li><li style='margin-bottom:4px;'>用户个人信息管理</li><li style='margin-bottom:4px;'>用户个人资料设置</li><li style='margin-bottom:4px;'>用户完善个人资料</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>体重</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>出生日期</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>国家</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>姓名</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>婚姻状况</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>家庭成员信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>工作信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>年级</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>年龄</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>年龄段</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>性别</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>房屋数据</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>收入状况</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>教育背景</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>昵称</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>民族</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>身高</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets:8 (onCreate)<br>input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets:13 (onDestroy)<br>input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets:17 (onWindowStageCreate)<br>input/app/Test_user_info/entry/src/main/ets/entryability/EntryAbility.ets:30 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\Test_user_info\20260913-192702</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="TodayNews_harmony" data-detail="detail_t1_row_11" onclick="toggleDetail('detail_t1_row_11')">
+          <td><span class="app-code">TodayNews_harmony</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-193055</code></td>
+          <td><strong>3</strong></td>
+          <td><strong style="color:var(--green);">3</strong></td>
+          <td>0</td>
+          <td>3</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_11" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>会话保持与状态管理</li><li style='margin-bottom:4px;'>应用需要连接网络以加载内容、同步数据或进行通信时</li><li style='margin-bottom:4px;'>用户个人资料展示与身份识别</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>Cookie</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>头像图片</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>昵称</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/TodayNews_harmony/common/src/main/ets/pages/EmptyPage.ets:7 (build)<br>input/app/TodayNews_harmony/common/src/main/ets/pages/FailureLayout.ets:10 (build)<br>input/app/TodayNews_harmony/common/src/main/ets/pages/Index.ets:7 (build)<br>input/app/TodayNews_harmony/common/src/main/ets/pages/LoadingLayout.ets:8 (aboutToAppear)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\TodayNews_harmony\20260913-193055</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="WebCookie" data-detail="detail_t1_row_12" onclick="toggleDetail('detail_t1_row_12')">
+          <td><span class="app-code">WebCookie</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-193132</code></td>
+          <td><strong>1</strong></td>
+          <td><strong style="color:var(--green);">1</strong></td>
+          <td>0</td>
+          <td>1</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_12" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用内网页浏览</li><li style='margin-bottom:4px;'>应用需要连接网络以加载内容、同步数据或进行通信时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>Cookie</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/WebCookie/entry/.preview/default/cache/default/default@PreviewArkTS/esmodule/debug/entry/src/main/ets/entryability/EntryAbility.ts:5 (onCreate)<br>input/app/WebCookie/entry/.preview/default/cache/default/default@PreviewArkTS/esmodule/debug/entry/src/main/ets/entryability/EntryAbility.ts:8 (onDestroy)<br>input/app/WebCookie/entry/.preview/default/cache/default/default@PreviewArkTS/esmodule/debug/entry/src/main/ets/entryability/EntryAbility.ts:11 (onWindowStageCreate)<br>input/app/WebCookie/entry/.preview/default/cache/default/default@PreviewArkTS/esmodule/debug/entry/src/main/ets/entryability/EntryAbility.ts:22 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\WebCookie\20260913-193132</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="Wechat_HarmonyOS" data-detail="detail_t1_row_13" onclick="toggleDetail('detail_t1_row_13')">
+          <td><span class="app-code">Wechat_HarmonyOS</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-193410</code></td>
+          <td><strong>8</strong></td>
+          <td><strong style="color:var(--green);">8</strong></td>
+          <td>0</td>
+          <td>8</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_13" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>在搜索页面输入关键词并触发提示反馈</li><li style='margin-bottom:4px;'>应用触发通知提醒、交互反馈或特定操作确认时</li><li style='margin-bottom:4px;'>应用运行环境检测</li><li style='margin-bottom:4px;'>应用需要判断当前网络状态以决定数据传输策略时</li><li style='margin-bottom:4px;'>应用需要连接网络以加载内容、同步数据或进行通信时</li><li style='margin-bottom:4px;'>用户个人资料展示与二维码生成</li><li style='margin-bottom:4px;'>用户主动触发语音输入、录音或实时通话功能时</li><li style='margin-bottom:4px;'>用户保存文件到设备媒体库时</li><li style='margin-bottom:4px;'>用户查看或编辑个人资料</li><li style='margin-bottom:4px;'>用户进行即时通讯聊天</li><li style='margin-bottom:4px;'>用户选择图片、视频或音频文件时</li><li style='margin-bottom:4px;'>用户需要使用摄像头功能时（如拍照、扫码或视频通话）</li><li style='margin-bottom:4px;'>通讯录列表展示与联系人选择</li><li style='margin-bottom:4px;'>通讯录页面字母索引选择与联系人定位</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>IP地址</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>头像图片</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>搜索关键词</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>昵称</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>用户身份信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>聊天内容</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>设备信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>通讯录信息</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/Wechat_HarmonyOS/entry/src/main/ets/component/ListChatContentLeftItem.ets:9 (build)<br>input/app/Wechat_HarmonyOS/entry/src/main/ets/component/ListChatContentLeftItem.ets:84 (aboutToDisappear)<br>input/app/Wechat_HarmonyOS/entry/src/main/ets/component/ListChatContentRightItem.ets:9 (build)<br>input/app/Wechat_HarmonyOS/entry/src/main/ets/component/ListChatContentRightItem.ets:84 (aboutToDisappear)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\Wechat_HarmonyOS\20260913-193410</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="codeLab_API" data-detail="detail_t1_row_14" onclick="toggleDetail('detail_t1_row_14')">
+          <td><span class="app-code">codeLab_API</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-191454</code></td>
+          <td><strong>1</strong></td>
+          <td><strong style="color:var(--green);">1</strong></td>
+          <td>0</td>
+          <td>1</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_14" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>功能API演示</li><li style='margin-bottom:4px;'>应用需要获取当前Wi-Fi网络状态或配置信息时</li><li style='margin-bottom:4px;'>用户连接蓝牙设备或进行蓝牙数据传输时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>设备信息</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets:6 (onCreate)<br>input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets:10 (onDestroy)<br>input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets:14 (onWindowStageCreate)<br>input/app/codeLab_API/entry/src/main/ets/entryability/EntryAbility.ets:28 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\codeLab_API\20260913-191454</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="device-security-kit" data-detail="detail_t1_row_15" onclick="toggleDetail('detail_t1_row_15')">
+          <td><span class="app-code">device-security-kit</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-191531</code></td>
+          <td><strong>1</strong></td>
+          <td><strong style="color:var(--green);">1</strong></td>
+          <td>0</td>
+          <td>1</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_15" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用启动或初始化时获取设备标识</li><li style='margin-bottom:4px;'>应用需要获取设备唯一标识或进行身份认证时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>设备标识信息</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/device-security-kit/entry/src/main/ets/entryability/EntryAbility.ets:6 (onCreate)<br>input/app/device-security-kit/entry/src/main/ets/entryability/EntryAbility.ets:10 (onDestroy)<br>input/app/device-security-kit/entry/src/main/ets/entryability/EntryAbility.ets:14 (onWindowStageCreate)<br>input/app/device-security-kit/entry/src/main/ets/entryability/EntryAbility.ets:27 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\device-security-kit\20260913-191531</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="map-kit_-codelab" data-detail="detail_t1_row_16" onclick="toggleDetail('detail_t1_row_16')">
+          <td><span class="app-code">map-kit_-codelab</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-191926</code></td>
+          <td><strong>0</strong></td>
+          <td><strong style="color:var(--green);">0</strong></td>
+          <td>0</td>
+          <td>0</td>
+          <td><span class='badge badge-blue'>N/A</span></td>
+          <td><span style='color:var(--muted);'>N/A</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_16" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用启动或进行网络相关操作时</li><li style='margin-bottom:4px;'>用户访问在线内容、同步数据或使用云端服务时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><span style='color:var(--muted);'>无个人敏感数据项 (基准真值为空)</span></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/map-kit_-codelab/entry/src/main/ets/entryability/EntryAbility.ets:7 (onCreate)<br>input/app/map-kit_-codelab/entry/src/main/ets/entryability/EntryAbility.ets:11 (onDestroy)<br>input/app/map-kit_-codelab/entry/src/main/ets/entryability/EntryAbility.ets:15 (onWindowStageCreate)<br>input/app/map-kit_-codelab/entry/src/main/ets/entryability/EntryAbility.ets:28 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\map-kit_-codelab\20260913-191926</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="ohbili" data-detail="detail_t1_row_17" onclick="toggleDetail('detail_t1_row_17')">
+          <td><span class="app-code">ohbili</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-191957</code></td>
+          <td><strong>3</strong></td>
+          <td><strong style="color:var(--green);">3</strong></td>
+          <td>0</td>
+          <td>3</td>
+          <td><span class='badge badge-pass'>100.00%</span></td>
+          <td><span style='color:var(--muted);'>0.00%</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_17" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>在关于页面点击搜索框跳转至搜索页</li><li style='margin-bottom:4px;'>在热搜页面查看搜索排行榜并点击具体词条</li><li style='margin-bottom:4px;'>应用启动及用户会话管理</li><li style='margin-bottom:4px;'>应用启动或执行网络请求前检测网络连接状态</li><li style='margin-bottom:4px;'>用户查看或编辑包含地理位置信息的媒体文件时</li><li style='margin-bottom:4px;'>用户浏览内容、提交表单或同步数据时</li><li style='margin-bottom:4px;'>用户选择图片、视频或音频文件进行上传、分享或编辑时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>Cookie</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>应用唯一标识符</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>搜索关键词</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets:15 (onCreate)<br>input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets:37 (onDestroy)<br>input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets:42 (onWindowStageCreate)<br>input/app/ohbili/entry/src/main/ets/entryability/EntryAbility.ets:65 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\ohbili\20260913-191957</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="open_neteasy_cloud" data-detail="detail_t1_row_18" onclick="toggleDetail('detail_t1_row_18')">
+          <td><span class="app-code">open_neteasy_cloud</span></td>
+          <td><code style="font-family:var(--mono-family); font-size:12px; color:var(--muted);">20260913-192038</code></td>
+          <td><strong>0</strong></td>
+          <td><strong style="color:var(--green);">0</strong></td>
+          <td>0</td>
+          <td>0</td>
+          <td><span class='badge badge-blue'>N/A</span></td>
+          <td><span style='color:var(--muted);'>N/A</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t1_row_18" class="row-detail">
+          <td colspan="10">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">业务功能场景</div>
+                <div class="detail-content"><div style='padding:2px 0;'>应用需要访问网络以加载内容、同步数据或进行通信时</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">检出敏感数据项</div>
+                <div class="detail-content"><span style='color:var(--muted);'>无个人敏感数据项 (基准真值为空)</span></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">源码敏感调用行号指针</div>
+                <div class="detail-content" style="font-family:var(--mono-family); color:var(--blue-700); font-size:12px;">input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts:11 (onCreate)<br>input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts:15 (onDestroy)<br>input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts:19 (onWindowStageCreate)<br>input/app/open_neteasy_cloud/entry/src/main/ets/entryability/EntryAbility.ts:32 (onWindowStageDestroy)</div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\open_neteasy_cloud\20260913-192038</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 2: 指标二明细表 -->
+      <div class="tab-pane" id="tab2">
+        <div class="table-caption">
+          <strong>考核要求：</strong>业务场景生成，隐私数据操作生成，操作主体生成，隐私数据项生成，内容完整度达到 60% 以上（总结果已置顶，点击行查看要素详情）
+        </div>
+        <div class="table-container">
+          <table class="table" id="table2">
+            <thead>
+              <tr>
+                <th>应用名称</th>
+                <th>① 业务场景</th>
+                <th>② 隐私数据操作</th>
+                <th>③ 操作主体</th>
+                <th>④ 隐私数据项</th>
+                <th>四要素齐备</th>
+                <th>内容完整度 (≥60%)</th>
+                <th>达标判定</th>
+                <th class="col-action">操作</th>
+              </tr>
+            </thead>
+            <tbody id="tbody2">
+              
+    <tr class="total-top-row">
+      <td><strong>【全量汇总 TOTAL】</strong></td>
+      <td><strong style="color:var(--green-700);">18/18 齐备</strong></td>
+      <td><strong style="color:var(--green-700);">18/18 齐备</strong></td>
+      <td><strong style="color:var(--green-700);">18/18 明确</strong></td>
+      <td><strong style="color:var(--green-700);">49/49 检出</strong></td>
+      <td><span class="badge badge-pass" style="font-weight:700;">18/18 全部生成</span></td>
+      <td><span class="badge badge-purple" style="font-weight:700;">98.81% (290.5/294)</span></td>
+      <td><span class='badge badge-pass'>全部 PASS</span></td>
+      <td class="col-action">-</td>
+    </tr>
+    
+              
+        <tr class="app-row clickable" data-app="AccountKit-QuickLogin" data-detail="detail_t2_row_1" onclick="toggleDetail('detail_t2_row_1')">
+          <td><span class="app-code">AccountKit-QuickLogin</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (2 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>91.67%</strong> <span style='font-size:11px; color:var(--muted);'>(11.0/12)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_1" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用启动或执行网络相关功能时</li><li style='margin-bottom:4px;'>应用权限配置</li><li style='margin-bottom:4px;'>用户浏览内容、下载资源或与服务器交互时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>收集、存储</li><li style='margin-bottom:4px;'>用于建立网络连接，实现数据上传与下载等互联网通信功能</li><li style='margin-bottom:4px;'>用于获取当前网络连接状态及类型，以判断是否具备联网条件</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (2 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>手机号码</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>授权码</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\AccountKit-QuickLogin\20260913-191243</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="AdsKit" data-detail="detail_t2_row_2" onclick="toggleDetail('detail_t2_row_2')">
+          <td><span class="app-code">AdsKit</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>91.67%</strong> <span style='font-size:11px; color:var(--muted);'>(5.5/6)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_2" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>插屏广告演示</li><li style='margin-bottom:4px;'>用户启动应用或进入需要个性化推荐/广告追踪的功能页面时</li><li style='margin-bottom:4px;'>系统接收到新短信通知时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>收集、读取、上传</li><li style='margin-bottom:4px;'>用于获取用户的同意以访问设备标识符（如OAID），从而实现跨应用的广告追踪、用户行为分析及个性化内容推荐</li><li style='margin-bottom:4px;'>用于订阅公共事件以接收短信到达的通知，以便应用能够及时响应短信消息（例如自动填充验证码或处理特定指令）</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (1 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>匿名设备标识符</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\AdsKit\20260913-191243</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="ArkTS-wphui1.0" data-detail="detail_t2_row_3" onclick="toggleDetail('detail_t2_row_3')">
+          <td><span class="app-code">ArkTS-wphui1.0</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>100.00%</strong> <span style='font-size:11px; color:var(--muted);'>(6.0/6)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_3" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (1 项)</div>
+                <div class="detail-content"><div style='padding:2px 0;'>用户在应用内进行搜索操作</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (1 项)</div>
+                <div class="detail-content"><div style='padding:2px 0;'>接收并处理用户输入的搜索关键词字符串</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (1 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>搜索关键词</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\ArkTS-wphui1.0\20260913-191243</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="Health_Service_Kit" data-detail="detail_t2_row_4" onclick="toggleDetail('detail_t2_row_4')">
+          <td><span class="app-code">Health_Service_Kit</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (6 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (5 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (2 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>100.00%</strong> <span style='font-size:11px; color:var(--muted);'>(12.0/12)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_4" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (6 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>初始化健康数据存储模块时</li><li style='margin-bottom:4px;'>用户完成运动并保存记录时</li><li style='margin-bottom:4px;'>用户授权应用访问健康数据时</li><li style='margin-bottom:4px;'>用户查看运动记录或历史健康数据时</li><li style='margin-bottom:4px;'>获取设备标识信息以关联用户账户或同步数据</li><li style='margin-bottom:4px;'>记录和分析用户的运动健康数据</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (5 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>用于将新生成的运动序列数据写入系统健康存储</li><li style='margin-bottom:4px;'>用于获取用户的运动、睡眠等健康相关数据以提供健康管理服务</li><li style='margin-bottom:4px;'>用于识别设备唯一标识，确保健康数据与特定设备绑定及存储路径正确</li><li style='margin-bottom:4px;'>用于读取用户的运动序列等健康数据以展示历史记录</li><li style='margin-bottom:4px;'>读取</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (2 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>设备标识信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>运动健康数据</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\Health_Service_Kit\20260913-191645</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="IntentsKit-codelab-Clientdemo-ArkTS" data-detail="detail_t2_row_5" onclick="toggleDetail('detail_t2_row_5')">
+          <td><span class="app-code">IntentsKit-codelab-Clientdemo-ArkTS</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>100.00%</strong> <span style='font-size:11px; color:var(--muted);'>(6.0/6)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_5" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用运行过程中记录调试信息或获取会话标识时</li><li style='margin-bottom:4px;'>用户触发分享意图消息刷新操作</li><li style='margin-bottom:4px;'>用户触发分享或意图发送操作时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>用于调用系统接口分享意图数据，实现应用间的数据传递或功能跳转</li><li style='margin-bottom:4px;'>用于输出日志信息以辅助开发调试，以及获取SID等运行时标识信息</li><li style='margin-bottom:4px;'>记录日志</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (1 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>用户输入内容</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\IntentsKit-codelab-Clientdemo-ArkTS\20260913-191703</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="NewsData" data-detail="detail_t2_row_6" onclick="toggleDetail('detail_t2_row_6')">
+          <td><span class="app-code">NewsData</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--muted); font-size:12px;'>免除 (真值为空)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><span style='color:var(--muted); font-size:12px;'>N/A (无敏感数据)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_6" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (1 项)</div>
+                <div class="detail-content"><div style='padding:2px 0;'>应用需要连接网络以加载内容、同步数据或访问在线服务时</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (1 项)</div>
+                <div class="detail-content"><div style='padding:2px 0;'>用于建立网络连接，实现数据传输和远程资源访问</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (0 项)</div>
+                <div class="detail-content"><span style='color:var(--muted);'>敏感系统 API 涉及的数据类型项</span></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\NewsData\20260913-191939</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="PaymentKit-CodelabDemo" data-detail="detail_t2_row_7" onclick="toggleDetail('detail_t2_row_7')">
+          <td><span class="app-code">PaymentKit-CodelabDemo</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (4 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (4 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>100.00%</strong> <span style='font-size:11px; color:var(--muted);'>(24.0/24)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_7" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>商户支付订单创建与预签约</li><li style='margin-bottom:4px;'>用户发起支付请求时</li><li style='margin-bottom:4px;'>预支付交易会话标识</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (4 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>在内存中构建包含商户号、授权标识及预签约编号的JSON字符串用于签名和传输</li><li style='margin-bottom:4px;'>在应用源码中定义包含预支付交易会话标识的订单字符串常量，用于构建支付请求参数</li><li style='margin-bottom:4px;'>用于建立网络连接以传输支付数据至服务端</li><li style='margin-bottom:4px;'>用于检测网络连接状态，确保支付服务可正常通信</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (4 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>商户号</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>授权标识</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>预支付交易会话标识</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>预签约编号</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\PaymentKit-CodelabDemo\20260913-192236</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="Pedometer" data-detail="detail_t2_row_8" onclick="toggleDetail('detail_t2_row_8')">
+          <td><span class="app-code">Pedometer</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (7 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (7 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (2 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>100.00%</strong> <span style='font-size:11px; color:var(--muted);'>(12.0/12)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_8" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (7 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用停止计步或运动监测功能时</li><li style='margin-bottom:4px;'>应用启动并请求获取用户活动状态权限时</li><li style='margin-bottom:4px;'>应用在后台执行特定任务（如音乐播放、导航、下载）时</li><li style='margin-bottom:4px;'>应用在后台运行期间需要持续追踪用户位置的场景（如运动轨迹记录、后台地理围栏监控）</li><li style='margin-bottom:4px;'>用户在使用需要定位功能的应用场景时（如地图导航、附近服务查找）</li><li style='margin-bottom:4px;'>用户需要获取大致位置信息以提供基于位置的服务时</li><li style='margin-bottom:4px;'>计步器应用记录用户运动数据</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (7 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>用于允许应用在后台持续运行，确保关键任务不被系统中断</li><li style='margin-bottom:4px;'>用于取消订阅加速度传感器数据，停止采集用户运动状态信息</li><li style='margin-bottom:4px;'>用于在应用未处于前台时继续获取设备的位置更新</li><li style='margin-bottom:4px;'>用于声明和申请访问用户活动识别（如步行、跑步等）的权限</li><li style='margin-bottom:4px;'>用于获取设备的大致地理位置，以便提供周边推荐、地图定位或区域限制等功能</li><li style='margin-bottom:4px;'>用于获取设备的当前地理位置信息，以提供基于位置的服务</li><li style='margin-bottom:4px;'>采集、处理</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (2 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>位置信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>步数数据</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\Pedometer\20260913-192403</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="Test_login_in_try" data-detail="detail_t2_row_9" onclick="toggleDetail('detail_t2_row_9')">
+          <td><span class="app-code">Test_login_in_try</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (2 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>91.67%</strong> <span style='font-size:11px; color:var(--muted);'>(11.0/12)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_9" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (1 项)</div>
+                <div class="detail-content"><div style='padding:2px 0;'>用户登录</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (1 项)</div>
+                <div class="detail-content"><div style='padding:2px 0;'>收集、验证</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (2 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>登录密码</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>登录账号</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\Test_login_in_try\20260913-192455</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="Test_user_info" data-detail="detail_t2_row_10" onclick="toggleDetail('detail_t2_row_10')">
+          <td><span class="app-code">Test_user_info</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (4 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (17 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>100.00%</strong> <span style='font-size:11px; color:var(--muted);'>(102.0/102)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_10" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (4 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>用户个人信息录入</li><li style='margin-bottom:4px;'>用户个人信息管理</li><li style='margin-bottom:4px;'>用户个人资料设置</li><li style='margin-bottom:4px;'>用户完善个人资料</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (1 项)</div>
+                <div class="detail-content"><div style='padding:2px 0;'>收集、存储</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (17 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>体重</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>出生日期</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>国家</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>姓名</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>婚姻状况</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>家庭成员信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>工作信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>年级</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>年龄</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>年龄段</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>性别</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>房屋数据</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>收入状况</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>教育背景</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>昵称</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>民族</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>身高</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\Test_user_info\20260913-192702</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="TodayNews_harmony" data-detail="detail_t2_row_11" onclick="toggleDetail('detail_t2_row_11')">
+          <td><span class="app-code">TodayNews_harmony</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>100.00%</strong> <span style='font-size:11px; color:var(--muted);'>(18.0/18)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_11" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>会话保持与状态管理</li><li style='margin-bottom:4px;'>应用需要连接网络以加载内容、同步数据或进行通信时</li><li style='margin-bottom:4px;'>用户个人资料展示与身份识别</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>接收、解析、存储</li><li style='margin-bottom:4px;'>收集、存储、展示</li><li style='margin-bottom:4px;'>用于访问互联网，实现数据传输、远程资源加载及在线服务交互</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (3 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>Cookie</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>头像图片</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>昵称</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\TodayNews_harmony\20260913-193055</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="WebCookie" data-detail="detail_t2_row_12" onclick="toggleDetail('detail_t2_row_12')">
+          <td><span class="app-code">WebCookie</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (2 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (2 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>91.67%</strong> <span style='font-size:11px; color:var(--muted);'>(5.5/6)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_12" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (2 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用内网页浏览</li><li style='margin-bottom:4px;'>应用需要连接网络以加载内容、同步数据或进行通信时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (2 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>同步获取指定URL的Cookie</li><li style='margin-bottom:4px;'>用于访问互联网，实现数据传输、远程资源获取及在线服务交互</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (1 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>Cookie</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\WebCookie\20260913-193132</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="Wechat_HarmonyOS" data-detail="detail_t2_row_13" onclick="toggleDetail('detail_t2_row_13')">
+          <td><span class="app-code">Wechat_HarmonyOS</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (14 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (14 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (8 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>100.00%</strong> <span style='font-size:11px; color:var(--muted);'>(48.0/48)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_13" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (14 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>在搜索页面输入关键词并触发提示反馈</li><li style='margin-bottom:4px;'>应用触发通知提醒、交互反馈或特定操作确认时</li><li style='margin-bottom:4px;'>应用运行环境检测</li><li style='margin-bottom:4px;'>应用需要判断当前网络状态以决定数据传输策略时</li><li style='margin-bottom:4px;'>应用需要连接网络以加载内容、同步数据或进行通信时</li><li style='margin-bottom:4px;'>用户个人资料展示与二维码生成</li><li style='margin-bottom:4px;'>用户主动触发语音输入、录音或实时通话功能时</li><li style='margin-bottom:4px;'>用户保存文件到设备媒体库时</li><li style='margin-bottom:4px;'>用户查看或编辑个人资料</li><li style='margin-bottom:4px;'>用户进行即时通讯聊天</li><li style='margin-bottom:4px;'>用户选择图片、视频或音频文件时</li><li style='margin-bottom:4px;'>用户需要使用摄像头功能时（如拍照、扫码或视频通话）</li><li style='margin-bottom:4px;'>通讯录列表展示与联系人选择</li><li style='margin-bottom:4px;'>通讯录页面字母索引选择与联系人定位</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (14 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>在内存中存储状态变量，用于页面渲染和路由跳转</li><li style='margin-bottom:4px;'>收集并处理</li><li style='margin-bottom:4px;'>收集并展示</li><li style='margin-bottom:4px;'>用于向设备公共媒体目录写入或保存文件</li><li style='margin-bottom:4px;'>用于控制设备振动马达提供触觉反馈</li><li style='margin-bottom:4px;'>用于获取网络连接信息，以便优化服务加载或提示用户检查网络</li><li style='margin-bottom:4px;'>用于访问互联网，实现数据传输、远程资源加载及在线服务交互</li><li style='margin-bottom:4px;'>用于访问设备摄像头以采集图像或视频数据</li><li style='margin-bottom:4px;'>用于读取设备中的媒体文件以支持上传、预览或编辑功能</li><li style='margin-bottom:4px;'>用于采集麦克风音频数据，支持语音识别、录音保存或音视频通话中的声音传输</li><li style='margin-bottom:4px;'>读取</li><li style='margin-bottom:4px;'>读取并匹配</li><li style='margin-bottom:4px;'>读取并展示</li><li style='margin-bottom:4px;'>读取并显示</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (8 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>IP地址</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>头像图片</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>搜索关键词</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>昵称</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>用户身份信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>聊天内容</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>设备信息</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>通讯录信息</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\Wechat_HarmonyOS\20260913-193410</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="codeLab_API" data-detail="detail_t2_row_14" onclick="toggleDetail('detail_t2_row_14')">
+          <td><span class="app-code">codeLab_API</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>91.67%</strong> <span style='font-size:11px; color:var(--muted);'>(5.5/6)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_14" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>功能API演示</li><li style='margin-bottom:4px;'>应用需要获取当前Wi-Fi网络状态或配置信息时</li><li style='margin-bottom:4px;'>用户连接蓝牙设备或进行蓝牙数据传输时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (3 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>用于访问蓝牙功能以建立无线连接和交换数据</li><li style='margin-bottom:4px;'>用于读取Wi-Fi连接状态、SSID及信号强度等网络信息</li><li style='margin-bottom:4px;'>读取</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (1 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>设备信息</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\codeLab_API\20260913-191454</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="device-security-kit" data-detail="detail_t2_row_15" onclick="toggleDetail('detail_t2_row_15')">
+          <td><span class="app-code">device-security-kit</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (2 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (2 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>100.00%</strong> <span style='font-size:11px; color:var(--muted);'>(6.0/6)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_15" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (2 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用启动或初始化时获取设备标识</li><li style='margin-bottom:4px;'>应用需要获取设备唯一标识或进行身份认证时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (2 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>用于读取设备证书令牌以识别设备身份或保障账户安全</li><li style='margin-bottom:4px;'>通过函数异步获取设备令牌</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (1 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>设备标识信息</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\device-security-kit\20260913-191531</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="map-kit_-codelab" data-detail="detail_t2_row_16" onclick="toggleDetail('detail_t2_row_16')">
+          <td><span class="app-code">map-kit_-codelab</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (2 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (2 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--muted); font-size:12px;'>免除 (真值为空)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><span style='color:var(--muted); font-size:12px;'>N/A (无敏感数据)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_16" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (2 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>应用启动或进行网络相关操作时</li><li style='margin-bottom:4px;'>用户访问在线内容、同步数据或使用云端服务时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (2 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>用于建立网络连接，实现数据的上传与下载</li><li style='margin-bottom:4px;'>用于获取当前网络连接状态及类型信息，以判断是否具备联网条件</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (0 项)</div>
+                <div class="detail-content"><span style='color:var(--muted);'>敏感系统 API 涉及的数据类型项</span></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\map-kit_-codelab\20260913-191926</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="ohbili" data-detail="detail_t2_row_17" onclick="toggleDetail('detail_t2_row_17')">
+          <td><span class="app-code">ohbili</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (7 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (7 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (3 项)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><strong style='color:var(--purple); font-size:13px;'>100.00%</strong> <span style='font-size:11px; color:var(--muted);'>(18.0/18)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_17" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (7 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>在关于页面点击搜索框跳转至搜索页</li><li style='margin-bottom:4px;'>在热搜页面查看搜索排行榜并点击具体词条</li><li style='margin-bottom:4px;'>应用启动及用户会话管理</li><li style='margin-bottom:4px;'>应用启动或执行网络请求前检测网络连接状态</li><li style='margin-bottom:4px;'>用户查看或编辑包含地理位置信息的媒体文件时</li><li style='margin-bottom:4px;'>用户浏览内容、提交表单或同步数据时</li><li style='margin-bottom:4px;'>用户选择图片、视频或音频文件进行上传、分享或编辑时</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (7 项)</div>
+                <div class="detail-content"><ol style='margin:0; padding-left:18px; line-height:1.5;'><li style='margin-bottom:4px;'>用于建立与远程服务器的网络连接，实现数据的上传和下载</li><li style='margin-bottom:4px;'>用于获取当前设备的网络连接信息（如是否联网、网络类型），以判断是否具备发起网络请求的条件</li><li style='margin-bottom:4px;'>用于访问设备存储中的媒体文件列表及内容，以便应用读取和处理用户选择的媒体资源</li><li style='margin-bottom:4px;'>用于读取媒体文件的地理位置元数据，以便在地图中展示拍摄位置或进行基于位置的分类</li><li style='margin-bottom:4px;'>读取、展示、传递</li><li style='margin-bottom:4px;'>读取并传递</li><li style='margin-bottom:4px;'>读取并处理</li></ol></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (3 项)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>Cookie</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>应用唯一标识符</span><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>搜索关键词</span></div></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\ohbili\20260913-191957</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+
+        <tr class="app-row clickable" data-app="open_neteasy_cloud" data-detail="detail_t2_row_18" onclick="toggleDetail('detail_t2_row_18')">
+          <td><span class="app-code">open_neteasy_cloud</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (1 项)</span></td>
+          <td><span style='color:var(--green-700); font-weight:600;'>已生成 (本应用)</span></td>
+          <td><span style='color:var(--muted); font-size:12px;'>免除 (真值为空)</span></td>
+          <td><span class='badge badge-pass'>全部生成</span></td>
+          <td><span style='color:var(--muted); font-size:12px;'>N/A (无敏感数据)</span></td>
+          <td><span class='badge badge-pass'>PASS</span></td>
+          <td class="col-action"><button class="detail-btn">明细</button></td>
+        </tr>
+        <tr id="detail_t2_row_18" class="row-detail">
+          <td colspan="9">
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">① 业务场景生成 (1 项)</div>
+                <div class="detail-content"><div style='padding:2px 0;'>应用需要访问网络以加载内容、同步数据或进行通信时</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">② 隐私数据操作生成 (1 项)</div>
+                <div class="detail-content"><div style='padding:2px 0;'>用于建立网络连接，实现数据传输和远程服务交互</div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">③ 操作主体生成 (1 个)</div>
+                <div class="detail-content"><div style='line-height:1.8;'><span class='badge' style='background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; font-size:11px; margin:2px 4px 2px 0; display:inline-block;'>本应用</span></div></div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">④ 隐私数据项生成 (0 项)</div>
+                <div class="detail-content"><span style='color:var(--muted);'>敏感系统 API 涉及的数据类型项</span></div>
+              </div>
+              <div class="detail-item" style="grid-column: 1 / -1;">
+                <div class="detail-label">分析产物目录</div>
+                <div class="detail-content" style="font-family:var(--mono-family); font-size:11px; color:var(--muted);">D:\coding\science\OH-Senstive-Flow\output\open_neteasy_cloud\20260913-192038</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>OH-Senstive-Flow 敏感数据流合规感知系统 · 任务书验收可视化看板 (纯项目产物驱动)</p>
+    </footer>
+  </div>
+
+  <script>
+    let activeTabId = 'tab1';
+
+    function switchDetailTab(tabId) {
+      activeTabId = tabId;
+      document.getElementById('btn-tab1').classList.toggle('active', tabId === 'tab1');
+      document.getElementById('btn-tab2').classList.toggle('active', tabId === 'tab2');
+      document.getElementById('tab1').classList.toggle('active', tabId === 'tab1');
+      document.getElementById('tab2').classList.toggle('active', tabId === 'tab2');
+      filterCurrentTable();
+    }
+
+    function toggleDetail(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.display = (el.style.display === 'table-row') ? 'none' : 'table-row';
+    }
+
+    function filterCurrentTable() {
+      const query = document.getElementById('appSearchInput').value.toLowerCase().trim();
+      const targetTbodyId = (activeTabId === 'tab1') ? 'tbody1' : 'tbody2';
+      const rows = document.querySelectorAll('#' + targetTbodyId + ' tr.app-row');
+      rows.forEach(r => {
+        const app = r.getAttribute('data-app').toLowerCase();
+        const show = !query || app.includes(query);
+        r.style.display = show ? '' : 'none';
+        const did = r.getAttribute('data-detail');
+        if (did) {
+          const detailRow = document.getElementById(did);
+          if (detailRow && !show) detailRow.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
