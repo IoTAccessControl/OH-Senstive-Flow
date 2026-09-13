@@ -124,7 +124,7 @@ output/<appName>/<timestamp>/
 
 常见产物包括：
 
-- `meta.json`：本次运行的输入参数和统计信息
+- `meta.json`：本次运行的输入参数、统计信息和结构化耗时（`timing`，含 LLM 双口径耗时与截断计数）
 - `sinks.json` / `sinks.csv`
 - `sources.json` / `sources.csv`
 - `callgraph.json`

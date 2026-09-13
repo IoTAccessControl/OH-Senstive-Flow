@@ -18,24 +18,47 @@ type BuildCallGraphAndPathsFromCpgOptions = {
 
 export async function buildCallGraphAndPathsFromCpg(
   options: BuildCallGraphAndPathsFromCpgOptions,
-): Promise<{ callGraph: CallGraph; paths: CallGraphPath[] }> {
+): Promise<{
+  callGraph: CallGraph;
+  paths: CallGraphPath[];
+  cpgGenerateMs: number;
+  cpgParseMs: number;
+  callgraphMs: number;
+  truncation: { pathBranches: number; depthBranches: number };
+}> {
+  const genStart = Date.now();
   const cpgJsonPath = await generateCpgJson({
     repoRoot: options.repoRoot,
     appRootAbs: options.appRootAbs,
     appFiles: options.appFiles,
     outputDirAbs: options.outputDirAbs,
   });
+  const cpgGenerateMs = Math.max(0, Date.now() - genStart);
+
+  const parseStart = Date.now();
   const cpg = await parseCpgJson({
     repoRoot: options.repoRoot,
     appFiles: options.appFiles,
     cpgJsonPath,
   });
+  const cpgParseMs = Math.max(0, Date.now() - parseStart);
 
-  return buildCallGraphAndPathsFromParsedCpg({
+  const cgStart = Date.now();
+  const result = buildCallGraphAndPathsFromParsedCpg({
     runId: options.runId,
     cpg,
     sinks: options.sinks,
     sources: options.sources,
     maxPaths: options.maxPaths,
   });
+  const callgraphMs = Math.max(0, Date.now() - cgStart);
+
+  return {
+    callGraph: result.callGraph,
+    paths: result.paths,
+    cpgGenerateMs,
+    cpgParseMs,
+    callgraphMs,
+    truncation: result.truncation,
+  };
 }

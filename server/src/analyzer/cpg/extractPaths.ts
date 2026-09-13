@@ -270,6 +270,7 @@ function findCpgPath(
   startNodeId: number,
   targetNodeId: number,
   maxDepth = 120,
+  truncationStats?: { depthBranches: number },
 ): number[] | null {
   const queue: Array<{ nodeId: number; depth: number }> = [{ nodeId: startNodeId, depth: 0 }];
   const parents = new Map<number, number | null>([[startNodeId, null]]);
@@ -278,7 +279,10 @@ function findCpgPath(
     const current = queue.shift();
     if (!current) break;
     if (current.nodeId === targetNodeId) return reconstructPath(parents, targetNodeId);
-    if (current.depth >= maxDepth) continue;
+    if (current.depth >= maxDepth) {
+      if (truncationStats) truncationStats.depthBranches += 1;
+      continue;
+    }
 
     const nextEdges = [...(cpg.adjacency.get(current.nodeId) ?? []), ...(localInvocationAdjacency.get(current.nodeId) ?? [])].sort(
       (a, b) => EDGE_PRIORITY[a.type] - EDGE_PRIORITY[b.type],
@@ -380,24 +384,36 @@ function ensureIntermediateNode(nodeById: Map<string, CallGraphNode>, cpgNode: P
   return node;
 }
 
-function buildPathMatches(cpg: ParsedCpg, sources: SourceRecord[], groupedSinks: Array<SinkRecord[]>, maxPaths: number): PathMatch[] {
+function buildPathMatches(
+  cpg: ParsedCpg,
+  sources: SourceRecord[],
+  groupedSinks: Array<SinkRecord[]>,
+  maxPaths: number,
+  truncationStats?: { pathBranches: number; depthBranches: number },
+): PathMatch[] {
   const matches: PathMatch[] = [];
   const localInvocationAdjacency = buildLocalInvocationAdjacency(cpg);
 
   for (const source of sources) {
-    if (matches.length >= maxPaths) break;
+    if (matches.length >= maxPaths) {
+      if (truncationStats) truncationStats.pathBranches += 1;
+      break;
+    }
     const sourceAnchors = findSourceAnchorCandidates(cpg, source);
     if (sourceAnchors.length === 0) continue;
 
     for (const sinkRecords of groupedSinks) {
-      if (matches.length >= maxPaths) break;
+      if (matches.length >= maxPaths) {
+        if (truncationStats) truncationStats.pathBranches += 1;
+        break;
+      }
       const sinkAnchors = findSinkAnchorCandidates(cpg, sinkRecords);
       if (sinkAnchors.length === 0) continue;
 
       const pathCandidates: PathMatch[] = [];
       for (const sourceAnchor of sourceAnchors) {
         for (const sinkAnchor of sinkAnchors) {
-          const cpgNodeIds = findCpgPath(cpg, localInvocationAdjacency, sourceAnchor.id, sinkAnchor.id);
+          const cpgNodeIds = findCpgPath(cpg, localInvocationAdjacency, sourceAnchor.id, sinkAnchor.id, 120, truncationStats);
           if (!cpgNodeIds || cpgNodeIds.length === 0) continue;
           pathCandidates.push({ source, sinkRecords, sourceAnchor, sinkAnchor, cpgNodeIds });
         }
@@ -413,8 +429,9 @@ function buildPathMatches(cpg: ParsedCpg, sources: SourceRecord[], groupedSinks:
 
 export function buildCallGraphAndPathsFromParsedCpg(
   options: BuildCallGraphAndPathsFromParsedCpgOptions,
-): { callGraph: CallGraph; paths: CallGraphPath[] } {
+): { callGraph: CallGraph; paths: CallGraphPath[]; truncation: { pathBranches: number; depthBranches: number } } {
   const maxPaths = Number.isFinite(options.maxPaths) ? Math.max(1, Math.floor(options.maxPaths as number)) : Number.POSITIVE_INFINITY;
+  const truncation = { pathBranches: 0, depthBranches: 0 };
   const groupedSinks = Array.from(groupSinkRecordsByCallsite(options.sinks).values());
   groupedSinks.sort((a, b) => {
     const a0 = a[0];
@@ -431,7 +448,7 @@ export function buildCallGraphAndPathsFromParsedCpg(
     if (lineCmp !== 0) return lineCmp;
     return a['函数名称'].localeCompare(b['函数名称']);
   });
-  const matches = buildPathMatches(options.cpg, sortedSources, groupedSinks, maxPaths);
+  const matches = buildPathMatches(options.cpg, sortedSources, groupedSinks, maxPaths, truncation);
 
   const nodeById = new Map<string, CallGraphNode>();
   const edgeSet = new Set<string>();
@@ -478,5 +495,5 @@ export function buildCallGraphAndPathsFromParsedCpg(
     edges,
   };
 
-  return { callGraph, paths };
+  return { callGraph, paths, truncation };
 }

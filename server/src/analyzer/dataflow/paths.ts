@@ -53,7 +53,15 @@ function computeDistanceToAnySink(callGraph: CallGraph, sinkIds: string[]): Map<
   return dist;
 }
 
-export function extractPaths(options: ExtractPathsOptions): CallGraphPath[] {
+export type ExtractPathsResult = {
+  paths: CallGraphPath[];
+  truncation: {
+    pathBranches: number;
+    depthBranches: number;
+  };
+};
+
+export function extractPathsWithStats(options: ExtractPathsOptions): ExtractPathsResult {
   const maxDepth = options.maxDepth ?? 60;
   const maxPaths = Number.isFinite(options.maxPaths) ? Math.max(1, Math.floor(options.maxPaths as number)) : Number.POSITIVE_INFINITY;
 
@@ -66,10 +74,18 @@ export function extractPaths(options: ExtractPathsOptions): CallGraphPath[] {
 
   const paths: CallGraphPath[] = [];
   let pathSeq = 0;
+  let pathBranchesTruncated = 0;
+  let depthBranchesTruncated = 0;
 
   function dfs(cur: string, visited: Set<string>, stack: string[], sourceId: string): void {
-    if (paths.length >= maxPaths) return;
-    if (stack.length > maxDepth) return;
+    if (paths.length >= maxPaths) {
+      pathBranchesTruncated += 1;
+      return;
+    }
+    if (stack.length > maxDepth) {
+      depthBranchesTruncated += 1;
+      return;
+    }
 
     if (sinkSet.has(cur)) {
       pathSeq += 1;
@@ -87,7 +103,10 @@ export function extractPaths(options: ExtractPathsOptions): CallGraphPath[] {
       .sort((a, b) => (distToSink.get(a)! - distToSink.get(b)!));
 
     for (const n of next) {
-      if (paths.length >= maxPaths) return;
+      if (paths.length >= maxPaths) {
+        pathBranchesTruncated += 1;
+        return;
+      }
       if (visited.has(n)) continue;
       visited.add(n);
       stack.push(n);
@@ -98,11 +117,24 @@ export function extractPaths(options: ExtractPathsOptions): CallGraphPath[] {
   }
 
   for (const s of sources) {
-    if (paths.length >= maxPaths) break;
+    if (paths.length >= maxPaths) {
+      pathBranchesTruncated += 1;
+      break;
+    }
     if (!distToSink.has(s)) continue;
     const visited = new Set<string>([s]);
     dfs(s, visited, [s], s);
   }
 
-  return paths;
+  return {
+    paths,
+    truncation: {
+      pathBranches: pathBranchesTruncated,
+      depthBranches: depthBranchesTruncated,
+    },
+  };
+}
+
+export function extractPaths(options: ExtractPathsOptions): CallGraphPath[] {
+  return extractPathsWithStats(options).paths;
 }

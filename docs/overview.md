@@ -324,6 +324,15 @@ source 的识别方式相对更轻量：工具会按行扫描函数定义，匹�
 
 这是理解“这次分析总体规模”的最好入口。
 
+`meta.json` 中还包含一个 `timing` 对象，记录结构化耗时与截断审计：
+
+- `timing.totalMs`：整次分析的端到端墙钟耗时
+- `timing.stages`：各阶段耗时，含 `scan`、`sourceSink`、`callgraph`、`cpgGenerate`、`cpgParse`、`dataflow`、`ui`、`report`
+- `timing.llm`：LLM 调用统计（请求数、失败数、token）与两种耗时口径：`totalMs` 是并发请求区间合并后的墙钟耗时，恒小于等于 `timing.totalMs`，适合与端到端耗时对比；`requestMs` 是每个请求耗时的简单累加，反映模型调用工作量，并发时可能大于 `timing.totalMs`
+- `timing.truncation`：`pathBranches` 是因路径数量上限被截断的分支次数，`depthBranches` 是因搜索深度上限被截断的分支次数。它们是截断计数，不是最终路径数量；对应的配置参数仍是 `maxPaths` / `maxDepth`
+
+旧的结果目录可能没有 `timing` 字段，仍可正常读取，消费方应按可选字段处理。
+
 #### `sinks.json` / `sinks.csv`
 
 列出识别到的所有 sink 调用点。

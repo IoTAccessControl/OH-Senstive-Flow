@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import { analysisLog } from '../utils/analysisLog.js';
 
 export type LlmChatMessage = {
@@ -26,6 +27,94 @@ export type LlmChatResponse = {
   };
   raw: unknown;
 };
+
+export type LlmUsageStats = {
+  requestCount: number;
+  failedRequests: number;
+  totalMs: number;
+  requestMs: number;
+  inputTokens: number;
+  outputTokens: number;
+  totalTokens: number;
+};
+
+export interface LlmUsageCollector {
+  startRequest?(): void;
+  recordSuccess(durationMs: number, usage?: { promptTokens?: number; completionTokens?: number; totalTokens?: number }): void;
+  recordFailure(durationMs: number): void;
+  getStats(): LlmUsageStats;
+}
+
+export class DefaultLlmUsageCollector implements LlmUsageCollector {
+  private requestCount = 0;
+  private failedRequests = 0;
+  private totalMs = 0;
+  private requestMs = 0;
+  private activeRequests = 0;
+  private activeSince = 0;
+  private inputTokens = 0;
+  private outputTokens = 0;
+  private totalTokens = 0;
+
+  public startRequest(): void {
+    if (this.activeRequests === 0) this.activeSince = Date.now();
+    this.activeRequests += 1;
+  }
+
+  private finishRequest(durationMs: number): void {
+    const elapsed = Math.max(0, Math.round(durationMs));
+    this.requestMs += elapsed;
+    if (this.activeRequests > 0) {
+      this.activeRequests -= 1;
+      if (this.activeRequests === 0) {
+        this.totalMs += Math.max(0, Date.now() - this.activeSince);
+        this.activeSince = 0;
+      }
+    } else {
+      this.totalMs += elapsed;
+    }
+  }
+
+  public recordSuccess(durationMs: number, usage?: { promptTokens?: number; completionTokens?: number; totalTokens?: number }): void {
+    this.requestCount += 1;
+    this.finishRequest(durationMs);
+    const prompt = usage?.promptTokens;
+    const completion = usage?.completionTokens;
+    const total = usage?.totalTokens;
+
+    const p = typeof prompt === 'number' && Number.isFinite(prompt) ? Math.max(0, Math.round(prompt)) : 0;
+    const c = typeof completion === 'number' && Number.isFinite(completion) ? Math.max(0, Math.round(completion)) : 0;
+    const t = typeof total === 'number' && Number.isFinite(total) ? Math.max(0, Math.round(total)) : (p + c);
+
+    this.inputTokens += p;
+    this.outputTokens += c;
+    this.totalTokens += t;
+  }
+
+  public recordFailure(durationMs: number): void {
+    this.requestCount += 1;
+    this.failedRequests += 1;
+    this.finishRequest(durationMs);
+  }
+
+  public getStats(): LlmUsageStats {
+    return {
+      requestCount: this.requestCount,
+      failedRequests: this.failedRequests,
+      totalMs: this.totalMs,
+      requestMs: this.requestMs,
+      inputTokens: this.inputTokens,
+      outputTokens: this.outputTokens,
+      totalTokens: this.totalTokens,
+    };
+  }
+}
+
+export const llmUsageStorage = new AsyncLocalStorage<LlmUsageCollector>();
+
+export function withLlmUsageCollector<T>(collector: LlmUsageCollector, fn: () => Promise<T>): Promise<T> {
+  return llmUsageStorage.run(collector, fn);
+}
 
 function normalizeProviderName(provider: string): string {
   return provider.trim().toLowerCase();
@@ -99,7 +188,7 @@ export class LlmHttpError extends Error {
   }
 }
 
-export async function openAiCompatibleChat(request: LlmChatRequest): Promise<LlmChatResponse> {
+async function executeOpenAiCompatibleChat(request: LlmChatRequest, requestStartTime: number): Promise<LlmChatResponse> {
   const url = joinUrl(request.baseUrl, '/chat/completions');
   const timeoutMs = request.timeoutMs ?? resolveTimeoutMs();
 
@@ -113,7 +202,6 @@ export async function openAiCompatibleChat(request: LlmChatRequest): Promise<Llm
   if (typeof request.enableThinking === 'boolean') body.enable_thinking = request.enableThinking;
   if (shouldDisableThinking(request.baseUrl)) body.enable_thinking = false;
 
-  const requestStartTime = Date.now();
   let response: Response;
   let text = '';
   const controller = new AbortController();
@@ -180,4 +268,18 @@ export async function openAiCompatibleChat(request: LlmChatRequest): Promise<Llm
       : undefined;
 
   return { content, usage: usageData, raw: json };
+}
+
+export async function openAiCompatibleChat(request: LlmChatRequest): Promise<LlmChatResponse> {
+  const collector = llmUsageStorage.getStore();
+  const requestStartTime = Date.now();
+  collector?.startRequest?.();
+  try {
+    const response = await executeOpenAiCompatibleChat(request, requestStartTime);
+    collector?.recordSuccess(Date.now() - requestStartTime, response.usage);
+    return response;
+  } catch (error) {
+    collector?.recordFailure(Date.now() - requestStartTime);
+    throw error;
+  }
 }
