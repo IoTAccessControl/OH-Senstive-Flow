@@ -863,12 +863,17 @@ function buildFallbackDataPractices(
   return Array.from(grouped.values());
 }
 
-function mergeSyntheticModelFacts(
+function dataItemNamesMatch(a: string, b: string): boolean {
+  const na = cleanText(a).toLowerCase();
+  const nb = cleanText(b).toLowerCase();
+  if (!na || !nb) return false;
+  return na === nb || na.includes(nb) || nb.includes(na);
+}
+
+export function mergeSyntheticModelFacts(
   seed: FeaturePrivacyFactsContent,
   modelFacts: FeaturePrivacyFactsContent,
-  model: string,
 ): FeaturePrivacyFactsContent {
-  const preserveSeed = model.toLowerCase().includes('privacy-two-stage');
   const permissionsByName = new Map(
     (modelFacts.permissionPractices ?? []).map((practice) => [normalizePermissionToken(practice.permissionName), practice]),
   );
@@ -879,9 +884,9 @@ function mergeSyntheticModelFacts(
       const model = permissionsByName.get(normalizePermissionToken(practice.permissionName));
       return {
         ...practice,
-        businessScenario: cleanText(model?.businessScenario) || (preserveSeed ? practice.businessScenario : ''),
-        permissionPurpose: cleanText(model?.permissionPurpose) || (preserveSeed ? practice.permissionPurpose : ''),
-        denyImpact: cleanText(model?.denyImpact) || (preserveSeed ? practice.denyImpact : ''),
+        businessScenario: cleanText(model?.businessScenario) || practice.businessScenario,
+        permissionPurpose: cleanText(model?.permissionPurpose) || practice.permissionPurpose,
+        denyImpact: cleanText(model?.denyImpact) || practice.denyImpact,
       };
     }),
     dataPractices: seed.dataPractices.flatMap((practice) => {
@@ -892,26 +897,24 @@ function mergeSyntheticModelFacts(
           modelDataPractices.find((candidate) =>
             candidate.dataItems.some(
             (item) =>
-              cleanText(item.name) === cleanText(dataItem.name) ||
+              dataItemNamesMatch(item.name, dataItem.name) ||
               item.refs.some((ref) => seedRefs.has(`${ref.flowId}\u0000${ref.nodeId}`)),
             ),
           ) ?? (modelDataPractices.length === 1 ? modelDataPractices[0] : undefined);
         groups.set(model, [...(groups.get(model) ?? []), dataItem]);
       }
       return Array.from(groups.entries()).map(([model, dataItems]) => ({
-        businessScenario: cleanText(model?.businessScenario) || (preserveSeed ? practice.businessScenario : ''),
-        processingSubject: cleanText(model?.processingSubject) || (preserveSeed ? practice.processingSubject : ''),
+        businessScenario: cleanText(model?.businessScenario) || practice.businessScenario,
+        processingSubject: cleanText(model?.processingSubject) || practice.processingSubject,
         dataSources:
           Array.isArray(model?.dataSources) && model.dataSources.length > 0
             ? model.dataSources
-            : preserveSeed
-              ? practice.dataSources
-              : [],
+            : practice.dataSources,
         dataItems,
-        processingMethod: cleanText(model?.processingMethod) || (preserveSeed ? practice.processingMethod : ''),
-        storageMethod: cleanText(model?.storageMethod) || (preserveSeed ? practice.storageMethod : ''),
-        dataRecipients: model?.dataRecipients ?? [],
-        processingPurpose: cleanText(model?.processingPurpose) || (preserveSeed ? practice.processingPurpose : ''),
+        processingMethod: cleanText(model?.processingMethod) || practice.processingMethod,
+        storageMethod: cleanText(model?.storageMethod) || practice.storageMethod,
+        dataRecipients: model?.dataRecipients ?? practice.dataRecipients ?? [],
+        processingPurpose: cleanText(model?.processingPurpose) || practice.processingPurpose,
       }));
     }),
   };
@@ -1288,8 +1291,11 @@ export async function generatePrivacyReportArtifacts(args: {
               privacyRules,
             });
             modelSyntheticFacts.permissionPractices.push(...permissionFacts.content.permissionPractices);
-          } catch {
+          } catch (error) {
             // Keep successful permission batches when one request fails.
+            syntheticWarnings.push(
+              `合成权限事实 LLM 批次失败（${batch.join('、')}）：${error instanceof Error ? error.message : String(error)}；已保留模板保底文本`,
+            );
           }
         }
         const batchSize = 3;
@@ -1308,12 +1314,15 @@ export async function generatePrivacyReportArtifacts(args: {
               privacyRules,
             });
             modelSyntheticFacts.dataPractices.push(...extracted.content.dataPractices);
-          } catch {
+          } catch (error) {
             // Keep successful batches when one model request fails.
+            syntheticWarnings.push(
+              `合成个人信息事实 LLM 批次失败（${batch.join('、')}）：${error instanceof Error ? error.message : String(error)}；已保留模板保底文本`,
+            );
           }
         }
       }
-      const syntheticFacts = mergeSyntheticModelFacts(seedSyntheticFacts, modelSyntheticFacts, args.llm.model);
+      const syntheticFacts = mergeSyntheticModelFacts(seedSyntheticFacts, modelSyntheticFacts);
       const syntheticDirAbs = path.join(args.outputDirAbs, 'app_permissions');
       const syntheticPageDirAbs = toPageDir(args.outputDirAbs, pageId);
       const syntheticFeatureDirAbs = toFeatureDir(args.outputDirAbs, pageId, featureId);

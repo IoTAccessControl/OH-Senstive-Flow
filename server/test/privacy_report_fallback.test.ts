@@ -12,7 +12,7 @@ vi.mock('../src/llm/client.js', async () => {
   };
 });
 
-import { buildPrivacyReport } from '../src/analyzer/privacy/report.js';
+import { buildPrivacyReport, mergeSyntheticModelFacts } from '../src/analyzer/privacy/report.js';
 
 function reportDraftContent(input: { collectionAndUse?: string[]; permissions?: string[] }): string {
   return JSON.stringify({
@@ -661,5 +661,114 @@ describe('privacy report evidence rules', () => {
     expect(result.text).toContain('如果您拒绝授权，无法提供运动信息');
     expect(result.text).not.toContain('运动追踪时，本应用');
     expect(result.text).not.toContain('如果您拒绝授权，缺少该权限后');
+  });
+});
+
+describe('mergeSyntheticModelFacts resilience', () => {
+  const seedFacts = {
+    dataPractices: [
+      {
+        businessScenario: '应用访问网络服务并维持登录会话时',
+        processingSubject: '本应用',
+        dataSources: ['网络服务返回'],
+        dataItems: [{ name: 'Cookie', refs: [{ flowId: 'flow:syn1', nodeId: 'syn1:n1' }] }],
+        processingMethod: '读取、写入并随网络请求发送会话信息',
+        storageMethod: '按照网络会话有效期保存和更新',
+        dataRecipients: [],
+        processingPurpose: '维持登录状态和网络会话',
+      },
+    ],
+    permissionPractices: [
+      {
+        permissionName: 'ohos.permission.INTERNET',
+        businessScenario: '应用需要连接网络加载内容时',
+        permissionPurpose: '建立网络连接获取数据',
+        denyImpact: '拒绝后无法加载在线内容',
+        refs: [],
+      },
+    ],
+  };
+
+  it('preserves seed template text when the model side is empty (failed batches never blank facts)', () => {
+    const merged = mergeSyntheticModelFacts(seedFacts, { dataPractices: [], permissionPractices: [] });
+
+    const dp = merged.dataPractices[0]!;
+    expect(dp.businessScenario).toBe('应用访问网络服务并维持登录会话时');
+    expect(dp.processingSubject).toBe('本应用');
+    expect(dp.dataSources).toEqual(['网络服务返回']);
+    expect(dp.processingMethod).toContain('会话信息');
+    expect(dp.storageMethod).toContain('有效期');
+    expect(dp.processingPurpose).toContain('登录状态');
+    expect(dp.dataItems.map((i) => i.name)).toEqual(['Cookie']);
+
+    for (const field of ['businessScenario', 'processingSubject', 'processingMethod', 'storageMethod', 'processingPurpose'] as const) {
+      expect(dp[field], `${field} must not be blanked`).not.toBe('');
+    }
+
+    const pp = merged.permissionPractices[0]!;
+    expect(pp.businessScenario).toBe('应用需要连接网络加载内容时');
+    expect(pp.permissionPurpose).toBe('建立网络连接获取数据');
+    expect(pp.denyImpact).toBe('拒绝后无法加载在线内容');
+  });
+
+  it('matches renamed data items tolerantly and prefers model text', () => {
+    const modelFacts = {
+      dataPractices: [
+        {
+          businessScenario: '用户浏览新闻并保持登录态时',
+          processingSubject: '本应用',
+          dataSources: ['新闻服务接口响应头'],
+          dataItems: [{ name: 'Cookie信息', refs: [] }],
+          processingMethod: '读取并随请求发送会话 Cookie',
+          storageMethod: '按会话有效期保存',
+          dataRecipients: [],
+          processingPurpose: '维持新闻浏览登录状态',
+        },
+      ],
+      permissionPractices: [
+        {
+          permissionName: 'ohos.permission.INTERNET',
+          businessScenario: '模型场景',
+          permissionPurpose: '模型目的',
+          denyImpact: '模型影响',
+          refs: [],
+        },
+      ],
+    };
+
+    const merged = mergeSyntheticModelFacts(seedFacts, modelFacts);
+    const dp = merged.dataPractices[0]!;
+    expect(dp.businessScenario).toBe('用户浏览新闻并保持登录态时');
+    expect(dp.processingMethod).toBe('读取并随请求发送会话 Cookie');
+    expect(dp.dataItems.map((i) => i.name)).toEqual(['Cookie']);
+    expect(dp.dataItems[0]!.refs).toEqual([{ flowId: 'flow:syn1', nodeId: 'syn1:n1' }]);
+    expect(merged.permissionPractices[0]!.businessScenario).toBe('模型场景');
+  });
+
+  it('falls back to seed per field when the model practice has partial text', () => {
+    const modelFacts = {
+      dataPractices: [
+        {
+          businessScenario: '用户浏览新闻资讯时',
+          processingSubject: '',
+          dataSources: [],
+          dataItems: [{ name: 'Cookie', refs: [] }],
+          processingMethod: '',
+          storageMethod: '',
+          dataRecipients: [],
+          processingPurpose: '',
+        },
+      ],
+      permissionPractices: [],
+    };
+
+    const merged = mergeSyntheticModelFacts(seedFacts, modelFacts);
+    const dp = merged.dataPractices[0]!;
+    expect(dp.businessScenario).toBe('用户浏览新闻资讯时');
+    expect(dp.processingSubject).toBe('本应用');
+    expect(dp.dataSources).toEqual(['网络服务返回']);
+    expect(dp.processingMethod).toContain('会话信息');
+    expect(dp.storageMethod).toContain('有效期');
+    expect(dp.processingPurpose).toContain('登录状态');
   });
 });
