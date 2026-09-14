@@ -1089,12 +1089,12 @@ def main():
 
     if all_pass:
         verdict_banner_class = ""
-        verdict_title = "综合验收判定结论：全部考核指标达到或优于任务书要求，予以验收通过"
+        verdict_title = "综合验收判定结论：全部运行结果达到或优于预期指标"
         verdict_desc = "判定依据：隐私数据项覆盖率达到 100% 零漏报、误报率 &lt; 20%；四类要素全量生成，内容完整度达到 60% 以上，所有基准应用全项达标"
-        header_status_badge = '<span class="badge badge-pass">验收结论: 全部达标通过</span>'
+        header_status_badge = '<span class="badge badge-pass">验收结论: 全部达标</span>'
     else:
         verdict_banner_class = "fail"
-        verdict_title = "综合验收判定结论：部分考核指标未达到任务书要求，验收不通过"
+        verdict_title = "综合验收判定结论：部分考核指标未达到预期标准，需要改进"
         reasons = []
         if not kpi1_pass:
             reasons.append(f"代码感知覆盖率仅 {cov_percent_str}（未达 100% 零漏报要求，存在 {total_gt - total_tp} 项漏报）")
@@ -1263,9 +1263,9 @@ def main():
     print(f" [4] 报告内容完整度 (Complete) : {comp_percent_str:>7s} ({total_score:.1f}/{total_expected}, 目标>=60%)   -> [{'PASS' if kpi4_effective_pass else 'FAIL'}]")
     print("-" * 70)
     if all_pass:
-        print(f" >>> 综合验收结论: 【全部考核指标达到或优于任务书要求，予以验收通过！】")
+        print(f" >>> 综合验收结论: 【全部核考指标达到或优于任务书要求！】")
     else:
-        print(f" >>> 综合验收结论: 【部分考核指标未达到任务书要求，验收不通过！】")
+        print(f" >>> 综合验收结论: 【部分考核指标未达到任务书要求，需要改进！】")
     print(f" >>> 验收可视化报告已生成: {out_eval}")
     print("=" * 70)
 
