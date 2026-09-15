@@ -1,7 +1,8 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { readJsonFile, toWorkspaceRelativePath } from '../../utils/accessWorkspace.js';
+import { toWorkspaceRelativePath } from '../../utils/accessWorkspace.js';
+import { forEachJsonArrayElement } from '../../utils/jsonArrayStream.js';
 
 type RawCpgNode = {
   id?: unknown;
@@ -13,11 +14,6 @@ type RawCpgEdge = {
   type?: unknown;
   startNode?: unknown;
   endNode?: unknown;
-};
-
-type RawCpgJson = {
-  nodes?: unknown;
-  edges?: unknown;
 };
 
 type RawProperties = Record<string, unknown>;
@@ -128,10 +124,6 @@ function sortNodesByLine(nodesByFile: Map<string, ParsedCpgNode[]>): void {
 }
 
 export async function parseCpgJson(options: ParseCpgJsonOptions): Promise<ParsedCpg> {
-  const raw = (await readJsonFile(options.cpgJsonPath)) as RawCpgJson;
-  const rawNodes = Array.isArray(raw?.nodes) ? (raw.nodes as RawCpgNode[]) : [];
-  const rawEdges = Array.isArray(raw?.edges) ? (raw.edges as RawCpgEdge[]) : [];
-
   const appFileSet = new Set(options.appFiles.map((fileAbs) => toWorkspaceRelativePath(options.repoRoot, fileAbs)));
   const nodesById = new Map<number, ParsedCpgNode>();
   const nodesByFile = new Map<string, ParsedCpgNode[]>();
@@ -139,22 +131,23 @@ export async function parseCpgJson(options: ParseCpgJsonOptions): Promise<Parsed
   const functionNodesByFile = new Map<string, ParsedCpgNode[]>();
   const callNodesByFile = new Map<string, ParsedCpgNode[]>();
 
-  for (const rawNode of rawNodes) {
+  const processNode = (value: unknown): void => {
+    const rawNode = value as RawCpgNode;
     const id = asNumber(rawNode.id);
-    if (!Number.isFinite(id)) continue;
+    if (!Number.isFinite(id)) return;
 
     const labels = Array.isArray(rawNode.labels) ? rawNode.labels.filter((item): item is string => typeof item === 'string') : [];
-    if (labels.length === 0 || isProblemNode(labels)) continue;
+    if (labels.length === 0 || isProblemNode(labels)) return;
 
     const properties = asRecord(rawNode.properties);
     const artifactAbs = parseArtifactToAbsolutePath(asString(properties.artifact));
-    if (!artifactAbs || !isWithinRoot(options.repoRoot, artifactAbs)) continue;
+    if (!artifactAbs || !isWithinRoot(options.repoRoot, artifactAbs)) return;
 
     const filePath = toWorkspaceRelativePath(options.repoRoot, artifactAbs);
-    if (!appFileSet.has(filePath)) continue;
+    if (!appFileSet.has(filePath)) return;
 
     const lineRaw = asNumber(properties.startLine);
-    if (!Number.isFinite(lineRaw) || lineRaw < 1) continue;
+    if (!Number.isFinite(lineRaw) || lineRaw < 1) return;
     const line = Math.floor(lineRaw);
     const endLineRaw = asNumber(properties.endLine);
     const endLine = Number.isFinite(endLineRaw) && endLineRaw >= line ? Math.floor(endLineRaw) : line;
@@ -179,7 +172,10 @@ export async function parseCpgJson(options: ParseCpgJsonOptions): Promise<Parsed
       pushToMapArray(functionNodesByFile, filePath, node);
     }
     if (labels.includes('Call')) pushToMapArray(callNodesByFile, filePath, node);
-  }
+  };
+
+  // 流式读取，避免大 cpg.json 一次性读成单个字符串（V8 单字符串上限）与整图对象化。
+  await forEachJsonArrayElement(options.cpgJsonPath, { nodes: processNode });
 
   sortNodesByLine(nodesByFile);
   sortNodesByLine(functionNodesByFile);
@@ -189,19 +185,22 @@ export async function parseCpgJson(options: ParseCpgJsonOptions): Promise<Parsed
   const edgesByType = new Map<ParsedCpgEdgeType, ParsedCpgEdge[]>();
   const adjacency = new Map<number, ParsedCpgEdge[]>();
 
-  for (const rawEdge of rawEdges) {
-    if (!allowedEdgeTypeSet.has(asString(rawEdge.type))) continue;
+  const processEdge = (value: unknown): void => {
+    const rawEdge = value as RawCpgEdge;
+    if (!allowedEdgeTypeSet.has(asString(rawEdge.type))) return;
 
     const type = rawEdge.type as ParsedCpgEdgeType;
     const startNode = asNumber(rawEdge.startNode);
     const endNode = asNumber(rawEdge.endNode);
-    if (!Number.isFinite(startNode) || !Number.isFinite(endNode)) continue;
-    if (!nodesById.has(startNode) || !nodesById.has(endNode)) continue;
+    if (!Number.isFinite(startNode) || !Number.isFinite(endNode)) return;
+    if (!nodesById.has(startNode) || !nodesById.has(endNode)) return;
 
     const edge: ParsedCpgEdge = { type, startNode: Math.floor(startNode), endNode: Math.floor(endNode) };
     pushToMapArray(edgesByType, type, edge);
     pushToMapArray(adjacency, edge.startNode, edge);
-  }
+  };
+
+  await forEachJsonArrayElement(options.cpgJsonPath, { edges: processEdge });
 
   return {
     nodesById,
