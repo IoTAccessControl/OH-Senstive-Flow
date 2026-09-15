@@ -175,17 +175,21 @@ cd ../../..
 验证产物：
 
 ```bash
-test -x lib/cpg/cpg-neo4j/build/install/cpg-neo4j/bin/cpg-neo4j
-echo $?
+test -d lib/cpg/cpg-neo4j/build/install/cpg-neo4j/lib
 ```
 
-输出 `0` 表示可执行文件存在。也可以运行：
+该目录存在即满足条件。分析器直接调用
+`java -classpath <install>/lib/* de.fraunhofer.aisec.cpg_vis_neo4j.ApplicationKt`
+（`java` 优先取 `JAVA_HOME/bin`，否则取 PATH，版本前置见第 1 节）。
+
+也可以做一次功能冒烟，应打印 `List of passes:` 并以退出码 `0` 结束：
 
 ```bash
-lib/cpg/cpg-neo4j/build/install/cpg-neo4j/bin/cpg-neo4j --help
+java -classpath "lib/cpg/cpg-neo4j/build/install/cpg-neo4j/lib/*" \
+  de.fraunhofer.aisec.cpg_vis_neo4j.ApplicationKt --list-passes
 ```
 
-分析器会固定从该路径查找 CPG 可执行文件；不要只运行 `gradle build`，必须运行 `installDist`。
+不要只运行 `gradle build`，必须运行 `installDist`。
 
 ## 6. 构建本项目
 
@@ -378,10 +382,10 @@ output/evaluation/acceptance_report.html
 
 ### 未找到 CPG 工具
 
-确认执行的是 `../gradlew installDist`，并检查：
+确认执行的是 `../gradlew installDist`，并检查产物目录：
 
 ```bash
-test -x lib/cpg/cpg-neo4j/build/install/cpg-neo4j/bin/cpg-neo4j
+test -d lib/cpg/cpg-neo4j/build/install/cpg-neo4j/lib
 ```
 
 ### 未找到 ArkTS 文件

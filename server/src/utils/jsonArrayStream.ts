@@ -8,14 +8,9 @@ const KEY_CAPTURE_LIMIT = 64;
 type Mode = 'seek' | 'awaitArray' | 'inArray' | 'inElement';
 
 /**
- * 流式读取形如 `{ "key": [ ... ], ... }` 的大 JSON 文件，按数组元素逐个解析并回调。
- *
- * 与 `readJsonFile` 的区别：
- * - 不把整个文件读成单个字符串，避免 V8 单字符串上限（RangeError，约 5.37 亿字符）；
- * - 不一次性构建完整对象图，峰值内存只与派生产物（回调中构建的结构）相关；
- * - 顶层其它 key 与其数组内容会被跳过，不会解析。
- *
- * 注意：只支持顶层为对象的 JSON；元素之间必须是合法 JSON（与 `JSON.parse` 一致）。
+ * 流式读取形如 `{ "key": [ ... ], ... }` 的大 JSON 文件，按数组元素逐个解析并回调：
+ * 不把整个文件读成单个字符串，不构建完整对象图，未注册的顶层 key 不解析。
+ * 仅支持顶层为对象的 JSON；文件截断或顶层非对象时抛出异常。
  */
 export async function forEachJsonArrayElement(
   filePath: string,

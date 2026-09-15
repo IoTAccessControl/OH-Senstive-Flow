@@ -7,7 +7,11 @@ import { forEachJsonArrayElement } from '../src/utils/jsonArrayStream.js';
 import { parseCpgJson } from '../src/analyzer/cpg/parse.js';
 import {
   COMMAND_LENGTH_BUDGET,
+  CPG_MAIN_CLASS,
+  buildCpgJavaArgs,
+  cpgInstallDir,
   estimateCommandLength,
+  resolveJavaExecutable,
   serializeArgFile,
   shouldUseArgFile,
 } from '../src/analyzer/cpg/generate.js';
@@ -130,14 +134,11 @@ describe('cpg command length helpers', () => {
     expect(estimateCommandLength('bin', ['a', 'bb'])).toBe('bin'.length + 1 + 'a'.length + 1 + 'bb'.length + 1);
   });
 
-  it('only switches to an argument file on Windows when over budget', () => {
-    const shortArgs = ['--no-neo4j', '--export-json=out.json'];
-    const longArgs = ['--top-level=root', ...Array.from({ length: 150 }, (_, i) => `D:\\app\\entry\\src\\main\\ets\\pages\\feature-${i}\\index.ets`)];
+  it('switches to an argument file only when over budget', () => {
+    expect(shouldUseArgFile('java', ['--no-neo4j', '--export-json=out.json'])).toBe(false);
 
-    expect(shouldUseArgFile('cpg-neo4j.bat', shortArgs)).toBe(false);
-    const overBudget = estimateCommandLength('cpg-neo4j.bat', longArgs) > COMMAND_LENGTH_BUDGET;
-    expect(overBudget).toBe(true);
-    expect(shouldUseArgFile('cpg-neo4j.bat', longArgs)).toBe(process.platform === 'win32');
+    const overBudgetArgs = ['--top-level=root', `--file=${'x'.repeat(COMMAND_LENGTH_BUDGET)}`];
+    expect(shouldUseArgFile('java', overBudgetArgs)).toBe(true);
   });
 
   it('serializes tokens verbatim unless they contain whitespace or quotes', () => {
@@ -146,6 +147,37 @@ describe('cpg command length helpers', () => {
 
     const quoted = serializeArgFile(['--top-level=C:\\Program Files\\app', 'plain']);
     expect(quoted).toBe('"--top-level=C:\\\\Program Files\\\\app"\nplain\n');
+  });
+});
+
+describe('cpg java invocation', () => {
+  it('resolves java from JAVA_HOME first, then falls back to PATH', () => {
+    expect(resolveJavaExecutable('win32', { JAVA_HOME: 'C:\\jdk' })).toBe(path.join('C:\\jdk', 'bin', 'java.exe'));
+    expect(resolveJavaExecutable('linux', { JAVA_HOME: '/usr/lib/jdk' })).toBe(path.join('/usr/lib/jdk', 'bin', 'java'));
+    expect(resolveJavaExecutable('win32', {})).toBe('java');
+    expect(resolveJavaExecutable('win32', { JAVA_HOME: '   ' })).toBe('java');
+  });
+
+  it('builds java args with the same JVM options, wildcard classpath and main class as the .bat', () => {
+    const installDir = cpgInstallDir('D:\\repo');
+    expect(installDir).toBe(path.join('D:\\repo', 'lib', 'cpg', 'cpg-neo4j', 'build', 'install', 'cpg-neo4j'));
+
+    const args = buildCpgJavaArgs(installDir, ['--no-neo4j', 'a.ets'], {});
+    expect(args).toEqual([
+      '-Xss515m',
+      '-Xmx8g',
+      '-classpath',
+      path.join(installDir, 'lib', '*'),
+      CPG_MAIN_CLASS,
+      '--no-neo4j',
+      'a.ets',
+    ]);
+  });
+
+  it('passes through JAVA_OPTS and CPG_NEO4J_OPTS like the .bat', () => {
+    const args = buildCpgJavaArgs('D:\\install', [], { JAVA_OPTS: '-Xms512m', CPG_NEO4J_OPTS: '-Dfoo=bar' });
+    expect(args.slice(0, 4)).toEqual(['-Xss515m', '-Xmx8g', '-Xms512m', '-Dfoo=bar']);
+    expect(args).toContain('D:\\install\\lib\\*');
   });
 });
 

@@ -11,23 +11,47 @@ type GenerateCpgJsonOptions = {
   outputDirAbs: string;
 };
 
-/**
- * Windows `cmd.exe` 的命令行上限为 8191 字符（`.bat` 必须经 cmd 解释）。
- * 这里留出参数转义与 shell 包装的余量，超过预算时改用 picocli 参数文件（`@file`）传递参数。
- */
-export const WINDOWS_COMMAND_LENGTH_LIMIT = 8191;
-export const COMMAND_LENGTH_BUDGET = WINDOWS_COMMAND_LENGTH_LIMIT - 1200;
+export const WINDOWS_CREATE_PROCESS_LIMIT = 32767;
+export const CPG_MAIN_CLASS = 'de.fraunhofer.aisec.cpg_vis_neo4j.ApplicationKt';
+export const DEFAULT_JVM_OPTIONS = ['-Xss515m', '-Xmx8g'];
+export const COMMAND_LENGTH_BUDGET = process.platform === 'win32' ? WINDOWS_CREATE_PROCESS_LIMIT - 2000 : 100_000;
 
-function cpgBinaryPath(repoRoot: string): string {
-  const fileName = process.platform === 'win32' ? 'cpg-neo4j.bat' : 'cpg-neo4j';
-  return path.join(repoRoot, 'lib', 'cpg', 'cpg-neo4j', 'build', 'install', 'cpg-neo4j', 'bin', fileName);
+export function cpgInstallDir(repoRoot: string): string {
+  return path.join(repoRoot, 'lib', 'cpg', 'cpg-neo4j', 'build', 'install', 'cpg-neo4j');
+}
+
+export function resolveJavaExecutable(
+  platform: NodeJS.Platform = process.platform,
+  env: NodeJS.ProcessEnv = process.env,
+): string {
+  const javaHome = String(env.JAVA_HOME ?? '').trim();
+  if (javaHome) return path.join(javaHome, 'bin', platform === 'win32' ? 'java.exe' : 'java');
+  return 'java';
+}
+
+export function buildCpgJavaArgs(
+  installDir: string,
+  extraArgs: string[],
+  env: NodeJS.ProcessEnv = process.env,
+): string[] {
+  const envOptions = `${env.JAVA_OPTS ?? ''} ${env.CPG_NEO4J_OPTS ?? ''}`.trim();
+  const jvmOptions = [...DEFAULT_JVM_OPTIONS, ...(envOptions ? envOptions.split(/\s+/u) : [])];
+  return [...jvmOptions, '-classpath', path.join(installDir, 'lib', '*'), CPG_MAIN_CLASS, ...extraArgs];
+}
+
+async function assertReadableDir(dirPath: string): Promise<void> {
+  try {
+    await fs.access(dirPath);
+  } catch {
+    throw new Error(`未找到 CPG 工具（${dirPath}），请先在 lib/cpg 下执行 gradlew installDist`);
+  }
 }
 
 async function assertReadableFile(filePath: string): Promise<void> {
   try {
     await fs.access(filePath);
   } catch {
-    throw new Error(`未找到 CPG 工具：${filePath}`);
+    throw new Error(`未生成 CPG 输出文件：${filePath}`);
   }
 }
 
@@ -35,9 +59,8 @@ export function estimateCommandLength(binaryPath: string, args: string[]): numbe
   return [binaryPath, ...args].reduce((sum, item) => sum + item.length + 1, 0);
 }
 
-export function shouldUseArgFile(binaryPath: string, args: string[]): boolean {
-  if (process.platform !== 'win32') return false;
-  return estimateCommandLength(binaryPath, args) > COMMAND_LENGTH_BUDGET;
+export function shouldUseArgFile(javaPath: string, args: string[]): boolean {
+  return estimateCommandLength(javaPath, args) > COMMAND_LENGTH_BUDGET;
 }
 
 /**
@@ -63,7 +86,7 @@ function runCommand(command: string, args: string[], cwd: string): Promise<void>
     const child = spawn(command, args, {
       cwd,
       stdio: ['ignore', 'pipe', 'pipe'],
-      shell: process.platform === 'win32',
+      shell: false,
     });
     let stdout = '';
     let stderr = '';
@@ -98,31 +121,37 @@ function runCommand(command: string, args: string[], cwd: string): Promise<void>
 }
 
 export async function generateCpgJson(options: GenerateCpgJsonOptions): Promise<string> {
-  const binaryPath = cpgBinaryPath(options.repoRoot);
-  await assertReadableFile(binaryPath);
+  const installDir = cpgInstallDir(options.repoRoot);
+  await assertReadableDir(path.join(installDir, 'lib'));
   if (options.appFiles.length === 0) {
     throw new Error('未找到可用于生成 CPG 的 ArkTS 文件');
   }
 
   const outputPath = path.join(options.outputDirAbs, 'cpg.json');
-  const args = ['--no-neo4j', `--export-json=${outputPath}`, `--top-level=${options.appRootAbs}`, ...options.appFiles];
+  const javaPath = resolveJavaExecutable();
+  const args = buildCpgJavaArgs(installDir, [
+    '--no-neo4j',
+    `--export-json=${outputPath}`,
+    `--top-level=${options.appRootAbs}`,
+    ...options.appFiles,
+  ]);
 
-  analysisLog(`CPG 开始：输入 ArkTS 文件 ${options.appFiles.length} 个`);
+  analysisLog(`CPG 开始：输入 ArkTS 文件 ${options.appFiles.length} 个（java 直调）`);
   const startedAt = Date.now();
 
   let argFilePath: string | null = null;
   let keepArgFile = false;
   let runArgs = args;
-  if (shouldUseArgFile(binaryPath, args)) {
+  if (shouldUseArgFile(javaPath, args)) {
     argFilePath = await writeArgFile(args);
     runArgs = [`@${argFilePath}`];
     analysisLog(
-      `CPG 命令行约 ${estimateCommandLength(binaryPath, args)} 字符，超过 Windows 安全预算 ${COMMAND_LENGTH_BUDGET}，改用参数文件：${argFilePath}`,
+      `CPG 命令行约 ${estimateCommandLength(javaPath, args)} 字符，超过安全预算 ${COMMAND_LENGTH_BUDGET}，改用参数文件：${argFilePath}`,
     );
   }
 
   try {
-    await runCommand(binaryPath, runArgs, options.repoRoot);
+    await runCommand(javaPath, runArgs, options.repoRoot);
   } catch (error) {
     keepArgFile = argFilePath !== null;
     if (argFilePath) {
