@@ -235,6 +235,7 @@ function normalizeExtractedContent(
   content: FeaturePrivacyFactsContent,
   feature: PrivacyFactsFeatureContext | null,
   rules: PrivacyRules,
+  keepUnmatchedDataItems = false,
 ): FeaturePrivacyFactsContent {
   const allowedDataItems = new Set(rules.dataItems.map((rule) => rule.outputName));
   return {
@@ -249,7 +250,7 @@ function normalizeExtractedContent(
             ...item,
             name: applyDataItemRule(normalizeUserFacingText(item.name) || item.name, rules),
           }))
-          .filter((item) => allowedDataItems.size === 0 || allowedDataItems.has(item.name)),
+          .filter((item) => keepUnmatchedDataItems || allowedDataItems.size === 0 || allowedDataItems.has(item.name)),
         storageMethod: normalizeUserFacingText(p.storageMethod) || p.storageMethod,
         dataRecipients: (p.dataRecipients ?? []).map((recipient) => ({
           ...recipient,
@@ -485,10 +486,12 @@ function buildPrompt(args: {
   return { system, user };
 }
 
-async function chatJsonWithRetries(args: {
+export async function chatJsonWithRetries(args: {
   llm: LlmConfig;
   system: string;
   user: string;
+  maxTokens?: number;
+  timeoutMs?: number;
 }): Promise<unknown> {
   const baseUrls = resolveLlmBaseUrls(args.llm.provider, args.llm.baseUrl);
   let lastError: unknown = null;
@@ -504,10 +507,10 @@ async function chatJsonWithRetries(args: {
           { role: 'user', content: args.user },
         ],
         temperature: 0,
-        maxTokens: 512,
+        maxTokens: args.maxTokens ?? 512,
         jsonMode: true,
         enableThinking: false,
-        timeoutMs: 20_000,
+        timeoutMs: args.timeoutMs ?? 20_000,
       });
       return safeJsonParse(res.content);
     } catch (e) {
@@ -531,6 +534,7 @@ export async function extractFeaturePrivacyFacts(args: {
   llm: LlmConfig;
   permissionHints?: PrivacyFactsPermissionHint[];
   privacyRules?: PrivacyRules;
+  keepUnmatchedDataItems?: boolean;
 }): Promise<{ content: FeaturePrivacyFactsContent; warnings: string[] }> {
   const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
   if (!apiKey) {
@@ -560,6 +564,6 @@ export async function extractFeaturePrivacyFacts(args: {
   const validated = validateContent(raw, flowNodeIndex);
   return {
     ...validated,
-    content: normalizeExtractedContent(validated.content, args.feature, privacyRules),
+    content: normalizeExtractedContent(validated.content, args.feature, privacyRules, args.keepUnmatchedDataItems ?? false),
   };
 }

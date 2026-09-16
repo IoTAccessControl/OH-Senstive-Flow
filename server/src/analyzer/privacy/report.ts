@@ -13,6 +13,14 @@ import type { SinkRecord, SourceRecord } from '../extract/types.js';
 import { sourceRecordToRef, type SourceRef } from '../extract/sources.js';
 
 import { extractFeaturePrivacyFacts, type PrivacyFactsPermissionHint } from './facts.js';
+import {
+  applyDataItemNormalization,
+  buildNormalizationArtifact,
+  collectUnmatchedDataItemCandidates,
+  normalizeDataItemNames,
+  type DataItemNormalization,
+  type DataItemVocabularyEntry,
+} from './normalizeDataItems.js';
 import { analysisLog } from '../../utils/analysisLog.js';
 import { getPermissionDisplayName } from './permissionDisplay.js';
 import type {
@@ -1040,6 +1048,18 @@ export async function generatePrivacyReportArtifacts(args: {
 
     const featuresForReport: ReportFeatureInput[] = [];
 
+    type ExtractedFeatureEntry = {
+      item: (typeof featureList)[number];
+      featureIndex: number;
+      featureId: string;
+      pageId: string;
+      dirAbs: string;
+      facts: FeaturePrivacyFactsContent;
+      dataflows: DataflowsResult;
+      startTime: number;
+    };
+    const extractedEntries: ExtractedFeatureEntry[] = [];
+
     const concurrency = (() => {
       const raw = Number(process.env.LLM_REQUEST_CONCURRENT ?? 5);
       if (!Number.isFinite(raw) || raw <= 0) return 5;
@@ -1048,12 +1068,12 @@ export async function generatePrivacyReportArtifacts(args: {
 
     analysisLog(`隐私事实处理开始：${featureList.length} 个功能点（并发数：${concurrency}）`);
 
-    // 并发批次处理
+    // 阶段一：并发抽取（不过滤、不落盘；数据项名称等待批量归一）
     for (let batchStart = 0; batchStart < featureList.length; batchStart += concurrency) {
       const batchEnd = Math.min(batchStart + concurrency, featureList.length);
       const batch = featureList.slice(batchStart, batchEnd);
 
-      const batchPromises = batch.map(async (item, batchIndex) => {
+      const batchPromises = batch.map(async (item, batchIndex): Promise<ExtractedFeatureEntry> => {
         const featureIndex = batchStart + batchIndex;
         const pageId = item.pageId;
         const feature = item.feature;
@@ -1116,6 +1136,7 @@ export async function generatePrivacyReportArtifacts(args: {
             llm: { provider: args.llm.provider, apiKey, model: args.llm.model, baseUrl: args.llm.baseUrl },
             permissionHints,
             privacyRules,
+            keepUnmatchedDataItems: true,
           });
           facts = extracted.content;
         } catch (e) {
@@ -1123,7 +1144,61 @@ export async function generatePrivacyReportArtifacts(args: {
         }
       }
 
-      facts.dataPractices = filterDataPracticesByKnownDataItems(facts.dataPractices, knownAppDataItems);
+        return { item, featureIndex, featureId, pageId, dirAbs, facts, dataflows, startTime };
+      });
+
+      const batchResults = await Promise.all(batchPromises);
+      extractedEntries.push(...batchResults);
+    }
+
+    // 阶段二：数据项批量归一（每 app 一次请求；失败或未启用 LLM 时全部保留原名）
+    const dataItemVocabulary: DataItemVocabularyEntry[] = [];
+    const vocabularyIndex = new Map<string, DataItemVocabularyEntry>();
+    for (const rule of privacyRules.dataItems) {
+      if (!rule.outputName) continue;
+      const existing = vocabularyIndex.get(rule.outputName);
+      if (existing) {
+        if (!existing.definition && rule.definition) existing.definition = rule.definition;
+        continue;
+      }
+      const entry: DataItemVocabularyEntry = {
+        name: rule.outputName,
+        ...(rule.definition ? { definition: rule.definition } : {}),
+      };
+      vocabularyIndex.set(rule.outputName, entry);
+      dataItemVocabulary.push(entry);
+    }
+    const canonicalNameSet = new Set(dataItemVocabulary.map((entry) => entry.name));
+    const normalizationCandidates = collectUnmatchedDataItemCandidates(extractedEntries, canonicalNameSet);
+    let normalization: DataItemNormalization = { decisions: [], mapping: new Map() };
+    if (apiKey && normalizationCandidates.length > 0 && dataItemVocabulary.length > 0) {
+      normalization = await normalizeDataItemNames({
+        appName: args.appName,
+        candidates: normalizationCandidates,
+        vocabulary: dataItemVocabulary,
+        llm: { ...args.llm, apiKey },
+      });
+      const rejected = normalization.decisions.length - normalization.mapping.size;
+      analysisLog(`数据项归一：候选 ${normalizationCandidates.length} 个，映射 ${normalization.mapping.size} 个，拒绝 ${rejected} 个`);
+    }
+    if (apiKey) {
+      await writeJsonFile(
+        path.join(args.outputDirAbs, 'data_item_normalization.json'),
+        buildNormalizationArtifact({
+          model: args.llm.model,
+          canonicalCount: dataItemVocabulary.length,
+          normalization,
+        }),
+      );
+    }
+    const allowedDataItems = new Set<string>([...knownAppDataItems, ...normalization.mapping.values()]);
+
+    // 阶段三：应用归一 → 过滤 → 权限处理 → 落盘 → 聚合
+    for (const entry of extractedEntries) {
+      const { item, featureIndex, featureId, dirAbs, dataflows, startTime } = entry;
+      const facts = applyDataItemNormalization(entry.facts, normalization.mapping);
+
+      facts.dataPractices = filterDataPracticesByKnownDataItems(facts.dataPractices, allowedDataItems);
       const filtered = filterPermissionPracticesByKnownPermissions({
         practices: facts.permissionPractices,
         knownPermissions: knownAppPermissions,
@@ -1157,54 +1232,18 @@ export async function generatePrivacyReportArtifacts(args: {
         }
       }
 
-        await writeJsonFile(path.join(dirAbs, 'privacy_facts.json'), facts);
+      await writeJsonFile(path.join(dirAbs, 'privacy_facts.json'), facts);
 
-        const elapsed = Date.now() - startTime;
-        analysisLog(`隐私事实完成：${featureIndex + 1}/${featureList.length}（${featureId}），${elapsed}ms`);
+      const elapsed = Date.now() - startTime;
+      analysisLog(`隐私事实完成：${featureIndex + 1}/${featureList.length}（${featureId}），${elapsed}ms`);
 
-        return {
-          featureId,
-          featureTitle: feature.title,
-          pageTitle: cleanText(item.pageEntry.description),
-          facts,
-          dataflows,
-          permissionNames: anchoredPractices.map(p => normalizePermissionToken(p.permissionName)).filter(Boolean),
-          dataItems: facts.dataPractices.flatMap(practice =>
-            (practice.dataItems ?? []).map(d => cleanText(d.name)).filter(Boolean)
-          ),
-          orphanPermissions: anchoredPractices
-            .filter(p => {
-              const permissionName = normalizePermissionToken(p.permissionName);
-              if (!permissionName) return false;
-              const picked = pickValidRef(Array.isArray(p.refs) ? p.refs : [], flowIndex);
-              return !picked;
-            })
-            .map(p => normalizePermissionToken(p.permissionName))
-            .filter(Boolean),
-        };
+      featuresForReport.push({
+        featureId,
+        featureTitle: item.feature.title,
+        pageTitle: cleanText(item.pageEntry.description),
+        facts,
+        dataflows,
       });
-
-      const batchResults = await Promise.all(batchPromises);
-
-      for (const result of batchResults) {
-        featuresForReport.push({
-          featureId: result.featureId,
-          featureTitle: result.featureTitle,
-          pageTitle: result.pageTitle,
-          facts: result.facts,
-          dataflows: result.dataflows,
-        });
-
-        for (const permissionName of result.permissionNames) {
-          emittedPermissions.add(permissionName);
-        }
-        for (const orphan of result.orphanPermissions) {
-          orphanPermissionNames.add(orphan);
-        }
-        for (const dataItem of result.dataItems) {
-          emittedDataItems.add(dataItem);
-        }
-      }
     }
 
     const unmatchedPermissions = Array.from(knownAppPermissions)

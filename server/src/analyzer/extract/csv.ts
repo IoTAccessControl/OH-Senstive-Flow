@@ -176,7 +176,7 @@ export async function loadCsvApiPermissions(csvDir: string): Promise<Map<string,
 type OverrideRow = { api?: string; description?: string };
 
 export type PrivacyRules = {
-  dataItems: Array<{ keywords: string[]; outputName: string }>;
+  dataItems: Array<{ keywords: string[]; outputName: string; definition?: string }>;
   descriptionRules: string[];
 };
 
@@ -204,7 +204,10 @@ export async function loadPrivacyRules(csvDir: string): Promise<PrivacyRules> {
     if (row.type?.trim() === 'data_item') {
       const keywords = (row.keywords ?? '').split('|').map((item) => item.trim()).filter(Boolean);
       const outputName = row.outputName?.trim() ?? '';
-      if (keywords.length > 0 && outputName) dataItems.push({ keywords, outputName });
+      const definition = (row.rule ?? '').trim();
+      if (keywords.length > 0 && outputName) {
+        dataItems.push({ keywords, outputName, ...(definition ? { definition } : {}) });
+      }
     } else if (row.type?.trim() === 'description_rule') {
       const rule = row.rule?.trim() ?? '';
       if (rule) descriptionRules.push(rule);
