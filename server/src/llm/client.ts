@@ -270,6 +270,41 @@ async function executeOpenAiCompatibleChat(request: LlmChatRequest, requestStart
   return { content, usage: usageData, raw: json };
 }
 
+export async function executeWithRetry<T>(
+  fn: () => Promise<T>,
+  options: {
+    maxAttempts?: number;
+    retryDelaysMs?: number[];
+    shouldRetry?: (error: unknown) => boolean;
+  } = {},
+): Promise<T> {
+  const retryDelaysMs = options.retryDelaysMs ?? [300, 800];
+  const maxAttempts = options.maxAttempts ?? (retryDelaysMs.length + 1);
+  const shouldRetry =
+    options.shouldRetry ??
+    ((error: unknown) => {
+      if (error instanceof LlmNetworkError) return true;
+      if (error instanceof LlmHttpError) return error.status === 429 || error.status >= 500;
+      const message = error instanceof Error ? error.message : String(error);
+      return /(?:LLM 返回无法解析为 JSON|LLM 返回非 JSON|缺少 message\.content|LLM JSON 不是对象)/u.test(message);
+    });
+
+  let lastError: unknown = null;
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error;
+      if (attempt >= maxAttempts - 1 || !shouldRetry(error)) {
+        throw error;
+      }
+      const delay = retryDelaysMs[attempt] ?? retryDelaysMs[retryDelaysMs.length - 1] ?? 500;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error(String(lastError));
+}
+
 export async function openAiCompatibleChat(request: LlmChatRequest): Promise<LlmChatResponse> {
   const collector = llmUsageStorage.getStore();
   const requestStartTime = Date.now();

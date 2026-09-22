@@ -16,9 +16,12 @@ vi.mock('../src/llm/client.js', () => {
 
   class LlmNetworkError extends Error {}
 
+  const executeWithRetry = async (fn: () => Promise<unknown>) => fn();
+
   return {
     resolveLlmBaseUrls: () => ['mock://llm'],
     openAiCompatibleChat: (...args: unknown[]) => mockOpenAiCompatibleChat(...args),
+    executeWithRetry,
     LlmHttpError,
     LlmNetworkError,
   };

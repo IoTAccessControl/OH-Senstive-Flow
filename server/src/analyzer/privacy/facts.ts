@@ -1,4 +1,4 @@
-import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/client.js';
+import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat, executeWithRetry } from '../../llm/client.js';
 import type { DataflowsResult } from '../dataflow/types.js';
 import type { SourceRef } from '../extract/sources.js';
 import type { UiTreeResult } from '../feature/types.js';
@@ -494,35 +494,41 @@ export async function chatJsonWithRetries(args: {
   timeoutMs?: number;
 }): Promise<unknown> {
   const baseUrls = resolveLlmBaseUrls(args.llm.provider, args.llm.baseUrl);
-  let lastError: unknown = null;
 
-  for (const baseUrl of baseUrls) {
-    try {
-      const res = await openAiCompatibleChat({
-        baseUrl,
-        apiKey: args.llm.apiKey,
-        model: args.llm.model,
-        messages: [
-          { role: 'system', content: args.system },
-          { role: 'user', content: args.user },
-        ],
-        temperature: 0,
-        maxTokens: args.maxTokens ?? 512,
-        jsonMode: true,
-        enableThinking: false,
-        timeoutMs: args.timeoutMs ?? 20_000,
-      });
-      return safeJsonParse(res.content);
-    } catch (e) {
-      lastError = e;
-      const canRetry =
-        baseUrls.length > 1 &&
-        (e instanceof LlmNetworkError || (e instanceof LlmHttpError && (e.status === 401 || e.status === 404 || e.status >= 500)));
-      if (!canRetry) throw e;
-    }
-  }
-
-  throw lastError instanceof Error ? lastError : new Error(String(lastError));
+  return executeWithRetry(
+    async () => {
+      let lastError: unknown = null;
+      for (const baseUrl of baseUrls) {
+        try {
+          const res = await openAiCompatibleChat({
+            baseUrl,
+            apiKey: args.llm.apiKey,
+            model: args.llm.model,
+            messages: [
+              { role: 'system', content: args.system },
+              { role: 'user', content: args.user },
+            ],
+            temperature: 0,
+            maxTokens: args.maxTokens ?? 512,
+            jsonMode: true,
+            enableThinking: false,
+            timeoutMs: args.timeoutMs ?? 20_000,
+          });
+          return safeJsonParse(res.content);
+        } catch (e) {
+          lastError = e;
+          const canRetry =
+            baseUrls.length > 1 &&
+            (e instanceof LlmNetworkError || (e instanceof LlmHttpError && (e.status === 401 || e.status === 404 || e.status >= 500)));
+          if (!canRetry) break;
+        }
+      }
+      throw lastError instanceof Error ? lastError : new Error(String(lastError));
+    },
+    {
+      retryDelaysMs: [300, 800],
+    },
+  );
 }
 
 export async function extractFeaturePrivacyFacts(args: {

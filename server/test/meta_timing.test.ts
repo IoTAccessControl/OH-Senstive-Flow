@@ -8,6 +8,9 @@ import {
   llmUsageStorage,
   withLlmUsageCollector,
   openAiCompatibleChat,
+  executeWithRetry,
+  LlmHttpError,
+  LlmNetworkError,
   type LlmUsageStats,
 } from '../src/llm/client.js';
 import { extractPaths, extractPathsWithStats } from '../src/analyzer/dataflow/paths.js';
@@ -88,6 +91,38 @@ describe('LlmUsageCollector', () => {
     expect(stats.inputTokens).toBe(50);
     expect(stats.outputTokens).toBe(20);
     expect(stats.totalTokens).toBe(70);
+  });
+
+  it('executeWithRetry retries on retryable errors and succeeds when transient', async () => {
+    let attempts = 0;
+    const result = await executeWithRetry(
+      async () => {
+        attempts += 1;
+        if (attempts < 2) {
+          throw new LlmNetworkError('transient network drop');
+        }
+        return 'recovered';
+      },
+      { retryDelaysMs: [10, 20] },
+    );
+
+    expect(attempts).toBe(2);
+    expect(result).toBe('recovered');
+  });
+
+  it('executeWithRetry throws when max attempts exceeded or error is non-retryable', async () => {
+    let attempts = 0;
+    await expect(
+      executeWithRetry(
+        async () => {
+          attempts += 1;
+          throw new LlmHttpError(401, 'unauthorized');
+        },
+        { retryDelaysMs: [10, 20] },
+      ),
+    ).rejects.toThrow('unauthorized');
+
+    expect(attempts).toBe(1);
   });
 
   it('collects metrics via withLlmUsageCollector and openAiCompatibleChat', async () => {

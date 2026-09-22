@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/client.js';
+import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat, executeWithRetry } from '../../llm/client.js';
 import { readJsonFile, walkFiles, writeJsonFile } from '../../utils/accessWorkspace.js';
 import { loadCsvApiPermissions, loadPrivacyRules, type PrivacyRules } from '../extract/csv.js';
 import { collectPermissionsFromApp, extractPermissionNames, normalizePermissionToken } from '../extract/app.js';
@@ -1603,35 +1603,40 @@ async function reportDraftForPrivacyFacts(args: { llm: LlmConfig; facts: Feature
   const user = JSON.stringify(args.facts, null, 2);
 
   const baseUrls = resolveLlmBaseUrls(args.llm.provider, args.llm.baseUrl);
-  let lastError: unknown = null;
-  for (const baseUrl of baseUrls) {
-    try {
-      const res = await openAiCompatibleChat({
-        baseUrl,
-        apiKey,
-        model: args.llm.model,
-        messages: [
-          { role: 'system', content: system },
-          { role: 'user', content: user },
-        ],
-        temperature: 0,
-        maxTokens: 1024,
-        jsonMode: true,
-        enableThinking: false,
-        timeoutMs: 20_000,
-      });
-      return parsePrivacyReportDraft(res.content);
-    } catch (error) {
-      lastError = error;
-      const canRetry =
-        baseUrls.length > 1 &&
-        (error instanceof LlmNetworkError ||
-          (error instanceof LlmHttpError && (error.status === 401 || error.status === 404 || error.status >= 500)));
-      if (!canRetry) break;
-    }
-  }
+  return executeWithRetry(
+    async () => {
+      let lastError: unknown = null;
+      for (const baseUrl of baseUrls) {
+        try {
+          const res = await openAiCompatibleChat({
+            baseUrl,
+            apiKey,
+            model: args.llm.model,
+            messages: [
+              { role: 'system', content: system },
+              { role: 'user', content: user },
+            ],
+            temperature: 0,
+            maxTokens: 1024,
+            jsonMode: true,
+            enableThinking: false,
+            timeoutMs: 20_000,
+          });
+          return parsePrivacyReportDraft(res.content);
+        } catch (error) {
+          lastError = error;
+          const canRetry =
+            baseUrls.length > 1 &&
+            (error instanceof LlmNetworkError ||
+              (error instanceof LlmHttpError && (error.status === 401 || error.status === 404 || error.status >= 500)));
+          if (!canRetry) break;
+        }
+      }
 
-  throw lastError instanceof Error ? lastError : new Error(String(lastError));
+      throw lastError instanceof Error ? lastError : new Error(String(lastError));
+    },
+    { retryDelaysMs: [300, 800] },
+  );
 }
 
 function paragraphTokens(args: {

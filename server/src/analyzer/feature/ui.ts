@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import ts from 'typescript';
 
-import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/client.js';
+import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat, executeWithRetry } from '../../llm/client.js';
 import { DEFAULT_APP_SCAN_SUBDIR } from '../extract/app.js';
 import { toPosixPath, toWorkspaceRelativePath } from '../../utils/accessWorkspace.js';
 import { analysisLog } from '../../utils/analysisLog.js';
@@ -650,43 +650,49 @@ async function describeNodesWithLlm(options: {
     ),
   ].join('\n');
 
-  let llmRes: { content: string } | null = null;
-  let lastError: unknown = null;
+  const parsedContent = await executeWithRetry(
+    async () => {
+      let llmRes: { content: string } | null = null;
+      let lastError: unknown = null;
 
-  for (const baseUrl of options.baseUrls) {
-    try {
-      llmRes = await openAiCompatibleChat({
-        baseUrl,
-        apiKey: options.llm.apiKey,
-        model: options.llm.model,
-        messages: [
-          { role: 'system', content: system },
-          { role: 'user', content: user },
-        ],
-        temperature: 0.2,
-        jsonMode: true,
-      });
-      break;
-    } catch (e) {
-      lastError = e;
-      const canRetry =
-        options.baseUrls.length > 1 &&
-        (e instanceof LlmNetworkError || (e instanceof LlmHttpError && (e.status === 401 || e.status === 404 || e.status >= 500)));
-      if (!canRetry) throw e;
-    }
-  }
+      for (const baseUrl of options.baseUrls) {
+        try {
+          llmRes = await openAiCompatibleChat({
+            baseUrl,
+            apiKey: options.llm.apiKey,
+            model: options.llm.model,
+            messages: [
+              { role: 'system', content: system },
+              { role: 'user', content: user },
+            ],
+            temperature: 0.2,
+            jsonMode: true,
+          });
+          break;
+        } catch (e) {
+          lastError = e;
+          const canRetry =
+            options.baseUrls.length > 1 &&
+            (e instanceof LlmNetworkError || (e instanceof LlmHttpError && (e.status === 401 || e.status === 404 || e.status >= 500)));
+          if (!canRetry) break;
+        }
+      }
 
-  if (!llmRes) {
-    throw lastError instanceof Error ? lastError : new Error(String(lastError));
-  }
+      if (!llmRes) {
+        throw lastError instanceof Error ? lastError : new Error(String(lastError));
+      }
 
-  const parsed = safeJsonParse(llmRes.content);
-  if (!isRecord(parsed)) throw new Error('LLM JSON 不是对象');
-  const descriptionsRaw = (parsed as any).descriptions;
-  if (!Array.isArray(descriptionsRaw)) throw new Error('LLM JSON 缺少 descriptions[]');
+      const parsed = safeJsonParse(llmRes.content);
+      if (!isRecord(parsed)) throw new Error('LLM JSON 不是对象');
+      const descriptionsRaw = (parsed as any).descriptions;
+      if (!Array.isArray(descriptionsRaw)) throw new Error('LLM JSON 缺少 descriptions[]');
+      return descriptionsRaw;
+    },
+    { retryDelaysMs: [300, 800] },
+  );
 
   const map = new Map<string, string>();
-  for (const item of descriptionsRaw) {
+  for (const item of parsedContent) {
     const id = typeof item?.id === 'string' ? item.id : '';
     const desc = typeof item?.description === 'string' ? item.description : '';
     if (!id || !desc) continue;

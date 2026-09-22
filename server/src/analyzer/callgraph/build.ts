@@ -4,7 +4,7 @@ import ts from 'typescript';
 import { toWorkspaceRelativePath } from '../../utils/accessWorkspace.js';
 import { analysisLog } from '../../utils/analysisLog.js';
 import type { SinkRecord, SourceRecord } from '../extract/types.js';
-import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat } from '../../llm/client.js';
+import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat, executeWithRetry } from '../../llm/client.js';
 
 import { scanFunctionBlocks, type FunctionBlock } from './functionBlocks.js';
 import type { CallGraph, CallGraphEdge, CallGraphNode } from './types.js';
@@ -197,33 +197,37 @@ async function chatWithFallbackBaseUrls(args: {
   user: string;
 }): Promise<string> {
   const baseUrls = resolveLlmBaseUrls(args.llm.provider, args.llm.baseUrl);
-  let lastError: unknown = null;
 
-  for (const baseUrl of baseUrls) {
-    try {
-      const res = await openAiCompatibleChat({
-        baseUrl,
-        apiKey: args.llm.apiKey,
-        model: args.llm.model,
-        messages: [
-          { role: 'system', content: args.system },
-          { role: 'user', content: args.user },
-        ],
-        temperature: 0.2,
-        maxTokens: 200,
-        jsonMode: true,
-      });
-      return res.content;
-    } catch (e) {
-      lastError = e;
-      const canRetry =
-        baseUrls.length > 1 &&
-        (e instanceof LlmNetworkError || (e instanceof LlmHttpError && (e.status === 401 || e.status === 404 || e.status >= 500)));
-      if (!canRetry) throw e;
-    }
-  }
-
-  throw lastError instanceof Error ? lastError : new Error(String(lastError));
+  return executeWithRetry(
+    async () => {
+      let lastError: unknown = null;
+      for (const baseUrl of baseUrls) {
+        try {
+          const res = await openAiCompatibleChat({
+            baseUrl,
+            apiKey: args.llm.apiKey,
+            model: args.llm.model,
+            messages: [
+              { role: 'system', content: args.system },
+              { role: 'user', content: args.user },
+            ],
+            temperature: 0.2,
+            maxTokens: 200,
+            jsonMode: true,
+          });
+          return res.content;
+        } catch (e) {
+          lastError = e;
+          const canRetry =
+            baseUrls.length > 1 &&
+            (e instanceof LlmNetworkError || (e instanceof LlmHttpError && (e.status === 401 || e.status === 404 || e.status >= 500)));
+          if (!canRetry) break;
+        }
+      }
+      throw lastError instanceof Error ? lastError : new Error(String(lastError));
+    },
+    { retryDelaysMs: [300, 800] },
+  );
 }
 
 async function withConcurrencyLimit<T>(items: T[], limit: number, worker: (item: T) => Promise<void>): Promise<void> {
