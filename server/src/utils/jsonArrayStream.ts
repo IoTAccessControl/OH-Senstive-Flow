@@ -66,6 +66,16 @@ export async function forEachJsonArrayElement(
     let i = 0;
     while (i < text.length && !finished) {
       if (inString) {
+        // An escape consumes the next character, including ordinary characters
+        // such as n, t and u, and may cross a read chunk boundary.
+        if (escaped) {
+          const char = text[i];
+          escaped = false;
+          if (mode === 'inElement') elemParts.push(char);
+          else captureKeyChar(char);
+          i += 1;
+          continue;
+        }
         let j = i;
         while (j < text.length && text[j] !== '"' && text[j] !== '\\') j += 1;
         const span = text.slice(i, j);
@@ -79,11 +89,7 @@ export async function forEachJsonArrayElement(
           break;
         }
         const char = text[j];
-        if (escaped) {
-          escaped = false;
-          if (mode === 'inElement') elemParts.push(char);
-          else captureKeyChar(char);
-        } else if (char === '\\') {
+        if (char === '\\') {
           escaped = true;
           if (mode === 'inElement') elemParts.push(char);
           else captureKeyChar(char);

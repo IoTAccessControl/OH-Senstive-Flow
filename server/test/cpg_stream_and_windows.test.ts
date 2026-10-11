@@ -75,6 +75,23 @@ describe('forEachJsonArrayElement', () => {
     expect(parsed).toEqual(payload.nodes);
   });
 
+  it('consumes control and unicode escapes before the closing quote', async () => {
+    const json = '{"ignored":"line\\n","nodes":[{"code":"line\\n"},{"code":"tab\\t"},{"code":"\\u4e2d"},{"code":"\\r\\b\\f"}]}';
+    const file = await writeTmpJson(json);
+    const parsed: unknown[] = [];
+    await forEachJsonArrayElement(file, { nodes: (value) => parsed.push(value) });
+    expect(parsed).toEqual(JSON.parse(json).nodes);
+  });
+
+  it('consumes an escape split across read chunks', async () => {
+    const prefix = '{"nodes":[{"code":"';
+    const json = prefix + 'a'.repeat((1 << 20) - prefix.length - 1) + '\\n"},{"code":"tail"}]}';
+    const file = await writeTmpJson(json);
+    const parsed: unknown[] = [];
+    await forEachJsonArrayElement(file, { nodes: (value) => parsed.push(value) });
+    expect(parsed).toEqual(JSON.parse(json).nodes);
+  });
+
   it('ignores keys that are not requested, including strings equal to wanted keys', async () => {
     const payload = {
       ignored: { nodes: ['not-an-array-element'] },
@@ -177,7 +194,7 @@ describe('cpg java invocation', () => {
   it('passes through JAVA_OPTS and CPG_NEO4J_OPTS like the .bat', () => {
     const args = buildCpgJavaArgs('D:\\install', [], { JAVA_OPTS: '-Xms512m', CPG_NEO4J_OPTS: '-Dfoo=bar' });
     expect(args.slice(0, 4)).toEqual(['-Xss515m', '-Xmx8g', '-Xms512m', '-Dfoo=bar']);
-    expect(args).toContain('D:\\install\\lib\\*');
+    expect(args).toContain(path.join('D:\\install', 'lib', '*'));
   });
 });
 
