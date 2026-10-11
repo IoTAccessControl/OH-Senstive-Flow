@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { fetchPrivacyReport } from '../api';
 
-type JumpTo = { featureId: string; flowId: string; nodeId: string };
+type JumpTo = { pageId?: string; featureId: string; flowId: string; nodeId: string };
 
 type ReportToken = {
   text: string;
@@ -68,6 +68,7 @@ function asReport(raw: unknown): PrivacyReport {
 function buildDataflowsUrl(args: { runId?: string; jumpTo: JumpTo }): string {
   const qs = new URLSearchParams();
   if (args.runId) qs.set('runId', args.runId);
+  if (args.jumpTo.pageId) qs.set('pageId', args.jumpTo.pageId);
   qs.set('featureId', args.jumpTo.featureId);
   qs.set('flowId', args.jumpTo.flowId);
   qs.set('nodeId', args.jumpTo.nodeId);

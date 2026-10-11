@@ -499,7 +499,7 @@ export function requestAll(context: UIContext) {
     const syntheticDataflows = JSON.parse(
       await fs.readFile(path.join(outputDirAbs, 'app_permissions', 'dataflows.json'), 'utf8'),
     ) as any;
-    const dataNodes = syntheticDataflows.flows[0]?.nodes.filter((node: any) => node.id.startsWith('data:')) ?? [];
+    const dataNodes = syntheticDataflows.flows.flatMap((flow: any) => flow.nodes.filter((node: any) => node.id.startsWith('data:')));
     expect(dataNodes).toHaveLength(2);
     expect(new Set(dataNodes.map((node: any) => node.id)).size).toBe(2);
     const dataItems = syntheticFacts.dataPractices[0]?.dataItems ?? [];

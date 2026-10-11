@@ -4,6 +4,7 @@ import path from 'node:path';
 import { walkFiles } from '../../utils/accessWorkspace.js';
 
 export const DEFAULT_APP_SCAN_SUBDIR = path.join('entry', 'src', 'main', 'ets');
+export const APP_SCAN_IGNORED_DIRS = ['node_modules', '.git', '.preview', '.hvigor', 'oh_modules', 'build', 'dist', 'out', 'hvigor'];
 
 export const OHOS_PERMISSION_REGEX = /ohos\.permission\.[A-Za-z0-9_]+/gu;
 
@@ -12,7 +13,7 @@ export async function scanAppArkTsFiles(appRootPath: string): Promise<string[]> 
   // multi-module projects (e.g. common/home/mine/video).
   const files = await walkFiles(appRootPath, {
     extensions: ['.ets', '.ts'],
-    ignoreDirNames: ['node_modules', '.git', 'build', 'dist', 'out', 'hvigor'],
+    ignoreDirNames: APP_SCAN_IGNORED_DIRS,
   });
 
   const inMainEts = (filePath: string): boolean => {
@@ -28,7 +29,7 @@ export async function scanAppArkTsFiles(appRootPath: string): Promise<string[]> 
   const scanRoot = path.join(appRootPath, DEFAULT_APP_SCAN_SUBDIR);
   const fallback = await walkFiles(scanRoot, {
     extensions: ['.ets', '.ts'],
-    ignoreDirNames: ['node_modules', '.git', 'build', 'dist', 'out', 'hvigor'],
+    ignoreDirNames: APP_SCAN_IGNORED_DIRS,
   });
   if (fallback.length > 0) return fallback;
 
@@ -69,7 +70,7 @@ export async function collectPermissionsFromApp(appDirAbs: string): Promise<Set<
   const permissions = new Set<string>();
   const files = await walkFiles(appDirAbs, {
     extensions: ['ets', 'ts', 'js', 'json', 'json5'],
-    ignoreDirNames: ['node_modules', '.git', 'build', 'dist', 'out', 'hvigor'],
+    ignoreDirNames: APP_SCAN_IGNORED_DIRS,
   });
 
   for (const filePath of files) {

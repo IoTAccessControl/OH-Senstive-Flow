@@ -28,6 +28,7 @@ type Dataflow = {
   nodes: DataflowNode[];
   edges: DataflowEdge[];
   summary?: Record<string, unknown>;
+  meta?: { warnings?: string[] };
 };
 
 type DataflowsResult = {
@@ -185,8 +186,8 @@ export function DataflowsPage() {
   const [selectedNodeId, setSelectedNodeId] = useState<string | undefined>(undefined);
 
   const visiblePages = useMemo(() => {
-    return (pagesIndex?.pages ?? []).filter(isRealPageInfo);
-  }, [pagesIndex]);
+    return (pagesIndex?.pages ?? []).filter((page) => isRealPageInfo(page) || page.pageId === selectedPageId);
+  }, [pagesIndex, selectedPageId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -385,6 +386,7 @@ export function DataflowsPage() {
     state.state === 'ready' && Array.isArray(state.data.meta?.warnings)
       ? state.data.meta.warnings.filter((x): x is string => typeof x === 'string' && x.trim().length > 0)
       : [];
+  const flowWarnings = current?.flow?.meta?.warnings ?? [];
   const selectedVisiblePageId = useMemo(() => {
     return visiblePages.some((page) => page.pageId === selectedPageId) ? (selectedPageId ?? '') : '';
   }, [visiblePages, selectedPageId]);
@@ -478,6 +480,9 @@ export function DataflowsPage() {
             <div key={`warn:${idx}`} className="status">
               提示：{warning}
             </div>
+          ))}
+          {flowWarnings.map((warning, idx) => (
+            <div key={`flow-warn:${idx}`} className="status">提示：{warning}</div>
           ))}
 
           {state.data.flows.length > 0 && (

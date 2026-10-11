@@ -5,7 +5,7 @@ import path from 'node:path';
 import { resolveLlmBaseUrls, LlmHttpError, LlmNetworkError, openAiCompatibleChat, executeWithRetry } from '../../llm/client.js';
 import { readJsonFile, walkFiles, writeJsonFile } from '../../utils/accessWorkspace.js';
 import { loadCsvApiPermissions, loadPrivacyRules, type PrivacyRules } from '../extract/csv.js';
-import { collectPermissionsFromApp, extractPermissionNames, normalizePermissionToken } from '../extract/app.js';
+import { APP_SCAN_IGNORED_DIRS, collectPermissionsFromApp, extractPermissionNames, normalizePermissionToken } from '../extract/app.js';
 import type { Dataflow, DataflowsResult } from '../dataflow/types.js';
 import type { PageFeaturesIndex, PagesIndex, PageEntryInfo, UiTreeResult } from '../feature/types.js';
 import type { SinkRecord, SourceRecord } from '../extract/types.js';
@@ -23,6 +23,8 @@ import {
 } from './normalizeDataItems.js';
 import { analysisLog } from '../../utils/analysisLog.js';
 import { getPermissionDisplayName } from './permissionDisplay.js';
+import { buildPrivacyEvidenceFlows } from './evidenceFlows.js';
+import { associatePrivacyReportLinks } from './reportLinks.js';
 import type {
   DataflowNodeRef,
   FeaturePrivacyFactsContent,
@@ -229,7 +231,7 @@ function toFeatureDir(outputDirAbs: string, pageId: string, featureId: string): 
 async function collectPermissionOccurrencesFromApp(repoRoot: string, appDirAbs: string): Promise<PermissionOccurrence[]> {
   const files = await walkFiles(appDirAbs, {
     extensions: ['ets', 'ts', 'js', 'json', 'json5'],
-    ignoreDirNames: ['node_modules', '.git', 'build', 'dist', 'out', 'hvigor'],
+    ignoreDirNames: APP_SCAN_IGNORED_DIRS,
   });
 
   const out: PermissionOccurrence[] = [];
@@ -263,7 +265,8 @@ async function collectPermissionOccurrencesFromApp(repoRoot: string, appDirAbs: 
   return out;
 }
 
-function buildSyntheticPermissionFlows(args: {
+export async function buildSyntheticPermissionFlows(args: {
+  repoRoot: string;
   runId: string;
   featureId: string;
   permissions: string[];
@@ -272,7 +275,8 @@ function buildSyntheticPermissionFlows(args: {
   csvPermissions: Map<string, string[]>;
   dataItems: string[];
   dataItemOccurrences: DataItemOccurrence[];
-}): SyntheticPermissionFlowBuild {
+  existingFlows?: Dataflow[];
+}): Promise<SyntheticPermissionFlowBuild> {
   const refsByPermission = new Map<string, DataflowNodeRef[]>();
   const refsByDataItem = new Map<string, DataflowNodeRef[]>();
   const flowId = `flow:${sanitizeIdFragment(args.featureId)}`;
@@ -340,32 +344,29 @@ function buildSyntheticPermissionFlows(args: {
     refsByDataItem.set(dataItem, [{ flowId, nodeId }]);
   }
 
-  return {
-    refsByPermission,
-    refsByDataItem,
-    dataflows: {
-      meta: {
-        runId: args.runId,
-        generatedAt: new Date().toISOString(),
-        counts: { flows: nodes.length > 0 ? 1 : 0, nodes: nodes.length, edges: 0 },
-      },
-      flows:
-        nodes.length > 0
-          ? [
-              {
-                flowId,
-                pathId: flowId,
-                nodes,
-                edges: [],
-                summary: {
-                  permissions: args.permissions.slice(),
-                  dataItems: args.dataItems.slice(),
-                },
-              },
-            ]
-          : [],
-    },
-  };
+  const evidence = nodes.map((node) => {
+    const permission = args.permissions.find((name) => refsByPermission.get(name)?.some((ref) => ref.nodeId === node.id));
+    const dataItem = args.dataItems.find((name) => refsByDataItem.get(name)?.some((ref) => ref.nodeId === node.id));
+    const permissionSinks = permission ? args.sinks.filter((sink) => {
+      const mapped = [...(sink.__permissions ?? []), ...(args.csvPermissions.get(sink.__apiKey ?? '') ?? [])];
+      return mapped.some((value) => normalizePermissionToken(value) === permission);
+    }).map((sink) => ({ filePath: sink['App源码文件路径'], line: sink['调用行号'], code: sink['调用代码'] })) : [];
+    return {
+      node,
+      occurrences: permission
+        ? [...permissionSinks, ...args.occurrences.filter((item) => item.permissionName === permission)]
+        : args.dataItemOccurrences.filter((item) => item.dataItem === dataItem),
+      summary: { permissions: permission ? [permission] : [], dataItems: dataItem ? [dataItem] : [] },
+    };
+  });
+  const dataflows = await buildPrivacyEvidenceFlows({
+    repoRoot: args.repoRoot, runId: args.runId, evidence, existingFlows: args.existingFlows ?? [],
+  });
+  for (const flow of dataflows.flows) {
+    for (const name of flow.summary?.permissions ?? []) refsByPermission.set(name, [{ flowId: flow.flowId, nodeId: evidence.find((item) => item.summary.permissions.includes(name))!.node.id }]);
+    for (const name of flow.summary?.dataItems ?? []) refsByDataItem.set(name, [{ flowId: flow.flowId, nodeId: evidence.find((item) => item.summary.dataItems.includes(name))!.node.id }]);
+  }
+  return { refsByPermission, refsByDataItem, dataflows };
 }
 
 function groupSinksByCallsite(sinks: SinkRecord[]): Map<string, SinkRecord[]> {
@@ -380,6 +381,85 @@ function groupSinksByCallsite(sinks: SinkRecord[]): Map<string, SinkRecord[]> {
     map.set(key, list);
   }
   return map;
+}
+
+function privacyEvidenceWarnings(dataflows: DataflowsResult): string[] {
+  const declarations = dataflows.flows.filter((flow) => flow.edges.length === 0)
+    .flatMap((flow) => [...(flow.summary?.permissions ?? []), ...(flow.summary?.dataItems ?? [])]);
+  return declarations.length > 0 ? [`以下项目仅定位到声明或源码证据，尚未识别出调用路径：${declarations.join(', ')}`] : [];
+}
+
+/** Repair stored fallback links without repeating analysis or changing the report's prose. */
+export async function repairPrivacyReportEvidence(args: { repoRoot: string; outputDirAbs: string }): Promise<DataflowsResult> {
+  const meta = await readJsonFile(path.join(args.outputDirAbs, 'meta.json')) as any;
+  const facts = await readJsonFile(path.join(args.outputDirAbs, 'app_permissions', 'privacy_facts.json')) as FeaturePrivacyFactsContent;
+  const oldDataflows = await readJsonFile(path.join(args.outputDirAbs, 'app_permissions', 'dataflows.json')) as DataflowsResult;
+  const csvDirAbs = toAbs(args.repoRoot, meta.input?.csvDir || 'input/csv');
+  const appDirAbs = toAbs(args.repoRoot, meta.input.appPath);
+  const rules = await loadPrivacyRules(csvDirAbs);
+  const configured = await collectConfiguredDataItemsFromApp(args.repoRoot, appDirAbs, rules);
+  const permissions = uniq(facts.permissionPractices.map((practice) => practice.permissionName));
+  const dataItems = uniq(facts.dataPractices.flatMap((practice) => practice.dataItems.map((item) => item.name)));
+  const existingDataflows = await tryReadJson<DataflowsResult>(path.join(args.outputDirAbs, 'dataflows.json'));
+  const built = await buildSyntheticPermissionFlows({
+    repoRoot: args.repoRoot, runId: meta.runId, featureId: '__app_permissions', permissions, dataItems,
+    occurrences: await collectPermissionOccurrencesFromApp(args.repoRoot, appDirAbs),
+    sinks: asSinkRecords(await tryReadJson(path.join(args.outputDirAbs, 'sinks.json'))),
+    csvPermissions: await loadCsvApiPermissions(csvDirAbs),
+    dataItemOccurrences: configured.occurrences,
+    existingFlows: existingDataflows?.flows ?? [],
+  });
+  const replacements = new Map<string, DataflowNodeRef>();
+  const replaceRefs = (oldRefs: DataflowNodeRef[], nextRefs: DataflowNodeRef[]) => {
+    if (nextRefs[0]) for (const ref of oldRefs) replacements.set(`${ref.flowId}\n${ref.nodeId}`, nextRefs[0]);
+    return nextRefs;
+  };
+  for (const practice of facts.permissionPractices) practice.refs = replaceRefs(practice.refs, built.refsByPermission.get(practice.permissionName) ?? []);
+  for (const practice of facts.dataPractices) {
+    for (const item of practice.dataItems) item.refs = replaceRefs(item.refs, built.refsByDataItem.get(item.name) ?? []);
+  }
+  const dataflows: DataflowsResult = {
+    ...built.dataflows,
+    meta: { ...built.dataflows.meta, warnings: [
+      ...privacyEvidenceWarnings(built.dataflows),
+      ...(oldDataflows.meta.warnings ?? []).filter((warning) =>
+        !warning.includes('当前未定位到具体功能点数据流') && !warning.startsWith('以下项目仅定位到声明或源码证据')),
+    ] },
+  };
+  const reportPath = path.join(args.outputDirAbs, 'privacy_report.json');
+  const report = await readJsonFile(reportPath) as PrivacyReportFile;
+  for (const section of [...report.sections.collectionAndUse, ...report.sections.permissions]) {
+    for (const token of section.tokens) {
+      if (token.jumpTo?.featureId !== '__app_permissions') continue;
+      const permission = facts.permissionPractices.find((practice) =>
+        token.text.startsWith(getPermissionDisplayName(practice.permissionName)) || token.text.startsWith(practice.permissionName));
+      const ref = built.refsByDataItem.get(cleanText(token.text))?.[0]
+        ?? (permission ? built.refsByPermission.get(permission.permissionName)?.[0] : undefined)
+        ?? replacements.get(`${token.jumpTo.flowId}\n${token.jumpTo.nodeId}`);
+      if (ref) token.jumpTo = { featureId: '__app_permissions', ...ref };
+      else delete token.jumpTo;
+    }
+  }
+  const featureDir = toFeatureDir(args.outputDirAbs, '_app_permissions', '__app_permissions');
+  for (const dir of [path.join(args.outputDirAbs, 'app_permissions'), featureDir]) {
+    await writeJsonFile(path.join(dir, 'dataflows.json'), dataflows);
+    await writeJsonFile(path.join(dir, 'privacy_facts.json'), facts);
+  }
+  const indexPath = path.join(toPageDir(args.outputDirAbs, '_app_permissions'), 'features', 'index.json');
+  const featuresIndex = await readJsonFile(indexPath) as PageFeaturesIndex;
+  const feature = featuresIndex.features.find((item) => item.featureId === '__app_permissions');
+  if (feature) feature.counts = { ...dataflows.meta.counts };
+  featuresIndex.meta.counts.flows = dataflows.meta.counts.flows;
+  await writeJsonFile(indexPath, featuresIndex);
+  const pagesPath = path.join(args.outputDirAbs, 'pages', 'index.json');
+  const pages = await readJsonFile(pagesPath) as PagesIndex;
+  const page = pages.pages.find((item) => item.pageId === '_app_permissions');
+  if (page) page.counts.flows = dataflows.meta.counts.flows;
+  pages.meta.counts.flows = pages.pages.reduce((sum, item) => sum + item.counts.flows, 0);
+  await writeJsonFile(pagesPath, pages);
+  await associatePrivacyReportLinks({ ...args, report });
+  await writeJsonFile(reportPath, report);
+  return dataflows;
 }
 
 function normalizePermissionName(v: unknown): string {
@@ -558,7 +638,7 @@ function resolvePermissionRef(ref: string, texts: string[]): string[] {
 async function collectRuntimeRequestedPermissions(appDirAbs: string): Promise<Set<string>> {
   const files = await walkFiles(appDirAbs, {
     extensions: ['ets', 'ts', 'js'],
-    ignoreDirNames: ['node_modules', '.git', 'build', 'dist', 'out', 'hvigor'],
+    ignoreDirNames: APP_SCAN_IGNORED_DIRS,
   });
   const entries = await Promise.all(
     files.map(async (filePath) => {
@@ -708,7 +788,7 @@ async function collectConfiguredDataItemsFromApp(
 ): Promise<{ names: Set<string>; occurrences: DataItemOccurrence[] }> {
   const files = await walkFiles(appDirAbs, {
     extensions: ['.ets', '.ts', '.js', '.json', '.json5'],
-    ignoreDirNames: ['node_modules', '.git', 'output', 'dist', 'build', 'ohosTest', 'hvigor'],
+    ignoreDirNames: [...APP_SCAN_IGNORED_DIRS, 'output', 'ohosTest'],
   });
   const names = new Set<string>();
   const occurrences: DataItemOccurrence[] = [];
@@ -716,19 +796,19 @@ async function collectConfiguredDataItemsFromApp(
     const text = await fs.readFile(filePath, 'utf8').catch(() => '');
     const lower = text.toLowerCase();
     for (const rule of rules.dataItems) {
-      if (names.has(rule.outputName)) continue;
-      const keyword = rule.keywords.find((candidate) => lower.includes(candidate.toLowerCase()));
-      if (!keyword) continue;
-      const index = lower.indexOf(keyword.toLowerCase());
-      const line = text.slice(0, index).split(/\r?\n/u).length;
-      const code = text.split(/\r?\n/u)[line - 1]?.trim() ?? keyword;
-      names.add(rule.outputName);
-      occurrences.push({
-        dataItem: rule.outputName,
-        filePath: path.relative(repoRoot, filePath).split(path.sep).join('/'),
-        line,
-        code,
-      });
+      if (!rule.keywords.some((keyword) => lower.includes(keyword.toLowerCase()))) continue;
+      const lines = text.split(/\r?\n/u);
+      for (let index = 0; index < lines.length; index += 1) {
+        const code = lines[index]?.trim() ?? '';
+        if (!rule.keywords.some((keyword) => code.toLowerCase().includes(keyword.toLowerCase()))) continue;
+        names.add(rule.outputName);
+        occurrences.push({
+          dataItem: rule.outputName,
+          filePath: path.relative(repoRoot, filePath).split(path.sep).join('/'),
+          line: index + 1,
+          code,
+        });
+      }
     }
   }
   return { names, occurrences };
@@ -1256,7 +1336,8 @@ export async function generatePrivacyReportArtifacts(args: {
     if (unmatchedPermissions.length > 0 || unmatchedDataItems.length > 0) {
       const pageId = '_app_permissions';
       const featureId = '__app_permissions';
-      const syntheticFlowBuild = buildSyntheticPermissionFlows({
+      const syntheticFlowBuild = await buildSyntheticPermissionFlows({
+        repoRoot: args.repoRoot,
         runId: args.runId,
         featureId,
         permissions: unmatchedPermissions,
@@ -1265,6 +1346,7 @@ export async function generatePrivacyReportArtifacts(args: {
         csvPermissions,
         dataItems: unmatchedDataItems,
         dataItemOccurrences: configuredDataItems.occurrences,
+        existingFlows: extractedEntries.flatMap((entry) => entry.dataflows.flows),
       });
       const seedSyntheticFacts = buildAppDeclaredPermissionFacts(
         unmatchedPermissions,
@@ -1276,14 +1358,7 @@ export async function generatePrivacyReportArtifacts(args: {
         syntheticFlowBuild.refsByDataItem,
         configuredDataItems.occurrences,
       );
-      const syntheticWarnings = [
-        ...(unmatchedPermissions.length > 0
-          ? [`以下权限来自应用源码/配置扫描或 SDK API 权限映射，当前未定位到具体功能点数据流：${unmatchedPermissions.join(', ')}`]
-          : []),
-        ...(unmatchedDataItems.length > 0
-          ? [`以下个人信息数据项来自应用源码扫描，当前未定位到具体功能点数据流：${unmatchedDataItems.join(', ')}`]
-          : []),
-      ];
+      const syntheticWarnings = privacyEvidenceWarnings(syntheticFlowBuild.dataflows);
       const syntheticDataflows: DataflowsResult = {
         ...syntheticFlowBuild.dataflows,
         meta: {
@@ -1451,6 +1526,7 @@ export async function generatePrivacyReportArtifacts(args: {
         },
         features: featuresForReport,
       });
+      await associatePrivacyReportLinks({ repoRoot: args.repoRoot, outputDirAbs: args.outputDirAbs, report: built.report });
       await writeJsonFile(reportPath, built.report);
       await fs.writeFile(reportTextPath, built.text, 'utf8');
 

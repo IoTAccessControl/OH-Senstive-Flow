@@ -39,6 +39,7 @@ export type FeaturePrivacyFactsContent = {
 };
 
 export type PrivacyReportJumpTo = {
+  pageId?: string;
   featureId: string;
   flowId: string;
   nodeId: string;

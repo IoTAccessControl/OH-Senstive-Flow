@@ -142,6 +142,30 @@ output/<appName>/<timestamp>/
 - `privacy_report.json`
 - `privacy_report.txt`
 
+旧报告的隐私链接若跳转到包含多个孤立证据节点的兜底路径，可修复指定 run：
+
+```bash
+npm -w server run repair:privacy-links -- ohbili_20261010-163249
+```
+
+该命令使用当前应用源码和已有分析路径更新链接、证据路径及索引，不调用 LLM，也不改写报告正文。只有声明证据的项目会保留单节点并提示缺少调用路径。
+
+若隐私报告的链接统一落在应用级兜底分类，可只修复页面/功能归属：
+
+```bash
+npm -w server run repair:privacy-classification -- Wechat_HarmonyOS_20261011-160944
+```
+
+新报告会自动执行同一归属逻辑。已有路径优先沿用真实页面/功能；局部源码恢复路径通过函数范围和页面所属 struct 核对，必要时补建真实源码方法的功能分类。无法确认页面归属的声明或共享路径保留在“应用级隐私证据”。链接携带 pageId、featureId、flowId、nodeId，保留完整路径和目标节点；归属明细写入 `privacy_link_assignments.json`。此命令不重新调用 CPG 或 LLM，不改写报告正文。
+
+修复生成逻辑后，应重新运行应用分析，并检查最新报告中每个蓝色链接的目标功能、路径、节点、连线及源码位置：
+
+```bash
+python3 scripts/audit_privacy_links.py
+```
+
+检查器会将单节点证据单独计数，遇到失效链接、孤立节点、无效连线或生成缓存源码时返回非零退出码。可用 `--output <file.json>` 保存明细。
+
 ## 评估与验收脚本
 
 基础评估：

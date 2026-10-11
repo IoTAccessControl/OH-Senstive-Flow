@@ -37,6 +37,32 @@ afterEach(() => {
 });
 
 describe('buildDataflows resilience', () => {
+  it.each(['isolated', 'unrelated-file'])('uses the verified call path instead of %s LLM nodes', async (failure) => {
+    const { repoRoot, filePath, fileRel } = await makeRepoFile([
+      'function build() {', '  const keyword = input;', '  router.pushUrl({url: keyword});', '}',
+    ]);
+    const callGraph: CallGraph = {
+      meta: { runId: 'run1', generatedAt: '', counts: { nodes: 2, edges: 1, sources: 1, sinkCalls: 1, functions: 0 } },
+      nodes: [
+        { id: 'source', type: 'source', filePath: fileRel, line: 1, code: 'function build() {' },
+        { id: 'sink', type: 'sinkCall', filePath: fileRel, line: 3, code: 'router.pushUrl({url: keyword});' },
+      ], edges: [{ from: 'source', to: 'sink', kind: 'containsSink' }],
+    };
+    mockChat.mockResolvedValue({ content: JSON.stringify({ nodes: [
+      { filePath: fileRel, line: 1, description: '入口' },
+      { filePath: failure === 'isolated' ? fileRel : 'other-app.ets', line: 2, description: '搜索关键词' },
+      { filePath: fileRel, line: 3, description: '调用 sink' },
+    ], edges: failure === 'isolated' ? [{ from: 0, to: 2 }] : [{ from: 0, to: 1 }, { from: 1, to: 2 }] }), raw: {} });
+    const result = await buildDataflows({ repoRoot, runId: 'run1', appFiles: [filePath], callGraph,
+      paths: [{ pathId: 'p1', nodeIds: ['source', 'sink'], sourceId: 'source', sinkCallId: 'sink' }],
+      sources: [], sinks: [], llm: { provider: 'Qwen', apiKey: 'test', model: 'test' },
+    });
+    expect(result.flows[0]?.meta?.fallback).toBe(true);
+    expect(result.flows[0]?.nodes).toHaveLength(2);
+    expect(result.flows[0]?.edges).toEqual([{ from: 'p1:n1', to: 'p1:n2' }]);
+    expect(result.flows[0]?.meta?.warnings?.join('')).toContain(failure === 'isolated' ? '未连接' : '未参与本次分析');
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
   it('retries transient LLM failures and still returns dataflows on the first run', async () => {
     const { repoRoot, filePath, fileRel } = await makeRepoFile([
       'function build() {',

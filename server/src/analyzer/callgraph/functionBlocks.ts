@@ -88,7 +88,7 @@ export function scanFunctionBlocks(fileText: string, sourceFile: ts.SourceFile):
   const candidates: Candidate[] = [];
   const blocks: FunctionBlock[] = [];
 
-  addCandidateFromRegex(candidates, fileText, lineStarts, /^\s*function\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/gmu, 'function');
+  addCandidateFromRegex(candidates, fileText, lineStarts, /^\s*(?:export\s+(?:default\s+)?)?(?:async\s+)?function\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/gmu, 'function');
   addCandidateFromRegex(
     candidates,
     fileText,
@@ -100,7 +100,7 @@ export function scanFunctionBlocks(fileText: string, sourceFile: ts.SourceFile):
     candidates,
     fileText,
     lineStarts,
-    /^\s*(?:(?:public|private|protected|async|static|readonly|abstract|override)\s+)*([A-Za-z_][A-Za-z0-9_]*|constructor)\s*(?:<[^>\n]+>)?\s*\(/gmu,
+    /^\s*(?:@[A-Za-z_][\w]*(?:\([^\n]*?\))?\s+)*(?:(?:public|private|protected|async|static|readonly|abstract|override)\s+)*([A-Za-z_][A-Za-z0-9_]*|constructor)\s*(?:<[^>\n]+>)?\s*\(/gmu,
     'method',
   );
 

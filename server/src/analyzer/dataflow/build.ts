@@ -428,6 +428,25 @@ async function buildFlowFromLlmResult(args: {
   };
 }
 
+function hasConnectedLlmEdges(result: LlmResult): boolean {
+  if (!result.edges?.length || result.nodes.length < 2) return true;
+  const reachable = new Set([0]);
+  const queue = [0];
+  const next = new Map<number, number[]>();
+  for (const edge of result.edges) {
+    const list = next.get(edge.from) ?? [];
+    list.push(edge.to);
+    next.set(edge.from, list);
+  }
+  while (queue.length > 0) {
+    for (const to of next.get(queue.pop()!) ?? []) {
+      if (to < 0 || to >= result.nodes.length || reachable.has(to)) continue;
+      reachable.add(to); queue.push(to);
+    }
+  }
+  return reachable.size === result.nodes.length;
+}
+
 function buildSourceLineKeySet(sources: SourceRecord[]): Set<string> {
   const set = new Set<string>();
   for (const source of sources) {
@@ -448,7 +467,13 @@ function validateLlmResultAgainstAnchors(args: {
   anchors: CallGraphNode[];
   llmResult: LlmResult;
   sourceLineKeys: Set<string>;
+  appFilePaths: Set<string>;
 }): { valid: boolean; reason: string | null; trimmedResult?: LlmResult } {
+  for (const node of args.llmResult.nodes) {
+    if (!args.appFilePaths.has(path.resolve(args.repoRoot, node.filePath))) {
+      return { valid: false, reason: `LLM 输出包含未参与本次分析的文件：${node.filePath}` };
+    }
+  }
   const llmKeys = args.llmResult.nodes.map((node) =>
     nodeKey({
       filePath: normalizeWorkspacePath(args.repoRoot, node.filePath),
@@ -487,6 +512,7 @@ function validateLlmResultAgainstAnchors(args: {
       nodes: trimmedNodes,
       edges: trimmedEdges,
     };
+    if (!hasConnectedLlmEdges(trimmedResult)) return { valid: false, reason: 'LLM 输出在截断后仍存在未连接的节点' };
     return {
       valid: true,
       reason: `已截断 sink 之后的 ${args.llmResult.nodes.length - trimmedNodes.length} 个节点`,
@@ -494,7 +520,9 @@ function validateLlmResultAgainstAnchors(args: {
     };
   }
 
-  return { valid: true, reason: null };
+  return hasConnectedLlmEdges(args.llmResult)
+    ? { valid: true, reason: null }
+    : { valid: false, reason: 'LLM 输出存在未连接到起点的节点，采用静态调用路径' };
 }
 
 function fallbackDescriptionForAnchor(anchor: CallGraphNode): string {
@@ -632,6 +660,7 @@ export async function buildDataflows(options: BuildDataflowsOptions): Promise<Da
           anchors,
           llmResult: llmResponse.llmResult,
           sourceLineKeys,
+          appFilePaths: new Set(options.appFiles.map((filePath) => path.resolve(options.repoRoot, filePath))),
         });
 
         if (!validation.valid) {
