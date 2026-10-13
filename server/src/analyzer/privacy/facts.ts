@@ -3,6 +3,8 @@ import type { DataflowsResult } from '../dataflow/types.js';
 import type { SourceRef } from '../extract/sources.js';
 import type { UiTreeResult } from '../feature/types.js';
 import type { PrivacyRules } from '../extract/csv.js';
+import { usablePrivacyFactText } from './factText.js';
+import { supportsPrivacyOperations, supportsPrivacySource } from './factEvidence.js';
 
 import type {
   DataflowNodeRef,
@@ -242,7 +244,7 @@ function normalizeExtractedContent(
     dataPractices: (content.dataPractices ?? [])
       .map((p) => ({
         ...p,
-        businessScenario: normalizeBusinessScenario(p.businessScenario, feature),
+        businessScenario: p.businessScenario ? normalizeBusinessScenario(p.businessScenario, feature) : '',
         processingSubject: cleanText(p.processingSubject) || '本应用',
         dataSources: normalizeUserFacingTextArray(p.dataSources),
         dataItems: (p.dataItems ?? [])
@@ -259,7 +261,7 @@ function normalizeExtractedContent(
       })),
     permissionPractices: (content.permissionPractices ?? []).map((p) => ({
       ...p,
-      businessScenario: normalizeBusinessScenario(p.businessScenario, feature),
+      businessScenario: p.businessScenario ? normalizeBusinessScenario(p.businessScenario, feature) : '',
     })),
   };
 }
@@ -297,28 +299,63 @@ function filterValidRefs(
   return out;
 }
 
-function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>): {
+function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>, evidenceByFlow: Map<string, string>): {
   content: FeaturePrivacyFactsContent;
   warnings: string[];
+  compatibilityAliasUsed: boolean;
 } {
   const warnings: string[] = [];
   if (!isRecord(raw)) throw new Error('LLM JSON 不是对象');
 
-  const dataPracticesRaw = (raw as any).dataPractices;
+  let dataPracticesRaw = raw.dataPractices;
+  let compatibilityAliasUsed = false;
+  const hasCanonical = Object.prototype.hasOwnProperty.call(raw, 'dataPractices');
+  if (!hasCanonical) {
+    const alias = raw.collectionAndUse;
+    if (Array.isArray(alias) && alias.every((entry) => isRecord(entry) && Array.isArray(entry.dataItems))) {
+      dataPracticesRaw = alias;
+      compatibilityAliasUsed = true;
+    } else {
+      warnings.push('缺少 dataPractices；collectionAndUse 仅兼容含 dataItems 的事实对象数组，文案或混合数组已拒绝，使用证据兜底');
+    }
+  } else if (!Array.isArray(dataPracticesRaw)) {
+    warnings.push('dataPractices 不是数组，已拒绝；不使用 collectionAndUse 覆盖规范字段');
+  }
   const permPracticesRaw = (raw as any).permissionPractices;
+  const checkedText = (value: unknown, label: string): string => {
+    const text = usablePrivacyFactText(value);
+    if (!text) warnings.push(`${label} 缺失、类型错误或包含占位词，已拒绝并使用证据兜底`);
+    return text;
+  };
+  const checkedArray = (value: unknown, label: string): string[] => {
+    if (!Array.isArray(value)) {
+      warnings.push(`${label} 不是数组，已拒绝并使用证据兜底`);
+      return [];
+    }
+    return value.map((item) => checkedText(item, label)).filter(Boolean);
+  };
 
   const dataPractices: PrivacyDataPractice[] = [];
   if (Array.isArray(dataPracticesRaw)) {
     for (const p of dataPracticesRaw) {
-      if (!isRecord(p)) continue;
+      if (!isRecord(p)) { warnings.push('dataPractices 包含非事实对象，已拒绝'); continue; }
 
       const dataItemsRaw = (p as any).dataItems;
       const dataItems: PrivacyDataItem[] = [];
       if (Array.isArray(dataItemsRaw)) {
         for (const di of dataItemsRaw) {
           if (!isRecord(di)) continue;
-          const name = cleanTextOrUnknown(di.name);
+          const name = checkedText(di.name, 'dataItems.name');
+          if (!name) continue;
+          if (di.refs !== undefined && !Array.isArray(di.refs)) {
+            warnings.push(`dataItems(${name}) 的 refs 不是数组，已拒绝该数据项`);
+            continue;
+          }
           const refs = filterValidRefs(di.refs, flowNodeIndex, warnings, `dataItems(${name})`);
+          if (Array.isArray(di.refs) && di.refs.length > 0 && refs.length === 0) {
+            warnings.push(`dataItems(${name}) 没有有效引用，已拒绝该数据项并使用证据兜底`);
+            continue;
+          }
           dataItems.push({ name, refs });
         }
       }
@@ -328,21 +365,51 @@ function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>):
       if (Array.isArray(recipientsRaw)) {
         for (const r of recipientsRaw) {
           if (!isRecord(r)) continue;
-          const name = cleanTextOrUnknown(r.name);
+          const name = checkedText(r.name, 'dataRecipients.name');
+          if (!name) continue;
+          if (r.refs !== undefined && !Array.isArray(r.refs)) { warnings.push('dataRecipients.refs 不是数组，已拒绝'); continue; }
           const refs = filterValidRefs(r.refs, flowNodeIndex, warnings, `dataRecipients(${name})`);
+          if (refs.length === 0) { warnings.push(`接收方 ${name} 没有有效引用，已拒绝并使用证据兜底`); continue; }
           recipients.push({ name, refs: refs.length > 0 ? refs : undefined });
         }
       }
 
+      if (dataItems.length === 0) { warnings.push('数据事实没有有效数据项，已拒绝并使用证据兜底'); continue; }
+      const evidence = dataItems.flatMap((item) => item.refs.map((ref) => evidenceByFlow.get(ref.flowId) ?? '')).join('\n');
+      const checkedDescription = (value: unknown, label: string): string => {
+        const text = checkedText(value, label);
+        if (!text) return '';
+        if ((label === 'storageMethod' && /^(?:本地状态|页面状态|本地处理|本地)$/u.test(text)) ||
+            (label === 'processingPurpose' && !/(展示|显示|搜索|登录|验证|支付|签约|发送|提交|维护|维持|识别|连接|统计|计算|更新|编辑|保存|记录|选择|读取|获取|登记|响应)/u.test(text))) {
+          warnings.push(`${label} 仅描述数据或状态，缺少实际处理目的或保存方式，已拒绝并使用证据兜底`);
+          return '';
+        }
+        if (/(用户(?:主动)?(?:填写|输入|选择)|收集用户.*(?:状况|资料))/u.test(text) && !supportsPrivacySource('用户输入', evidence)) {
+          warnings.push(`${label} 的用户输入断言缺少源码证据，已拒绝并使用证据兜底`);
+          return '';
+        }
+        if ((label === 'businessScenario' && (/(个人信息处理|权限使用|调用源码|相关模块执行|状态变量)/u.test(text) || dataItems.some((item) => text === item.name))) ||
+            /(?:源码|状态变量|逻辑校验)/u.test(text)) {
+          warnings.push(`${label} 是分析标题或代码结构描述，已拒绝并使用证据兜底`);
+          return '';
+        }
+        if (!supportsPrivacyOperations(text, evidence)) { warnings.push(`${label} 的操作或保存断言缺少源码证据，已拒绝并使用证据兜底`); return ''; }
+        return text;
+      };
+      const dataSources = checkedArray(p.dataSources, 'dataSources').filter((source) => {
+        if (/(本地处理|读取并|收集并|上传|不存储|源码检查|代码检查|逻辑校验)/u.test(source)) { warnings.push('dataSources 混入处理方式，已拒绝并使用证据兜底'); return false; }
+        if (!supportsPrivacySource(source, evidence)) { warnings.push(`dataSources 的取数来源缺少源码证据（${source}），已拒绝并使用证据兜底`); return false; }
+        return true;
+      });
       dataPractices.push({
-        businessScenario: cleanTextOrUnknown(p.businessScenario),
-        processingSubject: cleanOptionalText(p.processingSubject) || '本应用',
-        dataSources: cleanStringArray(p.dataSources),
+        businessScenario: checkedDescription(p.businessScenario, 'businessScenario'),
+        processingSubject: checkedText(p.processingSubject, 'processingSubject') || '本应用',
+        dataSources,
         dataItems,
-        processingMethod: cleanTextOrUnknown(p.processingMethod),
-        storageMethod: cleanTextOrUnknown(p.storageMethod),
+        processingMethod: checkedDescription(p.processingMethod, 'processingMethod'),
+        storageMethod: checkedDescription(p.storageMethod, 'storageMethod'),
         dataRecipients: recipients,
-        processingPurpose: cleanTextOrUnknown(p.processingPurpose),
+        processingPurpose: checkedDescription(p.processingPurpose, 'processingPurpose'),
       });
     }
   }
@@ -351,21 +418,24 @@ function validateContent(raw: unknown, flowNodeIndex: Map<string, Set<string>>):
   if (Array.isArray(permPracticesRaw)) {
     for (const p of permPracticesRaw) {
       if (!isRecord(p)) continue;
-      const permissionName = cleanTextOrUnknown(p.permissionName);
+      const permissionName = checkedText(p.permissionName, 'permissionName');
+      if (!/^ohos\.permission\.[A-Za-z0-9_]+$/u.test(permissionName)) { warnings.push('权限名称无效，已拒绝并使用证据兜底'); continue; }
+      if (p.refs !== undefined && !Array.isArray(p.refs)) { warnings.push(`权限 ${permissionName} 的 refs 不是数组，已拒绝并使用证据兜底`); continue; }
       const refs = filterValidRefs(p.refs, flowNodeIndex, warnings, `permissionPractices(${permissionName})`);
+      if (Array.isArray(p.refs) && p.refs.length > 0 && refs.length === 0) { warnings.push(`权限 ${permissionName} 没有有效引用，已拒绝并使用证据兜底`); continue; }
       const authorizationMode = p.authorizationMode === 'preauthorized' || p.authorizationMode === 'dynamic' ? p.authorizationMode : undefined;
       permissionPractices.push({
         permissionName,
         authorizationMode,
-        businessScenario: cleanOptionalText(p.businessScenario),
-        permissionPurpose: cleanOptionalText(p.permissionPurpose),
-        denyImpact: cleanOptionalText(p.denyImpact),
+        businessScenario: checkedText(p.businessScenario, 'permission businessScenario'),
+        permissionPurpose: checkedText(p.permissionPurpose, 'permissionPurpose'),
+        denyImpact: checkedText(p.denyImpact, 'denyImpact'),
         refs,
       });
     }
   }
 
-  return { content: { dataPractices, permissionPractices }, warnings };
+  return { content: { dataPractices, permissionPractices }, warnings, compatibilityAliasUsed };
 }
 
 function limitArray<T>(arr: T[], max: number): { items: T[]; truncated: boolean } {
@@ -421,18 +491,29 @@ function buildPrompt(args: {
       '根据输入中的权限清单和代码证据，补充每项权限的中文用途说明。',
       JSON.stringify(inputPayload),
       '只输出以下 JSON 结构，权限名和 refs 必须原样保留：',
-      '{"dataPractices":[],"permissionPractices":[{"permissionName":"ohos.permission.X","businessScenario":"用户进行具体操作时","permissionPurpose":"用于完成具体操作","denyImpact":"拒绝后无法完成的具体操作","refs":[{"flowId":"原值","nodeId":"原值"}]}]}',
+      JSON.stringify({ dataPractices: [], permissionPractices: permissionHints.map((hint) => ({
+        permissionName: hint.permissionName, businessScenario: '', permissionPurpose: '', denyImpact: '', refs: hint.refs,
+      })) }),
+      '上面的空字符串只表示待填写字段；基于代码填写实际场景、用途和拒绝影响，证据不足时保留空字符串，不要使用占位描述。',
       'permissionHints 中每个权限都必须输出一次；不要输出 collectionAndUse 或 permissions。',
     ].join('\n');
     return { system, user };
   }
 
   if (args.feature?.featureId === '__app_permissions' && featureTitle.startsWith('个人信息处理：')) {
+    const names = featureTitle.slice('个人信息处理：'.length).split('、');
+    const definitions = (args.privacyRules?.dataItems ?? []).filter((rule) => names.includes(rule.outputName))
+      .map((rule) => ({ name: rule.outputName, keywords: rule.keywords, definition: rule.definition ?? '' }));
     const user = [
       '根据输入中的源码证据，补充标题所列个人信息的中文处理说明。',
-      JSON.stringify({ featureTitle, dataflows: inputPayload.dataflows }),
+      JSON.stringify({ featureTitle, dataItemDefinitions: definitions, dataflows: inputPayload.dataflows }),
       '只输出以下 JSON 结构，数据项名称和 refs 必须使用输入原值：',
-      '{"dataPractices":[{"businessScenario":"具体用户场景","processingSubject":"本应用","dataSources":["具体来源"],"dataItems":[{"name":"原数据项名称","refs":[{"flowId":"原值","nodeId":"原值"}]}],"processingMethod":"具体处理方式","storageMethod":"具体保存方式或处理期间","dataRecipients":[],"processingPurpose":"具体用途"}],"permissionPractices":[]}',
+      JSON.stringify({ dataPractices: names.map((name) => ({ businessScenario: '', processingSubject: '本应用', dataSources: [],
+        dataItems: [{ name, refs: [] }], processingMethod: '', storageMethod: '', dataRecipients: [], processingPurpose: '' })), permissionPractices: [] }),
+      '输出名称仅用于展示，不代表数据语义。请结合定义、关键词和源码判断实际数据含义，不要根据数字或自定义名称猜测用途。',
+      'featureTitle 是分析标题，不能作为 businessScenario。不要将变量名、状态变量或源码模块名称当作业务场景。',
+      'dataSources 必须有取数代码依据；状态初始化不等于用户输入，应用联系人列表不等于系统通讯录。本地存储必须有写入存储接口的证据，内存状态不能写成持久存储。规则关键词和定义只解释数据类型，不证明来源或操作。',
+      '上面的空字段只表示待填写结构；有证据才填写真实处理方式、来源和目的，证据不足时保留空字段，禁止复制示例占位词。refs 只能复制输入中真实存在的 flowId/nodeId。',
       '标题中的每个数据项都必须输出一次；不要输出 collectionAndUse 或 permissions。',
     ].join('\n');
     return { system, user };
@@ -541,7 +622,7 @@ export async function extractFeaturePrivacyFacts(args: {
   permissionHints?: PrivacyFactsPermissionHint[];
   privacyRules?: PrivacyRules;
   keepUnmatchedDataItems?: boolean;
-}): Promise<{ content: FeaturePrivacyFactsContent; warnings: string[] }> {
+}): Promise<{ content: FeaturePrivacyFactsContent; warnings: string[]; compatibilityAliasUsed?: boolean }> {
   const apiKey = typeof args.llm.apiKey === 'string' ? args.llm.apiKey.trim() : '';
   if (!apiKey) {
     return {
@@ -567,9 +648,33 @@ export async function extractFeaturePrivacyFacts(args: {
   });
 
   const raw = await chatJsonWithRetries({ llm: { ...args.llm, apiKey }, system: prompt.system, user: prompt.user });
-  const validated = validateContent(raw, flowNodeIndex);
-  return {
-    ...validated,
-    content: normalizeExtractedContent(validated.content, args.feature, privacyRules, args.keepUnmatchedDataItems ?? false),
-  };
+  const evidenceByFlow = new Map(args.dataflows.flows.map((flow) => [flow.flowId, flow.nodes.map((node) => node.code).join('\n')]));
+  const validated = validateContent(raw, flowNodeIndex, evidenceByFlow);
+  const content = normalizeExtractedContent(validated.content, args.feature, privacyRules, args.keepUnmatchedDataItems ?? false);
+  for (const practice of content.dataPractices) {
+    const purpose = normalizeScenarioKey(practice.processingPurpose ?? '').replace(/^(?:用于)?(?:获取|收集|使用|处理|读取)/u, '');
+    if (purpose && privacyRules.dataItems.some((rule) => rule.definition &&
+      practice.dataItems.some((item) => item.name === rule.outputName) && purpose === normalizeScenarioKey(rule.definition))) {
+      practice.processingPurpose = '';
+      validated.warnings.push('processingPurpose 仅复述数据定义，未说明使用目的，已拒绝并使用证据兜底');
+    }
+  }
+  const syntheticDataTitle = args.feature?.featureId === '__app_permissions' && args.feature.title.startsWith('个人信息处理：')
+    ? args.feature.title.slice('个人信息处理：'.length) : '';
+  if (syntheticDataTitle) {
+    const expectedNames = new Set(syntheticDataTitle.split('、'));
+    for (const practice of content.dataPractices) {
+      practice.dataItems = practice.dataItems.filter((item) => {
+        if (expectedNames.has(item.name)) return true;
+        validated.warnings.push(`数据项 ${item.name} 不属于当前抽取批次，已拒绝并使用证据兜底`);
+        return false;
+      });
+    }
+  }
+  content.dataPractices = content.dataPractices.filter((practice) => {
+    if (practice.dataItems.length > 0) return true;
+    validated.warnings.push('数据项不属于配置清单，已拒绝该事实并使用证据兜底');
+    return false;
+  });
+  return { ...validated, content };
 }

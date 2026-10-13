@@ -23,6 +23,9 @@ import {
 } from './normalizeDataItems.js';
 import { analysisLog } from '../../utils/analysisLog.js';
 import { getPermissionDisplayName } from './permissionDisplay.js';
+import { resolveFallbackDataKind } from './dataSemantics.js';
+import { usablePrivacyFactText } from './factText.js';
+import { executablePrivacyEvidence } from './factEvidence.js';
 import { buildPrivacyEvidenceFlows } from './evidenceFlows.js';
 import { associatePrivacyReportLinks } from './reportLinks.js';
 import type {
@@ -68,6 +71,9 @@ type DataItemOccurrence = {
   filePath: string;
   line: number;
   code: string;
+  rule?: PrivacyRules['dataItems'][number];
+  stateOrigin?: 'initialized' | 'input';
+  literalOrigin?: boolean;
 };
 
 type SyntheticPermissionFlowBuild = {
@@ -807,6 +813,19 @@ async function collectConfiguredDataItemsFromApp(
           filePath: path.relative(repoRoot, filePath).split(path.sep).join('/'),
           line: index + 1,
           code,
+          rule,
+          literalOrigin: /^(?:const|let|var)\s+[A-Za-z_$][\w$]*(?:\s*:[^=]+)?\s*=\s*(?:["'`].*["'`]|[\d.]+|true|false)\s*;?\s*$/u.test(code),
+          stateOrigin: (() => {
+            const field = /@State\s+([A-Za-z_$][\w$]*)\s*:[^=]+=/u.exec(code)?.[1];
+            if (!field) return undefined;
+            const escaped = field.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+            const assignment = new RegExp(`\\bthis\\.${escaped}\\s*=(?!=)`, 'u');
+            const input = new RegExp(`\\.(?:onChange|onSelect|onSubmit)\\s*\\([\\s\\S]{0,220}?\\bthis\\.${escaped}\\s*=(?!=)`, 'u');
+            const executable = executablePrivacyEvidence(text);
+            if (input.test(executable)) return 'input';
+            if (!assignment.test(executable)) return 'initialized';
+            return undefined;
+          })(),
         });
       }
     }
@@ -816,74 +835,15 @@ async function collectConfiguredDataItemsFromApp(
 
 function fallbackDataProfile(
   name: string,
-  occurrence?: DataItemOccurrence,
+  occurrences: DataItemOccurrence[] = [],
 ): Omit<PrivacyDataPractice, 'dataItems' | 'dataRecipients'> {
-  const evidence = `${occurrence?.filePath ?? ''} ${occurrence?.code ?? ''}`.toLowerCase();
-  const userProfileItems = new Set([
-    '姓名', '昵称', '性别', '年龄', '年龄段', '出生日期', '年级', '国家', '民族', '工作信息', '收入状况',
-    '房屋数据', '身高', '体重', '婚姻状况', '家庭成员信息', '教育背景',
-  ]);
-  if (userProfileItems.has(name) && !(name === '昵称' && /(class\s+mediainfo|this\.data\.nickname|viewmodel)/u.test(evidence))) {
-    return {
-      businessScenario: '用户填写或提交个人资料时',
-      processingSubject: '本应用',
-      dataSources: ['用户主动输入'],
-      processingMethod: '收集并校验用户填写的资料',
-      storageMethod: '在用户提交资料及页面展示期间处理',
-      processingPurpose: '完成个人资料登记和展示',
-    };
-  }
-  if (name === '登录账号' || name === '登录密码' || name === '手机号码' || name === '授权码') {
-    return {
-      businessScenario: '用户登录或验证账号时',
-      processingSubject: '本应用',
-      dataSources: name === '授权码' ? ['账号服务返回'] : ['用户主动输入或授权'],
-      processingMethod: '收集并校验登录凭据',
-      storageMethod: '仅在完成本次登录验证所需期间处理',
-      processingPurpose: '完成账号登录和身份验证',
-    };
-  }
-  if (name === '搜索关键词' || name === '用户输入内容' || name === '聊天内容') {
-    return {
-      businessScenario: name === '聊天内容' ? '用户编辑或发送聊天消息时' : '用户输入并提交内容时',
-      processingSubject: '本应用',
-      dataSources: ['用户主动输入'],
-      processingMethod: '接收并处理用户提交的内容',
-      storageMethod: '在完成本次输入、搜索或发送操作所需期间处理',
-      processingPurpose: name === '聊天内容' ? '发送和展示聊天消息' : '响应用户输入并返回对应结果',
-    };
-  }
-  if (['商户号', '预支付交易会话标识', '授权标识', '预签约编号'].includes(name)) {
-    return {
-      businessScenario: '用户发起支付、授权或签约操作时',
-      processingSubject: '本应用',
-      dataSources: ['支付或签约服务返回'],
-      processingMethod: '读取并提交交易所需参数',
-      storageMethod: '仅在完成本次支付、授权或签约操作期间处理',
-      processingPurpose: '完成支付、授权或签约请求',
-    };
-  }
-  if (name === '位置信息' || name === '步数数据' || name === '运动健康数据') {
-    return {
-      businessScenario: name === '位置信息' ? '用户使用定位或地图服务时' : '用户使用运动健康服务时',
-      processingSubject: '本应用',
-      dataSources: ['设备传感器或系统服务'],
-      processingMethod: '读取并计算设备提供的数据',
-      storageMethod: '在提供本次位置或运动健康服务期间处理',
-      processingPurpose: name === '位置信息' ? '提供定位和位置展示服务' : '统计并展示运动健康结果',
-    };
-  }
-  if (['设备标识信息', '匿名设备标识符', '设备信息', 'IP地址', '应用唯一标识符'].includes(name)) {
-    return {
-      businessScenario: '应用识别当前设备并建立服务连接时',
-      processingSubject: '本应用',
-      dataSources: name === '应用唯一标识符' ? ['应用本地生成'] : ['设备或系统服务返回'],
-      processingMethod: '读取并用于设备识别或连接校验',
-      storageMethod: '在设备识别和服务连接所需期间处理',
-      processingPurpose: '识别设备并保障服务正常连接',
-    };
-  }
-  if (name === 'Cookie') {
+  const evidence = occurrences.map((item) => `${item.filePath} ${item.code}`).join('\n').toLowerCase();
+  const kind = resolveFallbackDataKind({
+    name,
+    rules: occurrences.flatMap((item) => item.rule ? [item.rule] : []),
+    codes: occurrences.map((item) => item.code),
+  });
+  if (kind === 'cookie') {
     return {
       businessScenario: '应用访问网络服务并维持登录会话时',
       processingSubject: '本应用',
@@ -893,7 +853,71 @@ function fallbackDataProfile(
       processingPurpose: '维持登录状态和网络会话',
     };
   }
-  if (name === '昵称' && /(class\s+mediainfo|this\.data\.nickname|viewmodel)/u.test(evidence)) {
+  if (kind === 'profile' || (kind === 'nickname' && !/(class\s+mediainfo|this\.data\.nickname|viewmodel)/u.test(evidence))) {
+    const stateOrigins = occurrences.map((item) => item.stateOrigin).filter(Boolean);
+    const initializedOnly = (stateOrigins.length > 0 && stateOrigins.every((origin) => origin === 'initialized')) ||
+      (occurrences.length > 0 && occurrences.every((item) => item.literalOrigin));
+    return {
+      businessScenario: initializedOnly ? '应用展示或提交已有个人资料时' : '用户填写或提交个人资料时',
+      processingSubject: '本应用',
+      dataSources: [initializedOnly ? '应用内初始化的数据' : '用户主动输入'],
+      processingMethod: initializedOnly ? '读取并处理应用已有的资料字段' : '收集并校验用户填写的资料',
+      storageMethod: '在用户提交资料及页面展示期间处理',
+      processingPurpose: '完成个人资料登记和展示',
+    };
+  }
+  if (kind === 'login' || kind === 'authorization-code') {
+    return {
+      businessScenario: '用户登录或验证账号时',
+      processingSubject: '本应用',
+      dataSources: kind === 'authorization-code' ? ['账号服务返回'] : ['用户主动输入或授权'],
+      processingMethod: '收集并校验登录凭据',
+      storageMethod: '仅在完成本次登录验证所需期间处理',
+      processingPurpose: '完成账号登录和身份验证',
+    };
+  }
+  if (kind === 'input' || kind === 'chat') {
+    return {
+      businessScenario: kind === 'chat' ? '用户编辑或发送聊天消息时' : '用户输入并提交内容时',
+      processingSubject: '本应用',
+      dataSources: ['用户主动输入'],
+      processingMethod: '接收并处理用户提交的内容',
+      storageMethod: '在完成本次输入、搜索或发送操作所需期间处理',
+      processingPurpose: kind === 'chat' ? '发送和展示聊天消息' : '响应用户输入并返回对应结果',
+    };
+  }
+  if (kind === 'transaction') {
+    const preset = occurrences.length > 0 && occurrences.every((item) => item.literalOrigin);
+    return {
+      businessScenario: preset ? '应用处理预设的支付或签约参数时' : '用户发起支付、授权或签约操作时',
+      processingSubject: '本应用',
+      dataSources: [preset ? '应用内初始化的数据' : '支付或签约服务返回'],
+      processingMethod: preset ? '读取并使用预设的业务参数' : '读取并提交交易所需参数',
+      storageMethod: '仅在完成本次支付、授权或签约操作期间处理',
+      processingPurpose: '完成支付、授权或签约请求',
+    };
+  }
+  if (kind === 'location' || kind === 'health') {
+    return {
+      businessScenario: kind === 'location' ? '用户使用定位或地图服务时' : '用户使用运动健康服务时',
+      processingSubject: '本应用',
+      dataSources: ['设备传感器或系统服务'],
+      processingMethod: '读取并计算设备提供的数据',
+      storageMethod: '在提供本次位置或运动健康服务期间处理',
+      processingPurpose: kind === 'location' ? '提供定位和位置展示服务' : '统计并展示运动健康结果',
+    };
+  }
+  if (kind === 'device' || kind === 'local-id') {
+    return {
+      businessScenario: '应用识别当前设备并建立服务连接时',
+      processingSubject: '本应用',
+      dataSources: kind === 'local-id' ? ['应用本地生成'] : ['设备或系统服务返回'],
+      processingMethod: '读取并用于设备识别或连接校验',
+      storageMethod: '在设备识别和服务连接所需期间处理',
+      processingPurpose: '识别设备并保障服务正常连接',
+    };
+  }
+  if (kind === 'nickname') {
     const fromNetwork = /(class\s+mediainfo|viewmodel)/u.test(evidence);
     return {
       businessScenario: fromNetwork ? '应用展示内容作者信息时' : '应用展示已有用户资料时',
@@ -904,17 +928,17 @@ function fallbackDataProfile(
       processingPurpose: '展示内容作者或用户昵称',
     };
   }
-  if (name === '头像图片' || name === '通讯录信息' || name === '用户身份信息') {
-    const networkAvatar = name === '头像图片' && /avatar_url/u.test(evidence);
+  if (kind === 'avatar' || kind === 'contacts' || kind === 'identity') {
+    const networkAvatar = kind === 'avatar' && /avatar_url/u.test(evidence);
     return {
       businessScenario: networkAvatar
         ? '应用展示内容作者头像时'
-        : name === '头像图片' ? '用户查看或设置头像时' : '用户查看身份或联系人信息时',
+        : kind === 'avatar' ? '用户查看或设置头像时' : '用户查看身份或联系人信息时',
       processingSubject: '本应用',
-      dataSources: networkAvatar ? ['网络服务返回'] : name === '头像图片' ? ['用户选择或业务服务返回'] : ['应用业务数据'],
+      dataSources: networkAvatar ? ['网络服务返回'] : kind === 'avatar' ? ['用户选择或业务服务返回'] : ['应用业务数据'],
       processingMethod: '读取并展示用户选择或业务已有的信息',
       storageMethod: '在页面展示或用户操作所需期间处理',
-      processingPurpose: networkAvatar ? '展示内容作者头像' : name === '头像图片' ? '展示或更新用户头像' : '展示身份或联系人信息',
+      processingPurpose: networkAvatar ? '展示内容作者头像' : kind === 'avatar' ? '展示或更新用户头像' : '展示身份或联系人信息',
     };
   }
   return {
@@ -934,8 +958,8 @@ function buildFallbackDataPractices(
 ): PrivacyDataPractice[] {
   const grouped = new Map<string, PrivacyDataPractice>();
   for (const name of dataItems) {
-    const occurrence = dataItemOccurrences.find((item) => item.dataItem === name);
-    const profile = fallbackDataProfile(name, occurrence);
+    const occurrences = dataItemOccurrences.filter((item) => item.dataItem === name);
+    const profile = fallbackDataProfile(name, occurrences);
     const key = JSON.stringify(profile);
     const existing = grouped.get(key);
     if (existing) {
@@ -972,9 +996,9 @@ export function mergeSyntheticModelFacts(
       const model = permissionsByName.get(normalizePermissionToken(practice.permissionName));
       return {
         ...practice,
-        businessScenario: cleanText(model?.businessScenario) || practice.businessScenario,
-        permissionPurpose: cleanText(model?.permissionPurpose) || practice.permissionPurpose,
-        denyImpact: cleanText(model?.denyImpact) || practice.denyImpact,
+        businessScenario: usablePrivacyFactText(model?.businessScenario) || practice.businessScenario,
+        permissionPurpose: usablePrivacyFactText(model?.permissionPurpose) || practice.permissionPurpose,
+        denyImpact: usablePrivacyFactText(model?.denyImpact) || practice.denyImpact,
       };
     }),
     dataPractices: seed.dataPractices.flatMap((practice) => {
@@ -988,21 +1012,21 @@ export function mergeSyntheticModelFacts(
               dataItemNamesMatch(item.name, dataItem.name) ||
               item.refs.some((ref) => seedRefs.has(`${ref.flowId}\u0000${ref.nodeId}`)),
             ),
-          ) ?? (modelDataPractices.length === 1 ? modelDataPractices[0] : undefined);
+          );
         groups.set(model, [...(groups.get(model) ?? []), dataItem]);
       }
       return Array.from(groups.entries()).map(([model, dataItems]) => ({
-        businessScenario: cleanText(model?.businessScenario) || practice.businessScenario,
-        processingSubject: cleanText(model?.processingSubject) || practice.processingSubject,
+        businessScenario: usablePrivacyFactText(model?.businessScenario) || practice.businessScenario,
+        processingSubject: usablePrivacyFactText(model?.processingSubject) || practice.processingSubject,
         dataSources:
-          Array.isArray(model?.dataSources) && model.dataSources.length > 0
-            ? model.dataSources
+          Array.isArray(model?.dataSources) && model.dataSources.some(usablePrivacyFactText)
+            ? model.dataSources.map(usablePrivacyFactText).filter(Boolean)
             : practice.dataSources,
         dataItems,
-        processingMethod: cleanText(model?.processingMethod) || practice.processingMethod,
-        storageMethod: cleanText(model?.storageMethod) || practice.storageMethod,
-        dataRecipients: model?.dataRecipients ?? practice.dataRecipients ?? [],
-        processingPurpose: cleanText(model?.processingPurpose) || practice.processingPurpose,
+        processingMethod: usablePrivacyFactText(model?.processingMethod) || practice.processingMethod,
+        storageMethod: usablePrivacyFactText(model?.storageMethod) || practice.storageMethod,
+        dataRecipients: model?.dataRecipients?.length ? model.dataRecipients : practice.dataRecipients ?? [],
+        processingPurpose: usablePrivacyFactText(model?.processingPurpose) || practice.processingPurpose,
       }));
     }),
   };
@@ -1127,6 +1151,13 @@ export async function generatePrivacyReportArtifacts(args: {
     const orphanPermissionNames = new Set<string>();
 
     const featuresForReport: ReportFeatureInput[] = [];
+    const factDiagnostics: Array<{ context: string; compatibilityAliasUsed: boolean; acceptedDataItems: string[]; dataDescriptions: Array<{ names: string[]; fields: Record<string, unknown> }>; warnings: string[] }> = [];
+    const recordFactDiagnostics = (context: string, extracted: Awaited<ReturnType<typeof extractFeaturePrivacyFacts>>) => {
+      factDiagnostics.push({ context, compatibilityAliasUsed: extracted.compatibilityAliasUsed ?? false,
+        acceptedDataItems: extracted.content.dataPractices.flatMap((practice) => practice.dataItems.map((item) => item.name)),
+        dataDescriptions: extracted.content.dataPractices.map(({ dataItems, ...fields }) => ({ names: dataItems.map((item) => item.name), fields })),
+        warnings: extracted.warnings ?? [] });
+    };
 
     type ExtractedFeatureEntry = {
       item: (typeof featureList)[number];
@@ -1219,8 +1250,10 @@ export async function generatePrivacyReportArtifacts(args: {
             keepUnmatchedDataItems: true,
           });
           facts = extracted.content;
+          recordFactDiagnostics(featureId, extracted);
         } catch (e) {
-          void e;
+          recordFactDiagnostics(featureId, { content: { dataPractices: [], permissionPractices: [] },
+            warnings: [`隐私事实抽取失败，使用证据兜底：${e instanceof Error ? e.message : String(e)}`] });
         }
       }
 
@@ -1405,14 +1438,19 @@ export async function generatePrivacyReportArtifacts(args: {
               privacyRules,
             });
             modelSyntheticFacts.permissionPractices.push(...permissionFacts.content.permissionPractices);
+            recordFactDiagnostics(`权限：${batch.join('、')}`, permissionFacts);
           } catch (error) {
             // Keep successful permission batches when one request fails.
+            recordFactDiagnostics(`权限：${batch.join('、')}`, { content: { dataPractices: [], permissionPractices: [] },
+              warnings: [`隐私事实抽取失败，使用证据兜底：${error instanceof Error ? error.message : String(error)}`] });
             syntheticWarnings.push(
               `合成权限事实 LLM 批次失败（${batch.join('、')}）：${error instanceof Error ? error.message : String(error)}；已保留模板保底文本`,
             );
           }
         }
-        const batchSize = 3;
+        // Small fact models frequently splice multiple objects into invalid
+        // JSON. Keep each item independent and within their response budget.
+        const batchSize = /(?:privacy-two-stage|qwen35-0\.8b)/iu.test(args.llm.model) ? 1 : 3;
         for (let start = 0; start < unmatchedDataItems.length; start += batchSize) {
           const batch = unmatchedDataItems.slice(start, start + batchSize);
           const refs = batch.flatMap((name) => syntheticFlowBuild.refsByDataItem.get(name) ?? []);
@@ -1428,8 +1466,11 @@ export async function generatePrivacyReportArtifacts(args: {
               privacyRules,
             });
             modelSyntheticFacts.dataPractices.push(...extracted.content.dataPractices);
+            recordFactDiagnostics(`数据：${batch.join('、')}`, extracted);
           } catch (error) {
             // Keep successful batches when one model request fails.
+            recordFactDiagnostics(`数据：${batch.join('、')}`, { content: { dataPractices: [], permissionPractices: [] },
+              warnings: [`隐私事实抽取失败，使用证据兜底：${error instanceof Error ? error.message : String(error)}`] });
             syntheticWarnings.push(
               `合成个人信息事实 LLM 批次失败（${batch.join('、')}）：${error instanceof Error ? error.message : String(error)}；已保留模板保底文本`,
             );
@@ -1525,7 +1566,10 @@ export async function generatePrivacyReportArtifacts(args: {
           baseUrl: args.llm.baseUrl,
         },
         features: featuresForReport,
+        dataItemOccurrences: configuredDataItems.occurrences,
       });
+      built.warnings = uniq([...built.warnings, ...factDiagnostics.flatMap((entry) => entry.warnings.map((warning) => `${entry.context}：${warning}`))]);
+      await writeJsonFile(path.join(args.outputDirAbs, 'privacy_llm_validation.json'), { entries: factDiagnostics });
       await associatePrivacyReportLinks({ repoRoot: args.repoRoot, outputDirAbs: args.outputDirAbs, report: built.report });
       await writeJsonFile(reportPath, built.report);
       await fs.writeFile(reportTextPath, built.text, 'utf8');
@@ -1761,7 +1805,7 @@ function permissionReportLabel(permissionName: string, mode: PrivacyPermissionPr
 }
 
 function readableReportText(value: unknown): string {
-  const text = clauseText(value);
+  const text = clauseText(usablePrivacyFactText(value));
   if (!text || /^(无|空|未知|none|null)$/iu.test(text)) return '';
   if (/(?:[A-Za-z]+\s+){2,}[A-Za-z]+[.!]?/u.test(text)) return '';
   if (
@@ -1797,7 +1841,7 @@ function draftNeedsFallback(paragraphs: string[]): boolean {
   );
 }
 
-function deterministicReportDraft(facts: FeaturePrivacyFactsContent): PrivacyReportDraft {
+function deterministicReportDraft(facts: FeaturePrivacyFactsContent, occurrences: DataItemOccurrence[] = []): PrivacyReportDraft {
   const collectionAndUse = asDataPractices(facts).flatMap((practice) => {
     const names = uniq(
       (practice.dataItems ?? [])
@@ -1806,7 +1850,8 @@ function deterministicReportDraft(facts: FeaturePrivacyFactsContent): PrivacyRep
     );
     if (names.length === 0) return [];
 
-    const profile = fallbackDataProfile(names[0] ?? '相关信息');
+    const name = names[0] ?? '相关信息';
+    const profile = fallbackDataProfile(name, occurrences.filter((item) => item.dataItem === name));
     const scenario = readableReportText(practice.businessScenario) || profile.businessScenario;
     const subject = readableReportText(practice.processingSubject) || '本应用';
     const sources = uniq((practice.dataSources ?? []).map(readableReportText).filter(Boolean));
@@ -1952,6 +1997,7 @@ export async function buildPrivacyReport(args: {
   appName: string;
   llm: LlmConfig;
   features: ReportFeatureInput[];
+  dataItemOccurrences?: DataItemOccurrence[];
 }): Promise<{ report: PrivacyReportFile; text: string; warnings: string[] }> {
   const generatedAt = new Date().toISOString();
   const flowIndexes = new Map<string, Map<string, Set<string>>>();
@@ -1964,7 +2010,7 @@ export async function buildPrivacyReport(args: {
       const perFlowIndex = flowIndexes.get(feature.featureId);
       const collectionAnchors = collectionAnchorsForFacts({ feature, facts: feature.facts, perFlowIndex });
       const permissionAnchors = permissionAnchorsForFacts({ feature, facts: feature.facts, perFlowIndex });
-      const fallbackDraft = deterministicReportDraft(feature.facts);
+      const fallbackDraft = deterministicReportDraft(feature.facts, args.dataItemOccurrences);
       let draft = fallbackDraft;
       let warning = '';
       if (apiKey && feature.featureId !== '__app_permissions' && (collectionAnchors.length > 0 || permissionAnchors.length > 0)) {
